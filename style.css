@@ -1,70 +1,96 @@
 /* General Styles */
-  body {
+body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     line-height: 1.6;
-  }
+}
 
 header {
-  background: #333;
+    background: #333;
     color: #fff;
     padding: 1rem 0;
-  position: fixed;
-  width: 100%;
-  top: 0;
+    position: fixed;
+    width: 100%;
+    top: 0;
 }
 
 nav ul {
-  list-style: none;
-  display: flex;
-  justify-content: center;
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
 }
 
 nav ul li {
-  margin: 0 1rem;
+    margin: 0 1rem;
 }
 
 nav ul li a {
-  color: #fff;
+    color: #fff;
     text-decoration: none;
+    font-size: 18px;
 }
 
 .hero {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  background: #f4f4f4;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: #f4f4f4;
+    padding-top: 60px; /* To account for fixed header */
 }
 
-.projects {
-  padding: 2rem;
-  background: #fff;
+.home-photo {
+    width: 1250px;
+    height: 400px;
+    object-fit: cover;
+    margin-bottom: 20px;
 }
 
-.project-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1rem;
+.news-ticker {
+    width: 80%;
+    margin: 0 auto;
+    background: #fff;
+    padding: 10px;
+    border: 1px solid #ddd;
 }
 
-.project-card {
-  background: #e2e2e2;
-    padding: 1rem;
-  border-radius: 5px;
+section {
+    padding: 2rem;
 }
 
-.about, .contact {
-  padding: 2rem;
-  background: #f4f4f4;
+h2 {
+    color: lightblue;
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.team-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.team-member {
+    text-align: center;
+}
+
+.team-photo {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
 }
 
 footer {
-  text-align: center;
-  padding: 1rem;
-  background: #333;
+    text-align: center;
+    padding: 1rem;
+    background: #333;
     color: #fff;
 }
