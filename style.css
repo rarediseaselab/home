@@ -1,0 +1,70 @@
+/* General Styles */
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+  }
+
+header {
+  background: #333;
+    color: #fff;
+    padding: 1rem 0;
+  position: fixed;
+  width: 100%;
+  top: 0;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+}
+
+nav ul li {
+  margin: 0 1rem;
+}
+
+nav ul li a {
+  color: #fff;
+    text-decoration: none;
+}
+
+.hero {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: #f4f4f4;
+}
+
+.projects {
+  padding: 2rem;
+  background: #fff;
+}
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.project-card {
+  background: #e2e2e2;
+    padding: 1rem;
+  border-radius: 5px;
+}
+
+.about, .contact {
+  padding: 2rem;
+  background: #f4f4f4;
+}
+
+footer {
+  text-align: center;
+  padding: 1rem;
+  background: #333;
+    color: #fff;
+}
