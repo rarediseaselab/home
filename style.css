@@ -13,6 +13,7 @@ header {
     position: fixed;
     width: 100%;
     top: 0;
+    z-index: 1000;
 }
 
 nav ul {
@@ -31,36 +32,16 @@ nav ul li a {
     color: #fff;
     text-decoration: none;
     font-size: 18px;
+    transition: color 0.3s ease;
 }
 
-.hero {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    background: #f4f4f4;
-    padding-top: 60px; /* To account for fixed header */
-}
-
-.home-photo {
-    width: 1250px;
-    height: 400px;
-    object-fit: cover;
-    margin-bottom: 20px;
-}
-
-.news-ticker {
-    width: 80%;
-    margin: 0 auto;
-    background: #fff;
-    padding: 10px;
-    border: 1px solid #ddd;
+nav ul li a:hover {
+    color: lightblue;
 }
 
 section {
     padding: 2rem;
+    margin-top: 60px; /* To account for fixed header */
 }
 
 h2 {
@@ -68,24 +49,6 @@ h2 {
     font-size: 30px;
     font-weight: bold;
     text-align: center;
-}
-
-.team-grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-}
-
-.team-member {
-    text-align: center;
-}
-
-.team-photo {
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    object-fit: cover;
 }
 
 footer {
