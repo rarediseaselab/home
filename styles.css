@@ -1,0 +1,147 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f5f5f5;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Navbar */
+.navbar {
+    background-color: #004080;
+    padding: 10px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    z-index: 1000;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    font-weight: bold;
+}
+
+.navbar a:hover {
+    background-color: #002b5e;
+    border-radius: 5px;
+}
+
+/* Container */
+.container {
+    max-width: 900px;
+    margin: 80px auto 20px;
+    padding: 20px;
+    background: white;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+/* Sections */
+.section {
+    display: none;
+}
+
+.section:first-of-type {
+    display: block;
+}
+
+/* Image Styling */
+.small-image {
+    width: 100%;
+    max-width: calc(100% - 40px);
+    display: block;
+    margin: 10px auto;
+}
+
+.large-image {
+    width: 100%;
+    max-width: 700px;
+    display: block;
+    margin: 10px auto;
+}
+
+/* Research Updates */
+.research-updates {
+    margin-top: 20px;
+}
+
+.research-updates h2 {
+    background-color: #004080;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.research-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.research-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: #e6f2ff;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.research-item img {
+    width: 70px;
+    height: auto;
+    border-radius: 50%;
+}
+
+/* Research Interests */
+.research-section {
+    margin-top: 20px;
+    background: #f9f9f9;
+    padding: 15px;
+    border-left: 5px solid #004080;
+    border-radius: 5px;
+    color: #333;
+}
+
+.research-interests h2 {
+    color: black; /* Changed from blue to black */
+}
+
+/* Link Styling */
+a {
+    color: #004080;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+.section h2 {
+    margin-top: 20px;
+    font-size: 1.5em;
+    color: #333;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    margin-top: 30px;
+    padding: 10px;
+    background-color: #004080;
+    color: white;
+    border-radius: 5px;
+}
