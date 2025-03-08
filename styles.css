@@ -155,6 +155,14 @@ body {
     border-radius: 50%;
 }
 
+.research-item h3 {
+    width: 100%;
+    text-align: left;
+    background: none;
+    padding: 0;
+    margin: 10px 0;
+}
+
 /* Research Interests */
 .research-grid-aligned {
     display: flex;
@@ -226,4 +234,21 @@ footer {
     background-color: #004080;
     color: white;
     border-radius: 5px;
+}
+
+.social-links {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.social-icon {
+    width: 30px;
+    height: 30px;
+    transition: transform 0.3s;
+}
+
+.social-icon:hover {
+    transform: scale(1.1);
 }
