@@ -36,28 +36,35 @@
 </head>
 <body onload="showSection('home')">
     <nav class="navbar">
-        <a href="#home" onclick="showSection('home')">Home</a>
-        <a href="#research" onclick="showSection('research')">Research</a>
-        <div class="dropdown">
-            <span class="dropbtn">Team</span>
-            <div class="dropdown-content">
-                <a href="#current-members" onclick="showSection('current-members')">Current Members</a>
-                <a href="#former-members" onclick="showSection('former-members')">Former Members</a>
-                <a href="#group-photos" onclick="showSection('group-photos')">Group Photos</a>
-                <a href="#open-positions" onclick="showSection('open-positions')">Open Positions</a>
-            </div>
+    <a href="#home" onclick="showSection('home')">Home</a>
+    <div class="dropdown">
+        <span class="dropbtn">Research</span>
+        <div class="dropdown-content">
+            <a href="#research" onclick="showSection('research'); scrollToSection('rare-diseases')">Rare Diseases</a>
+            <a href="#research" onclick="showSection('research'); scrollToSection('cilia-cilia-joining')">Cilia-Cilia Joining</a>
+            <a href="#research" onclick="showSection('research'); scrollToSection('variant-analysis')">Variant Analysis</a>
+            <a href="#research" onclick="showSection('research'); scrollToSection('bioinformatics')">Bioinformatics</a>
         </div>
-        <a href="#publications" onclick="showSection('publications')">Publications</a>
-        <a href="#news" onclick="showSection('news')">News</a>
-        <a href="#resources" onclick="showSection('resources')">Resources</a>
-        <a href="#videos" onclick="showSection('videos')">Videos</a>
-    </nav>
+    </div>
+    <div class="dropdown">
+        <span class="dropbtn">Team</span>
+        <div class="dropdown-content">
+            <a href="#current-members" onclick="showSection('current-members')">Current Members</a>
+            <a href="#former-members" onclick="showSection('former-members')">Former Members</a>
+            <a href="#group-photos" onclick="showSection('group-photos')">Group Photos</a>
+            <a href="#open-positions" onclick="showSection('open-positions')">Open Positions</a>
+        </div>
+    </div>
+    <a href="#publications" onclick="showSection('publications')">Publications</a>
+    <a href="#news" onclick="showSection('news')">News</a>
+    <a href="#resources" onclick="showSection('resources')">Resources</a>
+    <a href="#videos" onclick="showSection('videos')">Videos</a>
+</nav>
 
     <div class="container">
         <section id="home" class="section">
             <h1>Welcome to Kaplan's Lab</h1>
             <img src="figure3.png" alt="Cilia Illustration" class="small-image">
-            <p>Welcome to Our Lab<br>
             Our lab is dedicated to uncovering the genetic and molecular mechanisms driving rare diseases, with a particular focus on ciliopathies. By integrating comparative genomics, functional assays, and cutting-edge gene editing technologies, we aim to bridge the gap between genotype and phenotype, advancing our understanding of disease mechanisms and identifying potential therapeutic targets.</p>
             <div class="research-updates">
                 <h2>Research Updates</h2>
@@ -79,41 +86,41 @@
         </section>
 
         <section id="research" class="section" style="display: none;">    
-            <div class="research-interests">
-                <h2>Research Interests</h2>
-                <p>Our laboratory is dedicated to the understanding of the genetic and molecular mechanisms of rare diseases, with a particular focus on ciliopathies. Through interdisciplinary collaboration with clinical scientists, we bridge the genotype-phenotype gap, using comparative genomics and functional analysis to uncover disease mechanisms and therapeutic targets.</p>
-                <div class="research-grid-aligned">
-                    <div class="research-section">
-                        <img src="research1.jpeg" alt="Cilia Research Image" class="large-image">
-                        <h3>I. Cilia and Ciliopathies as Rare Diseases</h3>
-                        <p>Cilia are microtubule-based organelles that mediate numerous cellular processes, such as motility, signaling, and development. Ciliopathies are a group of rare genetic diseases caused by structural or functional defects in cilia and lead to syndromes such as Joubert syndrome, Bardet-Biedl syndrome, Meckel syndrome, and cranioectodermal dysplasia. Though outstanding advances have been achieved, the genetic etiology of ciliopathies is still not fully understood.</p>
-                        <p>Our group has newly identified CILK1 as a causative gene of cranioectodermal dysplasia. Our goal is to identify and functionally annotate ciliopathy-associated genes comprehensively with genetic models, high-resolution microscopy, and biochemical assays. By integrating patient-derived data with experimental data, we will develop improved diagnostic reagents and therapeutic approaches to these rare diseases.</p>
-                    </div>
-                    <div class="research-section">
-                        <img src="research2.jpg" alt="Cilia-Cilia Communication Image" class="large-image">
-                        <h3>II. Deciphering Cilia-Cilia Joining and Inter-Ciliary Communication</h3>
-                        <p>Our study aims to make sense of the molecular machinery in cilia-cilia elongation. We isolate the key proteins and signaling cascades involved. We are further conducting FIB-SEM analysis in a bid to deliver quantitative ultrastructural detail.</p>
-                        <p>We are further contributing to understanding cilia-cilia communication, as demonstrated by Turan et al. (2025) in iScience. We shall expand on such findings by studying the molecular machinery regulating cilia-cilia interaction, including elongation and communication, and the implications for uncommon diseases.</p>
-                    </div>
-                </div>
-                <div class="research-grid-aligned">
-                    <div class="research-section">
-                        <img src="research3.jpeg" alt="Variant Analysis Image" class="large-image">
-                        <h3>III. Variant Analysis for Rare Diseases</h3>
-                        <p>Genetic variant analysis of rare diseases attempts to identify mutations responsible for such often poorly described conditions. With the help of advanced genomic technologies like whole exome sequencing and CRISPR/Cas9-based functional screening in <em>C. elegans</em>, our lab is able to distinguish disease-causing variants and comprehend their mechanisms better (Cevik et al., 2023). This work provides insight into the genetic architecture of rare diseases, eventually culminating in the design of tailored treatments and propelling precision medicine for such individuals.</p>
-                    </div>
-                    <div class="research-section">
-                        <img src="research4.jpeg" alt="Bioinformatics Tools Image" class="large-image">
-                        <h3>IV. Bioinformatics: ConVarT, CilioGenics, and CiliaMiner</h3>
-                        <p>In order to enable simpler interpretation of genetic variants, we have developed computational tools that integrate cross-species variant data and phenotype annotations:</p>
-                        <p><strong>ConVarT:</strong> A cross-linking search engine (<a href="https://convart.org/">https://convart.org/</a>) among human, <em>C. elegans</em>, and mouse variants and pathogenicity annotation and phenotypic data to enable clinical researchers to access variant-specific information (Pir et al., 2022, Nucleic Acids Research).</p>
-                        <p><strong>CilioGenics:</strong> A gene database with a focus on ciliogenesis genes, including data on the genetic cause of ciliary disease.</p>
-                        <p><strong>CiliaMiner:</strong> A data-mining platform on transcriptomic and proteomic data for the identification of novel ciliary genes and regulatory pathways.</p>
-                        <p>With the completion of our first endeavor, we are complementing other organism variants of ConVarT, including those from zebrafish, Drosophila, cows, and dogs. This will further aid comparative genomic analyses, facilitate improved variant interpretation across different species, and help translational research in ciliopathies and other genetic disorders.</p>
-                    </div>
-                </div>
+    <div class="research-interests">
+        <h2>Research Interests</h2>
+        <p>Our laboratory is dedicated to the understanding of the genetic and molecular mechanisms of rare diseases, with a particular focus on ciliopathies. Through interdisciplinary collaboration with clinical scientists, we bridge the genotype-phenotype gap, using comparative genomics and functional analysis to uncover disease mechanisms and therapeutic targets.</p>
+        <div class="research-grid-aligned">
+            <div class="research-section" id="rare-diseases">
+                <img src="research1.jpeg" alt="Cilia Research Image" class="large-image">
+                <h3>I. Cilia and Ciliopathies as Rare Diseases</h3>
+                <p>Cilia are microtubule-based organelles that mediate numerous cellular processes, such as motility, signaling, and development. Ciliopathies are a group of rare genetic diseases caused by structural or functional defects in cilia and lead to syndromes such as Joubert syndrome, Bardet-Biedl syndrome, Meckel syndrome, and cranioectodermal dysplasia. Though outstanding advances have been achieved, the genetic etiology of ciliopathies is still not fully understood.</p>
+                <p>Our group has newly identified CILK1 as a causative gene of cranioectodermal dysplasia. Our goal is to identify and functionally annotate ciliopathy-associated genes comprehensively with genetic models, high-resolution microscopy, and biochemical assays. By integrating patient-derived data with experimental data, we will develop improved diagnostic reagents and therapeutic approaches to these rare diseases.</p>
             </div>
-        </section>
+            <div class="research-section" id="cilia-cilia-joining">
+                <img src="research2.jpg" alt="Cilia-Cilia Communication Image" class="large-image">
+                <h3>II. Deciphering Cilia-Cilia Joining and Inter-Ciliary Communication</h3>
+                <p>Our study aims to make sense of the molecular machinery in cilia-cilia elongation. We isolate the key proteins and signaling cascades involved. We are further conducting FIB-SEM analysis in a bid to deliver quantitative ultrastructural detail.</p>
+                <p>We are further contributing to understanding cilia-cilia communication, as demonstrated by Turan et al. (2025) in iScience. We shall expand on such findings by studying the molecular machinery regulating cilia-cilia interaction, including elongation and communication, and the implications for uncommon diseases.</p>
+            </div>
+        </div>
+        <div class="research-grid-aligned">
+            <div class="research-section" id="variant-analysis">
+                <img src="research3.jpeg" alt="Variant Analysis Image" class="large-image">
+                <h3>III. Variant Analysis for Rare Diseases</h3>
+                <p>Genetic variant analysis of rare diseases attempts to identify mutations responsible for such often poorly described conditions. With the help of advanced genomic technologies like whole exome sequencing and CRISPR/Cas9-based functional screening in <em>C. elegans</em>, our lab is able to distinguish disease-causing variants and comprehend their mechanisms better (Cevik et al., 2023). This work provides insight into the genetic architecture of rare diseases, eventually culminating in the design of tailored treatments and propelling precision medicine for such individuals.</p>
+            </div>
+            <div class="research-section" id="bioinformatics">
+                <img src="research4.jpeg" alt="Bioinformatics Tools Image" class="large-image">
+                <h3>IV. Bioinformatics: ConVarT, CilioGenics, and CiliaMiner</h3>
+                <p>In order to enable simpler interpretation of genetic variants, we have developed computational tools that integrate cross-species variant data and phenotype annotations:</p>
+                <p><strong>ConVarT:</strong> A cross-linking search engine (<a href="https://convart.org/">https://convart.org/</a>) among human, <em>C. elegans</em>, and mouse variants and pathogenicity annotation and phenotypic data to enable clinical researchers to access variant-specific information (Pir et al., 2022, Nucleic Acids Research).</p>
+                <p><strong>CilioGenics:</strong> A gene database with a focus on ciliogenesis genes, including data on the genetic cause of ciliary disease.</p>
+                <p><strong>CiliaMiner:</strong> A data-mining platform on transcriptomic and proteomic data for the identification of novel ciliary genes and regulatory pathways.</p>
+                <p>With the completion of our first endeavor, we are complementing other organism variants of ConVarT, including those from zebrafish, Drosophila, cows, and dogs. This will further aid comparative genomic analyses, facilitate improved variant interpretation across different species, and help translational research in ciliopathies and other genetic disorders.</p>
+            </div>
+        </div>
+    </div>
+</section>
 
         <section id="current-members" class="section" style="display: none;">
             <h1>Current Members</h1>
@@ -353,7 +360,28 @@
             </div>
         </section>
     </div>
+<script>
+    function showSection(sectionId) {
+        console.log("Showing section: " + sectionId);
+        document.querySelectorAll('.section').forEach(sec => {
+            sec.style.display = 'none'; 
+        });
+        const section = document.getElementById(sectionId);
+        if (section) {
+            section.style.display = 'block';
+            console.log(sectionId + " section displayed");
+        } else {
+            console.error("Section not found: " + sectionId);
+        }
+    }
 
+    function scrollToSection(sectionId) {
+        const element = document.getElementById(sectionId);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+</script>
     <footer>
         <p>© 2025 Kaplan's Lab</p>
         <div class="social-links">
