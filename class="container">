@@ -40,10 +40,10 @@
     <div class="dropdown">
         <span class="dropbtn">Research</span>
         <div class="dropdown-content">
-            <a href="#research" onclick="showSection('research'); scrollToSection('rare-diseases')">Rare Diseases</a>
-            <a href="#research" onclick="showSection('research'); scrollToSection('cilia-cilia-joining')">Cilia-Cilia Joining</a>
-            <a href="#research" onclick="showSection('research'); scrollToSection('variant-analysis')">Variant Analysis</a>
-            <a href="#research" onclick="showSection('research'); scrollToSection('bioinformatics')">Bioinformatics</a>
+            <a href="#rare-diseases" onclick="showSection('rare-diseases')">Rare Diseases</a>
+            <a href="#cilia-cilia-joining" onclick="showSection('cilia-cilia-joining')">Cilia-Cilia Joining</a>
+            <a href="#variant-analysis" onclick="showSection('variant-analysis')">Variant Analysis</a>
+            <a href="#bioinformatics" onclick="showSection('bioinformatics')">Bioinformatics</a>
         </div>
     </div>
     <div class="dropdown">
@@ -85,42 +85,37 @@
             </div>
         </section>
 
-        <section id="research" class="section" style="display: none;">    
-    <div class="research-interests">
-        <h2>Research Interests</h2>
-        <p>Our laboratory is dedicated to the understanding of the genetic and molecular mechanisms of rare diseases, with a particular focus on ciliopathies. Through interdisciplinary collaboration with clinical scientists, we bridge the genotype-phenotype gap, using comparative genomics and functional analysis to uncover disease mechanisms and therapeutic targets.</p>
-        <div class="research-grid-aligned">
-            <div class="research-section" id="rare-diseases">
-                <img src="research1.jpeg" alt="Cilia Research Image" class="large-image">
-                <h3>I. Cilia and Ciliopathies as Rare Diseases</h3>
-                <p>Cilia are microtubule-based organelles that mediate numerous cellular processes, such as motility, signaling, and development. Ciliopathies are a group of rare genetic diseases caused by structural or functional defects in cilia and lead to syndromes such as Joubert syndrome, Bardet-Biedl syndrome, Meckel syndrome, and cranioectodermal dysplasia. Though outstanding advances have been achieved, the genetic etiology of ciliopathies is still not fully understood.</p>
-                <p>Our group has newly identified CILK1 as a causative gene of cranioectodermal dysplasia. Our goal is to identify and functionally annotate ciliopathy-associated genes comprehensively with genetic models, high-resolution microscopy, and biochemical assays. By integrating patient-derived data with experimental data, we will develop improved diagnostic reagents and therapeutic approaches to these rare diseases.</p>
-            </div>
-            <div class="research-section" id="cilia-cilia-joining">
-                <img src="research2.jpg" alt="Cilia-Cilia Communication Image" class="large-image">
-                <h3>II. Deciphering Cilia-Cilia Joining and Inter-Ciliary Communication</h3>
-                <p>Our study aims to make sense of the molecular machinery in cilia-cilia elongation. We isolate the key proteins and signaling cascades involved. We are further conducting FIB-SEM analysis in a bid to deliver quantitative ultrastructural detail.</p>
-                <p>We are further contributing to understanding cilia-cilia communication, as demonstrated by Turan et al. (2025) in iScience. We shall expand on such findings by studying the molecular machinery regulating cilia-cilia interaction, including elongation and communication, and the implications for uncommon diseases.</p>
-            </div>
-        </div>
-        <div class="research-grid-aligned">
-            <div class="research-section" id="variant-analysis">
-                <img src="research3.jpeg" alt="Variant Analysis Image" class="large-image">
-                <h3>III. Variant Analysis for Rare Diseases</h3>
-                <p>Genetic variant analysis of rare diseases attempts to identify mutations responsible for such often poorly described conditions. With the help of advanced genomic technologies like whole exome sequencing and CRISPR/Cas9-based functional screening in <em>C. elegans</em>, our lab is able to distinguish disease-causing variants and comprehend their mechanisms better (Cevik et al., 2023). This work provides insight into the genetic architecture of rare diseases, eventually culminating in the design of tailored treatments and propelling precision medicine for such individuals.</p>
-            </div>
-            <div class="research-section" id="bioinformatics">
-                <img src="research4.jpeg" alt="Bioinformatics Tools Image" class="large-image">
-                <h3>IV. Bioinformatics: ConVarT, CilioGenics, and CiliaMiner</h3>
-                <p>In order to enable simpler interpretation of genetic variants, we have developed computational tools that integrate cross-species variant data and phenotype annotations:</p>
-                <p><strong>ConVarT:</strong> A cross-linking search engine (<a href="https://convart.org/">https://convart.org/</a>) among human, <em>C. elegans</em>, and mouse variants and pathogenicity annotation and phenotypic data to enable clinical researchers to access variant-specific information (Pir et al., 2022, Nucleic Acids Research).</p>
-                <p><strong>CilioGenics:</strong> A gene database with a focus on ciliogenesis genes, including data on the genetic cause of ciliary disease.</p>
-                <p><strong>CiliaMiner:</strong> A data-mining platform on transcriptomic and proteomic data for the identification of novel ciliary genes and regulatory pathways.</p>
-                <p>With the completion of our first endeavor, we are complementing other organism variants of ConVarT, including those from zebrafish, Drosophila, cows, and dogs. This will further aid comparative genomic analyses, facilitate improved variant interpretation across different species, and help translational research in ciliopathies and other genetic disorders.</p>
-            </div>
-        </div>
-    </div>
-</section>
+        <</section>
+
+    <section id="rare-diseases" class="section" style="display: none;">
+        <h1>Cilia and Ciliopathies as Rare Diseases</h1>
+        <img src="research1.jpeg" alt="Cilia Research Image" class="small-image">
+        <p>Cilia are microtubule-based organelles that mediate numerous cellular processes, such as motility, signaling, and development. Ciliopathies are a group of rare genetic diseases caused by structural or functional defects in cilia and lead to syndromes such as Joubert syndrome, Bardet-Biedl syndrome, Meckel syndrome, and cranioectodermal dysplasia. Though outstanding advances have been achieved, the genetic etiology of ciliopathies is still not fully understood.</p>
+        <p>Our group has newly identified CILK1 as a causative gene of cranioectodermal dysplasia. Our goal is to identify and functionally annotate ciliopathy-associated genes comprehensively with genetic models, high-resolution microscopy, and biochemical assays. By integrating patient-derived data with experimental data, we will develop improved diagnostic reagents and therapeutic approaches to these rare diseases.</p>
+    </section>
+
+    <section id="cilia-cilia-joining" class="section" style="display: none;">
+        <h1>Deciphering Cilia-Cilia Joining and Inter-Ciliary Communication</h1>
+        <img src="research2.jpg" alt="Cilia-Cilia Communication Image" class="small-image">
+        <p>Our study aims to make sense of the molecular machinery in cilia-cilia elongation. We isolate the key proteins and signaling cascades involved. We are further conducting FIB-SEM analysis in a bid to deliver quantitative ultrastructural detail.</p>
+        <p>We are further contributing to understanding cilia-cilia communication, as demonstrated by Turan et al. (2025) in iScience. We shall expand on such findings by studying the molecular machinery regulating cilia-cilia interaction, including elongation and communication, and the implications for uncommon diseases.</p>
+    </section>
+
+    <section id="variant-analysis" class="section" style="display: none;">
+        <h1>Variant Analysis for Rare Diseases</h1>
+        <img src="research3.jpeg" alt="Variant Analysis Image" class="small-image">
+        <p>Genetic variant analysis of rare diseases attempts to identify mutations responsible for such often poorly described conditions. With the help of advanced genomic technologies like whole exome sequencing and CRISPR/Cas9-based functional screening in <em>C. elegans</em>, our lab is able to distinguish disease-causing variants and comprehend their mechanisms better (Cevik et al., 2023). This work provides insight into the genetic architecture of rare diseases, eventually culminating in the design of tailored treatments and propelling precision medicine for such individuals.</p>
+    </section>
+
+    <section id="bioinformatics" class="section" style="display: none;">
+        <h1>Bioinformatics: ConVarT, CilioGenics, and CiliaMiner</h1>
+        <img src="research4.jpeg" alt="Bioinformatics Tools Image" class="small-image">
+        <p>In order to enable simpler interpretation of genetic variants, we have developed computational tools that integrate cross-species variant data and phenotype annotations:</p>
+        <p><strong>ConVarT:</strong> A cross-linking search engine (<a href="https://convart.org/">https://convart.org/</a>) among human, <em>C. elegans</em>, and mouse variants and pathogenicity annotation and phenotypic data to enable clinical researchers to access variant-specific information (Pir et al., 2022, Nucleic Acids Research).</p>
+        <p><strong>CilioGenics:</strong> A gene database with a focus on ciliogenesis genes, including data on the genetic cause of ciliary disease.</p>
+        <p><strong>CiliaMiner:</strong> A data-mining platform on transcriptomic and proteomic data for the identification of novel ciliary genes and regulatory pathways.</p>
+        <p>With the completion of our first endeavor, we are complementing other organism variants of ConVarT, including those from zebrafish, Drosophila, cows, and dogs. This will further aid comparative genomic analyses, facilitate improved variant interpretation across different species, and help translational research in ciliopathies and other genetic disorders.</p>
+    </section>
 
         <section id="current-members" class="section" style="display: none;">
             <h1>Current Members</h1>
