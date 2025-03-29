@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"> 
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,7 +19,7 @@
         gtag('config', 'G-EKT3SLJ516');
     </script>
     <script>
-        // Function to show/hide sections for SPA navigation
+        // Original function to show/hide sections
         function showSection(sectionId) {
             console.log("Showing section: " + sectionId);
             document.querySelectorAll('.section').forEach(sec => {
@@ -34,7 +34,7 @@
             }
         }
 
-        // Function to switch language
+        // Added function to switch language
         function switchLanguage(lang) {
             console.log("Switching language to: " + lang);
             const enElements = document.querySelectorAll('.lang-en');
@@ -44,31 +44,36 @@
 
             if (lang === 'tr') {
                 document.documentElement.lang = 'tr';
+                // Hide English, show Turkish
                 enElements.forEach(el => el.style.display = 'none');
-                trElements.forEach(el => el.style.display = ''); // Reset to default (inline/block based on CSS)
-                enButton.classList.remove('active');
-                trButton.classList.add('active');
+                trElements.forEach(el => el.style.display = ''); // Reset to default display (inline for span)
+                // Update button styles
+                if(enButton) enButton.classList.remove('active');
+                if(trButton) trButton.classList.add('active');
             } else { // Default to English
                 document.documentElement.lang = 'en';
+                // Hide Turkish, show English
                 trElements.forEach(el => el.style.display = 'none');
-                enElements.forEach(el => el.style.display = ''); // Reset to default
-                trButton.classList.remove('active');
-                enButton.classList.add('active');
+                enElements.forEach(el => el.style.display = ''); // Reset to default display
+                // Update button styles
+                if(trButton) trButton.classList.remove('active');
+                if(enButton) enButton.classList.add('active');
             }
             console.log("Language switched. Current lang attribute: " + document.documentElement.lang);
         }
 
-        // Function to set the initial language state on page load
+        // Added function to set the initial language state on page load
         function setInitialLanguage() {
             // Default to English
-            switchLanguage('en'); 
+            switchLanguage('en');
             // Show the 'home' section by default
             showSection('home');
         }
     </script>
 </head>
-<body onload="setInitialLanguage()">
+<body onload="setInitialLanguage()"> {/* Changed onload target */}
     <nav class="navbar">
+        {/* Original Nav Links with Spans Added */}
         <a href="#home" onclick="showSection('home')"><span class="lang-en" lang="en">Home</span><span class="lang-tr" lang="tr">Ana Sayfa</span></a>
         <div class="dropdown">
             <span class="dropbtn"><span class="lang-en" lang="en">Research</span><span class="lang-tr" lang="tr">Araştırma</span></span>
@@ -100,7 +105,7 @@
             </div>
         </div>
         <div class="lang-switcher">
-            <button id="lang-btn-en" class="lang-button active" onclick="switchLanguage('en')">English</button>
+            <button id="lang-btn-en" class="lang-button" onclick="switchLanguage('en')">English</button>
             <button id="lang-btn-tr" class="lang-button" onclick="switchLanguage('tr')">Türkçe</button>
         </div>
     </nav>
@@ -108,17 +113,18 @@
     <div class="container">
         <section id="home" class="section">
             <h1><span class="lang-en" lang="en">Welcome to Kaplan's Lab</span><span class="lang-tr" lang="tr">Kaplan Laboratuvarı'na Hoş Geldiniz</span></h1>
-            <img src="figure3.png" alt="Cilia Illustration | Sil İllüstrasyonu" class="small-image">
+            <img src="figure3.png" alt="Cilia Illustration | Sil İllüstrasyonu" class="small-image"> {/* Combined Alt Text */}
             <p><span class="lang-en" lang="en">Our lab is dedicated to uncovering the genetic and molecular mechanisms driving rare diseases, with a particular focus on ciliopathies. By integrating comparative genomics, functional assays, and cutting-edge gene editing technologies, we aim to bridge the gap between genotype and phenotype, advancing our understanding of disease mechanisms and identifying potential therapeutic targets.</span><span class="lang-tr" lang="tr">Laboratuvarımız, özellikle siliyopatilere odaklanarak nadir hastalıkları tetikleyen genetik ve moleküler mekanizmaları ortaya çıkarmaya adanmıştır. Karşılaştırmalı genomik, fonksiyonel analizler ve en son gen düzenleme teknolojilerini entegre ederek, genotip ve fenotip arasındaki boşluğu kapatmayı, hastalık mekanizmalarına ilişkin anlayışımızı ilerletmeyi ve potansiyel terapötik hedefleri belirlemeyi amaçlıyoruz.</span></p>
             <div class="research-updates">
                 <h2><span class="lang-en" lang="en">Research Updates</span><span class="lang-tr" lang="tr">Araştırma Güncellemeleri</span></h2>
                 <div class="research-grid">
                     <div class="research-item">
                         <img src="elegans.png" alt="Research Icon | Araştırma Simgesi">
-                        <p><span class="lang-en" lang="en">We recently identified a link between CILK1/DYF-5 and cranioectodermal dysplasia by integrating patient-derived cells and <em>C. elegans</em>. models. Our study, titled  <strong>"A homozygous frameshift variant in the CILK1 gene causes cranioectodermal dysplasia"</strong> has been submitted for publication.</span><span class="lang-tr" lang="tr">Yakın zamanda hasta kökenli hücreler ve <em>C. elegans</em> modellerini entegre ederek CILK1/DYF-5 ile kraniyoektodermal displazi arasında bir bağlantı tespit ettik. <strong>"CILK1 genindeki homozigot bir çerçeve kayması varyantı kraniyoektodermal displaziye neden olur"</strong> başlıklı çalışmamız yayınlanmak üzere gönderildi.</span></p>
+                        <p><span class="lang-en" lang="en">We recently identified a link between CILK1/DYF-5 and cranioectodermal dysplasia by integrating patient-derived cells and <em>C. elegans</em>. models. Our study, titled&nbsp; <strong><span class="lang-en" lang="en">"A homozygous frameshift variant in the CILK1 gene causes cranioectodermal dysplasia"</span><span class="lang-tr" lang="tr">"CILK1 genindeki homozigot bir çerçeve kayması varyantı kraniyoektodermal displaziye neden olur"</span></strong> <span class="lang-en" lang="en">has been submitted for publication.</span><span class="lang-tr" lang="tr">başlıklı çalışmamız yayınlanmak üzere gönderildi.</span></span></p>
                     </div>
                     <div class="research-item">
                         <img src="elegans.png" alt="Research Icon | Araştırma Simgesi">
+                        {/* Publication details are typically not translated */}
                         <p>Turan MG, Kantarci H, Cevik S, Kaplan OI. <strong>ARL13B regulates juxtaposed cilia-cilia elongation in BBSome dependent manner in Caenorhabditis elegans.</strong> iScience. 2025 Jan 10;28(2):111791. doi: <a href="https://doi.org/10.1016/j.isci.2025.111791">10.1016/j.isci.2025.111791</a></p>
                     </div>
                     <div class="research-item">
@@ -127,7 +133,7 @@
                     </div>
                     <div class="research-item">
                         <img src="elegans.png" alt="Research Icon | Araştırma Simgesi">
-                        <p>Pir MS, Cevik S, Kaplan OI. <strong>ConVarT: a search engine for matching human genetic variants with variants from non-human species.</strong> Nucleic Acids Res. 2022 Jan 7;50(D1):D1172-D1178. doi: <a href="https://doi.org/10.1093/nar/gkab939">10.1093/nar/gkab939</a> <em>(<span class="lang-en" lang="en">Note: DOI may be inactive; see </span><span class="lang-tr" lang="tr">Not: DOI etkin olmayabilir; bkz. </span> <a href="https://github.com/thekaplanlab/ConVarT_Web">GitHub</a>)</em></p>
+                        <p>Pir MS, Cevik S, Kaplan OI. <strong>ConVarT: a search engine for matching human genetic variants with variants from non-human species.</strong> Nucleic Acids Res. 2022 Jan 7;50(D1):D1172-D1178. doi: <a href="https://doi.org/10.1093/nar/gkab939">10.1093/nar/gkab939</a> <em>(<span class="lang-en" lang="en">Note: DOI may be inactive; see</span><span class="lang-tr" lang="tr">Not: DOI etkin olmayabilir; bkz.</span> <a href="https://github.com/thekaplanlab/ConVarT_Web">GitHub</a>)</em></p>
                     </div>
                 </div>
             </div>
@@ -184,33 +190,33 @@
         </section>
 
         <section id="bioinformatics" class="section" style="display: none;">
-             <h1><span class="lang-en" lang="en">Bioinformatics</span><span class="lang-tr" lang="tr">Biyoenformatik</span></h1>
+            <h1><span class="lang-en" lang="en">Bioinformatics</span><span class="lang-tr" lang="tr">Biyoenformatik</span></h1>
             <div class="research-grid">
                 <div class="research-item">
                     <img src="elegans.png" alt="Resource Icon | Kaynak Simgesi">
-                     <p><strong>ConVarT:</strong> <span class="lang-en" lang="en">A search engine for matching human genetic variants with variants from non-human species, aiding in the functional characterization of rare disease variants. <em>(Currently unavailable at <a href="http://convart.org/">http://convart.org/</a>; see <a href="https://github.com/thekaplanlab/ConVarT_Web">GitHub</a>)</em></span><span class="lang-tr" lang="tr">İnsan genetik varyantlarını insan olmayan türlerdeki varyantlarla eşleştirmek için bir arama motoru olup, nadir hastalık varyantlarının fonksiyonel karakterizasyonuna yardımcı olur. <em>(Şu anda <a href="http://convart.org/">http://convart.org/</a> adresinde mevcut değil; bkz. <a href="https://github.com/thekaplanlab/ConVarT_Web">GitHub</a>)</em></span></p>
+                    <p><strong>ConVarT:</strong> <span class="lang-en" lang="en">A search engine for matching human genetic variants with variants from non-human species, aiding in the functional characterization of rare disease variants. <em>(Currently unavailable at <a href="http://convart.org/">http://convart.org/</a>; see <a href="https://github.com/thekaplanlab/ConVarT_Web">GitHub</a>)</em></span><span class="lang-tr" lang="tr">İnsan genetik varyantlarını insan olmayan türlerdeki varyantlarla eşleştirmek için bir arama motoru olup, nadir hastalık varyantlarının fonksiyonel karakterizasyonuna yardımcı olur. <em>(Şu anda <a href="http://convart.org/">http://convart.org/</a> adresinde mevcut değil; bkz. <a href="https://github.com/thekaplanlab/ConVarT_Web">GitHub</a>)</em></span></p>
                 </div>
                 <div class="research-item">
                     <img src="elegans.png" alt="Resource Icon | Kaynak Simgesi">
-                     <p><strong>CilioGenics:</strong> <span class="lang-en" lang="en">An integrated database and tool for predicting novel ciliary genes, supporting research into ciliopathies and ciliary biology. <a href="https://ciliogenics.com/?page=Home">https://ciliogenics.com/?page=Home</a></span><span class="lang-tr" lang="tr">Yeni siliyer genleri tahmin etmek için entegre bir veritabanı ve araç olup, siliyopatiler ve siliyer biyoloji araştırmalarını destekler. <a href="https://ciliogenics.com/?page=Home">https://ciliogenics.com/?page=Home</a></span></p>
+                    <p><strong>CilioGenics:</strong> <span class="lang-en" lang="en">An integrated database and tool for predicting novel ciliary genes, supporting research into ciliopathies and ciliary biology. <a href="https://ciliogenics.com/?page=Home">https://ciliogenics.com/?page=Home</a></span><span class="lang-tr" lang="tr">Yeni siliyer genleri tahmin etmek için entegre bir veritabanı ve araç olup, siliyopatiler ve siliyer biyoloji araştırmalarını destekler. <a href="https://ciliogenics.com/?page=Home">https://ciliogenics.com/?page=Home</a></span></p>
                 </div>
                 <div class="research-item">
                     <img src="elegans.png" alt="Resource Icon | Kaynak Simgesi">
-                     <p><strong>CiliaMiner:</strong> <span class="lang-en" lang="en">A bioinformatics platform for exploring ciliopathy genes and related data, designed to accelerate discovery in rare disease research. <a href="https://kaplanlab.shinyapps.io/ciliaminer/">https://kaplanlab.shinyapps.io/ciliaminer/</a></span><span class="lang-tr" lang="tr">Siliyopati genlerini ve ilgili verileri keşfetmek için bir biyoenformatik platformu olup, nadir hastalık araştırmalarındaki keşifleri hızlandırmak için tasarlanmıştır. <a href="https://kaplanlab.shinyapps.io/ciliaminer/">https://kaplanlab.shinyapps.io/ciliaminer/</a></span></p>
+                    <p><strong>CiliaMiner:</strong> <span class="lang-en" lang="en">A bioinformatics platform for exploring ciliopathy genes and related data, designed to accelerate discovery in rare disease research. <a href="https://kaplanlab.shinyapps.io/ciliaminer/">https://kaplanlab.shinyapps.io/ciliaminer/</a></span><span class="lang-tr" lang="tr">Siliyopati genlerini ve ilgili verileri keşfetmek için bir biyoenformatik platformu olup, nadir hastalık araştırmalarındaki keşifleri hızlandırmak için tasarlanmıştır. <a href="https://kaplanlab.shinyapps.io/ciliaminer/">https://kaplanlab.shinyapps.io/ciliaminer/</a></span></p>
                 </div>
                 <div class="research-item">
                     <img src="elegans.png" alt="Resource Icon | Kaynak Simgesi">
-                     <p><strong>GitHub:</strong> <span class="lang-en" lang="en">Access our open-source code, protocols, and bioinformatics pipelines for rare disease and ciliopathy research. <a href="https://github.com/thekaplanlab">https://github.com/thekaplanlab</a></span><span class="lang-tr" lang="tr">Nadir hastalıklar ve siliyopati araştırmaları için açık kaynak kodlarımıza, protokollerimize ve biyoenformatik işlem hatlarımıza erişin. <a href="https://github.com/thekaplanlab">https://github.com/thekaplanlab</a></span></p>
+                    <p><strong>GitHub:</strong> <span class="lang-en" lang="en">Access our open-source code, protocols, and bioinformatics pipelines for rare disease and ciliopathy research. <a href="https://github.com/thekaplanlab">https://github.com/thekaplanlab</a></span><span class="lang-tr" lang="tr">Nadir hastalıklar ve siliyopati araştırmaları için açık kaynak kodlarımıza, protokollerimize ve biyoenformatik işlem hatlarımıza erişin. <a href="https://github.com/thekaplanlab">https://github.com/thekaplanlab</a></span></p>
                 </div>
             </div>
         </section>
 
         <section id="current-members" class="section" style="display: none;">
-             <h1><span class="lang-en" lang="en">Current Members</span><span class="lang-tr" lang="tr">Mevcut Üyeler</span></h1>
+            <h1><span class="lang-en" lang="en">Current Members</span><span class="lang-tr" lang="tr">Mevcut Üyeler</span></h1>
             <div class="research-grid">
                 <div class="research-item">
                     <img src="Oktay.png" alt="Oktay I. Kaplan">
-                     <p><strong>Oktay I. Kaplan, Dr.</strong><br><span class="lang-en" lang="en">Principal Investigator</span><span class="lang-tr" lang="tr">Sorumlu Araştırmacı</span></p>
+                    <p><strong>Oktay I. Kaplan, Dr.</strong><br><span class="lang-en" lang="en">Principal Investigator</span><span class="lang-tr" lang="tr">Sorumlu Araştırmacı</span></p>
                     <ul>
                         <li>GitHub (Lab): <a href="https://github.com/thekaplanlab" target="_blank">thekaplanlab</a></li>
                         <li>GitHub (<span class="lang-en" lang="en">Personal</span><span class="lang-tr" lang="tr">Kişisel</span>): <a href="https://github.com/oktaykaplan" target="_blank">oktaykaplan</a></li>
@@ -223,99 +229,101 @@
                     <img src="sebihacevikaplan.png" alt="Sebiha Cevik">
                     <p><strong>Sebiha Cevik, Dr.</strong><br><span class="lang-en" lang="en">Principal Investigator</span><span class="lang-tr" lang="tr">Sorumlu Araştırmacı</span></p>
                 </div>
-                 <div class="research-item">
+                <div class="research-item">
                     <img src="elegans.png" alt="Ferhan Yenisert">
-                     <p><strong>Ferhan Yenisert</strong><br><span class="lang-en" lang="en">PhD Student</span><span class="lang-tr" lang="tr">Doktora Öğrencisi</span></p>
+                    <p><strong>Ferhan Yenisert</strong><br><span class="lang-en" lang="en">PhD Student</span><span class="lang-tr" lang="tr">Doktora Öğrencisi</span></p>
                 </div>
-                 <div class="research-item">
+                <div class="research-item">
                     <img src="elegans.png" alt="Damla Puçak">
-                     <p><strong>Damla Puçak</strong><br><span class="lang-en" lang="en">Graduate Student</span><span class="lang-tr" lang="tr">Yüksek Lisans Öğrencisi</span></p>
+                    <p><strong>Damla Puçak</strong><br><span class="lang-en" lang="en">Graduate Student</span><span class="lang-tr" lang="tr">Yüksek Lisans Öğrencisi</span></p>
                 </div>
-                 <div class="research-item">
+                <div class="research-item">
                     <img src="elegans.png" alt="Sinem Güzel">
-                     <p><strong>Sinem Güzel</strong><br><span class="lang-en" lang="en">Graduate Student</span><span class="lang-tr" lang="tr">Yüksek Lisans Öğrencisi</span></p>
+                    <p><strong>Sinem Güzel</strong><br><span class="lang-en" lang="en">Graduate Student</span><span class="lang-tr" lang="tr">Yüksek Lisans Öğrencisi</span></p>
                 </div>
-                 <div class="research-item">
+                <div class="research-item">
                     <img src="elegans.png" alt="Fatma Güzel">
-                     <p><strong>Fatma Güzel</strong><br><span class="lang-en" lang="en">Graduate Student</span><span class="lang-tr" lang="tr">Yüksek Lisans Öğrencisi</span></p>
+                    <p><strong>Fatma Güzel</strong><br><span class="lang-en" lang="en">Graduate Student</span><span class="lang-tr" lang="tr">Yüksek Lisans Öğrencisi</span></p>
                 </div>
-                 <div class="research-item">
+                <div class="research-item">
                     <img src="elegans.png" alt="Zanyar Demir">
-                     <p><strong>Zanyar Demir</strong><br><span class="lang-en" lang="en">Graduate Student</span><span class="lang-tr" lang="tr">Yüksek Lisans Öğrencisi</span></p>
+                    <p><strong>Zanyar Demir</strong><br><span class="lang-en" lang="en">Graduate Student</span><span class="lang-tr" lang="tr">Yüksek Lisans Öğrencisi</span></p>
                 </div>
             </div>
         </section>
 
         <section id="former-members" class="section" style="display: none;">
-             <h1><span class="lang-en" lang="en">Former Members</span><span class="lang-tr" lang="tr">Eski Üyeler</span></h1>
+            <h1><span class="lang-en" lang="en">Former Members</span><span class="lang-tr" lang="tr">Eski Üyeler</span></h1>
             <div class="research-grid">
                 <div class="research-item">
-                     <h3><span class="lang-en" lang="en">Graduate Students in the Lab</span><span class="lang-tr" lang="tr">Laboratuvardaki Yüksek Lisans Öğrencileri</span></h3>
+                    <h3><span class="lang-en" lang="en">Graduate Students in the Lab</span><span class="lang-tr" lang="tr">Laboratuvardaki Yüksek Lisans Öğrencileri</span></h3>
                 </div>
                 <div class="research-item">
                     <img src="elegans.png" alt="Merve Gül Turan">
-                     <p><strong>Merve Gül Turan (Eylül 2019 - Haziran 2023)</strong><br><span class="lang-en" lang="en">Position in the lab: Graduate Student</span><span class="lang-tr" lang="tr">Laboratuvardaki Pozisyonu: Yüksek Lisans Öğrencisi</span><br><span class="lang-en" lang="en">Current Position: PhD student at Max Planck Institute for Biology Tübingen</span><span class="lang-tr" lang="tr">Mevcut Pozisyonu: Max Planck Biyoloji Enstitüsü Tübingen'de Doktora Öğrencisi</span></p>
+                    <p><strong>Merve Gül Turan (September 2019 - June 2023)</strong><br><span class="lang-en" lang="en">Position in the lab: Graduate Student</span><span class="lang-tr" lang="tr">Laboratuvardaki Pozisyonu: Yüksek Lisans Öğrencisi</span><br><span class="lang-en" lang="en">Current Position: PhD student at Max Planck Institute for Biology Tübingen</span><span class="lang-tr" lang="tr">Mevcut Pozisyonu: Max Planck Biyoloji Enstitüsü Tübingen'de Doktora Öğrencisi</span></p>
                 </div>
                 <div class="research-item">
                     <img src="elegans.png" alt="Mustafa Samet Pir">
-                     <p><strong>Mustafa Samet Pir</strong><br><span class="lang-en" lang="en">Position in the lab: Graduate Student</span><span class="lang-tr" lang="tr">Laboratuvardaki Pozisyonu: Yüksek Lisans Öğrencisi</span><br><span class="lang-en" lang="en">Current Position: PhD student at Acibadem University</span><span class="lang-tr" lang="tr">Mevcut Pozisyonu: Acıbadem Üniversitesi'nde Doktora Öğrencisi</span></p>
-                </div>
-                 <div class="research-item">
-                    <img src="elegans.png" alt="Fatma Nihal Yetgin">
-                     <p><strong>Fatma Nihal Yetgin</strong><br><span class="lang-en" lang="en">Position in the lab: Graduate Student</span><span class="lang-tr" lang="tr">Laboratuvardaki Pozisyonu: Yüksek Lisans Öğrencisi</span></p>
-                </div>
-                 <div class="research-item">
-                    <img src="elegans.png" alt="Ziya Zorluer">
-                     <p><strong>Ziya Zorluer</strong><br><span class="lang-en" lang="en">Position in the lab: Graduate Student</span><span class="lang-tr" lang="tr">Laboratuvardaki Pozisyonu: Yüksek Lisans Öğrencisi</span><br><span class="lang-en" lang="en">Current Position: PhD student, AGU, Türkiye</span><span class="lang-tr" lang="tr">Mevcut Pozisyonu: Doktora Öğrencisi, AGÜ, Türkiye</span></p>
+                    <p><strong>Mustafa Samet Pir</strong><br><span class="lang-en" lang="en">Position in the lab: Graduate Student</span><span class="lang-tr" lang="tr">Laboratuvardaki Pozisyonu: Yüksek Lisans Öğrencisi</span><br><span class="lang-en" lang="en">Current Position: PhD student at Acibadem University</span><span class="lang-tr" lang="tr">Mevcut Pozisyonu: Acıbadem Üniversitesi'nde Doktora Öğrencisi</span></p>
                 </div>
                 <div class="research-item">
-                     <h3><span class="lang-en" lang="en">Undergraduate Students in the Lab</span><span class="lang-tr" lang="tr">Laboratuvardaki Lisans Öğrencileri</span></h3>
+                    <img src="elegans.png" alt="Fatma Nihal Yetgin">
+                    <p><strong>Fatma Nihal Yetgin</strong><br><span class="lang-en" lang="en">Position in the lab: Graduate Student</span><span class="lang-tr" lang="tr">Laboratuvardaki Pozisyonu: Yüksek Lisans Öğrencisi</span></p>
                 </div>
-                 <div class="research-item">
+                <div class="research-item">
+                    <img src="elegans.png" alt="Ziya Zorluer">
+                    <p><strong>Ziya Zorluer</strong><br><span class="lang-en" lang="en">Position in the lab: Graduate Student</span><span class="lang-tr" lang="tr">Laboratuvardaki Pozisyonu: Yüksek Lisans Öğrencisi</span><br><span class="lang-en" lang="en">Current Position: PhD student, AGU, Türkiye</span><span class="lang-tr" lang="tr">Mevcut Pozisyonu: Doktora Öğrencisi, AGÜ, Türkiye</span></p>
+                </div>
+                <div class="research-item">
+                    <h3><span class="lang-en" lang="en">Undergraduate Students in the Lab</span><span class="lang-tr" lang="tr">Laboratuvardaki Lisans Öğrencileri</span></h3>
+                </div>
+                <div class="research-item">
                     <img src="elegans.png" alt="Ahsen Konaç">
-                     <p><strong>Ahsen Konaç (2018-2021)</strong><br><span class="lang-en" lang="en">Position in the lab: Undergraduate Student</span><span class="lang-tr" lang="tr">Laboratuvardaki Pozisyonu: Lisans Öğrencisi</span><br><span class="lang-en" lang="en">Current Position: PhD student, Göttingen, Germany</span><span class="lang-tr" lang="tr">Mevcut Pozisyonu: Doktora Öğrencisi, Göttingen, Almanya</span></p>
+                    <p><strong>Ahsen Konaç (2018-2021)</strong><br><span class="lang-en" lang="en">Position in the lab: Undergraduate Student</span><span class="lang-tr" lang="tr">Laboratuvardaki Pozisyonu: Lisans Öğrencisi</span><br><span class="lang-en" lang="en">Current Position: PhD student, Göttingen, Germany</span><span class="lang-tr" lang="tr">Mevcut Pozisyonu: Doktora Öğrencisi, Göttingen, Almanya</span></p>
                 </div>
-                 <div class="research-item">
+                <div class="research-item">
                     <img src="onur.jpg" alt="Onur Çakıcı">
-                     <p><strong>Onur Çakıcı (2018-2023)</strong><br><span class="lang-en" lang="en">Position in the lab: Undergraduate Student</span><span class="lang-tr" lang="tr">Laboratuvardaki Pozisyonu: Lisans Öğrencisi</span><br><span class="lang-en" lang="en">Current Position: PhD student, Crete, Greece</span><span class="lang-tr" lang="tr">Mevcut Pozisyonu: Doktora Öğrencisi, Girit, Yunanistan</span></p>
+                    <p><strong>Onur Çakıcı (2018-2023)</strong><br><span class="lang-en" lang="en">Position in the lab: Undergraduate Student</span><span class="lang-tr" lang="tr">Laboratuvardaki Pozisyonu: Lisans Öğrencisi</span><br><span class="lang-en" lang="en">Current Position: PhD student, Crete, Greece</span><span class="lang-tr" lang="tr">Mevcut Pozisyonu: Doktora Öğrencisi, Girit, Yunanistan</span></p>
                 </div>
-                 <div class="research-item">
+                <div class="research-item">
                     <img src="elegans.png" alt="Hanife Kantarcı">
-                     <p><strong>Hanife Kantarcı</strong><br><span class="lang-en" lang="en">Position in the lab: Undergraduate Student</span><span class="lang-tr" lang="tr">Laboratuvardaki Pozisyonu: Lisans Öğrencisi</span><br><span class="lang-en" lang="en">Current Position: Graduate Student, Sabancı University, Türkiye</span><span class="lang-tr" lang="tr">Mevcut Pozisyonu: Yüksek Lisans Öğrencisi, Sabancı Üniversitesi, Türkiye</span></p>
+                    <p><strong>Hanife Kantarcı</strong><br><span class="lang-en" lang="en">Position in the lab: Undergraduate Student</span><span class="lang-tr" lang="tr">Laboratuvardaki Pozisyonu: Lisans Öğrencisi</span><br><span class="lang-en" lang="en">Current Position: Graduate Student, Sabancı University, Türkiye</span><span class="lang-tr" lang="tr">Mevcut Pozisyonu: Yüksek Lisans Öğrencisi, Sabancı Üniversitesi, Türkiye</span></p>
                 </div>
-                 <div class="research-item">
+                <div class="research-item">
                     <img src="elegans.png" alt="Sadiye Dilay Temtek">
-                     <p><strong>Sadiye Dilay Temtek</strong><br><span class="lang-en" lang="en">Position in the lab: Undergraduate Student</span><span class="lang-tr" lang="tr">Laboratuvardaki Pozisyonu: Lisans Öğrencisi</span><br><span class="lang-en" lang="en">Current Position: TÜBİTAK, Ankara, Türkiye</span><span class="lang-tr" lang="tr">Mevcut Pozisyonu: TÜBİTAK, Ankara, Türkiye</span></p>
+                    <p><strong>Sadiye Dilay Temtek</strong><br><span class="lang-en" lang="en">Position in the lab: Undergraduate Student</span><span class="lang-tr" lang="tr">Laboratuvardaki Pozisyonu: Lisans Öğrencisi</span><br><span class="lang-en" lang="en">Current Position: TÜBİTAK, Ankara, Türkiye</span><span class="lang-tr" lang="tr">Mevcut Pozisyonu: TÜBİTAK, Ankara, Türkiye</span></p>
                 </div>
             </div>
         </section>
 
         <section id="group-photos" class="section" style="display: none;">
-             <h1><span class="lang-en" lang="en">Group Photos</span><span class="lang-tr" lang="tr">Grup Fotoğrafları</span></h1>
-             <p><span class="lang-en" lang="en">See our lab team in action.</span><span class="lang-tr" lang="tr">Laboratuvar ekibimizi çalışırken görün.</span></p>
+            <h1><span class="lang-en" lang="en">Group Photos</span><span class="lang-tr" lang="tr">Grup Fotoğrafları</span></h1>
+            <p><span class="lang-en" lang="en">See our lab team in action.</span><span class="lang-tr" lang="tr">Laboratuvar ekibimizi çalışırken görün.</span></p>
             <div class="research-grid">
                 <div class="research-item">
                     <img src="figure3.png" alt="Group Photo 1 | Grup Fotoğrafı 1" class="large-image">
-                     <p><strong><span class="lang-en" lang="en">Lab Meeting 2025</span><span class="lang-tr" lang="tr">Laboratuvar Toplantısı 2025</span></strong></p>
+                    <p><strong><span class="lang-en" lang="en">Lab Meeting 2025</span><span class="lang-tr" lang="tr">Laboratuvar Toplantısı 2025</span></strong></p>
                 </div>
             </div>
         </section>
 
         <section id="open-positions" class="section" style="display: none;">
-             <h1><span class="lang-en" lang="en">Open Positions</span><span class="lang-tr" lang="tr">Açık Pozisyonlar</span></h1>
-             <p><span class="lang-en" lang="en">We are always looking for talented undergraduate students, graduate students, and postdoctoral researchers to join our team. If you are passionate about rare diseases, ciliopathies, and innovative research, we encourage you to contact the Principal Investigator (PI) for more information.</span><span class="lang-tr" lang="tr">Ekibimize katılacak yetenekli lisans öğrencileri, yüksek lisans öğrencileri ve doktora sonrası araştırmacılar arıyoruz. Nadir hastalıklar, siliyopatiler ve yenilikçi araştırmalar konusunda tutkuluysanız, daha fazla bilgi için Sorumlu Araştırmacı (PI) ile iletişime geçmenizi öneririz.</span></p>
-             <p><span class="lang-en" lang="en">For postdoctoral positions, we offer the opportunity to apply for prestigious fellowships such as the <a href="https://www.embo.org/funding/fellowships-grants-and-awards/postdoctoral-fellowships">EMBO Postdoctoral Fellowship</a>, <a href="https://marie-sklodowska-curie-actions.ec.europa.eu/actions/postdoctoral-fellowships">Marie Curie Fellowship</a>, and <a href="https://www.tubitak.gov.tr/en/scholarship/postdoctoral/international-programs/content-2219-international-postdoctoral-research-fellowship-programme">TÜBİTAK Fellowship</a>.</span><span class="lang-tr" lang="tr">Doktora sonrası pozisyonlar için, <a href="https://www.embo.org/funding/fellowships-grants-and-awards/postdoctoral-fellowships">EMBO Doktora Sonrası Bursu</a>, <a href="https://marie-sklodowska-curie-actions.ec.europa.eu/actions/postdoctoral-fellowships">Marie Curie Bursu</a> ve <a href="https://www.tubitak.gov.tr/tr/burslar/doktora-sonrasi/arastirma-burs-programlari/icerik-2219-yurt-disi-doktora-sonrasi-arastirma-burs-programi">TÜBİTAK Bursu</a> gibi prestijli burslara başvurma fırsatı sunuyoruz.</span></p>
-             <p><strong><span class="lang-en" lang="en">Contact:</span><span class="lang-tr" lang="tr">İletişim:</span></strong> Oktaykaplan(at)gmail.com</p>
+            <h1><span class="lang-en" lang="en">Open Positions</span><span class="lang-tr" lang="tr">Açık Pozisyonlar</span></h1>
+            <p><span class="lang-en" lang="en">We are always looking for talented undergraduate students, graduate students, and postdoctoral researchers to join our team. If you are passionate about rare diseases, ciliopathies, and innovative research, we encourage you to contact the Principal Investigator (PI) for more information.</span><span class="lang-tr" lang="tr">Ekibimize katılacak yetenekli lisans öğrencileri, yüksek lisans öğrencileri ve doktora sonrası araştırmacılar arıyoruz. Nadir hastalıklar, siliyopatiler ve yenilikçi araştırmalar konusunda tutkuluysanız, daha fazla bilgi için Sorumlu Araştırmacı (PI) ile iletişime geçmenizi öneririz.</span></p>
+            <p><span class="lang-en" lang="en">For postdoctoral positions, we offer the opportunity to apply for prestigious fellowships such as the <a href="https://www.embo.org/funding/fellowships-grants-and-awards/postdoctoral-fellowships">EMBO Postdoctoral Fellowship</a>, <a href="https://marie-sklodowska-curie-actions.ec.europa.eu/actions/postdoctoral-fellowships">Marie Curie Fellowship</a>, and <a href="https://www.tubitak.gov.tr/en/scholarship/postdoctoral/international-programs/content-2219-international-postdoctoral-research-fellowship-programme">TÜBİTAK Fellowship</a>.</span><span class="lang-tr" lang="tr">Doktora sonrası pozisyonlar için, <a href="https://www.embo.org/funding/fellowships-grants-and-awards/postdoctoral-fellowships">EMBO Doktora Sonrası Bursu</a>, <a href="https://marie-sklodowska-curie-actions.ec.europa.eu/actions/postdoctoral-fellowships">Marie Curie Bursu</a> ve <a href="https://www.tubitak.gov.tr/tr/burslar/doktora-sonrasi/arastirma-burs-programlari/icerik-2219-yurt-disi-doktora-sonrasi-arastirma-burs-programi">TÜBİTAK Bursu</a> gibi prestijli burslara başvurma fırsatı sunuyoruz.</span></p>
+            <p><strong><span class="lang-en" lang="en">Contact:</span><span class="lang-tr" lang="tr">İletişim:</span></strong> Oktaykaplan(at)gmail.com</p>
         </section>
 
         <section id="publications" class="section" style="display: none;">
-             <h1><span class="lang-en" lang="en">Publications</span><span class="lang-tr" lang="tr">Yayınlar</span></h1>
-            <div class="research-grid">
-                 <div class="research-item">
+            <h1><span class="lang-en" lang="en">Publications</span><span class="lang-tr" lang="tr">Yayınlar</span></h1>
+             {/* Publication list remains unchanged as titles/journals are universal */}
+             <div class="research-grid">
+                <div class="research-item">
                     <img src="elegans.png" alt="Research Icon | Araştırma Simgesi">
                     <p>Turan MG, Kantarci H, Cevik S, Kaplan OI. <strong>ARL13B regulates juxtaposed cilia-cilia elongation in BBSome dependent manner in Caenorhabditis elegans.</strong> iScience. 2025 Jan 10;28(2):111791. doi: <a href="https://doi.org/10.1016/j.isci.2025.111791">10.1016/j.isci.2025.111791</a></p>
                 </div>
-                <div class="research-item">
+                {/* ... (rest of the original publication items) ... */}
+                 <div class="research-item">
                     <img src="elegans.png" alt="Research Icon | Araştırma Simgesi">
                     <p>Kim AH, Sakin I, Viviano S, et al. <strong>CC2D1A causes ciliopathy, intellectual disability, heterotaxy, renal dysplasia, and abnormal CSF flow.</strong> Life Sci Alliance. 2024 Oct;7(10):e202402708. doi: <a href="https://doi.org/10.26508/lsa.202402708">10.26508/lsa.202402708</a></p>
                 </div>
@@ -349,7 +357,7 @@
                 </div>
                 <div class="research-item">
                     <img src="elegans.png" alt="Research Icon | Araştırma Simgesi">
-                    <p>Pir MS, Bilgin HI, Sayici A, et al. <strong>ConVarT: a search engine for matching human genetic variants with variants from non-human species.</strong> Nucleic Acids Res. 2022 Jan 7;50(D1):D1172-D1178. doi: <a href="https://doi.org/10.1093/nar/gkab939">10.1093/nar/gkab939</a> <em>(<span class="lang-en" lang="en">Note: DOI may be inactive; see </span><span class="lang-tr" lang="tr">Not: DOI etkin olmayabilir; bkz. </span> <a href="https://github.com/thekaplanlab/ConVarT_Web">GitHub</a>)</em></p>
+                    <p>Pir MS, Bilgin HI, Sayici A, et al. <strong>ConVarT: a search engine for matching human genetic variants with variants from non-human species.</strong> Nucleic Acids Res. 2022 Jan 7;50(D1):D1172-D1178. doi: <a href="https://doi.org/10.1093/nar/gkab939">10.1093/nar/gkab939</a> <em>(<span class="lang-en" lang="en">Note: DOI may be inactive; see</span><span class="lang-tr" lang="tr">Not: DOI etkin olmayabilir; bkz.</span> <a href="https://github.com/thekaplanlab/ConVarT_Web">GitHub</a>)</em></p>
                 </div>
                 <div class="research-item">
                     <img src="elegans.png" alt="Research Icon | Araştırma Simgesi">
@@ -363,7 +371,7 @@
                     <img src="elegans.png" alt="Research Icon | Araştırma Simgesi">
                     <p>Cevik S, Kaplan OI. <strong>Subcellular localization of the voltage-gated K+ channel EGL-36, a member of the KV3 subfamily, in the ciliated sensory neurons in C. elegans.</strong> MicroPubl Biol. 2021;2021:10.17912/micropub.biology.000367. doi: <a href="https://doi.org/10.17912/micropub.biology.000367">10.17912/micropub.biology.000367</a></p>
                 </div>
-                 <div class="research-item">
+                <div class="research-item">
                     <img src="elegans.png" alt="Research Icon | Araştırma Simgesi">
                     <p>Kimura Y, Tsutsumi K, Konno A, et al. <strong>Environmental responsiveness of tubulin glutamylation in sensory cilia is regulated by the p38 MAPK pathway.</strong> Sci Rep. 2018 Jun 8;8(1):8392. doi: <a href="https://doi.org/10.1038/s41598-018-26694-w">10.1038/s41598-018-26694-w</a></p>
                 </div>
@@ -383,7 +391,7 @@
                     <img src="elegans.png" alt="Research Icon | Araştırma Simgesi">
                     <p>Kaplan OI, Molla-Herman A, Cevik S, et al. <strong>The AP-1 clathrin adaptor facilitates cilium formation and functions with RAB-8 in C. elegans ciliary membrane transport.</strong> J Cell Sci. 2010 Nov 15;123(Pt 22):3966-77. doi: <a href="https://doi.org/10.1242/jcs.073908">10.1242/jcs.073908</a></p>
                 </div>
-                 <div class="research-item">
+                <div class="research-item">
                     <img src="elegans.png" alt="Research Icon | Araştırma Simgesi">
                     <p>Kimura Y, Kurabe N, Ikegami K, et al. <strong>Identification of tubulin deglutamylase among Caenorhabditis elegans and mammalian cytosolic carboxypeptidases (CCPs).</strong> J Biol Chem. 2010 Jul 23;285(30):22936-41. doi: <a href="https://doi.org/10.1074/jbc.C110.128280">10.1074/jbc.C110.128280</a></p>
                 </div>
@@ -399,61 +407,62 @@
         </section>
 
         <section id="news" class="section" style="display: none;">
-             <h1><span class="lang-en" lang="en">News</span><span class="lang-tr" lang="tr">Haberler</span></h1>
+            <h1><span class="lang-en" lang="en">News</span><span class="lang-tr" lang="tr">Haberler</span></h1>
             <div class="research-grid">
                 <div class="research-item">
                     <img src="elegans.png" alt="News Icon | Haber Simgesi">
-                    <p><strong><span class="lang-en" lang="en">March 26, 2025:</span><span class="lang-tr" lang="tr">26 Mart 2025:</span></strong> <span class="lang-en" lang="en">We recently identified a link between CILK1/DYF-5 and cranioectodermal dysplasia by integrating patient-derived cells and <em>C. elegans</em>. models. Our study, titled  <strong>"A homozygous frameshift variant in the CILK1 gene causes cranioectodermal dysplasia"</strong> has been submitted for publication.</span><span class="lang-tr" lang="tr">Yakın zamanda hasta kökenli hücreler ve <em>C. elegans</em> modellerini entegre ederek CILK1/DYF-5 ile kraniyoektodermal displazi arasında bir bağlantı tespit ettik. <strong>"CILK1 genindeki homozigot bir çerçeve kayması varyantı kraniyoektodermal displaziye neden olur"</strong> başlıklı çalışmamız yayınlanmak üzere gönderildi.</span></p>
+                    <p><strong><span class="lang-en" lang="en">March 26, 2025:</span><span class="lang-tr" lang="tr">26 Mart 2025:</span></strong> <span class="lang-en" lang="en">We recently identified a link between CILK1/DYF-5 and cranioectodermal dysplasia by integrating patient-derived cells and <em>C. elegans</em>. models. Our study, titled&nbsp; <strong><span class="lang-en" lang="en">"A homozygous frameshift variant in the CILK1 gene causes cranioectodermal dysplasia"</span><span class="lang-tr" lang="tr">"CILK1 genindeki homozigot bir çerçeve kayması varyantı kraniyoektodermal displaziye neden olur"</span></strong> <span class="lang-en" lang="en">has been submitted for publication.</span><span class="lang-tr" lang="tr">başlıklı çalışmamız yayınlanmak üzere gönderildi.</span></span></p>
                 </div>
                 <div class="research-item">
                     <img src="elegans.png" alt="News Icon | Haber Simgesi">
-                     <p><strong><span class="lang-en" lang="en">March 2025:</span><span class="lang-tr" lang="tr">Mart 2025:</span></strong> <span class="lang-en" lang="en">New publication in iScience on cilia-cilia elongation! <a href="https://www.sciencedirect.com/science/article/pii/S2589004225000501">Read more</a></span><span class="lang-tr" lang="tr">iScience'ta silya-silya uzaması üzerine yeni yayın! <a href="https://www.sciencedirect.com/science/article/pii/S2589004225000501">Daha fazla oku</a></span></p>
+                    <p><strong><span class="lang-en" lang="en">March 2025:</span><span class="lang-tr" lang="tr">Mart 2025:</span></strong> <span class="lang-en" lang="en">New publication in iScience on cilia-cilia elongation! <a href="https://www.sciencedirect.com/science/article/pii/S2589004225000501">Read more</a></span><span class="lang-tr" lang="tr">iScience'ta silya-silya uzaması üzerine yeni yayın! <a href="https://www.sciencedirect.com/science/article/pii/S2589004225000501">Daha fazla oku</a></span></p>
                 </div>
                 <div class="research-item">
                     <img src="elegans.png" alt="News Icon | Haber Simgesi">
-                     <p><strong><span class="lang-en" lang="en">January 2025:</span><span class="lang-tr" lang="tr">Ocak 2025:</span></strong> <span class="lang-en" lang="en">Kaplan Lab receives grant for ciliopathy research.</span><span class="lang-tr" lang="tr">Kaplan Laboratuvarı siliyopati araştırması için hibe aldı.</span></p>
+                    <p><strong><span class="lang-en" lang="en">January 2025:</span><span class="lang-tr" lang="tr">Ocak 2025:</span></strong> <span class="lang-en" lang="en">Kaplan Lab receives grant for ciliopathy research.</span><span class="lang-tr" lang="tr">Kaplan Laboratuvarı siliyopati araştırması için hibe aldı.</span></p>
                 </div>
             </div>
         </section>
 
         <section id="resources" class="section" style="display: none;">
-             <h1><span class="lang-en" lang="en">Resources</span><span class="lang-tr" lang="tr">Kaynaklar</span></h1>
-             <p><span class="lang-en" lang="en">Our lab is committed to open science, and we openly share our protocols and bioinformatics pipelines to contribute to the broader scientific community.</span><span class="lang-tr" lang="tr">Laboratuvarımız açık bilime bağlıdır ve daha geniş bilimsel topluluğa katkıda bulunmak için protokollerimizi ve biyoenformatik işlem hatlarımızı açıkça paylaşırız.</span></p>
+            <h1><span class="lang-en" lang="en">Resources</span><span class="lang-tr" lang="tr">Kaynaklar</span></h1>
+            <p><span class="lang-en" lang="en">Our lab is committed to open science, and we openly share our protocols and bioinformatics pipelines to contribute to the broader scientific community.</span><span class="lang-tr" lang="tr">Laboratuvarımız açık bilime bağlıdır ve daha geniş bilimsel topluluğa katkıda bulunmak için protokollerimizi ve biyoenformatik işlem hatlarımızı açıkça paylaşırız.</span></p>
             <div class="research-grid">
                 <div class="research-item">
                     <img src="elegans.png" alt="Resource Icon | Kaynak Simgesi">
-                     <p><strong>ConVarT:</strong> <span class="lang-en" lang="en">A search engine for matching human genetic variants with variants from non-human species, aiding in the functional characterization of rare disease variants. <em>(Currently unavailable at <a href="http://convart.org/">http://convart.org/</a>; see <a href="https://github.com/thekaplanlab/ConVarT_Web">GitHub</a>)</em></span><span class="lang-tr" lang="tr">İnsan genetik varyantlarını insan olmayan türlerdeki varyantlarla eşleştirmek için bir arama motoru olup, nadir hastalık varyantlarının fonksiyonel karakterizasyonuna yardımcı olur. <em>(Şu anda <a href="http://convart.org/">http://convart.org/</a> adresinde mevcut değil; bkz. <a href="https://github.com/thekaplanlab/ConVarT_Web">GitHub</a>)</em></span></p>
+                    <p><strong>ConVarT:</strong> <span class="lang-en" lang="en">A search engine for matching human genetic variants with variants from non-human species, aiding in the functional characterization of rare disease variants. <em>(Currently unavailable at <a href="http://convart.org/">http://convart.org/</a>; see <a href="https://github.com/thekaplanlab/ConVarT_Web">GitHub</a>)</em></span><span class="lang-tr" lang="tr">İnsan genetik varyantlarını insan olmayan türlerdeki varyantlarla eşleştirmek için bir arama motoru olup, nadir hastalık varyantlarının fonksiyonel karakterizasyonuna yardımcı olur. <em>(Şu anda <a href="http://convart.org/">http://convart.org/</a> adresinde mevcut değil; bkz. <a href="https://github.com/thekaplanlab/ConVarT_Web">GitHub</a>)</em></span></p>
                 </div>
                 <div class="research-item">
                     <img src="elegans.png" alt="Resource Icon | Kaynak Simgesi">
-                     <p><strong>CilioGenics:</strong> <span class="lang-en" lang="en">An integrated database and tool for predicting novel ciliary genes, supporting research into ciliopathies and ciliary biology. <a href="https://ciliogenics.com/?page=Home">https://ciliogenics.com/?page=Home</a></span><span class="lang-tr" lang="tr">Yeni siliyer genleri tahmin etmek için entegre bir veritabanı ve araç olup, siliyopatiler ve siliyer biyoloji araştırmalarını destekler. <a href="https://ciliogenics.com/?page=Home">https://ciliogenics.com/?page=Home</a></span></p>
+                    <p><strong>CilioGenics:</strong> <span class="lang-en" lang="en">An integrated database and tool for predicting novel ciliary genes, supporting research into ciliopathies and ciliary biology. <a href="https://ciliogenics.com/?page=Home">https://ciliogenics.com/?page=Home</a></span><span class="lang-tr" lang="tr">Yeni siliyer genleri tahmin etmek için entegre bir veritabanı ve araç olup, siliyopatiler ve siliyer biyoloji araştırmalarını destekler. <a href="https://ciliogenics.com/?page=Home">https://ciliogenics.com/?page=Home</a></span></p>
                 </div>
                 <div class="research-item">
                     <img src="elegans.png" alt="Resource Icon | Kaynak Simgesi">
-                     <p><strong>CiliaMiner:</strong> <span class="lang-en" lang="en">A bioinformatics platform for exploring ciliopathy genes and related data, designed to accelerate discovery in rare disease research. <a href="https://kaplanlab.shinyapps.io/ciliaminer/">https://kaplanlab.shinyapps.io/ciliaminer/</a></span><span class="lang-tr" lang="tr">Siliyopati genlerini ve ilgili verileri keşfetmek için bir biyoenformatik platformu olup, nadir hastalık araştırmalarındaki keşifleri hızlandırmak için tasarlanmıştır. <a href="https://kaplanlab.shinyapps.io/ciliaminer/">https://kaplanlab.shinyapps.io/ciliaminer/</a></span></p>
+                    <p><strong>CiliaMiner:</strong> <span class="lang-en" lang="en">A bioinformatics platform for exploring ciliopathy genes and related data, designed to accelerate discovery in rare disease research. <a href="https://kaplanlab.shinyapps.io/ciliaminer/">https://kaplanlab.shinyapps.io/ciliaminer/</a></span><span class="lang-tr" lang="tr">Siliyopati genlerini ve ilgili verileri keşfetmek için bir biyoenformatik platformu olup, nadir hastalık araştırmalarındaki keşifleri hızlandırmak için tasarlanmıştır. <a href="https://kaplanlab.shinyapps.io/ciliaminer/">https://kaplanlab.shinyapps.io/ciliaminer/</a></span></p>
                 </div>
                 <div class="research-item">
                     <img src="elegans.png" alt="Resource Icon | Kaynak Simgesi">
-                     <p><strong>GitHub:</strong> <span class="lang-en" lang="en">Access our open-source code, protocols, and bioinformatics pipelines for rare disease and ciliopathy research. <a href="https://github.com/thekaplanlab">https://github.com/thekaplanlab</a></span><span class="lang-tr" lang="tr">Nadir hastalıklar ve siliyopati araştırmaları için açık kaynak kodlarımıza, protokollerimize ve biyoenformatik işlem hatlarımıza erişin. <a href="https://github.com/thekaplanlab">https://github.com/thekaplanlab</a></span></p>
+                    <p><strong>GitHub:</strong> <span class="lang-en" lang="en">Access our open-source code, protocols, and bioinformatics pipelines for rare disease and ciliopathy research. <a href="https://github.com/thekaplanlab">https://github.com/thekaplanlab</a></span><span class="lang-tr" lang="tr">Nadir hastalıklar ve siliyopati araştırmaları için açık kaynak kodlarımıza, protokollerimize ve biyoenformatik işlem hatlarımıza erişin. <a href="https://github.com/thekaplanlab">https://github.com/thekaplanlab</a></span></p>
                 </div>
                 <div class="research-item">
                     <img src="crispr-protocol.jpg" alt="CRISPR/Cas9 Protocol Icon | CRISPR/Cas9 Protokol Simgesi">
-                     <p><strong><span class="lang-en" lang="en">CRISPR/Cas9 Protocol:</span><span class="lang-tr" lang="tr">CRISPR/Cas9 Protokolü:</span></strong> <span class="lang-en" lang="en">A PCR-based, cost-efficient, and fast screening strategy for sgRNA inserts. <a href="#crispr-protocol" onclick="showSection('crispr-protocol')">View Protocol</a></span><span class="lang-tr" lang="tr">sgRNA eklemeleri için PZR tabanlı, uygun maliyetli ve hızlı bir tarama stratejisi. <a href="#crispr-protocol" onclick="showSection('crispr-protocol')">Protokolü Görüntüle</a></span></p>
+                    <p><strong><span class="lang-en" lang="en">CRISPR/Cas9 Protocol:</span><span class="lang-tr" lang="tr">CRISPR/Cas9 Protokolü:</span></strong> <span class="lang-en" lang="en">A PCR-based, cost-efficient, and fast screening strategy for sgRNA inserts. <a href="#crispr-protocol" onclick="showSection('crispr-protocol')">View Protocol</a></span><span class="lang-tr" lang="tr">sgRNA eklemeleri için PZR tabanlı, uygun maliyetli ve hızlı bir tarama stratejisi. <a href="#crispr-protocol" onclick="showSection('crispr-protocol')">Protokolü Görüntüle</a></span></p>
                 </div>
             </div>
         </section>
 
         <section id="crispr-protocol" class="section" style="display: none;">
-             <h1><span class="lang-en" lang="en">CRISPR/Cas9 Protocol</span><span class="lang-tr" lang="tr">CRISPR/Cas9 Protokolü</span></h1>
-             <p><span class="lang-en" lang="en">This is a PCR-based, cost-efficient, and fast screening strategy for sgRNA inserts.</span><span class="lang-tr" lang="tr">Bu, sgRNA eklemeleri için PZR tabanlı, uygun maliyetli ve hızlı bir tarama stratejisidir.</span></p>
+            {/* Translating the protocol section */}
+            <h1><span class="lang-en" lang="en">CRISPR/Cas9 Protocol</span><span class="lang-tr" lang="tr">CRISPR/Cas9 Protokolü</span></h1>
+            <p><span class="lang-en" lang="en">This is a PCR-based, cost-efficient, and fast screening strategy for sgRNA inserts.</span><span class="lang-tr" lang="tr">Bu, sgRNA eklemeleri için PZR tabanlı, uygun maliyetli ve hızlı bir tarama stratejisidir.</span></p>
             
-             <h2><span class="lang-en" lang="en">Objective</span><span class="lang-tr" lang="tr">Amaç</span></h2>
-             <p><span class="lang-en" lang="en">To clone a designed sgRNA sequence into the pRB1017 expression vector and efficiently screen bacterial colonies for successful insertion using colony PCR.</span><span class="lang-tr" lang="tr">Tasarlanan bir sgRNA dizisini pRB1017 ekspresyon vektörüne klonlamak ve koloni PZR kullanarak başarılı ekleme için bakteriyel kolonileri verimli bir şekilde taramak.</span></p>
+            <h2><span class="lang-en" lang="en">Objective</span><span class="lang-tr" lang="tr">Amaç</span></h2>
+            <p><span class="lang-en" lang="en">To clone a designed sgRNA sequence into the pRB1017 expression vector and efficiently screen bacterial colonies for successful insertion using colony PCR.</span><span class="lang-tr" lang="tr">Tasarlanan bir sgRNA dizisini pRB1017 ekspresyon vektörüne klonlamak ve koloni PZR kullanarak başarılı ekleme için bakteriyel kolonileri verimli bir şekilde taramak.</span></p>
             
-             <h2><span class="lang-en" lang="en">Principle</span><span class="lang-tr" lang="tr">Prensip</span></h2>
-             <p><span class="lang-en" lang="en">This protocol utilizes Golden Gate assembly with the Type IIS restriction enzyme BsaI, which cuts outside its recognition site, allowing directional cloning of annealed oligonucleotides (representing the sgRNA) into the vector in a single reaction. Screening relies on colony PCR using one of the original cloning oligonucleotides and a standard vector primer (M13 Forward) to specifically amplify products only when the insert is present.</span><span class="lang-tr" lang="tr">Bu protokol, tanıma bölgesinin dışında kesim yapan Tip IIS restriksiyon enzimi BsaI ile Golden Gate derlemesini kullanır, bu da tavlanmış oligonükleotidlerin (sgRNA'yı temsil eden) tek bir reaksiyonda vektöre yönlü olarak klonlanmasını sağlar. Tarama, orijinal klonlama oligonükleotidlerinden birini ve standart bir vektör primerini (M13 İleri) kullanarak koloni PZR'ye dayanır ve yalnızca ekleme mevcut olduğunda ürünleri spesifik olarak çoğaltır.</span></p>
+            <h2><span class="lang-en" lang="en">Principle</span><span class="lang-tr" lang="tr">Prensip</span></h2>
+            <p><span class="lang-en" lang="en">This protocol utilizes Golden Gate assembly with the Type IIS restriction enzyme BsaI, which cuts outside its recognition site, allowing directional cloning of annealed oligonucleotides (representing the sgRNA) into the vector in a single reaction. Screening relies on colony PCR using one of the original cloning oligonucleotides and a standard vector primer (M13 Forward) to specifically amplify products only when the insert is present.</span><span class="lang-tr" lang="tr">Bu protokol, tanıma bölgesinin dışında kesim yapan Tip IIS restriksiyon enzimi BsaI ile Golden Gate derlemesini kullanır, bu da tavlanmış oligonükleotidlerin (sgRNA'yı temsil eden) tek bir reaksiyonda vektöre yönlü olarak klonlanmasını sağlar. Tarama, orijinal klonlama oligonükleotidlerinden birini ve standart bir vektör primerini (M13 İleri) kullanarak koloni PZR'ye dayanır ve yalnızca ekleme mevcut olduğunda ürünleri spesifik olarak çoğaltır.</span></p>
             
-             <h2><span class="lang-en" lang="en">Materials</span><span class="lang-tr" lang="tr">Malzemeler</span></h2>
+            <h2><span class="lang-en" lang="en">Materials</span><span class="lang-tr" lang="tr">Malzemeler</span></h2>
             <ul>
                 <li><strong><span class="lang-en" lang="en">Plasmid:</span><span class="lang-tr" lang="tr">Plazmit:</span></strong> <span class="lang-en" lang="en">pRB1017 (Addgene #59936 or similar vector with U6 promoter, tracrRNA, and flanking BsaI sites for sgRNA insertion, Kan resistance)</span><span class="lang-tr" lang="tr">pRB1017 (Addgene #59936 veya U6 promotörü, tracrRNA ve sgRNA eklemesi için BsaI bölgeleri içeren benzer vektör, Kan direnci)</span></li>
                 <li><strong><span class="lang-en" lang="en">Oligonucleotides:</span><span class="lang-tr" lang="tr">Oligonükleotidler:</span></strong>
@@ -499,8 +508,8 @@
                 </li>
             </ul>
             
-             <h2><span class="lang-en" lang="en">Procedure</span><span class="lang-tr" lang="tr">Prosedür</span></h2>
-             <h3><span class="lang-en" lang="en">Part 1: Oligonucleotide Annealing</span><span class="lang-tr" lang="tr">Bölüm 1: Oligonükleotid Tavlama</span></h3>
+            <h2><span class="lang-en" lang="en">Procedure</span><span class="lang-tr" lang="tr">Prosedür</span></h2>
+            <h3><span class="lang-en" lang="en">Part 1: Oligonucleotide Annealing</span><span class="lang-tr" lang="tr">Bölüm 1: Oligonükleotid Tavlama</span></h3>
             <ol>
                 <li><span class="lang-en" lang="en">Prepare the annealing mix in a 0.2 ml PCR tube:</span><span class="lang-tr" lang="tr">Tavlama karışımını 0.2 ml PZR tüpünde hazırlayın:</span>
                     <ul>
@@ -519,7 +528,7 @@
                 </li>
             </ol>
             
-             <h3><span class="lang-en" lang="en">Part 2: Golden Gate Assembly (One-Pot Digestion & Ligation)</span><span class="lang-tr" lang="tr">Bölüm 2: Golden Gate Derlemesi (Tek Kapta Kesim & Ligasyon)</span></h3>
+            <h3><span class="lang-en" lang="en">Part 2: Golden Gate Assembly (One-Pot Digestion & Ligation)</span><span class="lang-tr" lang="tr">Bölüm 2: Golden Gate Derlemesi (Tek Kapta Kesim & Ligasyon)</span></h3>
             <ol>
                 <li><span class="lang-en" lang="en">Prepare the assembly reaction in a fresh 0.2 ml PCR tube (Total Volume = 20 µl):</span><span class="lang-tr" lang="tr">Derleme reaksiyonunu yeni bir 0.2 ml PZR tüpünde hazırlayın (Toplam Hacim = 20 µl):</span>
                     <ul>
@@ -542,7 +551,7 @@
                 </li>
             </ol>
             
-             <h3><span class="lang-en" lang="en">Part 3: Bacterial Transformation</span><span class="lang-tr" lang="tr">Bölüm 3: Bakteriyel Transformasyon</span></h3>
+            <h3><span class="lang-en" lang="en">Part 3: Bacterial Transformation</span><span class="lang-tr" lang="tr">Bölüm 3: Bakteriyel Transformasyon</span></h3>
             <ol>
                 <li><span class="lang-en" lang="en">Thaw one aliquot (100 µl) of DH5α chemically competent cells on ice.</span><span class="lang-tr" lang="tr">Bir alikot (100 µl) DH5α kimyasal olarak yetkin hücreyi buz üzerinde çözün.</span></li>
                 <li><span class="lang-en" lang="en">Add the entire 20 µl Golden Gate assembly reaction product directly to the competent cells.</span><span class="lang-tr" lang="tr">Tüm 20 µl Golden Gate derleme reaksiyon ürününü doğrudan yetkin hücrelere ekleyin.</span></li>
@@ -559,7 +568,7 @@
                 <li><span class="lang-en" lang="en">Incubate the plate overnight (12-16 hours) at 37°C.</span><span class="lang-tr" lang="tr">Plakayı gece boyunca (12-16 saat) 37°C'de inkübe edin.</span></li>
             </ol>
             
-             <h3><span class="lang-en" lang="en">Part 4: Screening by Colony PCR</span><span class="lang-tr" lang="tr">Bölüm 4: Koloni PZR ile Tarama</span></h3>
+            <h3><span class="lang-en" lang="en">Part 4: Screening by Colony PCR</span><span class="lang-tr" lang="tr">Bölüm 4: Koloni PZR ile Tarama</span></h3>
             <ol>
                 <li><span class="lang-en" lang="en">Prepare PCR master mix (scale up as needed for the number of colonies + controls). For one 25 µl reaction:</span><span class="lang-tr" lang="tr">PZR ana karışımını hazırlayın (koloni sayısı + kontroller için gerektiği kadar ölçeklendirin). Bir 25 µl reaksiyon için:</span>
                     <ul>
@@ -579,7 +588,7 @@
                         <li><span class="lang-en" lang="en">(Optional but recommended: Streak the same tip/toothpick onto a gridded master plate for later recovery of positive clones).</span><span class="lang-tr" lang="tr">(İsteğe bağlı ancak önerilir: Aynı ucu/kürdanı daha sonra pozitif klonları kurtarmak için ızgaralı bir ana plakaya sürün).</span></li>
                     </ul>
                 </li>
-                 <li><span class="lang-en" lang="en">Set up Control Reactions:</span><span class="lang-tr" lang="tr">Kontrol Reaksiyonlarını Kurun:</span>
+                <li><span class="lang-en" lang="en">Set up Control Reactions:</span><span class="lang-tr" lang="tr">Kontrol Reaksiyonlarını Kurun:</span>
                     <ul>
                         <li><span class="lang-en" lang="en">Negative Control 1: Use ddH2O instead of bacterial suspension.</span><span class="lang-tr" lang="tr">Negatif Kontrol 1: Bakteri süspansiyonu yerine ddH2O kullanın.</span></li>
                         <li><span class="lang-en" lang="en">Negative Control 2 (Empty Vector): Prepare a suspension from bacteria transformed with empty pRB1017.</span><span class="lang-tr" lang="tr">Negatif Kontrol 2 (Boş Vektör): Boş pRB1017 ile transforme edilmiş bakterilerden bir süspansiyon hazırlayın.</span></li>
@@ -587,7 +596,7 @@
                     </ul>
                 </li>
                 <li><span class="lang-en" lang="en">Add 1-2 µl of the diluted bacterial suspension (or control template) to the corresponding PCR tubes containing the master mix prepared in Step 1. Total PCR volume = 25 µl.</span><span class="lang-tr" lang="tr">Adım 1'de hazırlanan ana karışımı içeren ilgili PZR tüplerine 1-2 µl seyreltilmiş bakteri süspansiyonu (veya kontrol şablonu) ekleyin. Toplam PZR hacmi = 25 µl.</span></li>
-                 <li><span class="lang-en" lang="en">Place the tubes in a thermocycler and run the following program:</span><span class="lang-tr" lang="tr">Tüpleri bir termal döngüleyiciye yerleştirin ve aşağıdaki programı çalıştırın:</span>
+                <li><span class="lang-en" lang="en">Place the tubes in a thermocycler and run the following program:</span><span class="lang-tr" lang="tr">Tüpleri bir termal döngüleyiciye yerleştirin ve aşağıdaki programı çalıştırın:</span>
                     <ul>
                         <li><span class="lang-en" lang="en">Lid Temperature: 105°C</span><span class="lang-tr" lang="tr">Kapak Sıcaklığı: 105°C</span></li>
                         <li><span class="lang-en" lang="en">Initial Denaturation: 95°C for 2 minutes (1 cycle) - This also lyses the bacteria</span><span class="lang-tr" lang="tr">Başlangıç Denatürasyonu: 95°C'de 2 dakika (1 döngü) - Bu aynı zamanda bakterileri de lize eder</span></li>
@@ -605,10 +614,10 @@
                 <li><span class="lang-en" lang="en">Analyze the PCR products by running 5-10 µl of each reaction on a 1% agarose gel alongside a DNA ladder (e.g., 100 bp ladder).</span><span class="lang-tr" lang="tr">PZR ürünlerini, her reaksiyondan 5-10 µl'sini bir DNA işaretleyici (örn. 100 bp işaretleyici) ile birlikte %1 agaroz jel üzerinde yürüterek analiz edin.</span></li>
             </ol>
             
-             <h3><span class="lang-en" lang="en">Interpretation</span><span class="lang-tr" lang="tr">Yorumlama</span></h3>
-             <p><span class="lang-en" lang="en">Positive Clones: A distinct band around 580 bp should be visible (based on pRB1017 and M13F/OK404 primers used in the paper - Note: this size may vary slightly depending on the exact vector and primer locations). Negative Controls/Incorrect Clones: No band, or bands of significantly different sizes, should appear around 580 bp.</span><span class="lang-tr" lang="tr">Pozitif Klonlar: Yaklaşık 580 bp'de belirgin bir bant görünmelidir (makalede kullanılan pRB1017 ve M13F/OK404 primerlerine göre - Not: Bu boyut, tam vektör ve primer konumlarına bağlı olarak biraz değişebilir). Negatif Kontroller/Yanlış Klonlar: Yaklaşık 580 bp'de bant olmamalı veya önemli ölçüde farklı boyutlarda bantlar görünmemelidir.</span></p>
+            <h3><span class="lang-en" lang="en">Interpretation</span><span class="lang-tr" lang="tr">Yorumlama</span></h3>
+            <p><span class="lang-en" lang="en">Positive Clones: A distinct band around 580 bp should be visible (based on pRB1017 and M13F/OK404 primers used in the paper - Note: this size may vary slightly depending on the exact vector and primer locations). Negative Controls/Incorrect Clones: No band, or bands of significantly different sizes, should appear around 580 bp.</span><span class="lang-tr" lang="tr">Pozitif Klonlar: Yaklaşık 580 bp'de belirgin bir bant görünmelidir (makalede kullanılan pRB1017 ve M13F/OK404 primerlerine göre - Not: Bu boyut, tam vektör ve primer konumlarına bağlı olarak biraz değişebilir). Negatif Kontroller/Yanlış Klonlar: Yaklaşık 580 bp'de bant olmamalı veya önemli ölçüde farklı boyutlarda bantlar görünmemelidir.</span></p>
             
-             <h3><span class="lang-en" lang="en">Part 5: Follow-up</span><span class="lang-tr" lang="tr">Bölüm 5: Takip</span></h3>
+            <h3><span class="lang-en" lang="en">Part 5: Follow-up</span><span class="lang-tr" lang="tr">Bölüm 5: Takip</span></h3>
             <ol>
                 <li><span class="lang-en" lang="en">Select colonies that showed a positive band in the PCR screen.</span><span class="lang-tr" lang="tr">PZR taramasında pozitif bant gösteren kolonileri seçin.</span></li>
                 <li><span class="lang-en" lang="en">Inoculate liquid LB + Kanamycin cultures using bacteria from the corresponding dilute suspension (or the master plate if made).</span><span class="lang-tr" lang="tr">İlgili seyreltik süspansiyondan (veya yapılmışsa ana plakadan) bakteri kullanarak sıvı LB + Kanamisin kültürlerini aşılayın.</span></li>
@@ -619,8 +628,8 @@
         </section>
 
         <section id="movies" class="section" style="display: none;">
-             <h1><span class="lang-en" lang="en">Movies</span><span class="lang-tr" lang="tr">Videolar</span></h1>
-             <p><span class="lang-en" lang="en">Explore animated insights into our research and protocols.</span><span class="lang-tr" lang="tr">Araştırmalarımız ve protokollerimiz hakkında animasyonlu içgörüleri keşfedin.</span></p>
+            <h1><span class="lang-en" lang="en">Movies</span><span class="lang-tr" lang="tr">Videolar</span></h1>
+            <p><span class="lang-en" lang="en">Explore animated insights into our research and protocols.</span><span class="lang-tr" lang="tr">Araştırmalarımız ve protokollerimiz hakkında animasyonlu içgörüleri keşfedin.</span></p>
             <div class="video-grid">
                 <div class="video-item">
                     <img src="STAR_protocol.gif" alt="STAR Protocol Animation | STAR Protokol Animasyonu" class="video-animation">
@@ -634,16 +643,16 @@
         </section>
 
         <section id="images" class="section" style="display: none;">
-             <h1><span class="lang-en" lang="en">Images</span><span class="lang-tr" lang="tr">Resimler</span></h1>
-             <p><span class="lang-en" lang="en">View images from our research and lab activities.</span><span class="lang-tr" lang="tr">Araştırmalarımızdan ve laboratuvar faaliyetlerimizden resimleri görüntüleyin.</span></p>
+            <h1><span class="lang-en" lang="en">Images</span><span class="lang-tr" lang="tr">Resimler</span></h1>
+            <p><span class="lang-en" lang="en">View images from our research and lab activities.</span><span class="lang-tr" lang="tr">Araştırmalarımızdan ve laboratuvar faaliyetlerimizden resimleri görüntüleyin.</span></p>
             <div class="research-grid">
                 <div class="research-item">
                     <img src="lab-image1.jpg" alt="Lab Image 1 | Laboratuvar Resmi 1" class="large-image">
-                     <p><strong><span class="lang-en" lang="en">Lab Experiment 1</span><span class="lang-tr" lang="tr">Laboratuvar Deneyi 1</span></strong></p>
+                    <p><strong><span class="lang-en" lang="en">Lab Experiment 1</span><span class="lang-tr" lang="tr">Laboratuvar Deneyi 1</span></strong></p>
                 </div>
                 <div class="research-item">
                     <img src="lab-image2.jpg" alt="Lab Image 2 | Laboratuvar Resmi 2" class="large-image">
-                     <p><strong><span class="lang-en" lang="en">Lab Experiment 2</span><span class="lang-tr" lang="tr">Laboratuvar Deneyi 2</span></strong></p>
+                    <p><strong><span class="lang-en" lang="en">Lab Experiment 2</span><span class="lang-tr" lang="tr">Laboratuvar Deneyi 2</span></strong></p>
                 </div>
             </div>
         </section>
