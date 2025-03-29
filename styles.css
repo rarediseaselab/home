@@ -25,19 +25,16 @@ body {
     gap: 15px;
     z-index: 1000;
     align-items: center;
-    flex-wrap: wrap; /* Allow wrapping for smaller screens */
 }
 
-.navbar a, .navbar .dropbtn {
+.navbar a {
     color: white;
     text-decoration: none;
     padding: 10px 15px;
     font-weight: bold;
-    cursor: pointer; /* Added for dropbtn */
-    white-space: nowrap; /* Prevent menu items wrapping */
 }
 
-.navbar a:hover, .navbar .dropbtn:hover {
+.navbar a:hover {
     background-color: #002b5e;
     border-radius: 5px;
 }
@@ -45,11 +42,17 @@ body {
 /* Dropdown Menu */
 .dropdown {
     position: relative;
-    display: inline-flex; /* Changed from inline-block */
-    align-items: center; /* Align items vertically */
+    display: inline-flex;
+    align-items: center;
 }
 
-/* .dropbtn is handled by .navbar a, .navbar .dropbtn above */
+.dropbtn {
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
 
 .dropdown-content {
     display: none;
@@ -58,8 +61,7 @@ body {
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1001;
-    top: 100%; /* Position below the button */
-    left: 0; /* Align with the left edge of the button */
+    top: 100%;
 }
 
 .dropdown-content a {
@@ -68,7 +70,6 @@ body {
     text-decoration: none;
     display: block;
     font-weight: normal;
-    white-space: nowrap; /* Prevent dropdown items wrapping */
 }
 
 .dropdown-content a:hover {
@@ -80,46 +81,15 @@ body {
     display: block;
 }
 
-/* .dropdown:hover .dropbtn handled above */
-
-/* Language Switcher */
-.lang-switcher {
-    display: flex;
-    align-items: center;
-    margin-left: 10px; /* Add some space */
-}
-
-.lang-button {
-    background: none;
-    border: none;
-    color: white;
-    padding: 10px 8px; /* Slightly less padding */
-    cursor: pointer;
-    font-size: 0.9em;
-    font-weight: bold;
-}
-
-.lang-button:hover {
+.dropdown:hover .dropbtn {
     background-color: #002b5e;
     border-radius: 5px;
-}
-
-.lang-button.active {
-    /* font-weight: bold; */ /* Already bold */
-    text-decoration: underline;
-    text-decoration-thickness: 2px; /* Make underline more visible */
-    text-underline-offset: 3px; /* Space between text and underline */
-}
-
-/* Language Content Styling */
-.lang-tr {
-    display: none; /* Hide Turkish content by default */
 }
 
 /* Container */
 .container {
     max-width: 900px;
-    margin: 100px auto 20px; /* Increased top margin due to fixed navbar height */
+    margin: 80px auto 20px; /* Adjusted top margin slightly if navbar height changed */
     padding: 20px;
     background: white;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
@@ -128,31 +98,29 @@ body {
 
 /* Sections */
 .section {
-    display: none; /* Sections are hidden by default, shown by JS */
-    padding-bottom: 20px; /* Add some padding at the bottom of sections */
+    display: none; /* Sections hidden by default, shown by JS */
 }
 
 /* Ensure the default section is handled by JS onload */
+/* Remove .section:first-of-type { display: block; } as JS handles initial display */
+
 
 /* Image Styling */
 .small-image {
-    /* width: 100%; */ /* Removed width: 100% */
-    max-width: 400px; /* Adjust max-width as needed */
-    height: auto; /* Maintain aspect ratio */
+    width: 100%;
+    max-width: calc(100% - 40px);
     display: block;
-    margin: 15px auto; /* Center image and add margin */
-    border-radius: 5px; /* Optional: slightly rounded corners */
+    margin: 10px auto;
 }
 
 .large-image {
     width: 100%;
     max-width: 700px;
     display: block;
-    margin: 15px auto;
-    border-radius: 5px;
+    margin: 10px auto;
 }
 
-/* Research Updates / Grid Styling */
+/* Research Updates */
 .research-updates {
     margin-top: 20px;
 }
@@ -163,58 +131,40 @@ body {
     padding: 10px;
     border-radius: 5px;
     text-align: center;
-    margin-bottom: 15px; /* Add space below heading */
 }
 
 .research-grid {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    /* margin-top: 15px; */ /* Removed, spacing handled by h2 margin */
+    margin-top: 15px;
 }
 
 .research-item {
     display: flex;
-    /* align-items: center; */ /* Align items to the top for better text flow */
-    align-items: flex-start;
+    align-items: center;
     gap: 15px;
     background: #e6f2ff;
-    padding: 15px; /* Increased padding */
+    padding: 10px;
     border-radius: 5px;
-    border-left: 3px solid #004080; /* Added subtle left border */
 }
 
 .research-item img {
-    width: 100px; /* Fixed width for icons/member photos */
-    height: 100px; /* Fixed height */
-    object-fit: cover; /* Ensure image covers the area nicely */
-    border-radius: 5px; /* Slightly rounded corners for consistency */
-    /* border-radius: 50%; */ /* Removed circle for flexibility */
-    flex-shrink: 0; /* Prevent image from shrinking */
+    width: 150px; /* Original size */
+    height: auto;
+    border-radius: 50%; /* Original style */
 }
 
-.research-item p, .research-item ul {
-    flex-grow: 1; /* Allow text content to take remaining space */
-}
-.research-item ul {
-    list-style-position: inside;
-    padding-left: 5px;
-}
-.research-item li {
-    margin-bottom: 5px;
-}
 
 .research-item h3 {
     width: 100%;
     text-align: left;
     background: none;
     padding: 0;
-    margin: 0 0 10px 0; /* Adjusted margin */
-    font-size: 1.1em;
-    color: #004080;
+    margin: 10px 0;
 }
 
-/* Research Interests Grid */
+/* Research Interests */
 .research-grid-aligned {
     display: flex;
     flex-wrap: wrap;
@@ -222,9 +172,11 @@ body {
     margin-top: 20px;
 }
 
-.research-grid-aligned .research-section { /* Renamed for clarity */
-    flex: 1 1 300px; /* Flex basis 300px, allow grow and shrink */
-    /* min-width: 300px; */ /* Replaced by flex-basis */
+/* Original .research-section class was used inside .research-grid-aligned */
+/* Keeping the original naming for consistency */
+.research-grid-aligned .research-section {
+    flex: 1;
+    min-width: 300px;
     background: #f9f9f9;
     padding: 15px;
     border-left: 5px solid #004080;
@@ -232,16 +184,25 @@ body {
     color: #333;
 }
 
-.research-section h2 { /* Style h2 within these sections */
-    margin-bottom: 10px;
-    font-size: 1.2em;
-    color: #004080;
+/* This seems redundant if used inside the above */
+/* Commenting out as it might conflict with the above */
+/*
+.research-section {
+    background: #f9f9f9;
+    padding: 15px;
+    border-left: 5px solid #004080;
+    border-radius: 5px;
+    color: #333;
 }
+*/
 
-.research-section img.small-image { /* Override default small-image margin */
-     margin: 10px 0 15px 0; /* Adjust margin */
-     max-width: 100%; /* Allow image to fill width if needed */
+/* This rule seems incorrect based on original HTML structure */
+/* Commenting out */
+/*
+.research-interests h2 {
+    color: black;
 }
+*/
 
 
 /* Video Section */
@@ -265,62 +226,26 @@ body {
     height: auto;
     display: block;
     margin: 0 auto 10px;
-    border: 1px solid #ccc; /* Add a subtle border */
-    border-radius: 5px;
 }
 
-/* General Text & Link Styling */
-h1 {
-    color: #004080;
-    margin-bottom: 15px;
-    text-align: center;
-}
-h2 {
-     color: #004080;
-     margin-top: 20px;
-     margin-bottom: 10px;
-}
-h3 {
-     color: #004080;
-     margin-top: 15px;
-     margin-bottom: 8px;
-}
-
-p {
-    margin-bottom: 1em; /* Add space between paragraphs */
-}
-
-ul, ol {
-    margin-left: 20px; /* Indent lists */
-    margin-bottom: 1em;
-}
-
-li {
-    margin-bottom: 0.5em;
-}
-
-strong {
-     font-weight: bold;
-}
-
+/* Link Styling */
 a {
-    color: #0056b3; /* Slightly different blue for links */
+    color: #004080; /* Original link color */
     text-decoration: none;
 }
 
 a:hover {
     text-decoration: underline;
-    color: #003d80; /* Darker blue on hover */
 }
 
 /* Footer */
 footer {
     text-align: center;
     margin-top: 30px;
-    padding: 15px; /* Increased padding */
+    padding: 10px;
     background-color: #004080;
     color: white;
-    /* border-radius: 5px; */ /* Removed radius to match top navbar */
+    border-radius: 5px; /* Original had radius */
 }
 
 .social-links {
@@ -333,64 +258,56 @@ footer {
 .social-icon {
     width: 30px;
     height: 30px;
-    transition: transform 0.3s, opacity 0.3s; /* Added opacity transition */
-    opacity: 0.8; /* Slightly transparent */
+    transition: transform 0.3s;
 }
 
 .social-icon:hover {
     transform: scale(1.1);
-    opacity: 1; /* Full opacity on hover */
 }
 
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-    .navbar {
-        justify-content: space-around; /* Better spacing on smaller screens */
-         padding: 10px 5px; /* Reduce padding */
-    }
-     .navbar a, .navbar .dropbtn {
-         padding: 8px 10px; /* Reduce padding */
-         font-size: 0.9em;
-     }
-    .lang-switcher {
-        margin-left: 5px;
-    }
-     .lang-button {
-         padding: 8px 5px;
-         font-size: 0.8em;
-     }
 
-    .container {
-        margin-top: 120px; /* Adjust margin more if navbar wraps */
-        padding: 15px;
-    }
+/* --- ADDED STYLES --- */
+/* Styles for language switching - Added at the end */
 
-    .research-item {
-        flex-direction: column; /* Stack items vertically */
-        align-items: flex-start; /* Align to start */
-    }
-    .research-item img {
-        width: 80px; /* Smaller image */
-        height: 80px;
-        margin-bottom: 10px; /* Add space below image */
-    }
-     .research-grid-aligned .research-section {
-         flex-basis: 100%; /* Full width on smaller screens */
-     }
+/* Hide Turkish content by default */
+.lang-tr {
+    display: none;
 }
 
-@media (max-width: 480px) {
-     .navbar {
-         gap: 5px; /* Further reduce gap */
-     }
-     .navbar a, .navbar .dropbtn {
-          padding: 6px 8px;
-          font-size: 0.8em;
-      }
-     .container {
-         margin-top: 140px; /* Further adjust if needed */
-         padding: 10px;
-     }
-      h1 { font-size: 1.5em; }
-      h2 { font-size: 1.2em; }
+/* Language switcher container in navbar */
+.lang-switcher {
+    display: flex;
+    align-items: center;
+    margin-left: 10px; /* Optional spacing */
+}
+
+/* Style for language buttons */
+.lang-button {
+    background: none;
+    border: none;
+    color: white; /* Match navbar link color */
+    padding: 10px 8px; /* Adjust padding as needed */
+    cursor: pointer;
+    font-size: 0.9em; /* Slightly smaller than main links */
+    font-weight: bold; /* Match navbar link weight */
+    margin: 0 2px; /* Small space between buttons */
+    border-radius: 3px; /* Subtle rounding */
+}
+
+.lang-button:hover {
+    background-color: #002b5e; /* Match navbar link hover */
+}
+
+/* Style for the active language button */
+.lang-button.active {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+    /* Optional: Slightly different background/color for active */
+    /* background-color: #002b5e; */
+}
+
+/* Ensure spans inherit display from parent or are inline */
+.lang-en, .lang-tr {
+    /* display: inherit; */ /* Let parent dictate block/inline, but span defaults to inline which is usually fine */
 }
