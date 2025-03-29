@@ -400,185 +400,20 @@
                     <p><strong>GitHub:</strong> Access our open-source code, protocols, and bioinformatics pipelines for rare disease and ciliopathy research. <a href="https://github.com/thekaplanlab">https://github.com/thekaplanlab</a></p>
                 </div>
                 <div class="research-item">
-                    <img src="crispr-protocol.jpg" alt="CRISPR/Cas9 Protocol Icon">
-                    <p><strong>CRISPR/Cas9 Protocol:</strong> A PCR-based, cost-efficient, and fast screening strategy for sgRNA inserts. <a href="#crispr-protocol" onclick="showSection('crispr-protocol')">View Protocol</a></p>
+                    {/* Changed image source and alt text */}
+                    <img src="CRISPR_figure.png" alt="CRISPR/Cas9 Protocol Figure | CRISPR/Cas9 Protokol Şeması"> 
+                    <p>
+                        <strong><span class="lang-en" lang="en">CRISPR/Cas9 Protocol:</span><span class="lang-tr" lang="tr">CRISPR/Cas9 Protokolü:</span></strong>
+                        <span class="lang-en" lang="en"> A PCR-based, cost-efficient, and fast screening strategy.</span><span class="lang-tr" lang="tr"> PZR tabanlı, uygun maliyetli ve hızlı bir tarama stratejisi.</span>
+                        {/* Changed link to PDF and removed onclick */}
+                        <br> 
+                        <a href="CRISPR_protocol.pdf" target="_blank"> 
+                            <span class="lang-en" lang="en">Download Protocol (PDF)</span>
+                            <span class="lang-tr" lang="tr">Protokolü İndir (PDF)</span>
+                        </a>
+                    </p>
                 </div>
             </div>
-        </section>
-
-        <section id="crispr-protocol" class="section" style="display: none;">
-            <h1>CRISPR/Cas9 Protocol</h1>
-            <p>This is a PCR-based, cost-efficient, and fast screening strategy for sgRNA inserts.</p>
-            
-            <h2>Objective</h2>
-            <p>To clone a designed sgRNA sequence into the pRB1017 expression vector and efficiently screen bacterial colonies for successful insertion using colony PCR.</p>
-            
-            <h2>Principle</h2>
-            <p>This protocol utilizes Golden Gate assembly with the Type IIS restriction enzyme BsaI, which cuts outside its recognition site, allowing directional cloning of annealed oligonucleotides (representing the sgRNA) into the vector in a single reaction. Screening relies on colony PCR using one of the original cloning oligonucleotides and a standard vector primer (M13 Forward) to specifically amplify products only when the insert is present.</p>
-            
-            <h2>Materials</h2>
-            <ul>
-                <li><strong>Plasmid:</strong> pRB1017 (Addgene #59936 or similar vector with U6 promoter, tracrRNA, and flanking BsaI sites for sgRNA insertion, Kan resistance)</li>
-                <li><strong>Oligonucleotides:</strong>
-                    <ul>
-                        <li>Custom Forward Oligo (e.g., OK403): 25-nt, including the 20-nt target sequence and a 4-nt overhang compatible with the BsaI-cut vector.</li>
-                        <li>Custom Reverse Oligo (e.g., OK404): 25-nt, complementary to the forward oligo (by 21-nt) and including a 4-nt overhang compatible with the BsaI-cut vector.</li>
-                        <li>M13 Forward primer (OK129): 5’ TGTAAAACGACGGCCAGT 3’ (or other appropriate forward vector primer flanking the insertion site).</li>
-                    </ul>
-                </li>
-                <li><strong>Enzymes:</strong>
-                    <ul>
-                        <li>BsaI restriction enzyme (e.g., Thermo Scientific)</li>
-                        <li>T4 DNA Ligase (e.g., Thermo Scientific)</li>
-                        <li>Taq Polymerase (e.g., Transbio Easy Taq or similar)</li>
-                    </ul>
-                </li>
-                <li><strong>Buffers:</strong>
-                    <ul>
-                        <li>T4 DNA Ligase Buffer (10X, e.g., Thermo Scientific)</li>
-                        <li>Taq Polymerase Buffer (10X, compatible with Taq polymerase used)</li>
-                    </ul>
-                </li>
-                <li><strong>Other Reagents:</strong>
-                    <ul>
-                        <li>dNTP mix (for PCR)</li>
-                        <li>ddH2O (molecular biology grade)</li>
-                        <li>DH5α chemically competent E. coli cells</li>
-                        <li>LB Broth</li>
-                        <li>LB Agar plates with Kanamycin (Kan+)</li>
-                    </ul>
-                </li>
-                <li><strong>Equipment:</strong>
-                    <ul>
-                        <li>Thermocycler</li>
-                        <li>Water bath or heat block (37°C, 42°C, 50°C, 65°C)</li>
-                        <li>Incubator (37°C)</li>
-                        <li>Shaking incubator (37°C)</li>
-                        <li>Centrifuge (for bacterial pellets)</li>
-                        <li>Gel electrophoresis system</li>
-                        <li>PCR tubes (0.2 ml)</li>
-                        <li>Standard lab consumables (pipettes, tips, etc.)</li>
-                    </ul>
-                </li>
-            </ul>
-            
-            <h2>Procedure</h2>
-            <h3>Part 1: Oligonucleotide Annealing</h3>
-            <ol>
-                <li>Prepare the annealing mix in a 0.2 ml PCR tube:
-                    <ul>
-                        <li>Forward Oligo (e.g., OK403, from 250 pmol/µl stock) - Amount not specified, typically 1-10 µl used depending on desired final concentration</li>
-                        <li>Reverse Oligo (e.g., OK404, from 250 pmol/µl stock) - Use equimolar amount to Forward Oligo</li>
-                        <li>T4 Ligase Buffer (10X): 2 µl</li>
-                        <li>ddH2O: 6 µl (Note: Adjust ddH2O volume if oligo volumes differ)</li>
-                    </ul>
-                </li>
-                <li>Place the tube in a thermocycler and run the following program:
-                    <ul>
-                        <li>95°C for 5 minutes.</li>
-                        <li>Ramp down to 25°C: Decrease temperature by 1°C every 45 seconds (takes approx. 52.5 minutes).</li>
-                        <li>Hold at 4°C. (Note: Slow cooling is crucial for proper annealing).</li>
-                    </ul>
-                </li>
-            </ol>
-            
-            <h3>Part 2: Golden Gate Assembly (One-Pot Digestion & Ligation)</h3>
-            <ol>
-                <li>Prepare the assembly reaction in a fresh 0.2 ml PCR tube (Total Volume = 20 µl):
-                    <ul>
-                        <li>pRB1017 plasmid DNA: 1 µg</li>
-                        <li>Annealed Oligos (from Part 1): 1 µg (The paper also mentions trying 5 µg)</li>
-                        <li>BsaI restriction enzyme: 0.5 µl</li>
-                        <li>T4 DNA Ligase: 0.5 µl</li>
-                        <li>T4 Ligase Buffer (10X): 2 µl</li>
-                        <li>ddH2O: to final volume of 20 µl</li>
-                    </ul>
-                </li>
-                <li>Mix gently by pipetting.</li>
-                <li>Incubate the reaction tube:
-                    <ul>
-                        <li>37°C for 1 hour (for BsaI digestion and T4 ligation).</li>
-                        <li>50°C for 5 minutes (partial heat inactivation/enzyme activity step - as per paper).</li>
-                        <li>65°C for 20 minutes (T4 Ligase heat inactivation).</li>
-                        <li>(Optional: Hold at 4°C or proceed immediately to transformation).</li>
-                    </ul>
-                </li>
-            </ol>
-            
-            <h3>Part 3: Bacterial Transformation</h3>
-            <ol>
-                <li>Thaw one aliquot (100 µl) of DH5α chemically competent cells on ice.</li>
-                <li>Add the entire 20 µl Golden Gate assembly reaction product directly to the competent cells.</li>
-                <li>Mix gently by flicking the tube (avoid pipetting).</li>
-                <li>Incubate on ice for ~15-30 minutes (standard practice, though not explicitly detailed in the paper's brief description).</li>
-                <li>Heat shock the cells at 42°C for 2 minutes in a water bath.</li>
-                <li>Immediately place the tube back on ice for 2-5 minutes.</li>
-                <li>Add 900 µl of LB broth (pre-warmed to room temp or 37°C) to the cells.</li>
-                <li>Incubate at 37°C for 30 minutes to 1 hour with vigorous shaking (230-250 rpm) for recovery and expression of antibiotic resistance.</li>
-                <li>Pellet the cells by centrifuging at 5000 rpm for 1 minute.</li>
-                <li>Carefully discard the supernatant, leaving approximately 100 µl in the tube.</li>
-                <li>Resuspend the bacterial pellet in the remaining ~100 µl of supernatant.</li>
-                <li>Spread the entire cell suspension onto an LB/Kan+ agar plate.</li>
-                <li>Incubate the plate overnight (12-16 hours) at 37°C.</li>
-            </ol>
-            
-            <h3>Part 4: Screening by Colony PCR</h3>
-            <ol>
-                <li>Prepare PCR master mix (scale up as needed for the number of colonies + controls). For one 25 µl reaction:
-                    <ul>
-                        <li>Taq Buffer (10X): 2.5 µl</li>
-                        <li>dNTP mix (e.g., 10 mM each): 0.5 µl</li>
-                        <li>M13 Forward Primer (OK129, e.g., 10 µM stock): 0.5 µl</li>
-                        <li>Specific Reverse Oligo used for cloning (e.g., OK404, 10 µM stock): 0.5 µl</li>
-                        <li>Taq Polymerase: 0.25 µl</li>
-                        <li>ddH2O: 19.75 µl</li>
-                    </ul>
-                </li>
-                <li>Label PCR tubes for 10-12 colonies and controls.</li>
-                <li>For each selected colony:
-                    <ul>
-                        <li>Pick a single, well-isolated colony using a sterile pipette tip or toothpick.</li>
-                        <li>Dip the tip/toothpick first into a labeled PCR tube containing 20 µl ddH2O (to create a dilute cell suspension). Swirl to dislodge cells.</li>
-                        <li>(Optional but recommended: Streak the same tip/toothpick onto a gridded master plate for later recovery of positive clones).</li>
-                    </ul>
-                </li>
-                <li>Set up Control Reactions:
-                    <ul>
-                        <li>Negative Control 1: Use ddH2O instead of bacterial suspension.</li>
-                        <li>Negative Control 2 (Empty Vector): Prepare a suspension from bacteria transformed with empty pRB1017.</li>
-                        <li>Negative Control 3 (Different Insert): Prepare a suspension from bacteria transformed with a known clone containing a different sgRNA (e.g., OK132).</li>
-                    </ul>
-                </li>
-                <li>Add 1-2 µl of the diluted bacterial suspension (or control template) to the corresponding PCR tubes containing the master mix prepared in Step 1. Total PCR volume = 25 µl.</li>
-                <li>Place the tubes in a thermocycler and run the following program:
-                    <ul>
-                        <li>Lid Temperature: 105°C</li>
-                        <li>Initial Denaturation: 95°C for 2 minutes (1 cycle) - This also lyses the bacteria</li>
-                        <li>Cycling (34 cycles):
-                            <ul>
-                                <li>Denaturation: 95°C for 30 seconds</li>
-                                <li>Annealing: 57°C for 30 seconds</li>
-                                <li>Extension: 72°C for 1 minute</li>
-                            </ul>
-                        </li>
-                        <li>Final Extension: 72°C for 10 minutes (1 cycle)</li>
-                        <li>Hold: 4°C</li>
-                    </ul>
-                </li>
-                <li>Analyze the PCR products by running 5-10 µl of each reaction on a 1% agarose gel alongside a DNA ladder (e.g., 100 bp ladder).</li>
-            </ol>
-            
-            <h3>Interpretation</h3>
-            <p>Positive Clones: A distinct band around 580 bp should be visible (based on pRB1017 and M13F/OK404 primers used in the paper - Note: this size may vary slightly depending on the exact vector and primer locations). Negative Controls/Incorrect Clones: No band, or bands of significantly different sizes, should appear around 580 bp.</p>
-            
-            <h3>Part 5: Follow-up</h3>
-            <ol>
-                <li>Select colonies that showed a positive band in the PCR screen.</li>
-                <li>Inoculate liquid LB + Kanamycin cultures using bacteria from the corresponding dilute suspension (or the master plate if made).</li>
-                <li>Grow the cultures overnight at 37°C with shaking.</li>
-                <li>Isolate plasmid DNA using a standard miniprep kit.</li>
-                <li>(Highly Recommended for Confirmation): Verify the sequence of the sgRNA insert by Sanger sequencing, typically using the M13 Forward primer or another suitable vector primer flanking the insert site.</li>
-            </ol>
         </section>
 
         <section id="movies" class="section" style="display: none;">
