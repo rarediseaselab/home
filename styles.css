@@ -112,7 +112,7 @@ body {
 .team-image {
     width: 150px;
     height: 150px;
-    object-fit: cover;
+    object-fit: contain; /* Ensures full image is visible */
     border-radius: 50%;
 }
 
@@ -127,10 +127,10 @@ body {
 }
 
 .overview-image {
-    width: 100%;
-    max-width: 400px;
-    height: 250px;
-    object-fit: cover;
+    width: 100%; /* Matches the width of the text below */
+    max-width: 860px; /* Matches container width minus padding (900px - 40px) */
+    height: auto; /* Maintains aspect ratio */
+     object-fit: contain; /* Ensures full image is visible */
     display: block;
     margin: 15px auto;
     border-radius: 4px;
