@@ -32,18 +32,6 @@
                 console.error("Section not found: " + sectionId);
             }
         }
-
-        function toggleReadMore(itemId) {
-            const hiddenText = document.getElementById(`hidden-${itemId}`);
-            const button = document.getElementById(`btn-${itemId}`);
-            if (hiddenText.style.display === "none" || hiddenText.style.display === "") {
-                hiddenText.style.display = "block";
-                button.textContent = "Read Less";
-            } else {
-                hiddenText.style.display = "none";
-                button.textContent = "Read More";
-            }
-        }
     </script>
 </head>
 <body onload="showSection('home')">
@@ -55,7 +43,7 @@
                 <a href="#research-overview" onclick="showSection('research-overview')">Research Overview</a>
                 <a href="#cilia-ciliopathies" onclick="showSection('cilia-ciliopathies')">Cilia and Ciliopathies</a>
                 <a href="#disease-modeling" onclick="showSection('disease-modeling')">Disease Modeling</a>
-                <a href="#cilia-cilia-joining" onclick="showSection('cilia-cilia-joining')">Cilia-Cilia Joining and Communication</a>
+                <a href="#cilia-cilia-joining" onclick="showSection('cilia-cilia-joining')">Cilia-Cilia Joining</a>
                 <a href="#bioinformatics" onclick="showSection('bioinformatics')">Bioinformatics</a>
             </div>
         </div>
@@ -116,37 +104,25 @@
                     <img src="cilia_res1.jpg" alt="Cilia and Ciliopathies" class="overview-image">
                     <h2>Cilia and Ciliopathies</h2>
                     <p class="research-text">We study ciliopathies such as Joubert syndrome, Bardet-Biedl syndrome, and cranioectodermal dysplasia to identify causative genes and understand their roles in disease pathogenesis.</p>
-                    <div id="hidden-cilia" class="hidden-text">
-                        <p>Our group has newly identified CILK1 as a causative gene of cranioectodermal dysplasia using genetic models, high-resolution microscopy, and biochemical assays.</p>
-                    </div>
-                    <button id="btn-cilia" class="read-more-btn" onclick="toggleReadMore('cilia')">Read More</button>
+                    <a href="#cilia-ciliopathies" onclick="showSection('cilia-ciliopathies')" class="read-more-btn">Read More</a>
                 </div>
                 <div class="research-overview-item">
                     <img src="research3.jpeg" alt="Disease Modeling" class="overview-image">
                     <h2>Disease Modeling</h2>
                     <p class="research-text">Using advanced genomic technologies and CRISPR/Cas9, we identify and characterize genetic variants associated with rare diseases, aiming to improve diagnosis and treatment.</p>
-                    <div id="hidden-disease" class="hidden-text">
-                        <p>Our lab uses <em>C. elegans</em> models to distinguish disease-causing variants and comprehend their mechanisms, contributing to precision medicine.</p>
-                    </div>
-                    <button id="btn-disease" class="read-more-btn" onclick="toggleReadMore('disease')">Read More</button>
+                    <a href="#disease-modeling" onclick="showSection('disease-modeling')" class="read-more-btn">Read More</a>
                 </div>
                 <div class="research-overview-item">
-                    <img src="research2.jpg" alt="Cilia-Cilia Joining and Communication" class="overview-image">
-                    <h2>Cilia-Cilia Joining and Communication</h2>
+                    <img src="research2.jpg" alt="Cilia-Cilia Joining" class="overview-image">
+                    <h2>Cilia-Cilia Joining</h2>
                     <p class="research-text">We investigate the molecular machinery involved in cilia-cilia elongation and inter-ciliary communication, critical for ciliary function and related diseases.</p>
-                    <div id="hidden-joining" class="hidden-text">
-                        <p>Our studies, such as Turan et al. (2025) in iScience, explore key proteins and signaling cascades involved in these processes.</p>
-                    </div>
-                    <button id="btn-joining" class="read-more-btn" onclick="toggleReadMore('joining')">Read More</button>
+                    <a href="#cilia-cilia-joining" onclick="showSection('cilia-cilia-joining')" class="read-more-btn">Read More</a>
                 </div>
                 <div class="research-overview-item">
                     <img src="convart.jpeg" alt="Bioinformatics" class="overview-image">
                     <h2>Bioinformatics</h2>
                     <p class="research-text">We develop and maintain bioinformatics tools like ConVarT, CilioGenics, and CiliaMiner to facilitate research in ciliopathies and rare diseases.</p>
-                    <div id="hidden-bioinformatics" class="hidden-text">
-                        <p>These tools aid in matching genetic variants, predicting ciliary genes, and exploring ciliopathy-related data.</p>
-                    </div>
-                    <button id="btn-bioinformatics" class="read-more-btn" onclick="toggleReadMore('bioinformatics')">Read More</button>
+                    <a href="#bioinformatics" onclick="showSection('bioinformatics')" class="read-more-btn">Read More</a>
                 </div>
             </div>
         </section>
@@ -165,8 +141,8 @@
         </section>
 
         <section id="cilia-cilia-joining" class="section" style="display: none;">
-            <h1>Cilia-Cilia Joining and Communication</h1>
-            <img src="research2.jpg" alt="Cilia-Cilia Communication Image" class="overview-image">
+            <h1>Cilia-Cilia Joining</h1>
+            <img src="research2.jpg" alt="Cilia-Cilia Joining Image" class="overview-image">
             <p>Our study aims to make sense of the molecular machinery in cilia-cilia elongation. We isolate the key proteins and signaling cascades involved. We are further conducting FIB-SEM analysis in a bid to deliver quantitative ultrastructural detail.</p>
             <p>We are further contributing to understanding cilia-cilia communication, as demonstrated by Turan et al. (2025) in iScience. We shall expand on such findings by studying the molecular machinery regulating cilia-cilia interaction, including elongation and communication, and the implications for uncommon diseases.</p>
         </section>
@@ -198,8 +174,8 @@
             <h1>Current Members</h1>
             <div class="research-grid">
                 <div class="research-item">
-                    <img src="Oktay.png" alt="Oktay I. Kaplan" class="fit-image">
-                    <p><strong>Oktay I. Kaplan, Dr.</strong><br>Principal Investigator</p>
+                    <img src="Oktay.png" alt="Oktay I. Kaplan" class="team-image">
+                    <p><strong class="team-name">Oktay I. Kaplan, Dr.</strong><br>Principal Investigator</p>
                     <ul>
                         <li>GitHub (Lab): <a href="https://github.com/thekaplanlab" target="_blank">thekaplanlab</a></li>
                         <li>GitHub (Personal): <a href="https://github.com/oktaykaplan" target="_blank">oktaykaplan</a></li>
@@ -209,28 +185,28 @@
                     </ul>
                 </div>
                 <div class="research-item">
-                    <img src="sebihacevikaplan.png" alt="Sebiha Cevik" class="fit-image">
-                    <p><strong>Sebiha Cevik, Dr.</strong><br>Principal Investigator</p>
+                    <img src="sebihacevikaplan.png" alt="Sebiha Cevik" class="team-image">
+                    <p><strong class="team-name">Sebiha Cevik, Dr.</strong><br>Principal Investigator</p>
                 </div>
                 <div class="research-item">
-                    <img src="elegans.png" alt="Ferhan Yenisert" class="fit-image">
-                    <p><strong>Ferhan Yenisert</strong><br>PhD Student</p>
+                    <img src="elegans.png" alt="Ferhan Yenisert" class="team-image">
+                    <p><strong class="team-name">Ferhan Yenisert</strong><br>PhD Student</p>
                 </div>
                 <div class="research-item">
-                    <img src="elegans.png" alt="Damla Puçak" class="fit-image">
-                    <p><strong>Damla Puçak</strong><br>Graduate Student</p>
+                    <img src="elegans.png" alt="Damla Puçak" class="team-image">
+                    <p><strong class="team-name">Damla Puçak</strong><br>Graduate Student</p>
                 </div>
                 <div class="research-item">
-                    <img src="elegans.png" alt="Sinem Güzel" class="fit-image">
-                    <p><strong>Sinem Güzel</strong><br>Graduate Student</p>
+                    <img src="elegans.png" alt="Sinem Güzel" class="team-image">
+                    <p><strong class="team-name">Sinem Güzel</strong><br>Graduate Student</p>
                 </div>
                 <div class="research-item">
-                    <img src="elegans.png" alt="Fatma Güzel" class="fit-image">
-                    <p><strong>Fatma Güzel</strong><br>Graduate Student</p>
+                    <img src="elegans.png" alt="Fatma Güzel" class="team-image">
+                    <p><strong class="team-name">Fatma Güzel</strong><br>Graduate Student</p>
                 </div>
                 <div class="research-item">
-                    <img src="elegans.png" alt="Zanyar Demir" class="fit-image">
-                    <p><strong>Zanyar Demir</strong><br>Graduate Student</p>
+                    <img src="elegans.png" alt="Zanyar Demir" class="team-image">
+                    <p><strong class="team-name">Zanyar Demir</strong><br>Graduate Student</p>
                 </div>
             </div>
         </section>
@@ -242,39 +218,39 @@
                     <h3>Graduate Students in the Lab</h3>
                 </div>
                 <div class="research-item">
-                    <img src="elegans.png" alt="Merve Gül Turan" class="fit-image">
-                    <p><strong>Merve Gül Turan (September 2019 - June 2023)</strong><br>Position in the lab: Graduate Student<br>Current Position: PhD student at Max Planck Institute for Biology Tübingen</p>
+                    <img src="elegans.png" alt="Merve Gül Turan" class="team-image">
+                    <p><strong class="team-name">Merve Gül Turan (September 2019 - June 2023)</strong><br>Position in the lab: Graduate Student<br>Current Position: PhD student at Max Planck Institute for Biology Tübingen</p>
                 </div>
                 <div class="research-item">
-                    <img src="elegans.png" alt="Mustafa Samet Pir" class="fit-image">
-                    <p><strong>Mustafa Samet Pir</strong><br>Position in the lab: Graduate Student<br>Current Position: PhD student at Acibadem University</p>
+                    <img src="elegans.png" alt="Mustafa Samet Pir" class="team-image">
+                    <p><strong class="team-name">Mustafa Samet Pir</strong><br>Position in the lab: Graduate Student<br>Current Position: PhD student at Acibadem University</p>
                 </div>
                 <div class="research-item">
-                    <img src="elegans.png" alt="Fatma Nihal Yetgin" class="fit-image">
-                    <p><strong>Fatma Nihal Yetgin</strong><br>Position in the lab: Graduate Student</p>
+                    <img src="elegans.png" alt="Fatma Nihal Yetgin" class="team-image">
+                    <p><strong class="team-name">Fatma Nihal Yetgin</strong><br>Position in the lab: Graduate Student</p>
                 </div>
                 <div class="research-item">
-                    <img src="elegans.png" alt="Ziya Zorluer" class="fit-image">
-                    <p><strong>Ziya Zorluer</strong><br>Position in the lab: Graduate Student<br>Current Position: PhD student, AGU, Türkiye</p>
+                    <img src="elegans.png" alt="Ziya Zorluer" class="team-image">
+                    <p><strong class="team-name">Ziya Zorluer</strong><br>Position in the lab: Graduate Student<br>Current Position: PhD student, AGU, Türkiye</p>
                 </div>
                 <div class="research-item">
                     <h3>Undergraduate Students in the Lab</h3>
                 </div>
                 <div class="research-item">
-                    <img src="elegans.png" alt="Ahsen Konaç" class="fit-image">
-                    <p><strong>Ahsen Konaç (2018-2021)</strong><br>Position in the lab: Undergraduate Student<br>Current Position: PhD student, Göttingen, Germany</p>
+                    <img src="elegans.png" alt="Ahsen Konaç" class="team-image">
+                    <p><strong class="team-name">Ahsen Konaç (2018-2021)</strong><br>Position in the lab: Undergraduate Student<br>Current Position: PhD student, Göttingen, Germany</p>
                 </div>
                 <div class="research-item">
-                    <img src="onur.jpg" alt="Onur Çakıcı" class="fit-image">
-                    <p><strong>Onur Çakıcı (2018-2023)</strong><br>Position in the lab: Undergraduate Student<br>Current Position: PhD student, Crete, Greece</p>
+                    <img src="onur.jpg" alt="Onur Çakıcı" class="team-image">
+                    <p><strong class="team-name">Onur Çakıcı (2018-2023)</strong><br>Position in the lab: Undergraduate Student<br>Current Position: PhD student, Crete, Greece</p>
                 </div>
                 <div class="research-item">
-                    <img src="elegans.png" alt="Hanife Kantarcı" class="fit-image">
-                    <p><strong>Hanife Kantarcı</strong><br>Position in the lab: Undergraduate Student<br>Current Position: Graduate Student, Sabancı University, Türkiye</p>
+                    <img src="elegans.png" alt="Hanife Kantarcı" class="team-image">
+                    <p><strong class="team-name">Hanife Kantarcı</strong><br>Position in the lab: Undergraduate Student<br>Current Position: Graduate Student, Sabancı University, Türkiye</p>
                 </div>
                 <div class="research-item">
-                    <img src="elegans.png" alt="Sadiye Dilay Temtek" class="fit-image">
-                    <p><strong>Sadiye Dilay Temtek</strong><br>Position in the lab: Undergraduate Student<br>Current Position: TÜBİTAK, Ankara, Türkiye</p>
+                    <img src="elegans.png" alt="Sadiye Dilay Temtek" class="team-image">
+                    <p><strong class="team-name">Sadiye Dilay Temtek</strong><br>Position in the lab: Undergraduate Student<br>Current Position: TÜBİTAK, Ankara, Türkiye</p>
                 </div>
             </div>
         </section>
@@ -430,7 +406,7 @@
                     <p><strong><span class="lang-en" lang="en">CRISPR/Cas9 Protocol:</span></strong> <span class="lang-en" lang="en">A PCR-based, cost-efficient, and fast screening strategy.</span><br><a href="CRISPR_protocol.pdf" target="_blank"><span class="lang-en" lang="en">Download Protocol (PDF)</span></a></p>
                 </div>
                 <div class="research-item">
-                    <img src="CRISPR_figure.png" alt="CRISPR/Cas9 Protocol Schematic" class="large-image">
+                    <img src="CRISPR_figure.png" alt="CRISPR/Cas9 Protocol Schematic" class="crispr-image">
                 </div>
             </div>
         </section>
