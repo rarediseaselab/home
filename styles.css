@@ -88,7 +88,7 @@ body {
 
 /* Container */
 .container {
-    max-width: 900px;
+    max-width: 900px; /* Adjusted max-width slightly for better grid spacing */
     margin: 80px auto 20px;
     padding: 20px;
     background: white;
@@ -98,29 +98,31 @@ body {
 
 /* Sections */
 .section {
-    display: none;
+    display: none; /* Hide sections by default */
 }
 
-.section:first-of-type {
-    display: block;
-}
+/* Ensure the initially loaded section (home or whichever you set in onload) is displayed */
+/* body[onload*="showSection('home')"] #home, */
+/* You might need to adjust JS slightly or rely on the initial inline style */
 
 /* Image Styling */
 .small-image {
     width: 100%;
-    max-width: calc(100% - 40px);
+    max-width: 300px; /* Reduced max-width for smaller images in individual sections */
     display: block;
-    margin: 10px auto;
+    margin: 15px auto; /* Added more margin */
+    border-radius: 4px; /* Optional: round corners */
 }
 
 .large-image {
     width: 100%;
     max-width: 700px;
     display: block;
-    margin: 10px auto;
+    margin: 15px auto; /* Added more margin */
+    border-radius: 4px; /* Optional: round corners */
 }
 
-/* Research Updates */
+/* Research Updates (Home Page) */
 .research-updates {
     margin-top: 20px;
 }
@@ -131,8 +133,10 @@ body {
     padding: 10px;
     border-radius: 5px;
     text-align: center;
+    margin-bottom: 15px; /* Added margin */
 }
 
+/* Generic Research Grid (used in Home, Publications, News, Resources, Team etc.) */
 .research-grid {
     display: flex;
     flex-direction: column;
@@ -142,28 +146,53 @@ body {
 
 .research-item {
     display: flex;
-    align-items: center;
+    flex-direction: row; /* Keep items side-by-side */
+    align-items: flex-start; /* Align items to the top */
     gap: 15px;
     background: #e6f2ff;
-    padding: 10px;
+    padding: 15px; /* Slightly more padding */
     border-radius: 5px;
+    border-left: 4px solid #004080; /* Add a left border */
 }
 
 .research-item img {
-    width: 150px;
-    height: auto;
-    border-radius: 50%;
+    width: 80px; /* Smaller icon/image */
+    height: 80px; /* Maintain aspect ratio */
+    border-radius: 50%; /* Circular images for icons */
+    object-fit: cover; /* Ensure image covers the area */
+    flex-shrink: 0; /* Prevent image from shrinking */
 }
 
-.research-item h3 {
+.research-item p, .research-item ul {
+    flex-grow: 1; /* Allow text content to take remaining space */
+    margin: 0; /* Reset margins */
+}
+.research-item ul {
+     list-style: none; /* Remove default list styles */
+     padding-left: 0; /* Remove default padding */
+     margin-top: 5px; /* Add space above list */
+}
+.research-item ul li {
+     margin-bottom: 3px; /* Space between list items */
+     font-size: 0.9em; /* Slightly smaller font for links */
+}
+
+
+.research-item h3 { /* Style for subheadings within grid */
     width: 100%;
     text-align: left;
     background: none;
     padding: 0;
-    margin: 10px 0;
+    margin-bottom: 10px; /* Space below subheading */
+    color: #004080;
+    font-size: 1.1em;
+    border-bottom: 1px solid #ccc; /* Add a separator line */
+    padding-bottom: 5px; /* Space above the line */
 }
 
-/* Research Interests */
+
+/* Research Interests/Overview Section (Original Style - potentially deprecated by new overview) */
+/* Keeping for potential use elsewhere or if overview style changes */
 .research-grid-aligned {
     display: flex;
     flex-wrap: wrap;
@@ -171,9 +200,9 @@ body {
     margin-top: 20px;
 }
 
-.research-grid-aligned .research-section {
+.research-grid-aligned .research-section { /* Renamed to avoid conflict? Or keep if used */
     flex: 1;
-    min-width: 300px;
+    min-width: calc(50% - 10px); /* Try to make them take half width minus gap */
     background: #f9f9f9;
     padding: 15px;
     border-left: 5px solid #004080;
@@ -181,17 +210,21 @@ body {
     color: #333;
 }
 
-.research-section {
-    background: #f9f9f9;
+.research-section { /* General style for individual research pages */
+    background: #ffffff; /* Use white background for content */
     padding: 15px;
-    border-left: 5px solid #004080;
+    /* border-left: 5px solid #004080; */ /* Removed border-left for cleaner look */
     border-radius: 5px;
     color: #333;
+    margin-top: 15px; /* Add margin to separate from title */
 }
 
-.research-interests h2 {
-    color: black;
+.research-section h1 { /* Style title within section */
+    margin-bottom: 15px;
+    border-bottom: 2px solid #004080;
+    padding-bottom: 5px;
 }
+
 
 /* Video Section */
 .video-grid {
@@ -214,26 +247,30 @@ body {
     height: auto;
     display: block;
     margin: 0 auto 10px;
+    border: 1px solid #ccc; /* Add border to GIFs */
+    border-radius: 4px;
 }
 
 /* Link Styling */
 a {
     color: #004080;
     text-decoration: none;
+    font-weight: bold; /* Make links stand out more */
 }
 
 a:hover {
     text-decoration: underline;
+    color: #002b5e; /* Darker on hover */
 }
 
 /* Footer */
 footer {
     text-align: center;
     margin-top: 30px;
-    padding: 10px;
+    padding: 20px; /* More padding */
     background-color: #004080;
     color: white;
-    border-radius: 5px;
+    /* Removed border-radius */
 }
 
 .social-links {
@@ -251,4 +288,136 @@ footer {
 
 .social-icon:hover {
     transform: scale(1.1);
+}
+
+/* ===== NEW STYLES FOR RESEARCH OVERVIEW ===== */
+
+.research-overview-grid {
+    display: grid;
+    /* Create 2 equal columns */
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 25px; /* Space between grid items */
+    margin-top: 20px;
+}
+
+.research-overview-item {
+    background-color: #ffffff; /* White background for items */
+    border: 1px solid #ddd; /* Subtle border */
+    padding: 20px;
+    text-align: center; /* Center align content */
+    display: flex; /* Use flexbox for internal layout */
+    flex-direction: column; /* Stack elements vertically */
+    justify-content: space-between; /* Push button to bottom */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Subtle shadow */
+    border-radius: 5px; /* Rounded corners */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Add hover effect */
+}
+
+.research-overview-item:hover {
+    transform: translateY(-5px); /* Lift item slightly on hover */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15); /* Increase shadow on hover */
+}
+
+
+.research-overview-item h2 {
+    margin-top: 15px;
+    margin-bottom: 10px;
+    color: #004080; /* Use theme color */
+    font-size: 1.3em;
+}
+
+.overview-image {
+    width: 100%; /* Make image responsive */
+    height: 220px; /* Fixed height for uniformity */
+    object-fit: cover; /* Cover the area, cropping if needed */
+    border-radius: 4px; /* Slightly rounded corners for image */
+    margin-bottom: 15px; /* Space below image */
+}
+
+.research-text {
+    text-align: left; /* Left align text */
+    color: #555; /* Slightly lighter text color */
+    font-size: 0.95em;
+    line-height: 1.5; /* Improve readability */
+    flex-grow: 1; /* Allow text area to grow */
+    margin-bottom: 15px; /* Space before button */
+}
+
+.hidden-text {
+    display: none; /* Hide the extra text initially */
+    margin-top: 10px; /* Add space when revealed */
+}
+
+.read-more-btn {
+    background-color: #004080; /* Theme color */
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    align-self: center; /* Center button horizontally */
+    margin-top: auto; /* Push to bottom if flex space allows */
+}
+
+.read-more-btn:hover {
+    background-color: #002b5e; /* Darker shade on hover */
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+    .container {
+        max-width: 95%; /* Allow more width on smaller screens */
+        padding: 15px;
+    }
+    .navbar {
+        justify-content: space-around; /* Space out nav items more */
+        gap: 5px; /* Reduce gap */
+        padding: 10px 5px; /* Adjust padding */
+    }
+    .navbar a, .dropbtn {
+        padding: 8px 10px; /* Smaller padding */
+        font-size: 0.9em; /* Slightly smaller font */
+    }
+    .research-overview-grid {
+        grid-template-columns: 1fr; /* Stack items on smaller screens */
+        gap: 20px;
+    }
+    .research-item {
+        flex-direction: column; /* Stack image and text vertically */
+        align-items: center; /* Center items */
+        text-align: center; /* Center text */
+    }
+    .research-item img {
+        width: 100px; /* Adjust size */
+        height: 100px;
+        margin-bottom: 10px; /* Add space below image */
+    }
+    .research-item p, .research-item ul {
+        text-align: left; /* Keep text left-aligned */
+    }
+     .small-image {
+        max-width: 90%; /* Allow smaller images to be larger */
+    }
+
+}
+
+@media (max-width: 480px) {
+    .navbar {
+        flex-wrap: wrap; /* Allow nav items to wrap */
+        justify-content: center;
+    }
+     .navbar a, .dropbtn {
+        font-size: 0.85em; /* Even smaller font */
+    }
+     .container {
+        margin-top: 100px; /* More space needed if navbar wraps */
+    }
+     .overview-image {
+        height: 180px; /* Reduce image height */
+     }
 }
