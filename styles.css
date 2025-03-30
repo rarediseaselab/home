@@ -103,16 +103,24 @@ body {
 
 /* Image Styling */
 .fit-image {
-    width: 80px;
-    height: 80px;
+    width: 100px; /* Increased from 80px to fit better */
+    height: 100px;
     object-fit: contain;
+    border-radius: 50%;
+}
+
+.team-image {
+    width: 150px; /* Larger size for team images */
+    height: 150px;
+    object-fit: cover;
     border-radius: 50%;
 }
 
 .overview-image {
     width: 100%;
-    max-width: 500px;
-    height: auto;
+    max-width: 400px; /* Adjusted to match research3.jpeg's reasonable size */
+    height: 250px; /* Fixed height to match research3.jpeg */
+    object-fit: cover; /* Ensures uniform appearance */
     display: block;
     margin: 15px auto;
     border-radius: 4px;
@@ -121,6 +129,15 @@ body {
 .large-image {
     width: 100%;
     max-width: 700px;
+    display: block;
+    margin: 15px auto;
+    border-radius: 4px;
+}
+
+.crispr-image {
+    width: 100%;
+    max-width: 800px; /* Larger size for CRISPR_figure.png */
+    height: auto;
     display: block;
     margin: 15px auto;
     border-radius: 4px;
@@ -160,10 +177,6 @@ body {
 }
 
 .research-item img {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    object-fit: cover;
     flex-shrink: 0;
 }
 
@@ -193,6 +206,12 @@ body {
     font-size: 1.1em;
     border-bottom: 1px solid #ccc;
     padding-bottom: 5px;
+}
+
+/* Team Name Styling */
+.team-name {
+    font-size: 1.5em; /* Larger font size for team names */
+    font-weight: bold;
 }
 
 /* Research Overview Grid */
@@ -235,11 +254,6 @@ body {
     line-height: 1.5;
     flex-grow: 1;
     margin-bottom: 15px;
-}
-
-.hidden-text {
-    display: none;
-    margin-top: 10px;
 }
 
 .read-more-btn {
@@ -351,11 +365,20 @@ footer {
         text-align: center;
     }
     .research-item img {
-        width: 100px;
-        height: 100px;
         margin-bottom: 10px;
     }
     .overview-image {
+        max-width: 90%;
+        height: 200px; /* Adjusted for smaller screens */
+    }
+    .team-image {
+        width: 120px; /* Slightly smaller for mobile */
+        height: 120px;
+    }
+    .team-name {
+        font-size: 1.3em;
+    }
+    .crispr-image {
         max-width: 90%;
     }
 }
@@ -372,6 +395,13 @@ footer {
         margin-top: 100px;
     }
     .overview-image {
-        height: 180px;
+        height: 150px;
+    }
+    .team-image {
+        width: 100px;
+        height: 100px;
+    }
+    .team-name {
+        font-size: 1.2em;
     }
 }
