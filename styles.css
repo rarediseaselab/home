@@ -425,3 +425,38 @@ footer {
         width: 100px;
     }
 }
+
+/* Publications Section */
+.filter-menu {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.filter-menu label {
+    margin-right: 10px;
+    font-weight: bold;
+    color: #004080;
+}
+
+.filter-menu select {
+    padding: 5px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #004080;
+    background-color: #fff;
+    color: #333;
+}
+
+.filter-menu select:focus {
+    outline: none;
+    border-color: #002b5e;
+}
+
+.research-item p {
+    line-height: 1.5;
+    margin: 0;
+}
+
+.research-item strong {
+    color: #004080;
+}
