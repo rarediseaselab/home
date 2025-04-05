@@ -299,7 +299,7 @@ body {
     margin-bottom: 20px;
 }
 
-.gallery-header blockquote {
+.gallery-intro {
     font-style: italic;
     font-size: 1.2em;
     color: #555;
@@ -308,12 +308,34 @@ body {
     padding: 0 20px;
 }
 
+.gallery-content {
+    position: relative;
+    z-index: 1;
+}
+
+.gallery-subsection {
+    margin-bottom: 40px;
+}
+
+.gallery-subsection h2 {
+    font-size: 1.8em;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 5px;
+}
+
+.gallery-text-only {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px var(--shadow);
+}
+
 .gallery-grid {
     display: grid;
     grid-template-columns: 1fr;
     gap: 30px;
-    position: relative;
-    z-index: 1;
 }
 
 .gallery-item {
@@ -337,7 +359,7 @@ body {
     width: 100%;
     max-width: 300px;
     height: auto;
-    object-fit: cover;
+    object-fit: contain; /* Ensures images and GIFs are fully visible */
     border-radius: 4px;
     border: 1px solid #ddd;
 }
@@ -355,6 +377,64 @@ body {
 .gallery-text p {
     font-size: 1em;
     color: #444;
+}
+
+/* ==========================================================================
+   Dark Mode Styles (Updated for Gallery)
+   ========================================================================== */
+body.dark-mode .gallery-section::before {
+    background: rgba(0, 0, 0, 0.75); /* Dark overlay for readability */
+}
+
+body.dark-mode .gallery-header h1 {
+    color: #66b3ff;
+}
+
+body.dark-mode .gallery-intro {
+    color: #ccc;
+}
+
+body.dark-mode .gallery-subsection h2 {
+    color: #66b3ff;
+    border-bottom-color: #66b3ff;
+}
+
+body.dark-mode .gallery-text-only {
+    background: rgba(50, 50, 50, 0.9);
+}
+
+body.dark-mode .gallery-item {
+    background: rgba(50, 50, 50, 0.9);
+}
+
+body.dark-mode .gallery-text h3 {
+    color: #66b3ff;
+}
+
+body.dark-mode .gallery-text p {
+    color: #ddd;
+}
+
+/* ==========================================================================
+   Responsive Adjustments (Updated for Gallery)
+   ========================================================================== */
+@media (max-width: 768px) {
+    .gallery-item {
+        flex-direction: column;
+        text-align: center;
+    }
+    .gallery-media {
+        max-width: 100%;
+    }
+    .gallery-header h1 {
+        font-size: 2em;
+    }
+    .gallery-intro {
+        font-size: 1em;
+    }
+    .gallery-subsection h2 {
+        font-size: 1.5em;
+    }
 }
 
 /* ==========================================================================
