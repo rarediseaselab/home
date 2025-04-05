@@ -22,9 +22,13 @@
 </head>
 <body onload="showSection(window.location.hash.slice(1) || 'home')">
     <nav class="navbar">
+        <a href="#home" class="logo-link"><img src="elegans2.png" alt="Kaplan's Lab Logo" class="logo"></a>
         <button class="hamburger" aria-label="Toggle navigation">☰</button>
         <div class="nav-links">
             <a href="#home" onclick="showSection('home')">Home</a>
+            </div>
+            <button class="theme-toggle" aria-label="Toggle dark mode">🌙</button>
+            </nav>
             <div class="dropdown">
                 <span class="dropbtn" tabindex="0" aria-haspopup="true">Research</span>
                 <div class="dropdown-content">
