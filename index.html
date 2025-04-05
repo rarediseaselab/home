@@ -12,6 +12,9 @@
     <title>Kaplan's Lab</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" type="image/png" href="elegans2.png">
+    <link rel="manifest" href="manifest.json">
+    <!-- Lightbox for gallery -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" rel="stylesheet">
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-EKT3SLJ516"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -20,152 +23,143 @@
         gtag('config', 'G-EKT3SLJ516');
     </script>
 </head>
-<body onload="showSection(window.location.hash.slice(1) || 'home')">
+<body onload="initPage()">
     <nav class="navbar">
+        <img src="lab-logo.png" alt="Kaplan's Lab Logo" class="navbar-logo">
         <button class="hamburger" aria-label="Toggle navigation">☰</button>
         <div class="nav-links">
             <a href="#home" onclick="showSection('home')">Home</a>
             <div class="dropdown">
-                <span class="dropbtn" tabindex="0" aria-haspopup="true">Research</span>
+                <span class="dropbtn" tabindex="0" aria-haspopup="true" data-lang-en="Research" data-lang-tr="Araştırma">Research</span>
                 <div class="dropdown-content">
-                    <a href="#research-overview" onclick="showSection('research-overview')">Research Overview</a>
-                    <a href="#cilia-ciliopathies" onclick="showSection('cilia-ciliopathies')">Cilia and Ciliopathies</a>
-                    <a href="#disease-modeling" onclick="showSection('disease-modeling')">Disease Modeling</a>
-                    <a href="#cilia-cilia-joining" onclick="showSection('cilia-cilia-joining')">Cilia-Cilia Joining</a>
-                    <a href="#bioinformatics" onclick="showSection('bioinformatics')">Bioinformatics</a>
+                    <a href="#research-overview" onclick="showSection('research-overview')" data-lang-en="Research Overview" data-lang-tr="Araştırma Genel Bakış">Research Overview</a>
+                    <a href="#cilia-ciliopathies" onclick="showSection('cilia-ciliopathies')" data-lang-en="Cilia and Ciliopathies" data-lang-tr="Sil ve Siliopatiler">Cilia and Ciliopathies</a>
+                    <a href="#disease-modeling" onclick="showSection('disease-modeling')" data-lang-en="Disease Modeling" data-lang-tr="Hastalık Modelleme">Disease Modeling</a>
+                    <a href="#cilia-cilia-joining" onclick="showSection('cilia-cilia-joining')" data-lang-en="Cilia-Cilia Joining" data-lang-tr="Sil-Sil Birleşimi">Cilia-Cilia Joining</a>
+                    <a href="#bioinformatics" onclick="showSection('bioinformatics')" data-lang-en="Bioinformatics" data-lang-tr="Biyoinformatik">Bioinformatics</a>
                 </div>
             </div>
             <div class="dropdown">
-                <span class="dropbtn" tabindex="0" aria-haspopup="true">Team</span>
+                <span class="dropbtn" tabindex="0" aria-haspopup="true" data-lang-en="Team" data-lang-tr="Ekip">Team</span>
                 <div class="dropdown-content">
-                    <a href="#current-members" onclick="showSection('current-members')">Current Members</a>
-                    <a href="#former-members" onclick="showSection('former-members')">Former Members</a>
-                    <a href="#group-photos" onclick="showSection('group-photos')">Group Photos</a>
-                    <a href="#open-positions" onclick="showSection('open-positions')">Open Positions</a>
+                    <a href="#current-members" onclick="showSection('current-members')" data-lang-en="Current Members" data-lang-tr="Mevcut Üyeler">Current Members</a>
+                    <a href="#former-members" onclick="showSection('former-members')" data-lang-en="Former Members" data-lang-tr="Eski Üyeler">Former Members</a>
+                    <a href="#group-photos" onclick="showSection('group-photos')" data-lang-en="Group Photos" data-lang-tr="Grup Fotoğrafları">Group Photos</a>
+                    <a href="#open-positions" onclick="showSection('open-positions')" data-lang-en="Open Positions" data-lang-tr="Açık Pozisyonlar">Open Positions</a>
                 </div>
             </div>
-            <a href="#publications" onclick="showSection('publications')">Publications</a>
-            <a href="#news" onclick="showSection('news')">News</a>
-            <a href="#resources" onclick="showSection('resources')">Resources</a>
+            <a href="#publications" onclick="showSection('publications')" data-lang-en="Publications" data-lang-tr="Yayınlar">Publications</a>
+            <a href="#news" onclick="showSection('news')" data-lang-en="News" data-lang-tr="Haberler">News</a>
+            <a href="#resources" onclick="showSection('resources')" data-lang-en="Resources" data-lang-tr="Kaynaklar">Resources</a>
             <div class="dropdown">
-                <span class="dropbtn" tabindex="0" aria-haspopup="true">Gallery</span>
+                <span class="dropbtn" tabindex="0" aria-haspopup="true" data-lang-en="Gallery" data-lang-tr="Galeri">Gallery</span>
                 <div class="dropdown-content">
-                    <a href="#movies" onclick="showSection('movies')">Movies</a>
-                    <a href="#images" onclick="showSection('images')">Images</a>
+                    <a href="#movies" onclick="showSection('movies')" data-lang-en="Movies" data-lang-tr="Filmler">Movies</a>
+                    <a href="#images" onclick="showSection('images')" data-lang-en="Images" data-lang-tr="Görüntüler">Images</a>
                 </div>
             </div>
         </div>
-        <button class="theme-toggle" aria-label="Toggle dark mode">🌙</button>
+        <div class="nav-controls">
+            <button id="lang-toggle" aria-label="Toggle language">🇬🇧 / 🇹🇷</button>
+            <button class="theme-toggle" aria-label="Toggle dark mode">🌙</button>
+        </div>
     </nav>
 
     <div class="container">
+        <input type="text" id="search-bar" placeholder="Search content..." class="search-bar" data-lang-en="Search content..." data-lang-tr="İçeriği ara...">
         <section id="home" class="section">
-            <h1>Welcome to Kaplan's Lab</h1>
+            <h1 data-lang-en="Welcome to Kaplan's Lab" data-lang-tr="Kaplan'ın Laboratuvarına Hoş Geldiniz">Welcome to Kaplan's Lab</h1>
             <img src="figure3.png" alt="Illustration of cilia structure" class="figure-image" loading="lazy">
-            <p>Our lab is dedicated to uncovering the genetic and molecular mechanisms driving rare diseases, with a particular focus on ciliopathies. By integrating comparative genomics, functional assays, and cutting-edge gene editing technologies, we aim to bridge the gap between genotype and phenotype, advancing our understanding of disease mechanisms and identifying potential therapeutic targets.</p>
+            <p data-lang-en="Our lab is dedicated to uncovering the genetic and molecular mechanisms driving rare diseases, with a particular focus on ciliopathies. By integrating comparative genomics, functional assays, and cutting-edge gene editing technologies, we aim to bridge the gap between genotype and phenotype, advancing our understanding of disease mechanisms and identifying potential therapeutic targets." data-lang-tr="Laboratuvarımız, nadir hastalıkların genetik ve moleküler mekanizmalarını ortaya çıkarmaya adanmıştır, özellikle siliopatilere odaklanarak. Karşılaştırmalı genomik, fonksiyonel testler ve son teknoloji gen düzenleme teknolojilerini birleştirerek, genotip ile fenotip arasındaki boşluğu kapatmayı, hastalık mekanizmalarına dair anlayışımızı ilerletmeyi ve potansiyel terapötik hedefleri belirlemeyi amaçlıyoruz.">Our lab is dedicated to uncovering the genetic and molecular mechanisms driving rare diseases, with a particular focus on ciliopathies. By integrating comparative genomics, functional assays, and cutting-edge gene editing technologies, we aim to bridge the gap between genotype and phenotype, advancing our understanding of disease mechanisms and identifying potential therapeutic targets.</p>
             <div class="research-updates">
-                <h2>Research Updates</h2>
-                <div class="research-grid">
-                    <article class="research-item">
-                        <img src="elegans.png" alt="C. elegans research icon" class="fit-image" loading="lazy">
-                        <p>We recently identified a link between CILK1/DYF-5 and cranioectodermal dysplasia by integrating patient-derived cells and <em>C. elegans</em> models. Our study, titled <strong>"A homozygous frameshift variant in the CILK1 gene causes cranioectodermal dysplasia"</strong>, has been submitted for publication.</p>
-                    </article>
-                    <article class="research-item">
-                        <img src="elegans.png" alt="C. elegans research icon" class="fit-image" loading="lazy">
-                        <p>Turan MG, Kantarci H, Cevik S, Kaplan OI. <strong>ARL13B regulates juxtaposed cilia-cilia elongation in BBSome dependent manner in Caenorhabditis elegans.</strong> iScience. 2025 Jan 10;28(2):111791. doi: <a href="https://doi.org/10.1016/j.isci.2025.111791">10.1016/j.isci.2025.111791</a></p>
-                    </article>
-                    <article class="research-item">
-                        <img src="elegans.png" alt="C. elegans research icon" class="fit-image" loading="lazy">
-                        <p>Pir MS, Cevik S, Kaplan OI. <strong>CilioGenics: an integrated method and database for predicting novel ciliary genes.</strong> Nucleic Acids Res. 2024 Aug 12;52(14):8127-8145. doi: <a href="https://doi.org/10.1093/nar/gkae554">10.1093/nar/gkae554</a></p>
-                    </article>
-                    <article class="research-item">
-                        <img src="elegans.png" alt="C. elegans research icon" class="fit-image" loading="lazy">
-                        <p>Pir MS, Cevik S, Kaplan OI. <strong>ConVarT: a search engine for matching human genetic variants with variants from non-human species.</strong> Nucleic Acids Res. 2022 Jan 7;50(D1):D1172-D1178. doi: <a href="https://doi.org/10.1093/nar/gkab939">10.1093/nar/gkab939</a> <em>(Note: DOI may be inactive; see <a href="https://github.com/thekaplanlab/ConVarT_Web">GitHub</a>)</em></p>
-                    </article>
+                <h2 data-lang-en="Research Updates" data-lang-tr="Araştırma Güncellemeleri">Research Updates</h2>
+                <div class="research-grid" id="research-updates-list">
+                    <!-- Populated dynamically via JavaScript -->
                 </div>
             </div>
         </section>
 
         <section id="research-overview" class="section" style="display: none;">
-            <h1>Research Overview</h1>
-            <p>Our lab is dedicated to uncovering the genetic and molecular mechanisms driving rare diseases, with a particular focus on ciliopathies. By integrating comparative genomics, functional assays, and cutting-edge gene editing technologies, we aim to bridge the gap between genotype and phenotype, advancing our understanding of disease mechanisms and identifying potential therapeutic targets.</p>
+            <h1 data-lang-en="Research Overview" data-lang-tr="Araştırma Genel Bakış">Research Overview</h1>
+            <p data-lang-en="Our lab is dedicated to uncovering the genetic and molecular mechanisms driving rare diseases, with a particular focus on ciliopathies. By integrating comparative genomics, functional assays, and cutting-edge gene editing technologies, we aim to bridge the gap between genotype and phenotype, advancing our understanding of disease mechanisms and identifying potential therapeutic targets." data-lang-tr="Laboratuvarımız, nadir hastalıkların genetik ve moleküler mekanizmalarını ortaya çıkarmaya adanmıştır, özellikle siliopatilere odaklanarak. Karşılaştırmalı genomik, fonksiyonel testler ve son teknoloji gen düzenleme teknolojilerini birleştirerek, genotip ile fenotip arasındaki boşluğu kapatmayı, hastalık mekanizmalarına dair anlayışımızı ilerletmeyi ve potansiyel terapötik hedefleri belirlemeyi amaçlıyoruz.">Our lab is dedicated to uncovering the genetic and molecular mechanisms driving rare diseases, with a particular focus on ciliopathies. By integrating comparative genomics, functional assays, and cutting-edge gene editing technologies, we aim to bridge the gap between genotype and phenotype, advancing our understanding of disease mechanisms and identifying potential therapeutic targets.</p>
             <div class="research-overview-grid">
                 <div class="research-overview-item">
                     <img src="cilia_res1.jpg" alt="Cilia and ciliopathies research" class="overview-image" loading="lazy">
-                    <h2>Cilia and Ciliopathies</h2>
-                    <p class="research-text">We study ciliopathies such as Joubert syndrome, Bardet-Biedl syndrome, and cranioectodermal dysplasia to identify causative genes and understand their roles in disease pathogenesis.</p>
-                    <a href="#cilia-ciliopathies" onclick="showSection('cilia-ciliopathies')" class="read-more-btn">Read More</a>
+                    <h2 data-lang-en="Cilia and Ciliopathies" data-lang-tr="Sil ve Siliopatiler">Cilia and Ciliopathies</h2>
+                    <p class="research-text" data-lang-en="We study ciliopathies such as Joubert syndrome, Bardet-Biedl syndrome, and cranioectodermal dysplasia to identify causative genes and understand their roles in disease pathogenesis." data-lang-tr="Joubert sendromu, Bardet-Biedl sendromu ve kranioektodermal displazi gibi siliopatileri inceleyerek, neden olan genleri belirlemeyi ve hastalık patogenezindeki rollerini anlamayı hedefliyoruz.">We study ciliopathies such as Joubert syndrome, Bardet-Biedl syndrome, and cranioectodermal dysplasia to identify causative genes and understand their roles in disease pathogenesis.</p>
+                    <a href="#cilia-ciliopathies" onclick="showSection('cilia-ciliopathies')" class="read-more-btn" data-lang-en="Read More" data-lang-tr="Devamını Oku">Read More</a>
                 </div>
                 <div class="research-overview-item">
                     <img src="research3.jpeg" alt="Disease modeling research" class="overview-image" loading="lazy">
-                    <h2>Disease Modeling</h2>
-                    <p class="research-text">Using advanced genomic technologies and CRISPR/Cas9, we identify and characterize genetic variants associated with rare diseases, aiming to improve diagnosis and treatment.</p>
-                    <a href="#disease-modeling" onclick="showSection('disease-modeling')" class="read-more-btn">Read More</a>
+                    <h2 data-lang-en="Disease Modeling" data-lang-tr="Hastalık Modelleme">Disease Modeling</h2>
+                    <p class="research-text" data-lang-en="Using advanced genomic technologies and CRISPR/Cas9, we identify and characterize genetic variants associated with rare diseases, aiming to improve diagnosis and treatment." data-lang-tr="İleri genomik teknolojiler ve CRISPR/Cas9 kullanarak, nadir hastalıklarla ilişkili genetik varyantları belirliyor ve karakterize ediyoruz, tanı ve tedaviyi iyileştirmeyi amaçlıyoruz.">Using advanced genomic technologies and CRISPR/Cas9, we identify and characterize genetic variants associated with rare diseases, aiming to improve diagnosis and treatment.</p>
+                    <a href="#disease-modeling" onclick="showSection('disease-modeling')" class="read-more-btn" data-lang-en="Read More" data-lang-tr="Devamını Oku">Read More</a>
                 </div>
                 <div class="research-overview-item">
                     <img src="research2.jpg" alt="Cilia-cilia joining research" class="overview-image" loading="lazy">
-                    <h2>Cilia-Cilia Joining</h2>
-                    <p class="research-text">We investigate the molecular machinery involved in cilia-cilia elongation and inter-ciliary communication, critical for ciliary function and related diseases.</p>
-                    <a href="#cilia-cilia-joining" onclick="showSection('cilia-cilia-joining')" class="read-more-btn">Read More</a>
+                    <h2 data-lang-en="Cilia-Cilia Joining" data-lang-tr="Sil-Sil Birleşimi">Cilia-Cilia Joining</h2>
+                    <p class="research-text" data-lang-en="We investigate the molecular machinery involved in cilia-cilia elongation and inter-ciliary communication, critical for ciliary function and related diseases." data-lang-tr="Sil-sil uzaması ve sil arası iletişimde yer alan moleküler mekanizmaları araştırıyoruz, bu sil fonksiyonu ve ilgili hastalıklar için kritik öneme sahip.">We investigate the molecular machinery involved in cilia-cilia elongation and inter-ciliary communication, critical for ciliary function and related diseases.</p>
+                    <a href="#cilia-cilia-joining" onclick="showSection('cilia-cilia-joining')" class="read-more-btn" data-lang-en="Read More" data-lang-tr="Devamını Oku">Read More</a>
                 </div>
                 <div class="research-overview-item">
                     <img src="convart.jpeg" alt="Bioinformatics research" class="overview-image" loading="lazy">
-                    <h2>Bioinformatics</h2>
-                    <p class="research-text">We develop and maintain bioinformatics tools like ConVarT, CilioGenics, and CiliaMiner to facilitate research in ciliopathies and rare diseases.</p>
-                    <a href="#bioinformatics" onclick="showSection('bioinformatics')" class="read-more-btn">Read More</a>
+                    <h2 data-lang-en="Bioinformatics" data-lang-tr="Biyoinformatik">Bioinformatics</h2>
+                    <p class="research-text" data-lang-en="We develop and maintain bioinformatics tools like ConVarT, CilioGenics, and CiliaMiner to facilitate research in ciliopathies and rare diseases." data-lang-tr="Siliopatiler ve nadir hastalıklar üzerine araştırmaları kolaylaştırmak için ConVarT, CilioGenics ve CiliaMiner gibi biyoinformatik araçlar geliştiriyor ve sürdürüyoruz.">We develop and maintain bioinformatics tools like ConVarT, CilioGenics, and CiliaMiner to facilitate research in ciliopathies and rare diseases.</p>
+                    <a href="#bioinformatics" onclick="showSection('bioinformatics')" class="read-more-btn" data-lang-en="Read More" data-lang-tr="Devamını Oku">Read More</a>
                 </div>
             </div>
         </section>
 
         <section id="cilia-ciliopathies" class="section" style="display: none;">
-            <h1>Cilia and Ciliopathies</h1>
+            <h1 data-lang-en="Cilia and Ciliopathies" data-lang-tr="Sil ve Siliopatiler">Cilia and Ciliopathies</h1>
             <img src="cilia_res1.jpg" alt="Cilia research image" class="overview-image" loading="lazy">
-            <p>Cilia are microtubule-based organelles that mediate numerous cellular processes, such as motility, signaling, and development. Ciliopathies are a group of rare genetic diseases caused by structural or functional defects in cilia and lead to syndromes such as Joubert syndrome, Bardet-Biedl syndrome, Meckel syndrome, and cranioectodermal dysplasia. Though outstanding advances have been achieved, the genetic etiology of ciliopathies is still not fully understood.</p>
-            <p>Our group has newly identified CILK1 as a causative gene of cranioectodermal dysplasia. Our goal is to identify and functionally annotate ciliopathy-associated genes comprehensively with genetic models, high-resolution microscopy, and biochemical assays. By integrating patient-derived data with experimental data, we will develop improved diagnostic reagents and therapeutic approaches to these rare diseases.</p>
+            <p data-lang-en="Cilia are microtubule-based organelles that mediate numerous cellular processes, such as motility, signaling, and development. Ciliopathies are a group of rare genetic diseases caused by structural or functional defects in cilia and lead to syndromes such as Joubert syndrome, Bardet-Biedl syndrome, Meckel syndrome, and cranioectodermal dysplasia. Though outstanding advances have been achieved, the genetic etiology of ciliopathies is still not fully understood." data-lang-tr="Siller, hareket, sinyal iletimi ve gelişim gibi çok sayıda hücresel süreci düzenleyen mikrotübül tabanlı organellerdir. Siliopatiler, sillerdeki yapısal veya işlevsel kusurlardan kaynaklanan nadir genetik hastalıklar grubudur ve Joubert sendromu, Bardet-Biedl sendromu, Meckel sendromu ve kranioektodermal displazi gibi sendromlara yol açar. Olağanüstü ilerlemeler elde edilmiş olsa da, siliopatilerin genetik etiyolojisi henüz tam olarak anlaşılmamıştır.">Cilia are microtubule-based organelles that mediate numerous cellular processes, such as motility, signaling, and development. Ciliopathies are a group of rare genetic diseases caused by structural or functional defects in cilia and lead to syndromes such as Joubert syndrome, Bardet-Biedl syndrome, Meckel syndrome, and cranioectodermal dysplasia. Though outstanding advances have been achieved, the genetic etiology of ciliopathies is still not fully understood.</p>
+            <p data-lang-en="Our group has newly identified CILK1 as a causative gene of cranioectodermal dysplasia. Our goal is to identify and functionally annotate ciliopathy-associated genes comprehensively with genetic models, high-resolution microscopy, and biochemical assays. By integrating patient-derived data with experimental data, we will develop improved diagnostic reagents and therapeutic approaches to these rare diseases." data-lang-tr="Grubumuz, CILK1’i kranioektodermal displazinin neden olan bir geni olarak yeni tanımladı. Amacımız, genetik modeller, yüksek çözünürlüklü mikroskopi ve biyokimyasal testlerle siliopatiyle ilişkili genleri kapsamlı bir şekilde tanımlamak ve işlevsel olarak açıklamaktır. Hasta kaynaklı verileri deneysel verilerle birleştirerek, bu nadir hastalıklar için geliştirilmiş teşhis reaktifleri ve terapötik yaklaşımlar geliştireceğiz.">Our group has newly identified CILK1 as a causative gene of cranioectodermal dysplasia. Our goal is to identify and functionally annotate ciliopathy-associated genes comprehensively with genetic models, high-resolution microscopy, and biochemical assays. By integrating patient-derived data with experimental data, we will develop improved diagnostic reagents and therapeutic approaches to these rare diseases.</p>
         </section>
 
         <section id="disease-modeling" class="section" style="display: none;">
-            <h1>Disease Modeling</h1>
+            <h1 data-lang-en="Disease Modeling" data-lang-tr="Hastalık Modelleme">Disease Modeling</h1>
             <img src="research3.jpeg" alt="Disease modeling image" class="overview-image" loading="lazy">
-            <p>Genetic variant analysis of rare diseases attempts to identify mutations responsible for such often poorly described conditions. With the help of advanced genomic technologies like whole exome sequencing and CRISPR/Cas9-based functional screening in <em>C. elegans</em>, our lab is able to distinguish disease-causing variants and comprehend their mechanisms better (Cevik et al., 2023). This work provides insight into the genetic architecture of rare diseases, eventually culminating in the design of tailored treatments and propelling precision medicine for such individuals.</p>
+            <p data-lang-en="Genetic variant analysis of rare diseases attempts to identify mutations responsible for such often poorly described conditions. With the help of advanced genomic technologies like whole exome sequencing and CRISPR/Cas9-based functional screening in C. elegans, our lab is able to distinguish disease-causing variants and comprehend their mechanisms better (Cevik et al., 2023). This work provides insight into the genetic architecture of rare diseases, eventually culminating in the design of tailored treatments and propelling precision medicine for such individuals." data-lang-tr="Nadir hastalıkların genetik varyant analizi, genellikle iyi tanımlanmamış bu tür durumlara neden olan mutasyonları belirlemeyi amaçlar. Tüm ekzom dizileme gibi ileri genomik teknolojiler ve C. elegans’ta CRISPR/Cas9 tabanlı fonksiyonel tarama yardımıyla, laboratuvarımız hastalıklara neden olan varyantları ayırt edebiliyor ve mekanizmalarını daha iyi anlayabiliyor (Cevik ve diğerleri, 2023). Bu çalışma, nadir hastalıkların genetik yapısına dair içgörü sağlar ve nihayetinde bu bireyler için kişiselleştirilmiş tedavilerin tasarlanmasına ve hassas tıbbın ilerlemesine yol açar.">Genetic variant analysis of rare diseases attempts to identify mutations responsible for such often poorly described conditions. With the help of advanced genomic technologies like whole exome sequencing and CRISPR/Cas9-based functional screening in <em>C. elegans</em>, our lab is able to distinguish disease-causing variants and comprehend their mechanisms better (Cevik et al., 2023). This work provides insight into the genetic architecture of rare diseases, eventually culminating in the design of tailored treatments and propelling precision medicine for such individuals.</p>
         </section>
 
         <section id="cilia-cilia-joining" class="section" style="display: none;">
-            <h1>Cilia-Cilia Joining</h1>
+            <h1 data-lang-en="Cilia-Cilia Joining" data-lang-tr="Sil-Sil Birleşimi">Cilia-Cilia Joining</h1>
             <img src="research2.jpg" alt="Cilia-cilia joining image" class="overview-image" loading="lazy">
-            <p>Our study aims to make sense of the molecular machinery in cilia-cilia elongation. We isolate the key proteins and signaling cascades involved. We are further conducting FIB-SEM analysis in a bid to deliver quantitative ultrastructural detail.</p>
-            <p>We are further contributing to understanding cilia-cilia communication, as demonstrated by Turan et al. (2025) in iScience. We shall expand on such findings by studying the molecular machinery regulating cilia-cilia interaction, including elongation and communication, and the implications for uncommon diseases.</p>
+            <p data-lang-en="Our study aims to make sense of the molecular machinery in cilia-cilia elongation. We isolate the key proteins and signaling cascades involved. We are further conducting FIB-SEM analysis in a bid to deliver quantitative ultrastructural detail." data-lang-tr="Çalışmamız, sil-sil uzamasındaki moleküler mekanizmayı anlamayı amaçlıyor. İlgili anahtar proteinleri ve sinyal kaskadlarını izole ediyoruz. Ayrıca, kantitatif ultrastrüktürel detay sağlamak için FIB-SEM analizi gerçekleştiriyoruz.">Our study aims to make sense of the molecular machinery in cilia-cilia elongation. We isolate the key proteins and signaling cascades involved. We are further conducting FIB-SEM analysis in a bid to deliver quantitative ultrastructural detail.</p>
+            <p data-lang-en="We are further contributing to understanding cilia-cilia communication, as demonstrated by Turan et al. (2025) in iScience. We shall expand on such findings by studying the molecular machinery regulating cilia-cilia interaction, including elongation and communication, and the implications for uncommon diseases." data-lang-tr="Turan ve diğerleri (2025) tarafından iScience’ta gösterildiği üzere, sil-sil iletişimini anlamaya da katkıda bulunuyoruz. Sil-sil etkileşimini, uzama ve iletişimi düzenleyen moleküler mekanizmayı ve nadir hastalıklar üzerindeki etkilerini inceleyerek bu bulguları genişleteceğiz.">We are further contributing to understanding cilia-cilia communication, as demonstrated by Turan et al. (2025) in iScience. We shall expand on such findings by studying the molecular machinery regulating cilia-cilia interaction, including elongation and communication, and the implications for uncommon diseases.</p>
         </section>
 
         <section id="bioinformatics" class="section" style="display: none;">
-            <h1>Bioinformatics</h1>
+            <h1 data-lang-en="Bioinformatics" data-lang-tr="Biyoinformatik">Bioinformatics</h1>
             <img src="convart.jpeg" alt="Bioinformatics research image" class="overview-image" loading="lazy">
             <div class="research-grid">
                 <article class="research-item">
-                    <img src="elegans.png" alt="C. elegans bioinformatics icon" class="fit-image" loading="lazy">
-                    <p><strong>ConVarT:</strong> A search engine for matching human genetic variants with variants from non-human species, aiding in the functional characterization of rare disease variants. <em>(Currently unavailable at <a href="http://convart.org/">http://convart.org/</a>; see <a href="https://github.com/thekaplanlab/ConVarT_Web">GitHub</a>)</em></p>
+                    <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16zm-1-5h2v2h-2zm0-8h2v6h-2z"/></svg>
+                    <p><strong>ConVarT:</strong> <span data-lang-en="A search engine for matching human genetic variants with variants from non-human species, aiding in the functional characterization of rare disease variants." data-lang-tr="İnsan genetik varyantlarını insan dışı türlerden varyantlarla eşleştiren bir arama motoru, nadir hastalık varyantlarının işlevsel karakterizasyonuna yardımcı olur.">A search engine for matching human genetic variants with variants from non-human species, aiding in the functional characterization of rare disease variants.</span> <em>(<a href="http://convart.org/" data-lang-en="Currently unavailable" data-lang-tr="Şu anda kullanılamıyor">Currently unavailable</a>; see <a href="https://github.com/thekaplanlab/ConVarT_Web">GitHub</a>)</em></p>
                 </article>
                 <article class="research-item">
-                    <img src="elegans.png" alt="C. elegans bioinformatics icon" class="fit-image" loading="lazy">
-                    <p><strong>CilioGenics:</strong> An integrated database and tool for predicting novel ciliary genes, supporting research into ciliopathies and ciliary biology. <a href="https://ciliogenics.com/?page=Home">https://ciliogenics.com/?page=Home</a></p>
+                    <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16zm-1-5h2v2h-2zm0-8h2v6h-2z"/></svg>
+                    <p><strong>CilioGenics:</strong> <span data-lang-en="An integrated database and tool for predicting novel ciliary genes, supporting research into ciliopathies and ciliary biology." data-lang-tr="Yeni sil genlerini tahmin etmek için entegre bir veritabanı ve araç, siliopatiler ve sil biyolojisi araştırmalarını destekler.">An integrated database and tool for predicting novel ciliary genes, supporting research into ciliopathies and ciliary biology.</span> <a href="https://ciliogenics.com/?page=Home">https://ciliogenics.com/?page=Home</a></p>
                 </article>
                 <article class="research-item">
-                    <img src="elegans.png" alt="C. elegans bioinformatics icon" class="fit-image" loading="lazy">
-                    <p><strong>CiliaMiner:</strong> A bioinformatics platform for exploring ciliopathy genes and related data, designed to accelerate discovery in rare disease research. <a href="https://kaplanlab.shinyapps.io/ciliaminer/">https://kaplanlab.shinyapps.io/ciliaminer/</a></p>
+                    <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16zm-1-5h2v2h-2zm0-8h2v6h-2z"/></svg>
+                    <p><strong>CiliaMiner:</strong> <span data-lang-en="A bioinformatics platform for exploring ciliopathy genes and related data, designed to accelerate discovery in rare disease research." data-lang-tr="Siliopati genlerini ve ilgili verileri keşfetmek için bir biyoinformatik platformu, nadir hastalık araştırmalarında keşfi hızlandırmak için tasarlanmıştır.">A bioinformatics platform for exploring ciliopathy genes and related data, designed to accelerate discovery in rare disease research.</span> <a href="https://kaplanlab.shinyapps.io/ciliaminer/">https://kaplanlab.shinyapps.io/ciliaminer/</a></p>
                 </article>
                 <article class="research-item">
-                    <img src="elegans.png" alt="C. elegans bioinformatics icon" class="fit-image" loading="lazy">
-                    <p><strong>GitHub:</strong> Access our open-source code, protocols, and bioinformatics pipelines for rare disease and ciliopathy research. <a href="https://github.com/thekaplanlab">https://github.com/thekaplanlab</a></p>
+                    <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16zm-1-5h2v2h-2zm0-8h2v6h-2z"/></svg>
+                    <p><strong>GitHub:</strong> <span data-lang-en="Access our open-source code, protocols, and bioinformatics pipelines for rare disease and ciliopathy research." data-lang-tr="Nadir hastalık ve siliopati araştırmaları için açık kaynak kodumuza, protokollerimize ve biyoinformatik boru hatlarımıza erişin.">Access our open-source code, protocols, and bioinformatics pipelines for rare disease and ciliopathy research.</span> <a href="https://github.com/thekaplanlab">https://github.com/thekaplanlab</a></p>
                 </article>
             </div>
         </section>
 
         <section id="current-members" class="section" style="display: none;">
-            <h1>Current Members</h1>
-            <div class="research-grid">
+            <h1 data-lang-en="Current Members" data-lang-tr="Mevcut Üyeler">Current Members</h1>
+            <div id="spotlight" class="research-item spotlight"></div>
+            <div class="research-grid" id="current-members-list">
                 <article class="research-item">
                     <img src="Oktay.png" alt="Oktay I. Kaplan photo" class="team-image" loading="lazy">
-                    <p><strong class="team-name">Oktay I. Kaplan, Dr.</strong><br>Principal Investigator</p>
+                    <p><strong class="team-name">Oktay I. Kaplan, Dr.</strong><br><span data-lang-en="Principal Investigator" data-lang-tr="Baş Araştırmacı">Principal Investigator</span></p>
                     <ul>
                         <li>GitHub (Lab): <a href="https://github.com/thekaplanlab" target="_blank">thekaplanlab</a></li>
                         <li>GitHub (Personal): <a href="https://github.com/oktaykaplan" target="_blank">oktaykaplan</a></li>
@@ -176,99 +170,99 @@
                 </article>
                 <article class="research-item">
                     <img src="sebihacevikaplan.png" alt="Sebiha Cevik photo" class="team-image" loading="lazy">
-                    <p><strong class="team-name">Sebiha Cevik, Dr.</strong><br>Principal Investigator</p>
+                    <p><strong class="team-name">Sebiha Cevik, Dr.</strong><br><span data-lang-en="Principal Investigator" data-lang-tr="Baş Araştırmacı">Principal Investigator</span></p>
                 </article>
                 <article class="research-item">
                     <img src="elegans.png" alt="Ferhan Yenisert placeholder" class="team-image" loading="lazy">
-                    <p><strong class="team-name">Ferhan Yenisert</strong><br>PhD Student</p>
+                    <p><strong class="team-name">Ferhan Yenisert</strong><br><span data-lang-en="PhD Student" data-lang-tr="Doktora Öğrencisi">PhD Student</span></p>
                 </article>
                 <article class="research-item">
                     <img src="elegans.png" alt="Damla Puçak placeholder" class="team-image" loading="lazy">
-                    <p><strong class="team-name">Damla Puçak</strong><br>Graduate Student</p>
+                    <p><strong class="team-name">Damla Puçak</strong><br><span data-lang-en="Graduate Student" data-lang-tr="Yüksek Lisans Öğrencisi">Graduate Student</span></p>
                 </article>
                 <article class="research-item">
                     <img src="elegans.png" alt="Sinem Güzel placeholder" class="team-image" loading="lazy">
-                    <p><strong class="team-name">Sinem Güzel</strong><br>Graduate Student</p>
+                    <p><strong class="team-name">Sinem Güzel</strong><br><span data-lang-en="Graduate Student" data-lang-tr="Yüksek Lisans Öğrencisi">Graduate Student</span></p>
                 </article>
                 <article class="research-item">
                     <img src="elegans.png" alt="Fatma Güzel placeholder" class="team-image" loading="lazy">
-                    <p><strong class="team-name">Fatma Güzel</strong><br>Graduate Student</p>
+                    <p><strong class="team-name">Fatma Güzel</strong><br><span data-lang-en="Graduate Student" data-lang-tr="Yüksek Lisans Öğrencisi">Graduate Student</span></p>
                 </article>
                 <article class="research-item">
                     <img src="elegans.png" alt="Zanyar Demir placeholder" class="team-image" loading="lazy">
-                    <p><strong class="team-name">Zanyar Demir</strong><br>Graduate Student</p>
+                    <p><strong class="team-name">Zanyar Demir</strong><br><span data-lang-en="Graduate Student" data-lang-tr="Yüksek Lisans Öğrencisi">Graduate Student</span></p>
                 </article>
             </div>
         </section>
 
         <section id="former-members" class="section" style="display: none;">
-            <h1>Former Members</h1>
+            <h1 data-lang-en="Former Members" data-lang-tr="Eski Üyeler">Former Members</h1>
             <div class="research-grid">
                 <article class="research-item">
-                    <h3>Graduate Students in the Lab</h3>
+                    <h3 data-lang-en="Graduate Students in the Lab" data-lang-tr="Laboratuvardaki Yüksek Lisans Öğrencileri">Graduate Students in the Lab</h3>
                 </article>
                 <article class="research-item">
                     <img src="elegans.png" alt="Merve Gül Turan placeholder" class="team-image" loading="lazy">
-                    <p><strong class="team-name">Merve Gül Turan (September 2019 - June 2023)</strong><br>Position in the lab: Graduate Student<br>Current Position: PhD student at Max Planck Institute for Biology Tübingen</p>
+                    <p><strong class="team-name">Merve Gül Turan (September 2019 - June 2023)</strong><br><span data-lang-en="Position in the lab: Graduate Student" data-lang-tr="Laboratuvardaki pozisyon: Yüksek Lisans Öğrencisi">Position in the lab: Graduate Student</span><br><span data-lang-en="Current Position: PhD student at Max Planck Institute for Biology Tübingen" data-lang-tr="Mevcut Pozisyon: Max Planck Biyoloji Enstitüsü Tübingen’de Doktora Öğrencisi">Current Position: PhD student at Max Planck Institute for Biology Tübingen</span></p>
                 </article>
                 <article class="research-item">
                     <img src="elegans.png" alt="Mustafa Samet Pir placeholder" class="team-image" loading="lazy">
-                    <p><strong class="team-name">Mustafa Samet Pir</strong><br>Position in the lab: Graduate Student<br>Current Position: PhD student at Acibadem University</p>
+                    <p><strong class="team-name">Mustafa Samet Pir</strong><br><span data-lang-en="Position in the lab: Graduate Student" data-lang-tr="Laboratuvardaki pozisyon: Yüksek Lisans Öğrencisi">Position in the lab: Graduate Student</span><br><span data-lang-en="Current Position: PhD student at Acibadem University" data-lang-tr="Mevcut Pozisyon: Acıbadem Üniversitesi’nde Doktora Öğrencisi">Current Position: PhD student at Acibadem University</span></p>
                 </article>
                 <article class="research-item">
                     <img src="elegans.png" alt="Fatma Nihal Yetgin placeholder" class="team-image" loading="lazy">
-                    <p><strong class="team-name">Fatma Nihal Yetgin</strong><br>Position in the lab: Graduate Student</p>
+                    <p><strong class="team-name">Fatma Nihal Yetgin</strong><br><span data-lang-en="Position in the lab: Graduate Student" data-lang-tr="Laboratuvardaki pozisyon: Yüksek Lisans Öğrencisi">Position in the lab: Graduate Student</span></p>
                 </article>
                 <article class="research-item">
                     <img src="elegans.png" alt="Ziya Zorluer placeholder" class="team-image" loading="lazy">
-                    <p><strong class="team-name">Ziya Zorluer</strong><br>Position in the lab: Graduate Student<br>Current Position: PhD student, AGU, Türkiye</p>
+                    <p><strong class="team-name">Ziya Zorluer</strong><br><span data-lang-en="Position in the lab: Graduate Student" data-lang-tr="Laboratuvardaki pozisyon: Yüksek Lisans Öğrencisi">Position in the lab: Graduate Student</span><br><span data-lang-en="Current Position: PhD student, AGU, Türkiye" data-lang-tr="Mevcut Pozisyon: AGU, Türkiye’de Doktora Öğrencisi">Current Position: PhD student, AGU, Türkiye</span></p>
                 </article>
                 <article class="research-item">
-                    <h3>Undergraduate Students in the Lab</h3>
+                    <h3 data-lang-en="Undergraduate Students in the Lab" data-lang-tr="Laboratuvardaki Lisans Öğrencileri">Undergraduate Students in the Lab</h3>
                 </article>
                 <article class="research-item">
                     <img src="elegans.png" alt="Ahsen Konaç placeholder" class="team-image" loading="lazy">
-                    <p><strong class="team-name">Ahsen Konaç (2018-2021)</strong><br>Position in the lab: Undergraduate Student<br>Current Position: PhD student, Göttingen, Germany</p>
+                    <p><strong class="team-name">Ahsen Konaç (2018-2021)</strong><br><span data-lang-en="Position in the lab: Undergraduate Student" data-lang-tr="Laboratuvardaki pozisyon: Lisans Öğrencisi">Position in the lab: Undergraduate Student</span><br><span data-lang-en="Current Position: PhD student, Göttingen, Germany" data-lang-tr="Mevcut Pozisyon: Göttingen, Almanya’da Doktora Öğrencisi">Current Position: PhD student, Göttingen, Germany</span></p>
                 </article>
                 <article class="research-item">
                     <img src="onur.jpg" alt="Onur Çakıcı photo" class="team-image" loading="lazy">
-                    <p><strong class="team-name">Onur Çakıcı (2018-2023)</strong><br>Position in the lab: Undergraduate Student<br>Current Position: PhD student, Crete, Greece</p>
+                    <p><strong class="team-name">Onur Çakıcı (2018-2023)</strong><br><span data-lang-en="Position in the lab: Undergraduate Student" data-lang-tr="Laboratuvardaki pozisyon: Lisans Öğrencisi">Position in the lab: Undergraduate Student</span><br><span data-lang-en="Current Position: PhD student, Crete, Greece" data-lang-tr="Mevcut Pozisyon: Girit, Yunanistan’da Doktora Öğrencisi">Current Position: PhD student, Crete, Greece</span></p>
                 </article>
                 <article class="research-item">
                     <img src="elegans.png" alt="Hanife Kantarcı placeholder" class="team-image" loading="lazy">
-                    <p><strong class="team-name">Hanife Kantarcı</strong><br>Position in the lab: Undergraduate Student<br>Current Position: Graduate Student, Sabancı University, Türkiye</p>
+                    <p><strong class="team-name">Hanife Kantarcı</strong><br><span data-lang-en="Position in the lab: Undergraduate Student" data-lang-tr="Laboratuvardaki pozisyon: Lisans Öğrencisi">Position in the lab: Undergraduate Student</span><br><span data-lang-en="Current Position: Graduate Student, Sabancı University, Türkiye" data-lang-tr="Mevcut Pozisyon: Sabancı Üniversitesi, Türkiye’de Yüksek Lisans Öğrencisi">Current Position: Graduate Student, Sabancı University, Türkiye</span></p>
                 </article>
                 <article class="research-item">
                     <img src="elegans.png" alt="Sadiye Dilay Temtek placeholder" class="team-image" loading="lazy">
-                    <p><strong class="team-name">Sadiye Dilay Temtek</strong><br>Position in the lab: Undergraduate Student<br>Current Position: TÜBİTAK, Ankara, Türkiye</p>
+                    <p><strong class="team-name">Sadiye Dilay Temtek</strong><br><span data-lang-en="Position in the lab: Undergraduate Student" data-lang-tr="Laboratuvardaki pozisyon: Lisans Öğrencisi">Position in the lab: Undergraduate Student</span><br><span data-lang-en="Current Position: TÜBİTAK, Ankara, Türkiye" data-lang-tr="Mevcut Pozisyon: TÜBİTAK, Ankara, Türkiye">Current Position: TÜBİTAK, Ankara, Türkiye</span></p>
                 </article>
             </div>
         </section>
 
         <section id="group-photos" class="section" style="display: none;">
-            <h1>Group Photos</h1>
-            <p>See our lab team in action.</p>
+            <h1 data-lang-en="Group Photos" data-lang-tr="Grup Fotoğrafları">Group Photos</h1>
+            <p data-lang-en="See our lab team in action." data-lang-tr="Laboratuvar ekibimizi iş başında görün.">See our lab team in action.</p>
             <div class="research-grid">
                 <article class="research-item">
-                    <img src="figure3.png" alt="Lab meeting group photo 2025" class="large-image" loading="lazy">
-                    <p><strong>Lab Meeting 2025</strong></p>
+                    <a href="figure3.png" data-lightbox="group-photos" data-title="Lab Meeting 2025"><img src="figure3.png" alt="Lab meeting group photo 2025" class="large-image" loading="lazy"></a>
+                    <p><strong data-lang-en="Lab Meeting 2025" data-lang-tr="Laboratuvar Toplantısı 2025">Lab Meeting 2025</strong></p>
                 </article>
             </div>
         </section>
 
         <section id="open-positions" class="section" style="display: none;">
-            <h1>Open Positions</h1>
-            <p>We are always looking for talented undergraduate students, graduate students, and postdoctoral researchers to join our team. If you are passionate about rare diseases, ciliopathies, and innovative research, we encourage you to contact the Principal Investigator (PI) for more information.</p>
-            <p>For postdoctoral positions, we offer the opportunity to apply for prestigious fellowships such as the <a href="https://www.embo.org/funding/fellowships-grants-and-awards/postdoctoral-fellowships">EMBO Postdoctoral Fellowship</a>, <a href="https://marie-sklodowska-curie-actions.ec.europa.eu/actions/postdoctoral-fellowships">Marie Curie Fellowship</a>, and <a href="https://www.tubitak.gov.tr/en/scholarship/postdoctoral/international-programs/content-2219-international-postdoctoral-research-fellowship-programme">TÜBİTAK Fellowship</a>.</p>
-            <p><strong>Contact:</strong> Oktaykaplan(at)gmail.com</p>
+            <h1 data-lang-en="Open Positions" data-lang-tr="Açık Pozisyonlar">Open Positions</h1>
+            <p data-lang-en="We are always looking for talented undergraduate students, graduate students, and postdoctoral researchers to join our team. If you are passionate about rare diseases, ciliopathies, and innovative research, we encourage you to contact the Principal Investigator (PI) for more information." data-lang-tr="Ekibimize katılmak üzere yetkin lisans öğrencileri, yüksek lisans öğrencileri ve doktora sonrası araştırmacılar arıyoruz. Nadir hastalıklar, siliopatiler ve yenilikçi araştırmalara tutkuluysanız, daha fazla bilgi için Baş Araştırmacı (PI) ile iletişime geçmenizi teşvik ediyoruz.">We are always looking for talented undergraduate students, graduate students, and postdoctoral researchers to join our team. If you are passionate about rare diseases, ciliopathies, and innovative research, we encourage you to contact the Principal Investigator (PI) for more information.</p>
+            <p data-lang-en="For postdoctoral positions, we offer the opportunity to apply for prestigious fellowships such as the EMBO Postdoctoral Fellowship, Marie Curie Fellowship, and TÜBİTAK Fellowship." data-lang-tr="Doktora sonrası pozisyonlar için EMBO Doktora Sonrası Bursu, Marie Curie Bursu ve TÜBİTAK Bursu gibi prestijli burslara başvuru fırsatları sunuyoruz.">For postdoctoral positions, we offer the opportunity to apply for prestigious fellowships such as the <a href="https://www.embo.org/funding/fellowships-grants-and-awards/postdoctoral-fellowships">EMBO Postdoctoral Fellowship</a>, <a href="https://marie-sklodowska-curie-actions.ec.europa.eu/actions/postdoctoral-fellowships">Marie Curie Fellowship</a>, and <a href="https://www.tubitak.gov.tr/en/scholarship/postdoctoral/international-programs/content-2219-international-postdoctoral-research-fellowship-programme">TÜBİTAK Fellowship</a>.</p>
+            <p><strong data-lang-en="Contact:" data-lang-tr="İletişim:">Contact:</strong> Oktaykaplan(at)gmail.com</p>
         </section>
 
         <section id="publications" class="section" style="display: none;">
-            <h1>Publications</h1>
+            <h1 data-lang-en="Publications" data-lang-tr="Yayınlar">Publications</h1>
             <div class="filter-menu">
-                <label for="year-filter">Filter by Year:</label>
+                <label for="year-filter" data-lang-en="Filter by Year:" data-lang-tr="Yıla Göre Filtrele:">Filter by Year:</label>
                 <select id="year-filter" onchange="filterPublications()">
-                    <option value="all">All</option>
+                    <option value="all" data-lang-en="All" data-lang-tr="Tümü">All</option>
                     <option value="2025">2025</option>
                     <option value="2024">2024</option>
                     <option value="2023">2023</option>
@@ -284,134 +278,60 @@
                 </select>
             </div>
             <div class="research-grid" id="publication-list">
-                <article class="research-item" data-year="2025">
-                    <img src="elegans.png" alt="C. elegans research icon" class="fit-image" loading="lazy">
-                    <p><strong>ARL13B regulates juxtaposed cilia-cilia elongation in BBSome dependent manner in Caenorhabditis elegans.</strong><br><span class="authors">Turan MG, Kantarci H, Cevik S, Kaplan OI.</span><br>iScience, 2025 Jan 10;28(2):111791.<br>DOI: <a href="https://doi.org/10.1016/j.isci.2025.111791">10.1016/j.isci.2025.111791</a></p>
-                </article>
-                <article class="research-item" data-year="2024">
-                    <img src="elegans.png" alt="C. elegans research icon" class="fit-image" loading="lazy">
-                    <p><strong>CC2D1A causes ciliopathy, intellectual disability, heterotaxy, renal dysplasia, and abnormal CSF flow.</strong><br><span class="authors">Kim AH, Sakin I, Viviano S, et al.</span><br>Life Sci Alliance, 2024 Oct;7(10):e202402708.<br>DOI: <a href="https://doi.org/10.26508/lsa.202402708">10.26508/lsa.202402708</a></p>
-                </article>
-                <article class="research-item" data-year="2024">
-                    <img src="elegans.png" alt="C. elegans research icon" class="fit-image" loading="lazy">
-                    <p><strong>CilioGenics: an integrated method and database for predicting novel ciliary genes.</strong><br><span class="authors">Pir MS, Begar E, Yenisert F, et al.</span><br>Nucleic Acids Res, 2024 Aug 12;52(14):8127-8145.<br>DOI: <a href="https://doi.org/10.1093/nar/gkae554">10.1093/nar/gkae554</a></p>
-                </article>
-                <article class="research-item" data-year="2023">
-                    <img src="elegans.png" alt="C. elegans research icon" class="fit-image" loading="lazy">
-                    <p><strong>Matching variants for functional characterization of genetic variants.</strong><br><span class="authors">Cevik S, Zhao P, Zorluer A, et al.</span><br>G3 (Bethesda), 2023 Dec 7;13(12):jkad227.<br>DOI: <a href="https://doi.org/10.1093/g3journal/jkad227">10.1093/g3journal/jkad227</a></p>
-                </article>
-                <article class="research-item" data-year="2023">
-                    <img src="elegans.png" alt="C. elegans research icon" class="fit-image" loading="lazy">
-                    <p><strong>WDR31 displays functional redundancy with GTPase-activating proteins (GAPs) ELMOD and RP2 in regulating IFT complex and recruiting the BBSome to cilium.</strong><br><span class="authors">Cevik S, Peng X, Beyer T, et al.</span><br>Life Sci Alliance, 2023 Aug;6(8):e202201844.<br>DOI: <a href="https://doi.org/10.26508/lsa.202201844">10.26508/lsa.202201844</a></p>
-                </article>
-                <article class="research-item" data-year="2023">
-                    <img src="elegans.png" alt="C. elegans research icon" class="fit-image" loading="lazy">
-                    <p><strong>CiliaMiner: an integrated database for ciliopathy genes and ciliopathies.</strong><br><span class="authors">Turan MG, Orhan ME, Cevik S, Kaplan OI.</span><br>Database (Oxford), 2023;2023:baad047.<br>DOI: <a href="https://doi.org/10.1093/database/baad047">10.1093/database/baad047</a></p>
-                </article>
-                <article class="research-item" data-year="2023">
-                    <img src="elegans.png" alt="C. elegans research icon" class="fit-image" loading="lazy">
-                    <p><strong>RPI-1 (human DCDC2) displays functional redundancy with Nephronophthisis 4 in regulating cilia biogenesis in C. elegans.</strong><br><span class="authors">Kaplan OI.</span><br>Nucleic Acids Res, 2023;47(1):74-83.<br>DOI: <a href="https://doi.org/10.55730/1300-0152.2642">10.55730/1300-0152.2642</a></p>
-                </article>
-                <article class="research-item" data-year="2022">
-                    <img src="elegans.png" alt="C. elegans research icon" class="fit-image" loading="lazy">
-                    <p><strong>ConVarT: Search Engine for Missense Variants Between Humans and Other Organisms.</strong><br><span class="authors">Pir MS, Cevik S, Kaplan OI.</span><br>Curr Protoc, 2022 Nov;2(11):e619.<br>DOI: <a href="https://doi.org/10.1002/cpz1.619">10.1002/cpz1.619</a></p>
-                </article>
-                <article class="research-item" data-year="2022">
-                    <img src="elegans.png" alt="C. elegans research icon" class="fit-image" loading="lazy">
-                    <p><strong>Protocol for determining the average speed and frequency of kinesin and dynein-driven intraflagellar transport (IFT) in C. elegans.</strong><br><span class="authors">Turan MG, Kantarci H, Temtek SD, et al.</span><br>STAR Protoc, 2022 Sep 16;3(3):101498.<br>DOI: <a href="https://doi.org/10.1016/j.xpro.2022.101498">10.1016/j.xpro.2022.101498</a></p>
-                </article>
-                <article class="research-item" data-year="2022">
-                    <img src="elegans.png" alt="C. elegans research icon" class="fit-image" loading="lazy">
-                    <p><strong>ConVarT: a search engine for matching human genetic variants with variants from non-human species.</strong><br><span class="authors">Pir MS, Bilgin HI, Sayici A, et al.</span><br>Nucleic Acids Res, 2022 Jan 7;50(D1):D1172-D1178.<br>DOI: <a href="https://doi.org/10.1093/nar/gkab939">10.1093/nar/gkab939</a> <em>(Note: DOI may be inactive; see <a href="https://github.com/thekaplanlab/ConVarT_Web">GitHub</a>)</em></p>
-                </article>
-                <article class="research-item" data-year="2021">
-                    <img src="elegans.png" alt="C. elegans research icon" class="fit-image" loading="lazy">
-                    <p><strong>MSABrowser: dynamic and fast visualization of sequence alignments, variations and annotations.</strong><br><span class="authors">Torun FM, Bilgin HI, Kaplan OI.</span><br>Bioinform Adv, 2021;1(1):vbab009.<br>DOI: <a href="https://doi.org/10.1093/bioadv/vbab009">10.1093/bioadv/vbab009</a></p>
-                </article>
-                <article class="research-item" data-year="2021">
-                    <img src="elegans.png" alt="C. elegans research icon" class="fit-image" loading="lazy">
-                    <p><strong>The Joubert syndrome protein CEP41 is excluded from the distal segment of cilia in C. elegans.</strong><br><span class="authors">Cevik S, Kaplan OI.</span><br>MicroPubl Biol, 2021;2021:10.17912/micropub.biology.000406.<br>DOI: <a href="https://doi.org/10.17912/micropub.biology.000406">10.17912/micropub.biology.000406</a></p>
-                </article>
-                <article class="research-item" data-year="2021">
-                    <img src="elegans.png" alt="C. elegans research icon" class="fit-image" loading="lazy">
-                    <p><strong>Subcellular localization of the voltage-gated K+ channel EGL-36, a member of the KV3 subfamily, in the ciliated sensory neurons in C. elegans.</strong><br><span class="authors">Cevik S, Kaplan OI.</span><br>MicroPubl Biol, 2021;2021:10.17912/micropub.biology.000367.<br>DOI: <a href="https://doi.org/10.17912/micropub.biology.000367">10.17912/micropub.biology.000367</a></p>
-                </article>
-                <article class="research-item" data-year="2018">
-                    <img src="elegans.png" alt="C. elegans research icon" class="fit-image" loading="lazy">
-                    <p><strong>Environmental responsiveness of tubulin glutamylation in sensory cilia is regulated by the p38 MAPK pathway.</strong><br><span class="authors">Kimura Y, Tsutsumi K, Konno A, et al.</span><br>Sci Rep, 2018 Jun 8;8(1):8392.<br>DOI: <a href="https://doi.org/10.1038/s41598-018-26694-w">10.1038/s41598-018-26694-w</a></p>
-                </article>
-                <article class="research-item" data-year="2016">
-                    <img src="elegans.png" alt="C. elegans research icon" class="fit-image" loading="lazy">
-                    <p><strong>G-quadruplex prediction in E. coli genome reveals a conserved putative G-quadruplex-Hairpin-Duplex switch.</strong><br><span class="authors">Kaplan OI, Berber B, Hekim N, Doluca O.</span><br>Nucleic Acids Res, 2016 Oct 20;44(19):9083-9095.<br>DOI: <a href="https://doi.org/10.1093/nar/gkw769">10.1093/nar/gkw769</a></p>
-                </article>
-                <article class="research-item" data-year="2013">
-                    <img src="elegans.png" alt="C. elegans research icon" class="fit-image" loading="lazy">
-                    <p><strong>Active transport and diffusion barriers restrict Joubert Syndrome-associated ARL13B/ARL-13 to an Inv-like ciliary membrane subdomain.</strong><br><span class="authors">Cevik S, Sanders AA, Van Wijk E, et al.</span><br>PLoS Genet, 2013 Dec;9(12):e1003977.<br>DOI: <a href="https://doi.org/10.1371/journal.pgen.1003977">10.1371/journal.pgen.1003977</a></p>
-                </article>
-                <article class="research-item" data-year="2012">
-                    <img src="elegans.png" alt="C. elegans research icon" class="fit-image" loading="lazy">
-                    <p><strong>Endocytosis genes facilitate protein and membrane transport in C. elegans sensory cilia.</strong><br><span class="authors">Kaplan OI, Doroquez DB, Cevik S, et al.</span><br>Curr Biol, 2012 Mar 20;22(6):451-60.<br>DOI: <a href="https://doi.org/10.1016/j.cub.2012.01.060">10.1016/j.cub.2012.01.060</a></p>
-                </article>
-                <article class="research-item" data-year="2010">
-                    <img src="elegans.png" alt="C. elegans research icon" class="fit-image" loading="lazy">
-                    <p><strong>The AP-1 clathrin adaptor facilitates cilium formation and functions with RAB-8 in C. elegans ciliary membrane transport.</strong><br><span class="authors">Kaplan OI, Molla-Herman A, Cevik S, et al.</span><br>J Cell Sci, 2010 Nov 15;123(Pt 22):3966-77.<br>DOI: <a href="https://doi.org/10.1242/jcs.073908">10.1242/jcs.073908</a></p>
-                </article>
-                <article class="research-item" data-year="2010">
-                    <img src="elegans.png" alt="C. elegans research icon" class="fit-image" loading="lazy">
-                    <p><strong>Identification of tubulin deglutamylase among Caenorhabditis elegans and mammalian cytosolic carboxypeptidases (CCPs).</strong><br><span class="authors">Kimura Y, Kurabe N, Ikegami K, et al.</span><br>J Biol Chem, 2010 Jul 23;285(30):22936-41.<br>DOI: <a href="https://doi.org/10.1074/jbc.C110.128280">10.1074/jbc.C110.128280</a></p>
-                </article>
-                <article class="research-item" data-year="2010">
-                    <img src="elegans.png" alt="C. elegans research icon" class="fit-image" loading="lazy">
-                    <p><strong>Joubert syndrome Arl13b functions at ciliary membranes and stabilizes protein transport in Caenorhabditis elegans.</strong><br><span class="authors">Cevik S, Hori Y, Kaplan OI, et al.</span><br>J Cell Biol, 2010 Mar 22;188(6):953-69.<br>DOI: <a href="https://doi.org/10.1083/jcb.200908133">10.1083/jcb.200908133</a></p>
-                </article>
-                <article class="research-item" data-year="2008">
-                    <img src="elegans.png" alt="C. elegans research icon" class="fit-image" loading="lazy">
-                    <p><strong>Intraflagellar transport: from molecular characterisation to mechanism.</strong><br><span class="authors">Blacque OE, Cevik S, Kaplan OI.</span><br>Front Biosci, 2008;13:2633-52.<br>DOI: <a href="https://doi.org/10.2741/2871">10.2741/2871</a></p>
-                </article>
+                <!-- Populated dynamically via JavaScript -->
             </div>
         </section>
 
         <section id="news" class="section" style="display: none;">
-            <h1>News</h1>
-            <div class="research-grid">
+            <h1 data-lang-en="News" data-lang-tr="Haberler">News</h1>
+            <div class="research-grid" id="news-list">
                 <article class="research-item">
-                    <img src="elegans.png" alt="News icon" class="fit-image" loading="lazy">
-                    <p><strong>March 26, 2025:</strong> We recently identified a link between CILK1/DYF-5 and cranioectodermal dysplasia by integrating patient-derived cells and <em>C. elegans</em>. models. Our study, titled <strong>"A homozygous frameshift variant in the CILK1 gene causes cranioectodermal dysplasia"</strong> has been submitted for publication.</p>
+                    <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16zm-1-5h2v2h-2zm0-8h2v6h-2z"/></svg>
+                    <div>
+                        <h3 data-lang-en="March 26, 2025: New Ciliopathy Discovery" data-lang-tr="26 Mart 2025: Yeni Siliopati Keşfi">March 26, 2025: New Ciliopathy Discovery</h3>
+                        <p data-lang-en="We recently identified a link between CILK1/DYF-5 and cranioectodermal dysplasia by integrating patient-derived cells and C. elegans models. Our study has been submitted for publication." data-lang-tr="Hasta kaynaklı hücreleri ve C. elegans modellerini birleştirerek, CILK1/DYF-5 ile kranioektodermal displazi arasındaki bağlantıyı yakın zamanda belirledik. Çalışmamız yayına sunuldu.">We recently identified a link between CILK1/DYF-5 and cranioectodermal dysplasia by integrating patient-derived cells and <em>C. elegans</em> models. Our study has been submitted for publication.</p>
+                    </div>
                 </article>
                 <article class="research-item">
-                    <img src="elegans.png" alt="News icon" class="fit-image" loading="lazy">
-                    <p><strong>March 2025:</strong> New publication in iScience on cilia-cilia elongation! <a href="https://www.sciencedirect.com/science/article/pii/S2589004225000501">Read more</a></p>
+                    <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16zm-1-5h2v2h-2zm0-8h2v6h-2z"/></svg>
+                    <div>
+                        <h3 data-lang-en="March 2025: New Publication" data-lang-tr="Mart 2025: Yeni Yayın">March 2025: New Publication</h3>
+                        <p data-lang-en="New publication in iScience on cilia-cilia elongation! Read more at the link." data-lang-tr="iScience’ta sil-sil uzaması üzerine yeni bir yayın! Daha fazlasını bağlantıda okuyun.">New publication in iScience on cilia-cilia elongation! <a href="https://www.sciencedirect.com/science/article/pii/S2589004225000501">Read more</a></p>
+                    </div>
                 </article>
                 <article class="research-item">
-                    <img src="elegans.png" alt="News icon" class="fit-image" loading="lazy">
-                    <p><strong>January 2025:</strong> Kaplan Lab receives grant for ciliopathy research.</p>
+                    <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16zm-1-5h2v2h-2zm0-8h2v6h-2z"/></svg>
+                    <div>
+                        <h3 data-lang-en="January 2025: Grant Awarded" data-lang-tr="Ocak 2025: Hibe Alındı">January 2025: Grant Awarded</h3>
+                        <p data-lang-en="Kaplan Lab receives grant for ciliopathy research." data-lang-tr="Kaplan Laboratuvarı, siliopati araştırmaları için hibe aldı.">Kaplan Lab receives grant for ciliopathy research.</p>
+                    </div>
                 </article>
             </div>
         </section>
 
         <section id="resources" class="section" style="display: none;">
-            <h1>Resources</h1>
-            <p>Our lab is committed to open science, and we openly share our protocols and bioinformatics pipelines to contribute to the broader scientific community.</p>
+            <h1 data-lang-en="Resources" data-lang-tr="Kaynaklar">Resources</h1>
+            <p data-lang-en="Our lab is committed to open science, and we openly share our protocols and bioinformatics pipelines to contribute to the broader scientific community." data-lang-tr="Laboratuvarımız açık bilime bağlıdır ve protokollerimizi ve biyoinformatik boru hatlarımızı daha geniş bilim topluluğuna katkıda bulunmak için açıkça paylaşıyoruz.">Our lab is committed to open science, and we openly share our protocols and bioinformatics pipelines to contribute to the broader scientific community.</p>
             <div class="research-grid">
                 <article class="research-item">
-                    <img src="elegans.png" alt="Resource icon" class="fit-image" loading="lazy">
-                    <p><strong>ConVarT:</strong> A search engine for matching human genetic variants with variants from non-human species, aiding in the functional characterization of rare disease variants. <em>(Currently unavailable at <a href="http://convart.org/">http://convart.org/</a>; see <a href="https://github.com/thekaplanlab/ConVarT_Web">GitHub</a>)</em></p>
+                    <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16zm-1-5h2v2h-2zm0-8h2v6h-2z"/></svg>
+                    <p><strong>ConVarT:</strong> <span data-lang-en="A search engine for matching human genetic variants with variants from non-human species, aiding in the functional characterization of rare disease variants." data-lang-tr="İnsan genetik varyantlarını insan dışı türlerden varyantlarla eşleştiren bir arama motoru, nadir hastalık varyantlarının işlevsel karakterizasyonuna yardımcı olur.">A search engine for matching human genetic variants with variants from non-human species, aiding in the functional characterization of rare disease variants.</span> <em>(<a href="http://convart.org/" data-lang-en="Currently unavailable" data-lang-tr="Şu anda kullanılamıyor">Currently unavailable</a>; see <a href="https://github.com/thekaplanlab/ConVarT_Web">GitHub</a>)</em></p>
                 </article>
                 <article class="research-item">
-                    <img src="elegans.png" alt="Resource icon" class="fit-image" loading="lazy">
-                    <p><strong>CilioGenics:</strong> An integrated database and tool for predicting novel ciliary genes, supporting research into ciliopathies and ciliary biology. <a href="https://ciliogenics.com/?page=Home">https://ciliogenics.com/?page=Home</a></p>
+                    <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16zm-1-5h2v2h-2zm0-8h2v6h-2z"/></svg>
+                    <p><strong>CilioGenics:</strong> <span data-lang-en="An integrated database and tool for predicting novel ciliary genes, supporting research into ciliopathies and ciliary biology." data-lang-tr="Yeni sil genlerini tahmin etmek için entegre bir veritabanı ve araç, siliopatiler ve sil biyolojisi araştırmalarını destekler.">An integrated database and tool for predicting novel ciliary genes, supporting research into ciliopathies and ciliary biology.</span> <a href="https://ciliogenics.com/?page=Home">https://ciliogenics.com/?page=Home</a></p>
                 </article>
                 <article class="research-item">
-                    <img src="elegans.png" alt="Resource icon" class="fit-image" loading="lazy">
-                    <p><strong>CiliaMiner:</strong> A bioinformatics platform for exploring ciliopathy genes and related data, designed to accelerate discovery in rare disease research. <a href="https://kaplanlab.shinyapps.io/ciliaminer/">https://kaplanlab.shinyapps.io/ciliaminer/</a></p>
+                    <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16zm-1-5h2v2h-2zm0-8h2v6h-2z"/></svg>
+                    <p><strong>CiliaMiner:</strong> <span data-lang-en="A bioinformatics platform for exploring ciliopathy genes and related data, designed to accelerate discovery in rare disease research." data-lang-tr="Siliopati genlerini ve ilgili verileri keşfetmek için bir biyoinformatik platformu, nadir hastalık araştırmalarında keşfi hızlandırmak için tasarlanmıştır.">A bioinformatics platform for exploring ciliopathy genes and related data, designed to accelerate discovery in rare disease research.</span> <a href="https://kaplanlab.shinyapps.io/ciliaminer/">https://kaplanlab.shinyapps.io/ciliaminer/</a></p>
                 </article>
                 <article class="research-item">
-                    <img src="elegans.png" alt="Resource icon" class="fit-image" loading="lazy">
-                    <p><strong>GitHub:</strong> Access our open-source code, protocols, and bioinformatics pipelines for rare disease and ciliopathy research. <a href="https://github.com/thekaplanlab">https://github.com/thekaplanlab</a></p>
+                    <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16zm-1-5h2v2h-2zm0-8h2v6h-2z"/></svg>
+                    <p><strong>GitHub:</strong> <span data-lang-en="Access our open-source code, protocols, and bioinformatics pipelines for rare disease and ciliopathy research." data-lang-tr="Nadir hastalık ve siliopati araştırmaları için açık kaynak kodumuza, protokollerimize ve biyoinformatik boru hatlarımıza erişin.">Access our open-source code, protocols, and bioinformatics pipelines for rare disease and ciliopathy research.</span> <a href="https://github.com/thekaplanlab">https://github.com/thekaplanlab</a></p>
                 </article>
                 <article class="research-item">
-                    <img src="elegans.png" alt="Resource icon" class="fit-image" loading="lazy">
-                    <p><strong><span class="lang-en" lang="en">CRISPR/Cas9 Protocol:</span></strong> <span class="lang-en" lang="en">A PCR-based, cost-efficient, and fast screening strategy.</span><br><a href="CRISPR_protocol.pdf" target="_blank"><span class="lang-en" lang="en">Download Protocol (PDF)</span></a></p>
+                    <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16zm-1-5h2v2h-2zm0-8h2v6h-2z"/></svg>
+                    <p><strong data-lang-en="CRISPR/Cas9 Protocol" data-lang-tr="CRISPR/Cas9 Protokolü">CRISPR/Cas9 Protocol:</strong> <span data-lang-en="A PCR-based, cost-efficient, and fast screening strategy." data-lang-tr="PCR tabanlı, maliyet etkin ve hızlı bir tarama stratejisi.">A PCR-based, cost-efficient, and fast screening strategy.</span><br><a href="CRISPR_protocol.pdf" target="_blank" data-lang-en="Download Protocol (PDF)" data-lang-tr="Protokolü İndir (PDF)">Download Protocol (PDF)</a></p>
                 </article>
                 <article class="research-item">
                     <img src="CRISPR_figure.png" alt="CRISPR/Cas9 protocol schematic" class="crispr-image" loading="lazy">
@@ -420,31 +340,31 @@
         </section>
 
         <section id="movies" class="section" style="display: none;">
-            <h1>Movies</h1>
-            <p>Explore animated insights into our research and protocols.</p>
+            <h1 data-lang-en="Movies" data-lang-tr="Filmler">Movies</h1>
+            <p data-lang-en="Explore animated insights into our research and protocols." data-lang-tr="Araştırmalarımıza ve protokollerimize dair animasyonlu içgörüleri keşfedin.">Explore animated insights into our research and protocols.</p>
             <div class="video-grid">
                 <div class="video-item">
-                    <img src="STAR_protocol.gif" alt="STAR protocol animation" class="video-animation" loading="lazy">
-                    <p><strong>STAR Protocol Animation:</strong> A visual guide to our protocol for determining the average speed and frequency of kinesin and dynein-driven intraflagellar transport (IFT) in C. elegans.</p>
+                    <a href="STAR_protocol.gif" data-lightbox="movies" data-title="STAR Protocol Animation"><img src="STAR_protocol.gif" alt="STAR protocol animation" class="video-animation" loading="lazy"></a>
+                    <p><strong data-lang-en="STAR Protocol Animation:" data-lang-tr="STAR Protokol Animasyonu:">STAR Protocol Animation:</strong> <span data-lang-en="A visual guide to our protocol for determining the average speed and frequency of kinesin and dynein-driven intraflagellar transport (IFT) in C. elegans." data-lang-tr="C. elegans’ta kinesin ve dynein tarafından yönlendirilen intraflagellar transportun (IFT) ortalama hızını ve frekansını belirlemek için protokolümüze dair görsel bir rehber.">A visual guide to our protocol for determining the average speed and frequency of kinesin and dynein-driven intraflagellar transport (IFT) in C. elegans.</span></p>
                 </div>
                 <div class="video-item">
-                    <img src="GIF1.gif" alt="Research animation" class="video-animation" loading="lazy">
-                    <p><strong>Research Animation:</strong> Worm movement comparison of wild-type and mutants, showcasing our lab’s work on ciliary biology and rare disease mechanisms.</p>
+                    <a href="GIF1.gif" data-lightbox="movies" data-title="Research Animation"><img src="GIF1.gif" alt="Research animation" class="video-animation" loading="lazy"></a>
+                    <p><strong data-lang-en="Research Animation:" data-lang-tr="Araştırma Animasyonu:">Research Animation:</strong> <span data-lang-en="Worm movement comparison of wild-type and mutants, showcasing our lab’s work on ciliary biology and rare disease mechanisms." data-lang-tr="Vahşi tip ve mutantların solucan hareketi karşılaştırması, laboratuvarımızın sil biyolojisi ve nadir hastalık mekanizmaları üzerindeki çalışmalarını sergiler.">Worm movement comparison of wild-type and mutants, showcasing our lab’s work on ciliary biology and rare disease mechanisms.</span></p>
                 </div>
             </div>
         </section>
 
         <section id="images" class="section" style="display: none;">
-            <h1>Images</h1>
-            <p>View images from our research and lab activities.</p>
+            <h1 data-lang-en="Images" data-lang-tr="Görüntüler">Images</h1>
+            <p data-lang-en="View images from our research and lab activities." data-lang-tr="Araştırmalarımızdan ve laboratuvar etkinliklerimizden görüntüler görün.">View images from our research and lab activities.</p>
             <div class="research-grid">
                 <article class="research-item">
-                    <img src="lab-image1.jpg" alt="Lab experiment image 1" class="large-image" loading="lazy">
-                    <p><strong>Lab Experiment 1</strong></p>
+                    <a href="lab-image1.jpg" data-lightbox="images" data-title="Lab Experiment 1"><img src="lab-image1.jpg" alt="Lab experiment image 1" class="large-image" loading="lazy"></a>
+                    <p><strong data-lang-en="Lab Experiment 1" data-lang-tr="Laboratuvar Deneyi 1">Lab Experiment 1</strong></p>
                 </article>
                 <article class="research-item">
-                    <img src="lab-image2.jpg" alt="Lab experiment image 2" class="large-image" loading="lazy">
-                    <p><strong>Lab Experiment 2</strong></p>
+                    <a href="lab-image2.jpg" data-lightbox="images" data-title="Lab Experiment 2"><img src="lab-image2.jpg" alt="Lab experiment image 2" class="large-image" loading="lazy"></a>
+                    <p><strong data-lang-en="Lab Experiment 2" data-lang-tr="Laboratuvar Deneyi 2">Lab Experiment 2</strong></p>
                 </article>
             </div>
         </section>
@@ -459,12 +379,28 @@
         </div>
     </footer>
 
+    <button class="back-to-top" aria-label="Back to top">↑</button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
     <script>
+        function initPage() {
+            showSection(window.location.hash.slice(1) || 'home');
+            loadDynamicContent();
+            setLanguage(localStorage.getItem('lang') || 'en');
+            if (localStorage.getItem('theme') === 'dark') document.body.classList.add('dark-mode');
+            updateThemeButton();
+            startSpotlight();
+        }
+
         function showSection(sectionId) {
-            document.querySelectorAll('.section').forEach(sec => sec.style.display = 'none');
+            document.querySelectorAll('.section').forEach(sec => {
+                sec.style.display = 'none';
+                sec.style.opacity = '0';
+            });
             const section = document.getElementById(sectionId);
             if (section) {
                 section.style.display = 'block';
+                setTimeout(() => section.style.opacity = '1', 10); // Trigger animation
                 window.history.pushState({}, document.title, `#${sectionId}`);
             }
         }
@@ -478,7 +414,7 @@
             items.forEach(item => {
                 const year = item.getAttribute('data-year');
                 if (filterValue === 'all' || year === filterValue) {
-                    item.style.display = 'block';
+                    item.style.display = 'flex';
                     visibleCount++;
                 } else {
                     item.style.display = 'none';
@@ -488,7 +424,7 @@
             if (visibleCount === 0) {
                 const noResults = document.createElement('p');
                 noResults.id = 'no-results';
-                noResults.textContent = 'No publications found for this year.';
+                noResults.textContent = document.documentElement.lang === 'en' ? 'No publications found for this year.' : 'Bu yıl için yayın bulunamadı.';
                 document.getElementById('publication-list').appendChild(noResults);
             }
         }
@@ -522,11 +458,85 @@
             button.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
         }
 
-        // Apply saved theme on load
-        if (localStorage.getItem('theme') === 'dark') {
-            document.body.classList.add('dark-mode');
+        document.querySelector('#lang-toggle').addEventListener('click', () => {
+            const newLang = document.documentElement.lang === 'en' ? 'tr' : 'en';
+            setLanguage(newLang);
+            localStorage.setItem('lang', newLang);
+        });
+
+        function setLanguage(lang) {
+            document.documentElement.lang = lang;
+            document.querySelectorAll('[data-lang-en]').forEach(el => {
+                const key = `lang${lang === 'en' ? 'En' : 'Tr'}`;
+                if (el.tagName === 'INPUT') el.placeholder = el.dataset[key];
+                else el.textContent = el.dataset[key] || el.textContent;
+            });
+            filterPublications(); // Update no-results message
         }
-        updateThemeButton();
+
+        document.querySelector('#search-bar').addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            document.querySelectorAll('.research-item').forEach(item => {
+                const text = item.textContent.toLowerCase();
+                item.style.display = text.includes(query) ? 'flex' : 'none';
+            });
+        });
+
+        window.addEventListener('scroll', () => {
+            const btn = document.querySelector('.back-to-top');
+            btn.classList.toggle('visible', window.scrollY > 300);
+        });
+
+        document.querySelector('.back-to-top').addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        function startSpotlight() {
+            const spotlight = document.querySelector('#spotlight');
+            const members = document.querySelectorAll('#current-members-list .research-item');
+            let index = 0;
+            setInterval(() => {
+                spotlight.innerHTML = members[index].innerHTML;
+                spotlight.querySelector('img').setAttribute('loading', 'lazy');
+                index = (index + 1) % members.length;
+            }, 5000);
+        }
+
+        function loadDynamicContent() {
+            // Research Updates
+            fetch('research-updates.json')
+                .then(response => response.json())
+                .then(data => {
+                    const list = document.getElementById('research-updates-list');
+                    data.forEach(item => {
+                        list.innerHTML += `
+                            <article class="research-item">
+                                <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16zm-1-5h2v2h-2zm0-8h2v6h-2z"/></svg>
+                                <p><strong data-lang-en="${item.titleEn}" data-lang-tr="${item.titleTr}">${item.titleEn}</strong> ${item.contentEn} <a href="${item.link || '#'}" ${item.link ? '' : 'style="display:none;"'}>${document.documentElement.lang === 'en' ? 'Read more' : 'Devamını oku'}</a></p>
+                            </article>`;
+                    });
+                })
+                .catch(() => console.log('Failed to load research updates'));
+
+            // Publications
+            fetch('publications.json')
+                .then(response => response.json())
+                .then(data => {
+                    const list = document.getElementById('publication-list');
+                    data.forEach(pub => {
+                        list.innerHTML += `
+                            <article class="research-item" data-year="${pub.year}">
+                                <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16zm-1-5h2v2h-2zm0-8h2v6h-2z"/></svg>
+                                <p><strong>${pub.title}</strong><br><span class="authors">${pub.authors}</span><br>${pub.journal}<br>DOI: <a href="${pub.doi}">${pub.doi.split('/').pop()}</a>${pub.note ? ` <em>${pub.note}</em>` : ''}</p>
+                            </article>`;
+                    });
+                })
+                .catch(() => console.log('Failed to load publications'));
+        }
+
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js');
+        }
     </script>
 </body>
 </html>
