@@ -46,22 +46,11 @@ body {
     align-items: center;
 }
 
-.navbar-logo {
-    height: 40px;
-    margin-left: 10px;
-}
-
 .nav-links {
     display: flex;
     justify-content: center;
     gap: 15px;
     flex-grow: 1;
-}
-
-.nav-controls {
-    display: flex;
-    gap: 10px;
-    margin-right: 10px;
 }
 
 .navbar a {
@@ -76,8 +65,17 @@ body {
     border-radius: 5px;
 }
 
-.hamburger, #lang-toggle, .theme-toggle {
+.hamburger {
     display: none;
+    background: none;
+    border: none;
+    color: var(--white);
+    font-size: 24px;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.theme-toggle {
     background: none;
     border: none;
     color: var(--white);
@@ -142,34 +140,10 @@ body {
    ========================================================================== */
 .section {
     display: none;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.section h1 {
-    position: sticky;
-    top: 60px;
-    background: var(--white);
-    padding: 10px 0;
-    z-index: 10;
-    transition: background 0.3s;
 }
 
 /* ==========================================================================
-   Search Bar Styles
-   ========================================================================== */
-.search-bar {
-    width: 100%;
-    max-width: 400px;
-    padding: 10px;
-    margin: 20px 0;
-    border: 1px solid var(--primary-color);
-    border-radius: 5px;
-    font-size: 16px;
-}
-
-/* ==========================================================================
-   Image & Icon Styles
+   Image Styles
    ========================================================================== */
 .fit-image {
     width: 150px;
@@ -205,13 +179,6 @@ body {
     border-radius: 4px;
 }
 
-.icon {
-    width: 24px;
-    height: 24px;
-    margin-right: 10px;
-    flex-shrink: 0;
-}
-
 /* ==========================================================================
    Research Styles
    ========================================================================== */
@@ -241,14 +208,9 @@ body {
     border-radius: 5px;
     border-left: 4px solid var(--primary-color);
     color: #222;
-    transition: transform 0.3s ease;
 }
 
-.research-item:hover {
-    transform: translateY(-5px);
-}
-
-.research-item img, .research-item svg {
+.research-item img {
     flex-shrink: 0;
 }
 
@@ -266,12 +228,6 @@ body {
 .team-name {
     font-size: 1.5em;
     font-weight: bold;
-}
-
-/* Spotlight */
-.spotlight {
-    background: #d9e6ff;
-    border-left: 4px solid #003366;
 }
 
 /* Research Overview Grid */
@@ -389,31 +345,6 @@ footer {
 }
 
 /* ==========================================================================
-   Back-to-Top Button
-   ========================================================================== */
-.back-to-top {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: var(--primary-color);
-    color: var(--white);
-    border: none;
-    padding: 10px 15px;
-    border-radius: 50%;
-    cursor: pointer;
-    display: none;
-    transition: background 0.3s;
-}
-
-.back-to-top.visible {
-    display: block;
-}
-
-.back-to-top:hover {
-    background: var(--secondary-color);
-}
-
-/* ==========================================================================
    Dark Mode Styles
    ========================================================================== */
 body.dark-mode {
@@ -421,12 +352,12 @@ body.dark-mode {
     color: var(--dark-text);
 }
 
-body.dark-mode .container, body.dark-mode .section h1 {
+body.dark-mode .container {
     background: var(--dark-container);
 }
 
-body.dark-mode .navbar, body.dark-mode footer {
-    background-color: #003366;
+body.dark-mode .navbar {
+    background-color: #003366; /* Slightly darker shade for contrast */
 }
 
 body.dark-mode .dropdown-content {
@@ -435,4 +366,93 @@ body.dark-mode .dropdown-content {
 }
 
 body.dark-mode .dropdown-content a {
-    color: #66b3
+    color: #66b3ff;
+}
+
+body.dark-mode .dropdown-content a:hover {
+    background-color: #004d99;
+    color: var(--white);
+}
+
+body.dark-mode .research-item {
+    background: #2e4a66;
+    color: var(--dark-text);
+}
+
+body.dark-mode .research-overview-item {
+    background-color: var(--dark-container);
+    border-color: #444;
+}
+
+body.dark-mode .video-item {
+    background: #2e4a66;
+}
+
+body.dark-mode .filter-menu select {
+    background-color: var(--dark-container);
+    color: var(--dark-text);
+    border-color: #66b3ff;
+}
+
+body.dark-mode footer {
+    background-color: #003366;
+}
+
+/* ==========================================================================
+   Responsive Adjustments
+   ========================================================================== */
+@media (max-width: 768px) {
+    .hamburger {
+        display: block;
+    }
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        background-color: var(--primary-color);
+        position: absolute;
+        top: 60px;
+        left: 0;
+    }
+    .nav-links.active {
+        display: flex;
+    }
+    .navbar a, .dropbtn {
+        padding: 10px;
+        width: 100%;
+        text-align: left;
+    }
+    .dropdown-content {
+        position: static;
+        box-shadow: none;
+        background-color: #e6f2ff;
+    }
+    body.dark-mode .dropdown-content {
+        background-color: #2e4a66;
+    }
+    .container {
+        max-width: 95%;
+        padding: 15px;
+    }
+    .research-overview-grid {
+        grid-template-columns: 1fr;
+    }
+    .research-item {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    .figure-image, .overview-image, .large-image, .crispr-image {
+        max-width: 90%;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        margin-top: 100px;
+    }
+    .team-image, .fit-image {
+        width: 100px;
+        height: 100px;
+    }
+}
