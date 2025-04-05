@@ -47,28 +47,22 @@
             <a href="#publications" onclick="showSection('publications')">Publications</a>
             <a href="#news" onclick="showSection('news')">News</a>
             <a href="#resources" onclick="showSection('resources')">Resources</a>
-            <div class="dropdown">
-                <span class="dropbtn" tabindex="0" aria-haspopup="true">Gallery</span>
-                <div class="dropdown-content">
-                    <a href="#movies" onclick="showSection('movies')">Movies</a>
-                    <a href="#images" onclick="showSection('images')">Images</a>
-                </div>
-            </div>
+            <a href="#gallery" onclick="showSection('gallery')">Gallery</a>
         </div>
         <button class="theme-toggle" aria-label="Toggle dark mode">🌙</button>
     </nav>
 
-   <div class="container">
-    <section id="home" class="section">
-        <h1>Welcome to Kaplan's Lab</h1>
-        <img src="figure3.png" alt="Illustration of cilia structure" class="figure-image" loading="lazy">
-        <h1>Advancing Rare Disease Research Through Innovation</h1>
-        <p>Our lab is dedicated to uncovering the genetic and molecular mechanisms driving rare diseases, with a particular focus on ciliopathies. By integrating comparative genomics, functional assays, and cutting-edge gene editing technologies, we aim to bridge the gap between genotype and phenotype, advancing our understanding of disease mechanisms and identifying potential therapeutic targets.</p>
-    <<div class="research-updates">
-        <h2>Research Updates</h2>
-        <div class="research-grid">
-            <article class="research-item">
-                    <img src="elegans.png" alt="C. elegans research icon" class="fit-image" loading="lazy">
+    <div class="container">
+        <section id="home" class="section">
+            <h1>Welcome to Kaplan's Lab</h1>
+            <img src="figure3.png" alt="Illustration of cilia structure" class="figure-image" loading="lazy">
+            <h1>Advancing Rare Disease Research Through Innovation</h1>
+            <p>Our lab is dedicated to uncovering the genetic and molecular mechanisms driving rare diseases, with a particular focus on ciliopathies. By integrating comparative genomics, functional assays, and cutting-edge gene editing technologies, we aim to bridge the gap between genotype and phenotype, advancing our understanding of disease mechanisms and identifying potential therapeutic targets.</p>
+            <div class="research-updates">
+                <h2>Research Updates</h2>
+                <div class="research-grid">
+                    <article class="research-item">
+                        <img src="elegans.png" alt="C. elegans research icon" class="fit-image" loading="lazy">
                         <p>We recently identified a link between CILK1/DYF-5 and cranioectodermal dysplasia by integrating patient-derived cells and <em>C. elegans</em> models. Our study, titled <strong>"A homozygous frameshift variant in the CILK1 gene causes cranioectodermal dysplasia"</strong>, has been submitted for publication.</p>
                     </article>
                     <article class="research-item">
@@ -87,6 +81,7 @@
             </div>
         </section>
 
+        <!-- Other sections remain unchanged until Gallery -->
         <section id="research-overview" class="section" style="display: none;">
             <h1>Research Overview</h1>
             <p>Our lab is dedicated to uncovering the genetic and molecular mechanisms driving rare diseases, with a particular focus on ciliopathies. By integrating comparative genomics, functional assays, and cutting-edge gene editing technologies, we aim to bridge the gap between genotype and phenotype, advancing our understanding of disease mechanisms and identifying potential therapeutic targets.</p>
@@ -428,33 +423,40 @@
             </div>
         </section>
 
-        <section id="movies" class="section" style="display: none;">
-            <h1>Movies</h1>
-            <p>Explore animated insights into our research and protocols.</p>
-            <div class="video-grid">
-                <div class="video-item">
-                    <img src="STAR_protocol.gif" alt="STAR protocol animation" class="video-animation" loading="lazy">
-                    <p><strong>STAR Protocol Animation:</strong> A visual guide to our protocol for determining the average speed and frequency of kinesin and dynein-driven intraflagellar transport (IFT) in C. elegans.</p>
-                </div>
-                <div class="video-item">
-                    <img src="GIF1.gif" alt="Research animation" class="video-animation" loading="lazy">
-                    <p><strong>Research Animation:</strong> Worm movement comparison of wild-type and mutants, showcasing our lab’s work on ciliary biology and rare disease mechanisms.</p>
-                </div>
+        <section id="gallery" class="section gallery-section" style="display: none;">
+            <div class="gallery-header">
+                <h1>Gallery</h1>
+                <blockquote>"Antonie van Leeuwenhoek (1632–1723), the first to peer into the unseen, was enchanted by the delicate beauty hidden within a single drop of life. With each glance through his handcrafted lens, he unveiled a universe within—a silent, complex world of cells. Ever since, we have walked in his shadow, chasing that same wonder, striving to illuminate the unseen poetry woven into the fabric of life."</blockquote>
             </div>
-        </section>
-
-        <section id="images" class="section" style="display: none;">
-            <h1>Images</h1>
-            <p>View images from our research and lab activities.</p>
-            <div class="research-grid">
-                <article class="research-item">
-                    <img src="lab-image1.jpg" alt="Lab experiment image 1" class="large-image" loading="lazy">
-                    <p><strong>Lab Experiment 1</strong></p>
-                </article>
-                <article class="research-item">
-                    <img src="lab-image2.jpg" alt="Lab experiment image 2" class="large-image" loading="lazy">
-                    <p><strong>Lab Experiment 2</strong></p>
-                </article>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="STAR_protocol.gif" alt="STAR Protocol Animation" class="gallery-media" loading="lazy">
+                    <div class="gallery-text">
+                        <h3>STAR Protocol Animation</h3>
+                        <p>A visual guide to our protocol for determining the average speed and frequency of kinesin and dynein-driven intraflagellar transport (IFT) in <em>C. elegans</em>.</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="GIF1.gif" alt="Research Animation" class="gallery-media" loading="lazy">
+                    <div class="gallery-text">
+                        <h3>Research Animation</h3>
+                        <p>Worm movement comparison of wild-type and mutants, showcasing our lab’s work on ciliary biology and rare disease mechanisms.</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="lab-image1.jpg" alt="Lab Experiment 1" class="gallery-media" loading="lazy">
+                    <div class="gallery-text">
+                        <h3>Lab Experiment 1</h3>
+                        <p>An image from our research activities, highlighting experimental work in the lab.</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="lab-image2.jpg" alt="Lab Experiment 2" class="gallery-media" loading="lazy">
+                    <div class="gallery-text">
+                        <h3>Lab Experiment 2</h3>
+                        <p>Another glimpse into our lab’s efforts to explore ciliary function and rare diseases.</p>
+                    </div>
+                </div>
             </div>
         </section>
     </div>
@@ -531,7 +533,6 @@
             button.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
         }
 
-        // Apply saved theme on load
         if (localStorage.getItem('theme') === 'dark') {
             document.body.classList.add('dark-mode');
         }
