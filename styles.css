@@ -294,6 +294,97 @@ body {
 }
 
 /* ==========================================================================
+   Team Section Styles
+   ========================================================================== */
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.team-member {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    background: #e6f2ff;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 4px solid var(--primary-color);
+    box-shadow: 0 3px 10px var(--shadow);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.team-member:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px var(--shadow);
+}
+
+.team-photo {
+    flex-shrink: 0;
+    margin-right: 20px;
+}
+
+.team-image {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid var(--primary-color);
+}
+
+.team-info {
+    flex-grow: 1;
+}
+
+.team-name {
+    font-size: 1.4em;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 5px;
+}
+
+.team-title {
+    font-size: 1.1em;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.team-education, .team-focus {
+    font-size: 1em;
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+.team-education strong, .team-focus strong {
+    color: var(--primary-color);
+}
+
+.social-links-team {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.social-links-team li a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-size: 0.95em;
+    padding: 5px 10px;
+    border: 1px solid var(--primary-color);
+    border-radius: 15px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.social-links-team li a:hover {
+    background-color: var(--primary-color);
+    color: var(--white);
+}
+
+/* ==========================================================================
    Gallery Styles
    ========================================================================== */
 .gallery-section {
@@ -507,6 +598,34 @@ body.dark-mode .research-overview-item {
     border-color: #444;
 }
 
+body.dark-mode .team-member {
+    background: #2e4a66;
+    color: var(--dark-text);
+}
+
+body.dark-mode .team-name {
+    color: #66b3ff;
+}
+
+body.dark-mode .team-title {
+    color: #ccc;
+}
+
+body.dark-mode .team-education strong, 
+body.dark-mode .team-focus strong {
+    color: #66b3ff;
+}
+
+body.dark-mode .social-links-team li a {
+    color: #66b3ff;
+    border-color: #66b3ff;
+}
+
+body.dark-mode .social-links-team li a:hover {
+    background-color: #66b3ff;
+    color: var(--dark-text);
+}
+
 body.dark-mode .gallery-section::before {
     background: rgba(0, 0, 0, 0.75);
 }
@@ -603,6 +722,20 @@ body.dark-mode .cta-text {
         align-items: center;
         text-align: center;
     }
+    .team-grid {
+        grid-template-columns: 1fr;
+    }
+    .team-member {
+        flex-direction: column;
+        text-align: center;
+    }
+    .team-photo {
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
+    .social-links-team {
+        justify-content: center;
+    }
     .gallery-item {
         flex-direction: column;
         text-align: center;
@@ -619,6 +752,12 @@ body.dark-mode .cta-text {
     .team-image, .fit-image {
         width: 100px;
         height: 100px;
+    }
+    .team-name {
+        font-size: 1.2em;
+    }
+    .team-title {
+        font-size: 1em;
     }
     .gallery-header h1 {
         font-size: 2em;
