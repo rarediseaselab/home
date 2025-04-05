@@ -456,3 +456,42 @@ body.dark-mode footer {
         height: 100px;
     }
 }
+
+/* Smooth transitions */
+.section {
+    transition: opacity 0.3s ease;
+}
+
+/* Better card shadows */
+.research-item, .research-overview-item {
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.research-item:hover, .research-overview-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* Improved mobile dropdowns */
+@media (max-width: 768px) {
+    .dropdown-content {
+        position: relative;
+        width: 100%;
+    }
+}
+
+/* Better focus states */
+a:focus, button:focus, select:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+/* Placeholder for lazy loading */
+img[data-src] {
+    background: #f0f0f0;
+}
+
+body.dark-mode img[data-src] {
+    background: #333;
+}
