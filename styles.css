@@ -48,16 +48,6 @@ body {
     box-shadow: 0 2px 5px var(--shadow);
 }
 
-.logo {
-    height: 40px;
-    padding: 5px;
-}
-
-.logo-link {
-    display: flex;
-    align-items: center;
-}
-
 .nav-links {
     display: flex;
     justify-content: center;
@@ -265,7 +255,7 @@ body {
     justify-content: space-between;
     box-shadow: 0 2px 5px var(--shadow);
     border-radius: 5px;
-    transition: transform 0.3s ease, box-shadow 0.3s W ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .research-overview-item:hover {
@@ -273,7 +263,7 @@ body {
     box-shadow: 0 4px 10px var(--shadow);
 }
 
-.read-more-btn, .cta-btn {
+.read-more-btn {
     background-color: var(--primary-color);
     color: var(--white);
     border: none;
@@ -288,8 +278,19 @@ body {
     transition: background-color 0.3s ease;
 }
 
-.read-more-btn:hover, .cta-btn:hover {
+.read-more-btn:hover {
     background-color: var(--secondary-color);
+}
+
+.cta-text {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: bold;
+    margin-left: 5px;
+}
+
+.cta-text:hover {
+    text-decoration: underline;
 }
 
 /* ==========================================================================
@@ -553,6 +554,10 @@ body.dark-mode .back-to-top {
     background: #66b3ff;
 }
 
+body.dark-mode .cta-text {
+    color: #66b3ff;
+}
+
 /* ==========================================================================
    Responsive Adjustments
    ========================================================================== */
@@ -604,9 +609,6 @@ body.dark-mode .back-to-top {
     }
     .gallery-media {
         max-width: 100%;
-    }
-    .logo {
-        height: 30px;
     }
 }
 
