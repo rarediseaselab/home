@@ -182,11 +182,20 @@ body {
 }
 
 .research-image {
-    width: 80px; /* Reduced size to better fit alongside text */
+    width: 60px; /* Reduced size for better fit */
     height: auto;
     object-fit: contain;
     border-radius: 4px;
-    flex-shrink: 0; /* Prevents stretching */
+    flex-shrink: 0;
+}
+
+/* Specific rule for elegans.png to enforce smaller size */
+img[src="elegans.png"] {
+    width: 60px !important; /* Override any other sizing */
+    max-width: 60px !important;
+    height: auto !important;
+    max-height: 60px !important;
+    object-fit: contain;
 }
 
 /* ==========================================================================
@@ -758,7 +767,13 @@ body.dark-mode .cta-text {
         height: 100px;
     }
     .research-image {
-        width: 70px; /* Slightly smaller for medium screens */
+        width: 50px; /* Adjusted for medium screens */
+    }
+    img[src="elegans.png"] {
+        width: 50px !important;
+        max-width: 50px !important;
+        height: auto !important;
+        max-height: 50px !important;
     }
     .figure-image, .overview-image, .large-image, .crispr-image {
         max-width: 100%;
@@ -774,7 +789,13 @@ body.dark-mode .cta-text {
         height: 80px;
     }
     .research-image {
-        width: 60px; /* Even smaller for small screens */
+        width: 40px; /* Adjusted for small screens */
+    }
+    img[src="elegans.png"] {
+        width: 40px !important;
+        max-width: 40px !important;
+        height: auto !important;
+        max-height: 40px !important;
     }
     .team-name {
         font-size: 1.2em;
