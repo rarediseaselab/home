@@ -62,8 +62,7 @@
         <div class="dropdown">
             <span class="dropbtn">Gallery</span>
             <div class="dropdown-content">
-                <a href="#movies" onclick="showSection('movies')">Movies</a>
-                <a href="#images" onclick="showSection('images')">Images</a>
+                <a href="#gallery" onclick="showSection('gallery')">Gallery</a>
             </div>
         </div>
     </nav>
@@ -488,32 +487,42 @@
             </div>
         </section>
 
-        <section id="movies" class="section" style="display: none;">
-            <h1>Movies</h1>
-            <p>Explore animated insights into our research and protocols.</p>
-            <div class="gallery-grid">
-                <div class="gallery-item">
-                    <img src="STAR_protocol.gif" alt="STAR Protocol Animation" class="gallery-media">
-                    <p><strong>STAR Protocol Animation:</strong> A visual guide to our protocol for determining the average speed and frequency of kinesin and dynein-driven intraflagellar transport (IFT) in C. elegans.</p>
-                </div>
-                <div class="gallery-item">
-                    <img src="GIF1.gif" alt="Research Animation" class="gallery-media">
-                    <p><strong>Research Animation:</strong> Worm movement comparison of wild-type and mutants, showcasing our lab’s work on ciliary biology and rare disease mechanisms.</p>
-                </div>
+        <section id="gallery" class="section gallery-section" style="display: none;">
+            <div class="gallery-header">
+                <h1>Gallery</h1>
+                <p class="gallery-intro">Explore visual insights into our research on cilia, ciliopathies, and rare diseases through animations and high-resolution images.</p>
             </div>
-        </section>
-
-        <section id="images" class="section" style="display: none;">
-            <h1>Images</h1>
-            <p>View images from our research and lab activities.</p>
-            <div class="research-grid">
-                <div class="research-item">
-                    <img src="lab-image1.jpg" alt="Lab Image 1" class="large-image">
-                    <p><strong>Lab Experiment 1</strong></p>
+            <div class="gallery-content">
+                <div class="gallery-subsection">
+                    <h2>Movies</h2>
+                    <div class="gallery-grid">
+                        <div class="gallery-item">
+                            <img src="STAR_protocol.gif" alt="STAR Protocol Animation" class="gallery-media">
+                            <div class="gallery-text">
+                                <h3>STAR Protocol Animation</h3>
+                                <p>A visual guide to our protocol for determining the average speed and frequency of kinesin and dynein-driven intraflagellar transport (IFT) in <em>C. elegans</em>. Reference: Turan MG, et al. <em>STAR Protoc.</em> 2022;3(3):101498. <a href="https://doi.org/10.1016/j.xpro.2022.101498">DOI: 10.1016/j.xpro.2022.101498</a></p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="research-item">
-                    <img src="lab-image2.jpg" alt="Lab Image 2" class="large-image">
-                    <p><strong>Lab Experiment 2</strong></p>
+                <div class="gallery-subsection">
+                    <h2>Images</h2>
+                    <div class="gallery-grid">
+                        <div class="gallery-item">
+                            <img src="cilia_neuron.png" alt="Cilia Neuron" class="gallery-media">
+                            <div class="gallery-text">
+                                <h3>Cilia Neuron</h3>
+                                <p>An image showcasing the intricate structure of cilia in neuronal cells, highlighting their role in sensory functions and ciliopathy research.</p>
+                            </div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="cilia_res1.jpg" alt="Cilia Research" class="gallery-media">
+                            <div class="gallery-text">
+                                <h3>Cilia Research</h3>
+                                <p>A high-resolution image from our studies on ciliary biology, used to investigate ciliopathies such as Joubert syndrome and cranioectodermal dysplasia.</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
