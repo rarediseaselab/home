@@ -510,14 +510,18 @@
                         <h2>Images</h2>
                         <div class="gallery-grid">
                             <div class="gallery-item">
-                                <img src="cilia_neuron.png" alt="Amphid Cilia on Sensory Neuron" class="gallery-media">
+                                <a href="cilia_neuron.png" class="lightbox-link">
+                                    <img src="cilia_neuron.png" alt="Amphid Cilia on Sensory Neuron" class="gallery-media">
+                                </a>
                                 <div class="gallery-text">
                                     <h3>Amphid Cilia on Sensory Neuron</h3>
                                     <p>An image displaying the amphid cilia on sensory neuron, highlighting their role in sensory functions and ciliopathy work.</p>
                                 </div>
                             </div>
                             <div class="gallery-item">
-                                <img src="cilia_res1.jpg" alt="Cilia Research" class="gallery-media">
+                                <a href="cilia_res1.jpg" class="lightbox-link">
+                                    <img src="cilia_res1.jpg" alt="Cilia Research" class="gallery-media">
+                                </a>
                                 <div class="gallery-text">
                                     <h3>Cilia Research</h3>
                                     <p>A high-resolution image from our studies on ciliary biology, used to investigate ciliopathies such as Joubert syndrome and cranioectodermal dysplasia.</p>
@@ -526,6 +530,11 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <!-- Lightbox Modal -->
+            <div id="lightbox" class="lightbox">
+                <span class="lightbox-close">&times;</span>
+                <img class="lightbox-content" id="lightbox-image">
             </div>
         </section>
     </div>
@@ -538,5 +547,33 @@
             <a href="https://www.linkedin.com/in/oktay-i-kaplan-74b16856/" target="_blank"><img src="linkedin-logo.png" alt="LinkedIn" class="social-icon"></a>
         </div>
     </footer>
+
+    <!-- Lightbox JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImage = document.getElementById('lightbox-image');
+            const lightboxLinks = document.querySelectorAll('.lightbox-link');
+            const closeBtn = document.querySelector('.lightbox-close');
+
+            lightboxLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    lightboxImage.src = this.href;
+                    lightbox.style.display = 'flex';
+                });
+            });
+
+            closeBtn.addEventListener('click', function() {
+                lightbox.style.display = 'none';
+            });
+
+            lightbox.addEventListener('click', function(e) {
+                if (e.target === lightbox) {
+                    lightbox.style.display = 'none';
+                }
+            });
+        });
+    </script>
 </body>
 </html>
