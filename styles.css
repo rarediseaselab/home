@@ -594,33 +594,6 @@ footer {
         width: 120px;
     }
 }
-
-@media (max-width: 480px) {
-    .navbar {
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-    .navbar a, .dropbtn {
-        font-size: 0.85em;
-    }
-    .container {
-        margin-top: 100px;
-    }
-    .overview-image {
-        height: 150px;
-    }
-    .team-image {
-        width: 100px;
-        height: 100px;
-    }
-    .team-name {
-        font-size: 1.2em;
-    }
-    .fit-image {
-        width: 100px;
-    }
-}
-
 /* Lightbox Styles */
 .lightbox {
     display: none;
@@ -668,4 +641,29 @@ footer {
 
 .lightbox-link:hover img {
     opacity: 0.8;
+}
+@media (max-width: 480px) {
+    .navbar {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .navbar a, .dropbtn {
+        font-size: 0.85em;
+    }
+    .container {
+        margin-top: 100px;
+    }
+    .overview-image {
+        height: 150px;
+    }
+    .team-image {
+        width: 100px;
+        height: 100px;
+    }
+    .team-name {
+        font-size: 1.2em;
+    }
+    .fit-image {
+        width: 100px;
+    }
 }
