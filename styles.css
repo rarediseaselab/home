@@ -182,11 +182,11 @@ body {
 }
 
 .research-image {
-    width: 100%;
-    max-width: 150px; /* Caps size to prevent oversized images like elegans.png */
+    width: 80px; /* Reduced size to better fit alongside text */
     height: auto;
     object-fit: contain;
     border-radius: 4px;
+    flex-shrink: 0; /* Prevents stretching */
 }
 
 /* ==========================================================================
@@ -758,7 +758,7 @@ body.dark-mode .cta-text {
         height: 100px;
     }
     .research-image {
-        max-width: 120px;
+        width: 70px; /* Slightly smaller for medium screens */
     }
     .figure-image, .overview-image, .large-image, .crispr-image {
         max-width: 100%;
@@ -774,7 +774,7 @@ body.dark-mode .cta-text {
         height: 80px;
     }
     .research-image {
-        max-width: 100px;
+        width: 60px; /* Even smaller for small screens */
     }
     .team-name {
         font-size: 1.2em;
