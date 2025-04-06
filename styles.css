@@ -18,9 +18,6 @@
     --white: #ffffff;
     --text-color: #333;
     --shadow: rgba(0, 0, 0, 0.1);
-    --dark-bg: #1a1a1a;
-    --dark-text: #f0f0f0;
-    --dark-container: #2a2a2a;
 }
 
 body {
@@ -28,7 +25,6 @@ body {
     color: var(--text-color);
     line-height: 1.6;
     font-size: 16px;
-    transition: background-color 0.3s, color 0.3s;
 }
 
 /* ==========================================================================
@@ -59,7 +55,6 @@ body {
     text-decoration: none;
     padding: 10px 15px;
     font-weight: bold;
-    transition: background-color 0.3s;
 }
 
 .navbar a:hover, .dropbtn:hover {
@@ -117,7 +112,6 @@ body {
     background: var(--white);
     border-radius: 8px;
     box-shadow: 0 0 10px var(--shadow);
-    transition: background 0.3s;
 }
 
 /* ==========================================================================
@@ -136,11 +130,6 @@ body {
 h1 {
     color: var(--primary-color);
     margin-bottom: 15px;
-}
-
-h2 {
-    color: var(--primary-color);
-    margin: 15px 0;
 }
 
 /* ==========================================================================
@@ -167,26 +156,27 @@ img {
     border: 2px solid var(--primary-color);
 }
 
-/* Specific styles for elegans.png and research images */
-.research-image,
-img[src="elegans.png"] {
-    width: 50px;
-    max-width: 50px;
-    height: auto;
-    max-height: 50px;
-    object-fit: contain;
-    flex-shrink: 0;
+/* Ultra-specific rules for elegans.png */
+body .container .section .research-grid .research-item img[src="elegans.png"],
+body .container .section .research-item img[src="elegans.png"],
+body .container .section img[src="elegans.png"].research-image {
+    width: 50px !important;
+    max-width: 50px !important;
+    height: auto !important;
+    max-height: 50px !important;
+    object-fit: contain !important;
+    flex-shrink: 0 !important;
 }
 
-/* Override for team section where elegans.png is a placeholder */
-.team-member img[src="elegans.png"] {
-    width: 120px;
-    max-width: 120px;
-    height: 120px;
-    max-height: 120px;
-    object-fit: cover;
-    border-radius: 50%;
-    border: 2px solid var(--primary-color);
+/* Override for team placeholders */
+body .container .section#current-members .team-grid .team-member img[src="elegans.png"] {
+    width: 120px !important;
+    max-width: 120px !important;
+    height: 120px !important;
+    max-height: 120px !important;
+    object-fit: cover !important;
+    border-radius: 50% !important;
+    border: 2px solid var(--primary-color) !important;
 }
 
 /* ==========================================================================
@@ -208,12 +198,6 @@ img[src="elegans.png"] {
     border-radius: 5px;
     border-left: 4px solid var(--primary-color);
     box-shadow: 0 2px 5px var(--shadow);
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.research-item:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px var(--shadow);
 }
 
 .research-item p {
@@ -253,13 +237,11 @@ img[src="elegans.png"] {
     font-size: 1.4em;
     font-weight: bold;
     color: var(--primary-color);
-    margin-bottom: 5px;
 }
 
 .team-title {
     font-size: 1.1em;
     color: #555;
-    margin-bottom: 10px;
 }
 
 .social-links-team {
@@ -276,7 +258,6 @@ img[src="elegans.png"] {
     padding: 5px 10px;
     border: 1px solid var(--primary-color);
     border-radius: 15px;
-    transition: background-color 0.3s, color 0.3s;
 }
 
 .social-links-team a:hover {
@@ -305,11 +286,6 @@ footer {
 .social-icon {
     width: 30px;
     height: 30px;
-    transition: transform 0.3s;
-}
-
-.social-icon:hover {
-    transform: scale(1.1);
 }
 
 /* ==========================================================================
@@ -328,71 +304,10 @@ footer {
     font-size: 20px;
     cursor: pointer;
     display: none;
-    transition: opacity 0.3s;
 }
 
 .back-to-top.visible {
     display: block;
-}
-
-/* ==========================================================================
-   Dark Mode Styles
-   ========================================================================== */
-body.dark-mode {
-    background-color: var(--dark-bg);
-    color: var(--dark-text);
-}
-
-body.dark-mode .container {
-    background: var(--dark-container);
-}
-
-body.dark-mode .navbar {
-    background-color: #003366;
-}
-
-body.dark-mode .dropdown-content {
-    background-color: #333;
-}
-
-body.dark-mode .dropdown-content a {
-    color: #66b3ff;
-}
-
-body.dark-mode .dropdown-content a:hover {
-    background-color: #004d99;
-    color: var(--white);
-}
-
-body.dark-mode .research-item,
-body.dark-mode .team-member {
-    background: #2e4a66;
-    color: var(--dark-text);
-}
-
-body.dark-mode .team-name,
-body.dark-mode h1,
-body.dark-mode h2 {
-    color: #66b3ff;
-}
-
-body.dark-mode .team-title {
-    color: #ccc;
-}
-
-body.dark-mode .social-links-team a {
-    color: #66b3ff;
-    border-color: #66b3ff;
-}
-
-body.dark-mode .social-links-team a:hover {
-    background-color: #66b3ff;
-    color: var(--dark-text);
-}
-
-body.dark-mode footer,
-body.dark-mode .back-to-top {
-    background-color: #003366;
 }
 
 /* ==========================================================================
@@ -424,9 +339,6 @@ body.dark-mode .back-to-top {
         box-shadow: none;
         background: #e6f2ff;
     }
-    body.dark-mode .dropdown-content {
-        background: #2e4a66;
-    }
     .container {
         max-width: 95%;
         padding: 15px;
@@ -439,25 +351,18 @@ body.dark-mode .back-to-top {
         margin-right: 0;
         margin-bottom: 15px;
     }
-    .team-image {
-        width: 100px;
-        height: 100px;
+    body .container .section .research-grid .research-item img[src="elegans.png"],
+    body .container .section img[src="elegans.png"].research-image {
+        width: 40px !important;
+        max-width: 40px !important;
+        height: auto !important;
+        max-height: 40px !important;
     }
-    .research-image,
-    img[src="elegans.png"] {
-        width: 40px;
-        max-width: 40px;
-        height: auto;
-        max-height: 40px;
-    }
-    .team-member img[src="elegans.png"] {
-        width: 100px;
-        max-width: 100px;
-        height: 100px;
-        max-height: 100px;
-    }
-    .figure-image {
-        max-width: 100%;
+    body .container .section#current-members .team-grid .team-member img[src="elegans.png"] {
+        width: 100px !important;
+        max-width: 100px !important;
+        height: 100px !important;
+        max-height: 100px !important;
     }
 }
 
@@ -465,27 +370,17 @@ body.dark-mode .back-to-top {
     .container {
         margin-top: 100px;
     }
-    .team-image {
-        width: 80px;
-        height: 80px;
+    body .container .section .research-grid .research-item img[src="elegans.png"],
+    body .container .section img[src="elegans.png"].research-image {
+        width: 30px !important;
+        max-width: 30px !important;
+        height: auto !important;
+        max-height: 30px !important;
     }
-    .research-image,
-    img[src="elegans.png"] {
-        width: 30px;
-        max-width: 30px;
-        height: auto;
-        max-height: 30px;
-    }
-    .team-member img[src="elegans.png"] {
-        width: 80px;
-        max-width: 80px;
-        height: 80px;
-        max-height: 80px;
-    }
-    .team-name {
-        font-size: 1.2em;
-    }
-    .team-title {
-        font-size: 1em;
+    body .container .section#current-members .team-grid .team-member img[src="elegans.png"] {
+        width: 80px !important;
+        max-width: 80px !important;
+        height: 80px !important;
+        max-height: 80px !important;
     }
 }
