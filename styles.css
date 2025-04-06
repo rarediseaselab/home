@@ -155,7 +155,7 @@ body {
 }
 
 /* ==========================================================================
-   Image Styles (Simplified)
+   Image Styles (Enhanced for elegans.png)
    ========================================================================== */
 img {
     max-width: 100%;
@@ -184,14 +184,28 @@ img {
     display: block;
 }
 
-/* Research images (including elegans.png) */
-.research-image, img[src="elegans.png"] {
+/* Research images */
+.research-image {
     width: 50px;
     max-width: 50px;
     height: auto;
     max-height: 50px;
     object-fit: contain;
     flex-shrink: 0;
+}
+
+/* Ultra-specific rule for elegans.png with !important to override conflicts */
+img[src="elegans.png"],
+.section img[src="elegans.png"],
+.research-item img[src="elegans.png"],
+.research-grid img[src="elegans.png"],
+.gallery-item img[src="elegans.png"] {
+    width: 50px !important;
+    max-width: 50px !important;
+    height: auto !important;
+    max-height: 50px !important;
+    object-fit: contain !important;
+    display: block;
 }
 
 /* ==========================================================================
@@ -750,11 +764,16 @@ body.dark-mode .cta-text {
         width: 100px;
         height: 100px;
     }
-    .research-image, img[src="elegans.png"] {
-        width: 40px;
-        max-width: 40px;
-        height: auto;
-        max-height: 40px;
+    .research-image, 
+    img[src="elegans.png"],
+    .section img[src="elegans.png"],
+    .research-item img[src="elegans.png"],
+    .research-grid img[src="elegans.png"],
+    .gallery-item img[src="elegans.png"] {
+        width: 40px !important;
+        max-width: 40px !important;
+        height: auto !important;
+        max-height: 40px !important;
     }
     .figure-image, .overview-image, .large-image, .crispr-image {
         max-width: 100%;
@@ -769,11 +788,16 @@ body.dark-mode .cta-text {
         width: 80px;
         height: 80px;
     }
-    .research-image, img[src="elegans.png"] {
-        width: 30px;
-        max-width: 30px;
-        height: auto;
-        max-height: 30px;
+    .research-image, 
+    img[src="elegans.png"],
+    .section img[src="elegans.png"],
+    .research-item img[src="elegans.png"],
+    .research-grid img[src="elegans.png"],
+    .gallery-item img[src="elegans.png"] {
+        width: 30px !important;
+        max-width: 30px !important;
+        height: auto !important;
+        max-height: 30px !important;
     }
     .team-name {
         font-size: 1.2em;
