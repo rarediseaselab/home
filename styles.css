@@ -571,6 +571,17 @@ body.night-mode {
     background-color: #004d99;
 }
 
+/* Make all bold text steelblue */
+strong, b, [style*="font-weight: bold"] {
+    color: steelblue;
+}
+
+/* Ensure bold text remains readable in night mode */
+.night-mode strong, 
+.night-mode b, 
+.night-mode [style*="font-weight: bold"] {
+    color: #87ceeb;
+}
 /* Link Styling */
 a {
     color: #004080;
