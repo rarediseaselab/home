@@ -594,5 +594,29 @@
         });
     });
 </script>
+<!-- Night Mode Toggle -->
+<button id="night-mode-toggle" title="Toggle Night Mode">🌙</button>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const nightModeToggle = document.getElementById('night-mode-toggle');
+        
+        // Check for saved preference
+        if (localStorage.getItem('nightMode') === 'enabled') {
+            document.body.classList.add('night-mode');
+        }
+
+        nightModeToggle.addEventListener('click', function() {
+            document.body.classList.toggle('night-mode');
+            if (document.body.classList.contains('night-mode')) {
+                localStorage.setItem('nightMode', 'enabled');
+                nightModeToggle.textContent = '☀️';
+            } else {
+                localStorage.setItem('nightMode', 'disabled');
+                nightModeToggle.textContent = '🌙';
+            }
+        });
+    });
+</script>
 </body>
 </html>
