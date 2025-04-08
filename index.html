@@ -3,14 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Kaplan's Lab researches rare diseases and ciliopathies using comparative genomics, CRISPR/Cas9, and bioinformatics tools like ConVarT, CilioGenics, and CiliaMiner.">
+    <meta name="description" content="Kaplan's Lab focuses on rare diseases and ciliopathies using comparative genomics, CRISPR/Cas9, and bioinformatics tools like ConVarT, CilioGenics, and CiliaMiner.">
     <meta name="keywords" content="Kaplan's Lab, rare diseases, ciliopathies, bioinformatics, ConVarT, CilioGenics, CiliaMiner, genomics, CRISPR, research">
     <meta name="author" content="Kaplan's Lab">
     <title>Kaplan's Lab</title>
     <link rel="stylesheet" href="styles.css">
-    <!-- Favicon -->
     <link rel="icon" type="image/png" href="elegans2.png">
-    <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-EKT3SLJ516"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -21,71 +19,109 @@
     <script>
         function showSection(sectionId) {
             console.log("Showing section: " + sectionId);
-            document.querySelectorAll('.section').forEach(sec => {
-                sec.style.display = 'none';
-            });
+            document.querySelectorAll('.section').forEach(sec => sec.style.display = 'none');
             const section = document.getElementById(sectionId);
             if (section) {
                 section.style.display = 'block';
+                updateActiveNav(sectionId);
+                updateBreadcrumbs(sectionId);
                 console.log(sectionId + " section displayed");
             } else {
                 console.error("Section not found: " + sectionId);
             }
         }
+
+        function updateActiveNav(sectionId) {
+            document.querySelectorAll('.navbar a, .dropdown-content a').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${sectionId}`) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        function updateBreadcrumbs(sectionId) {
+            const breadcrumbs = document.getElementById('breadcrumbs');
+            let path = ['<a href="#home" onclick="showSection(\'home\')">Home</a>'];
+            if (sectionId !== 'home') {
+                const sectionTitle = document.getElementById(sectionId).querySelector('h1').textContent;
+                if (sectionId.startsWith('research-') || sectionId === 'bioinformatics') {
+                    path.push('<a href="#research-overview" onclick="showSection(\'research-overview\')">Research</a>');
+                } else if (sectionId.startsWith('current-') || sectionId.startsWith('former-') || sectionId === 'group-photos' || sectionId === 'open-positions') {
+                    path.push('<a href="#current-members" onclick="showSection(\'current-members\')">Team</a>');
+                }
+                path.push(sectionTitle);
+            }
+            breadcrumbs.innerHTML = path.join(' > ');
+        }
     </script>
 </head>
 <body onload="showSection('home')">
-   <!-- Navbar -->
-<nav class="navbar">
-  <a href="#home" onclick="showSection('home')">Home</a>
-  <div class="dropdown">
-    <span class="dropbtn">Research</span>
-    <div class="dropdown-content">
-      <a href="#research-overview" onclick="showSection('research-overview')">Research Overview</a>
-      <a href="#cilia-ciliopathies" onclick="showSection('cilia-ciliopathies')">Cilia and Ciliopathies</a>
-      <a href="#disease-modeling" onclick="showSection('disease-modeling')">Disease Modeling</a>
-      <a href="#cilia-cilia-joining" onclick="showSection('cilia-cilia-joining')">Cilia-Cilia Joining</a>
-      <a href="#bioinformatics" onclick="showSection('bioinformatics')">Bioinformatics</a>
-    </div>
-  </div>
-  <div class="dropdown">
-    <span class="dropbtn">Team</span>
-    <div class="dropdown-content">
-      <a href="#current-members" onclick="showSection('current-members')">Current Members</a>
-      <a href="#former-members" onclick="showSection('former-members')">Former Members</a>
-      <a href="#group-photos" onclick="showSection('group-photos')">Group Photos</a>
-      <a href="#open-positions" onclick="showSection('open-positions')">Open Positions</a>
-    </div>
-  </div>
-  <a href="#publications" onclick="showSection('publications')">Publications</a>
-  <a href="#news" onclick="showSection('news')">News</a>
-  <a href="#resources" onclick="showSection('resources')">Resources</a>
-  <a href="#gallery" onclick="showSection('gallery')">Gallery</a> <!-- Changed to simple link -->
-</nav>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="#home" onclick="showSection('home')">Home</a>
+        <div class="dropdown">
+            <span class="dropbtn">Research ▼</span>
+            <div class="dropdown-content">
+                <a href="#research-overview" onclick="showSection('research-overview')">Research Overview</a>
+                <a href="#cilia-ciliopathies" onclick="showSection('cilia-ciliopathies')">Cilia and Ciliopathies</a>
+                <a href="#disease-modeling" onclick="showSection('disease-modeling')">Disease Modeling</a>
+                <a href="#cilia-cilia-joining" onclick="showSection('cilia-cilia-joining')">Cilia-Cilia Joining</a>
+                <a href="#bioinformatics" onclick="showSection('bioinformatics')">Bioinformatics</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <span class="dropbtn">Team ▼</span>
+            <div class="dropdown-content">
+                <a href="#current-members" onclick="showSection('current-members')">Current Members</a>
+                <a href="#former-members" onclick="showSection('former-members')">Former Members</a>
+                <a href="#group-photos" onclick="showSection('group-photos')">Group Photos</a>
+                <a href="#open-positions" onclick="showSection('open-positions')">Open Positions</a>
+            </div>
+        </div>
+        <a href="#publications" onclick="showSection('publications')">Publications</a>
+        <a href="#news" onclick="showSection('news')">News</a>
+        <a href="#resources" onclick="showSection('resources')">Resources</a>
+        <a href="#gallery" onclick="showSection('gallery')">Gallery</a>
+    </nav>
+
+    <!-- Breadcrumbs -->
+    <div id="breadcrumbs"></div>
 
     <div class="container">
         <section id="home" class="section">
             <h1>Welcome to Kaplan's Lab</h1>
+            <p class="mission-statement">We study ciliopathies using <em>C. elegans</em> and bioinformatics to uncover the molecular basis of rare diseases.</p>
             <img src="figure3.png" alt="Cilia Illustration" class="figure-image">
             <p>Our lab is dedicated to uncovering the genetic and molecular mechanisms driving rare diseases, with a particular focus on ciliopathies. By integrating comparative genomics, functional assays, and cutting-edge gene editing technologies, we aim to bridge the gap between genotype and phenotype, advancing our understanding of disease mechanisms and identifying potential therapeutic targets.</p>
             <div class="research-updates">
-                <h2>Research Updates</h2>
-                <div class="research-grid">
-                    <div class="research-item">
-                        <img src="elegans.png" alt="Research Icon" class="fit-image">
-                        <p>We recently identified a link between CILK1/DYF-5 and cranioectodermal dysplasia by integrating patient-derived cells and <em>C. elegans</em> models. Our study, titled <strong>"A homozygous frameshift variant in the CILK1 gene causes cranioectodermal dysplasia"</strong>, has been submitted for publication.</p>
+                <h2>Featured Research</h2>
+                <div class="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="elegans.png" alt="Research Icon" class="fit-image">
+                            <p>Turan MG, Kantarci H, Cevik S, Kaplan OI. <strong>ARL13B regulates juxtaposed cilia-cilia elongation in BBSome dependent manner in Caenorhabditis elegans.</strong> iScience. 2025 Jan 10;28(2):111791. doi: <a href="https://doi.org/10.1016/j.isci.2025.111791">10.1016/j.isci.2025.111791</a></p>
+                        </div>
+                        <div class="carousel-item">
+                            <img src="elegans.png" alt="Research Icon" class="fit-image">
+                            <p>Pir MS, Cevik S, Kaplan OI. <strong>CilioGenics: an integrated method and database for predicting novel ciliary genes.</strong> Nucleic Acids Res. 2024 Aug 12;52(14):8127-8145. doi: <a href="https://doi.org/10.1093/nar/gkae554">10.1093/nar/gkae554</a></p>
+                        </div>
                     </div>
-                    <div class="research-item">
-                        <img src="elegans.png" alt="Research Icon" class="fit-image">
-                        <p>Turan MG, Kantarci H, Cevik S, Kaplan OI. <strong>ARL13B regulates juxtaposed cilia-cilia elongation in BBSome dependent manner in Caenorhabditis elegans.</strong> iScience. 2025 Jan 10;28(2):111791. doi: <a href="https://doi.org/10.1016/j.isci.2025.111791">10.1016/j.isci.2025.111791</a></p>
+                    <button class="carousel-prev" aria-label="Previous slide">❮</button>
+                    <button class="carousel-next" aria-label="Next slide">❯</button>
+                </div>
+            </div>
+            <div class="latest-news">
+                <h2>Latest News</h2>
+                <div class="news-grid">
+                    <div class="news-item">
+                        <p><strong>March 26, 2025:</strong> We recently identified a link between CILK1/DYF-5 and cranioectodermal dysplasia by integrating patient-derived cells and <em>C. elegans</em> models. Our study, titled <strong>"A homozygous frameshift variant in the CILK1 gene causes cranioectodermal dysplasia"</strong>, has been submitted for publication.</p>
                     </div>
-                    <div class="research-item">
-                        <img src="elegans.png" alt="Research Icon" class="fit-image">
-                        <p>Pir MS, Cevik S, Kaplan OI. <strong>CilioGenics: an integrated method and database for predicting novel ciliary genes.</strong> Nucleic Acids Res. 2024 Aug 12;52(14):8127-8145. doi: <a href="https://doi.org/10.1093/nar/gkae554">10.1093/nar/gkae554</a></p>
+                    <div class="news-item">
+                        <p><strong>March 2025:</strong> New publication in iScience on cilia-cilia elongation! <a href="https://www.sciencedirect.com/science/article/pii/S2589004225000501">Read more</a></p>
                     </div>
-                    <div class="research-item">
-                        <img src="elegans.png" alt="Research Icon" class="fit-image">
-                        <p>Pir MS, Cevik S, Kaplan OI. <strong>ConVarT: a search engine for matching human genetic variants with variants from non-human species.</strong> Nucleic Acids Res. 2022 Jan 7;50(D1):D1172-D1178. doi: <a href="https://doi.org/10.1093/nar/gkab939">10.1093/nar/gkab939</a> <em>(Note: DOI may be inactive; see <a href="https://github.com/thekaplanlab/ConVarT_Web">GitHub</a>)</em></p>
+                    <div class="news-item">
+                        <p><strong>January 2025:</strong> Kaplan Lab receives grant for ciliopathy research.</p>
                     </div>
                 </div>
             </div>
@@ -347,7 +383,8 @@
 
         <section id="publications" class="section" style="display: none;">
             <h1>Publications</h1>
-            <div class="research-grid">
+            <input type="text" id="pub-search" placeholder="Search publications..." class="pub-search">
+            <div class="research-grid" id="publications-list">
                 <div class="research-item">
                     <img src="elegans.png" alt="Research Icon" class="fit-image">
                     <p>Turan MG, Kantarci H, Cevik S, Kaplan OI. <strong>ARL13B regulates juxtaposed cilia-cilia elongation in BBSome dependent manner in Caenorhabditis elegans.</strong> iScience. 2025 Jan 10;28(2):111791. doi: <a href="https://doi.org/10.1016/j.isci.2025.111791">10.1016/j.isci.2025.111791</a></p>
@@ -482,56 +519,59 @@
                 </div>
             </div>
         </section>
-<!-- Gallery Section -->
-<section id="gallery" class="section gallery-section" style="display: none;">
-  <div class="gallery-layout">
-    <div class="gallery-quote">
-      <h1>Gallery</h1>
-      <p><em>Antonie van Leeuwenhoek (1632–1723), the first to peer into the unseen, was enchanted by the delicate beauty hidden within a single drop of life. With each glance through his handcrafted lens, he unveiled a universe within—a silent, intricate world of cells. Ever since, we have walked in his shadow, chasing that same wonder, striving to illuminate the unseen poetry woven into the fabric of life.</em></p>    </div>
-    <div class="gallery-items">
-      <div class="gallery-subsection">
-        <h2>Movies</h2>
-        <div class="gallery-grid">
-          <div class="gallery-item">
-            <img src="STAR_protocol.gif" alt="STAR Protocol Animation" class="gallery-media">
-            <div class="gallery-text">
-              <h3>STAR Protocol Animation</h3>
-              <p>A visual guide to our protocol for determining the average speed and frequency of kinesin and dynein-driven intraflagellar transport (IFT) in <em>C. elegans</em>. Reference: Turan MG, et al. <em>STAR Protoc.</em> 2022;3(3):101498. <a href="https://doi.org/10.1016/j.xpro.2022.101498">DOI: 10.1016/j.xpro.2022.101498</a></p>
+
+        <section id="gallery" class="section gallery-section" style="display: none;">
+            <div class="gallery-layout">
+                <div class="gallery-quote">
+                    <h1>Gallery</h1>
+                    <p><em>Antonie van Leeuwenhoek (1632–1723), the first to peer into the unseen, was enchanted by the delicate beauty hidden within a single drop of life. With each glance through his handcrafted lens, he unveiled a universe within—a silent, intricate world of cells. Ever since, we have walked in his shadow, chasing that same wonder, striving to illuminate the unseen poetry woven into the fabric of life.</em></p>
+                </div>
+                <div class="gallery-items">
+                    <div class="gallery-subsection">
+                        <h2>Movies</h2>
+                        <div class="gallery-grid">
+                            <div class="gallery-item">
+                                <img src="STAR_protocol.gif" alt="STAR Protocol Animation" class="gallery-media">
+                                <div class="gallery-text">
+                                    <h3>STAR Protocol Animation</h3>
+                                    <p>A visual guide to our protocol for determining the average speed and frequency of kinesin and dynein-driven intraflagellar transport (IFT) in <em>C. elegans</em>. Reference: Turan MG, et al. <em>STAR Protoc.</em> 2022;3(3):101498. <a href="https://doi.org/10.1016/j.xpro.2022.101498">DOI: 10.1016/j.xpro.2022.101498</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="gallery-subsection">
+                        <h2>Images</h2>
+                        <div class="gallery-grid">
+                            <div class="gallery-item">
+                                <a href="cilia_neuron.png" class="lightbox-link">
+                                    <img src="cilia_neuron.png" alt="Amphid Cilia on Sensory Neuron" class="gallery-media">
+                                </a>
+                                <div class="gallery-text">
+                                    <h3>Amphid Cilia on Sensory Neuron</h3>
+                                    <p>An image displaying the amphid cilia on sensory neuron, highlighting their role in sensory functions and ciliopathy work.</p>
+                                </div>
+                            </div>
+                            <div class="gallery-item">
+                                <a href="cilia_res1.jpg" class="lightbox-link">
+                                    <img src="cilia_res1.jpg" alt="Cilia Research" class="gallery-media">
+                                </a>
+                                <div class="gallery-text">
+                                    <h3>Cilia Research</h3>
+                                    <p>A high-resolution image from our studies on ciliary biology, used to investigate ciliopathies such as Joubert syndrome and cranioectodermal dysplasia.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-      </div>
-      <div class="gallery-subsection">
-        <h2>Images</h2>
-        <div class="gallery-grid">
-          <div class="gallery-item">
-            <a href="cilia_neuron.png" class="lightbox-link">
-              <img src="cilia_neuron.png" alt="Amphid Cilia on Sensory Neuron" class="gallery-media">
-            </a>
-            <div class="gallery-text">
-              <h3>Amphid Cilia on Sensory Neuron</h3>
-              <p>An image displaying the amphid cilia on sensory neuron, highlighting their role in sensory functions and ciliopathy work.</p>
+            <div id="lightbox" class="lightbox">
+                <span class="lightbox-close">×</span>
+                <img class="lightbox-content" id="lightbox-image">
             </div>
-          </div>
-        <div class="gallery-item">
-        <a href="cilia_res1.jpg" class="lightbox-link">
-        <img src="cilia_res1.jpg" alt="Cilia Research" class="gallery-media">
-        </a>
-        <div class="gallery-text">
-            <h3>Cilia Research</h3>
-            <p>A high-resolution image from our studies on ciliary biology, used to investigate ciliopathies such as Joubert syndrome and cranioectodermal dysplasia.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div id="lightbox" class="lightbox">
-    <span class="lightbox-close">×</span>
-    <img class="lightbox-content" id="lightbox-image">
-  </div>
-</section>
+        </section>
     </div>
 
-    <!-- Add Back to Top button before footer -->
+    <!-- Back to Top Button -->
     <button id="back-to-top" title="Back to Top">↑</button>
 
     <footer>
@@ -543,9 +583,41 @@
         </div>
     </footer>
 
-    <!-- Combined JavaScript for Lightbox and Back to Top -->
+    <!-- JavaScript -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Carousel functionality
+            const carousel = document.querySelector('.carousel-inner');
+            const items = document.querySelectorAll('.carousel-item');
+            let currentIndex = 0;
+
+            function updateCarousel() {
+                carousel.style.transform = `translateX(-${currentIndex * 100}%)`;
+            }
+
+            document.querySelector('.carousel-prev').addEventListener('click', () => {
+                currentIndex = (currentIndex > 0) ? currentIndex - 1 : items.length - 1;
+                updateCarousel();
+            });
+
+            document.querySelector('.carousel-next').addEventListener('click', () => {
+                currentIndex = (currentIndex < items.length - 1) ? currentIndex + 1 : 0;
+                updateCarousel();
+            });
+
+            // Publications search
+            const searchInput = document.getElementById('pub-search');
+            const pubList = document.getElementById('publications-list');
+            const pubs = pubList.querySelectorAll('.research-item');
+
+            searchInput.addEventListener('input', function() {
+                const query = this.value.toLowerCase();
+                pubs.forEach(pub => {
+                    const text = pub.textContent.toLowerCase();
+                    pub.style.display = text.includes(query) ? 'flex' : 'none';
+                });
+            });
+
             // Lightbox functionality
             const lightbox = document.getElementById('lightbox');
             const lightboxImage = document.getElementById('lightbox-image');
@@ -572,7 +644,6 @@
 
             // Back to Top functionality
             const backToTopBtn = document.getElementById('back-to-top');
-
             window.addEventListener('scroll', function() {
                 if (window.scrollY > 300) {
                     backToTopBtn.style.display = 'block';
@@ -582,37 +653,22 @@
             });
 
             backToTopBtn.addEventListener('click', function() {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // Night Mode Toggle
+            const nightModeToggle = document.getElementById('night-mode-toggle');
+            if (localStorage.getItem('nightMode') === 'enabled') {
+                document.body.classList.add('night-mode');
+            }
+            nightModeToggle.addEventListener('click', function() {
+                document.body.classList.toggle('night-mode');
+                localStorage.setItem('nightMode', document.body.classList.contains('night-mode') ? 'enabled' : 'disabled');
             });
         });
     </script>
 
     <!-- Night Mode Toggle -->
-    <button id="night-mode-toggle" title="Toggle Night Mode">🌙</button>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const nightModeToggle = document.getElementById('night-mode-toggle');
-            
-            // Check for saved preference
-            if (localStorage.getItem('nightMode') === 'enabled') {
-                document.body.classList.add('night-mode');
-            }
-
-            nightModeToggle.addEventListener('click', function() {
-                document.body.classList.toggle('night-mode');
-                if (document.body.classList.contains('night-mode')) {
-                    localStorage.setItem('nightMode', 'enabled');
-                    nightModeToggle.textContent = '☀️';
-                } else {
-                    localStorage.setItem('nightMode', 'disabled');
-                    nightModeToggle.textContent = '🌙';
-                }
-            });
-        });
-    </script>
+    <button id="night-mode-toggle" title="Toggle Night Mode"></button>
 </body>
 </html>
