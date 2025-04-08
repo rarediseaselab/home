@@ -57,11 +57,8 @@
     </script>
 </head>
 <body onload="showSection('home')">
-    <!-- Navbar with Logo -->
+    <!-- Navbar without Logo -->
     <nav class="navbar">
-        <div class="logo-container">
-            <img src="lablogo.png" alt="Kaplan's Lab Logo" class="lab-logo">
-        </div>
         <a href="#home" onclick="showSection('home')">Home</a>
         <div class="dropdown">
             <span class="dropbtn">Research ▼</span>
@@ -87,7 +84,7 @@
         <a href="#resources" onclick="showSection('resources')">Resources</a>
         <a href="#gallery" onclick="showSection('gallery')">Gallery</a>
     </nav>
-    
+
     <!-- Breadcrumbs -->
     <div id="breadcrumbs"></div>
 
@@ -98,33 +95,37 @@
             <img src="figure3.png" alt="Cilia Illustration" class="figure-image">
             <p>Our lab is dedicated to uncovering the genetic and molecular mechanisms driving rare diseases, with a particular focus on ciliopathies. By integrating comparative genomics, functional assays, and cutting-edge gene editing technologies, we aim to bridge the gap between genotype and phenotype, advancing our understanding of disease mechanisms and identifying potential therapeutic targets.</p>
             <div class="research-updates">
-                <h2>Featured Research</h2>
-                <div class="carousel">
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <img src="elegans.png" alt="Research Icon" class="fit-image">
+                <h2>Research Updates</h2>
+                <div class="research-grid">
+                    <div class="research-item">
+                        <img src="elegans.png" alt="Research Icon" class="fit-image">
+                        <div class="research-text">
                             <p>Turan MG, Kantarci H, Cevik S, Kaplan OI. <strong>ARL13B regulates juxtaposed cilia-cilia elongation in BBSome dependent manner in Caenorhabditis elegans.</strong> iScience. 2025 Jan 10;28(2):111791. doi: <a href="https://doi.org/10.1016/j.isci.2025.111791">10.1016/j.isci.2025.111791</a></p>
                         </div>
-                        <div class="carousel-item">
-                            <img src="elegans.png" alt="Research Icon" class="fit-image">
+                    </div>
+                    <div class="research-item">
+                        <img src="elegans.png" alt="Research Icon" class="fit-image">
+                        <div class="research-text">
                             <p>Pir MS, Cevik S, Kaplan OI. <strong>CilioGenics: an integrated method and database for predicting novel ciliary genes.</strong> Nucleic Acids Res. 2024 Aug 12;52(14):8127-8145. doi: <a href="https://doi.org/10.1093/nar/gkae554">10.1093/nar/gkae554</a></p>
                         </div>
                     </div>
-                    <button class="carousel-prev" aria-label="Previous slide">❮</button>
-                    <button class="carousel-next" aria-label="Next slide">❯</button>
-                </div>
-            </div>
-            <div class="latest-news">
-                <h2>Latest News</h2>
-                <div class="news-grid">
-                    <div class="news-item">
-                        <p><strong>March 26, 2025:</strong> We recently identified a link between CILK1/DYF-5 and cranioectodermal dysplasia by integrating patient-derived cells and <em>C. elegans</em> models. Our study, titled <strong>"A homozygous frameshift variant in the CILK1 gene causes cranioectodermal dysplasia"</strong>, has been submitted for publication.</p>
+                    <div class="research-item">
+                        <img src="elegans.png" alt="Research Icon" class="fit-image">
+                        <div class="research-text">
+                            <p><strong>March 26, 2025:</strong> We recently identified a link between CILK1/DYF-5 and cranioectodermal dysplasia by integrating patient-derived cells and <em>C. elegans</em> models. Our study, titled <strong>"A homozygous frameshift variant in the CILK1 gene causes cranioectodermal dysplasia"</strong>, has been submitted for publication.</p>
+                        </div>
                     </div>
-                    <div class="news-item">
-                        <p><strong>March 2025:</strong> New publication in iScience on cilia-cilia elongation! <a href="https://www.sciencedirect.com/science/article/pii/S2589004225000501">Read more</a></p>
+                    <div class="research-item">
+                        <img src="elegans.png" alt="Research Icon" class="fit-image">
+                        <div class="research-text">
+                            <p><strong>March 2025:</strong> New publication in iScience on cilia-cilia elongation! <a href="https://www.sciencedirect.com/science/article/pii/S2589004225000501">Read more</a></p>
+                        </div>
                     </div>
-                    <div class="news-item">
-                        <p><strong>January 2025:</strong> Kaplan Lab receives grant for ciliopathy research.</p>
+                    <div class="research-item">
+                        <img src="elegans.png" alt="Research Icon" class="fit-image">
+                        <div class="research-text">
+                            <p><strong>January 2025:</strong> Kaplan Lab receives grant for ciliopathy research.</p>
+                        </div>
                     </div>
                 </div>
             </div>
