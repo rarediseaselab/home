@@ -573,14 +573,14 @@ body.night-mode {
 
 /* Make all bold text steelblue */
 strong, b, [style*="font-weight: bold"] {
-    color: steelblue;
+    color: #004080; /* Matches navbar */
 }
 
 /* Ensure bold text remains readable in night mode */
 .night-mode strong, 
 .night-mode b, 
 .night-mode [style*="font-weight: bold"] {
-    color: #87ceeb;
+    color: #b3d9ff;
 }
 /* Link Styling */
 a {
@@ -713,11 +713,20 @@ footer {
     .gallery-quote {
         margin-bottom: 20px;
     }
+    
+    /* Update Gallery item layout */
     .gallery-item {
-        flex-direction: column;
-        text-align: center;
-        min-height: auto;
-    }
+  display: flex;
+  flex-direction: column; /* Stack image and text vertically */
+  align-items: center;
+  gap: 20px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  min-height: 250px;
+}
     .gallery-media {
         max-width: 100%;
     }
