@@ -57,13 +57,11 @@
     </script>
 </head>
 <body onload="showSection('home')">
-    <!-- Lab Logo -->
-    <div class="logo-container">
-        <img src="lablogo.png" alt="Kaplan's Lab Logo" class="lab-logo">
-    </div>
-    
-    <!-- Navbar -->
+    <!-- Navbar with Logo -->
     <nav class="navbar">
+        <div class="logo-container">
+            <img src="lablogo.png" alt="Kaplan's Lab Logo" class="lab-logo">
+        </div>
         <a href="#home" onclick="showSection('home')">Home</a>
         <div class="dropdown">
             <span class="dropbtn">Research ▼</span>
@@ -89,7 +87,7 @@
         <a href="#resources" onclick="showSection('resources')">Resources</a>
         <a href="#gallery" onclick="showSection('gallery')">Gallery</a>
     </nav>
-
+    
     <!-- Breadcrumbs -->
     <div id="breadcrumbs"></div>
 
