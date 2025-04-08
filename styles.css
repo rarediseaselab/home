@@ -14,7 +14,7 @@ body {
 
 /* Navbar */
 .navbar {
-    background-color: #004080; /* Blue for light mode */
+    background-color: #004080;
     padding: 10px;
     position: fixed;
     width: 100%;
@@ -25,7 +25,7 @@ body {
     align-items: center;
     gap: 15px;
     z-index: 1000;
-    height: 60px; /* Fixed height for navbar */
+    height: 100px; /* Increased from 60px to accommodate larger logo */
 }
 
 /* Logo in Navbar */
@@ -38,7 +38,7 @@ body {
 }
 
 .lab-logo {
-    height: 40px; /* Fits within navbar padding (60px - 2*10px) */
+    height: 80px; /* Fits within navbar padding (60px - 2*10px) */
     width: auto; /* Width adjusts proportionally */
     object-fit: contain;
     margin-right: 15px; /* Space between logo and Home link */
@@ -107,7 +107,7 @@ body {
 /* Container */
 .container {
     max-width: 900px;
-    margin: 80px auto 20px; /* Adjusted for navbar height */
+    margin: 120px auto 20px; /* Increased from 80px to account for taller navbar */
     padding: 20px;
     background: white;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
@@ -715,9 +715,10 @@ footer {
     .container {
         max-width: 95%;
         padding: 15px;
+        margin-top: 90px; /* Adjusted from 70px for taller navbar */
     }
     .navbar {
-        height: 50px;
+        height: 70px; /* Reduced from 100px for tablets */
         justify-content: flex-end;
         gap: 5px;
         padding: 5px;
@@ -727,12 +728,36 @@ footer {
         font-size: 0.9em;
     }
     .lab-logo {
-        height: 30px;
+        height: 50px; /* Reduced from 80px, still larger than original 30px */
         margin-right: 10px;
     }
     .logo-container {
         left: 5px;
     }
+}
+
+@media (max-width: 480px) {
+    .navbar {
+        height: 50px; /* Reduced further for mobile */
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .navbar a, .dropbtn {
+        padding: 5px 8px;
+        font-size: 0.85em;
+    }
+    .lab-logo {
+        height: 30px; /* Reduced from 80px, still larger than original 20px */
+        margin-right: 5px;
+    }
+    .logo-container {
+        position: static;
+        margin: 0 auto 5px 5px;
+    }
+    .container {
+        margin-top: 70px; /* Adjusted from 60px for taller navbar */
+    }
+}
     .research-overview-grid {
         grid-template-columns: 1fr;
         gap: 20px;
