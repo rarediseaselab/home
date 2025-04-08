@@ -11,136 +11,10 @@ body {
     color: #333;
     line-height: 1.6;
 }
-/* Logo Styling */
-.logo-container {
-    position: fixed;
-    top: 10px;
-    left: 10px;
-    z-index: 1001; /* Ensures it stays above the navbar */
-}
-
-.lab-logo {
-    width: 100px; /* Adjust size as needed */
-    height: auto;
-    object-fit: contain;
-    display: block;
-}
-
-/* Adjust navbar to accommodate logo */
-.navbar {
-    background-color: #004080;
-    padding: 10px;
-    position: fixed;
-    width: 100%;
-    top: 0; /* Keep it at the top */
-    left: 0;
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    z-index: 1000;
-    align-items: center;
-    margin-top: 60px; /* Adds space for the logo; adjust based on logo height */
-}
-
-/* Adjust container margin to prevent overlap with logo and navbar */
-.container {
-    max-width: 900px;
-    margin: 140px auto 20px; /* Increased from 80px to account for logo and navbar */
-    padding: 20px;
-    background: white;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-}
-
-/* Night Mode Adjustments for Logo */
-.night-mode .logo-container {
-    /* No specific change needed unless logo needs a different background */
-}
-
-/* Rest of your existing CSS remains mostly unchanged; I'll highlight corrections below */
-.navbar a {
-    color: white;
-    text-decoration: none;
-    padding: 10px 15px;
-    font-weight: bold;
-}
-/* Night Mode */
-body.night-mode {
-    background-color: #1a1a1a;
-    color: #d9d9d9;
-}
-
-.night-mode .container {
-    background: #2b2b2b;
-    box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1);
-}
-
-.night-mode .navbar {
-    background-color: #003366;
-}
-
-.night-mode .navbar a,
-.night-mode .dropbtn {
-    color: #e6e6e6;
-}
-
-.night-mode .navbar a:hover,
-.night-mode .dropdown:hover .dropbtn {
-    background-color: #001f47;
-}
-
-.night-mode .dropdown-content {
-    background-color: #333;
-}
-
-.night-mode .dropdown-content a {
-    color: #b3d9ff;
-}
-
-.night-mode .dropdown-content a:hover {
-    background-color: #004d99;
-    color: #fff;
-}
-
-.night-mode .section,
-.night-mode h1,
-.night-mode h2,
-.night-mode h3,
-.night-mode p {
-    color: #d9d9d9;
-}
-
-.night-mode .research-item,
-.night-mode .team-member,
-.night-mode .gallery-item {
-    background: #3d3d3d;
-    border-left: 4px solid #0066cc;
-}
-
-.night-mode .research-overview-item {
-    background-color: #2b2b2b;
-    border: 1px solid #4d4d4d;
-}
-
-.night-mode .research-updates h2 {
-    background-color: #003366;
-}
-
-.night-mode footer {
-    background-color: #003366;
-}
-
-.night-mode a {
-    color: #b3d9ff;
-}
-
-.night-mode a:hover {
-    color: #cce6ff;
-}
 
 /* Navbar */
 .navbar {
-    background-color: #004080;
+    background-color: #004080; /* Blue for light mode */
     padding: 10px;
     position: fixed;
     width: 100%;
@@ -148,11 +22,29 @@ body.night-mode {
     left: 0;
     display: flex;
     justify-content: center;
+    align-items: center;
     gap: 15px;
     z-index: 1000;
+    height: 60px; /* Fixed height for navbar */
+}
+
+/* Logo in Navbar */
+.logo-container {
+    position: absolute;
+    left: 10px;
+    height: 100%; /* Matches navbar height */
+    display: flex;
     align-items: center;
 }
 
+.lab-logo {
+    height: 40px; /* Fits within navbar padding (60px - 2*10px) */
+    width: auto; /* Width adjusts proportionally */
+    object-fit: contain;
+    margin-right: 15px; /* Space between logo and Home link */
+}
+
+/* Navbar Links */
 .navbar a {
     color: white;
     text-decoration: none;
@@ -215,7 +107,7 @@ body.night-mode {
 /* Container */
 .container {
     max-width: 900px;
-    margin: 80px auto 20px;
+    margin: 80px auto 20px; /* Adjusted for navbar height */
     padding: 20px;
     background: white;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
@@ -229,7 +121,7 @@ body.night-mode {
 
 /* Image Styling */
 .fit-image {
-    width: 150px; /* Your fix for elegans.png */
+    width: 150px;
     height: auto;
     object-fit: contain;
     border-radius: 50%;
@@ -489,7 +381,7 @@ body.night-mode {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(255, 255, 255, 0.85); /* Semi-transparent white overlay */
+    background: rgba(255, 255, 255, 0.85);
     z-index: 0;
 }
 
@@ -549,17 +441,17 @@ body.night-mode {
 }
 
 .gallery-item {
-    overflow: hidden; /* Added to prevent media overflow */
+    overflow: hidden;
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 20px;
     background: rgba(255, 255, 255, 0.9);
-    padding: 25px; /* Increased padding */
+    padding: 25px;
     border-radius: 8px;
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    min-height: 250px; /* Minimum height to ensure space */
+    min-height: 250px;
 }
 
 .gallery-item:hover {
@@ -569,7 +461,7 @@ body.night-mode {
 
 .gallery-media {
     width: 100%;
-    max-width: 400px; /* Increased max-width */
+    max-width: 400px;
     height: auto;
     object-fit: contain;
     border-radius: 4px;
@@ -578,7 +470,7 @@ body.night-mode {
 
 .gallery-text {
     flex-grow: 1;
-    min-width: 0; /* Prevents overflow */
+    min-width: 0;
 }
 
 .gallery-text h3 {
@@ -591,6 +483,21 @@ body.night-mode {
     font-size: 1em;
     color: #555;
     line-height: 1.5;
+}
+
+/* News Grid under Research Updates */
+.news-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.news-item {
+    background: #e6f2ff;
+    padding: 15px;
+    border-radius: 5px;
+    border-left: 4px solid #004080;
 }
 
 /* Back to Top Button */
@@ -617,7 +524,85 @@ body.night-mode {
     transform: scale(1.1);
 }
 
-/* Night mode for back-to-top */
+/* Night Mode */
+body.night-mode {
+    background-color: #1a1a1a;
+    color: #d9d9d9;
+}
+
+.night-mode .container {
+    background: #2b2b2b;
+    box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1);
+}
+
+.night-mode .navbar {
+    background: linear-gradient(90deg, #ff6f61, #6b5b95, #88b04b); /* Colorful gradient */
+}
+
+.night-mode .navbar a,
+.night-mode .dropbtn {
+    color: #e6e6e6;
+}
+
+.night-mode .navbar a:hover,
+.night-mode .dropdown:hover .dropbtn {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.night-mode .dropdown-content {
+    background-color: #333;
+}
+
+.night-mode .dropdown-content a {
+    color: #b3d9ff;
+}
+
+.night-mode .dropdown-content a:hover {
+    background-color: #004d99;
+    color: #fff;
+}
+
+.night-mode .section,
+.night-mode h1,
+.night-mode h2,
+.night-mode h3,
+.night-mode p {
+    color: #d9d9d9;
+}
+
+.night-mode .research-item,
+.night-mode .team-member,
+.night-mode .gallery-item {
+    background: #3d3d3d;
+    border-left: 4px solid #0066cc;
+}
+
+.night-mode .research-overview-item {
+    background-color: #2b2b2b;
+    border: 1px solid #4d4d4d;
+}
+
+.night-mode .research-updates h2 {
+    background-color: #ff6f61; /* Matches colorful night mode theme */
+}
+
+.night-mode .news-item {
+    background: #3d3d3d;
+    border-left: 4px solid #ff6f61;
+}
+
+.night-mode footer {
+    background-color: #003366;
+}
+
+.night-mode a {
+    color: #b3d9ff;
+}
+
+.night-mode a:hover {
+    color: #cce6ff;
+}
+
 .night-mode #back-to-top {
     background-color: #0066cc;
 }
@@ -628,15 +613,16 @@ body.night-mode {
 
 /* Make all bold text steelblue */
 strong, b, [style*="font-weight: bold"] {
-    color: #004080; /* Matches navbar */
+    color: #004080;
 }
 
 /* Ensure bold text remains readable in night mode */
-.night-mode strong, 
-.night-mode b, 
+.night-mode strong,
+.night-mode b,
 .night-mode [style*="font-weight: bold"] {
     color: #b3d9ff;
 }
+
 /* Link Styling */
 a {
     color: #004080;
@@ -726,56 +712,26 @@ footer {
 
 /* Responsive Adjustments */
 @media (max-width: 768px) {
-    .logo-container {
-        top: 5px;
-        left: 5px;
-    }
-    .lab-logo {
-        width: 80px; /* Smaller size for tablets */
-    }
-    .navbar {
-        margin-top: 50px; /* Adjust for smaller logo */
-        justify-content: space-around;
-        gap: 5px;
-        padding: 10px 5px;
-    }
-    .container {
-        margin-top: 120px; /* Adjust for smaller logo and navbar */
-    }
-}
-
-@media (max-width: 480px) {
-    .lab-logo {
-        width: 60px; /* Even smaller for mobile */
-    }
-    .navbar {
-        margin-top: 40px; /* Adjust for smaller logo */
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-    .container {
-        margin-top: 100px; /* Adjust for mobile */
-    }
-}
-
-/* Existing Night Mode Styles */
-body.night-mode {
-    background-color: #1a1a1a;
-    color: #d9d9d9;
-}
-@media (max-width: 768px) {
     .container {
         max-width: 95%;
         padding: 15px;
     }
     .navbar {
-        justify-content: space-around;
+        height: 50px;
+        justify-content: flex-end;
         gap: 5px;
-        padding: 10px 5px;
+        padding: 5px;
     }
     .navbar a, .dropbtn {
         padding: 8px 10px;
         font-size: 0.9em;
+    }
+    .lab-logo {
+        height: 30px;
+        margin-right: 10px;
+    }
+    .logo-container {
+        left: 5px;
     }
     .research-overview-grid {
         grid-template-columns: 1fr;
@@ -806,20 +762,18 @@ body.night-mode {
     .gallery-quote {
         margin-bottom: 20px;
     }
-    
-    /* Update Gallery item layout */
     .gallery-item {
-  display: flex;
-  flex-direction: column; /* Stack image and text vertically */
-  align-items: center;
-  gap: 20px;
-  background: rgba(255, 255, 255, 0.9);
-  padding: 25px;
-  border-radius: 8px;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  min-height: 250px;
-}
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        background: rgba(255, 255, 255, 0.9);
+        padding: 25px;
+        border-radius: 8px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        min-height: 250px;
+    }
     .gallery-media {
         max-width: 100%;
     }
@@ -856,14 +810,24 @@ body.night-mode {
 
 @media (max-width: 480px) {
     .navbar {
+        height: 40px;
         flex-wrap: wrap;
         justify-content: center;
     }
     .navbar a, .dropbtn {
+        padding: 5px 8px;
         font-size: 0.85em;
     }
+    .lab-logo {
+        height: 20px;
+        margin-right: 5px;
+    }
+    .logo-container {
+        position: static;
+        margin: 0 auto 5px 5px;
+    }
     .container {
-        margin-top: 100px;
+        margin-top: 60px;
     }
     .overview-image {
         height: 150px;
