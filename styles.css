@@ -11,7 +11,59 @@ body {
     color: #333;
     line-height: 1.6;
 }
+/* Logo Styling */
+.logo-container {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 1001; /* Ensures it stays above the navbar */
+}
 
+.lab-logo {
+    width: 100px; /* Adjust size as needed */
+    height: auto;
+    object-fit: contain;
+    display: block;
+}
+
+/* Adjust navbar to accommodate logo */
+.navbar {
+    background-color: #004080;
+    padding: 10px;
+    position: fixed;
+    width: 100%;
+    top: 0; /* Keep it at the top */
+    left: 0;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    z-index: 1000;
+    align-items: center;
+    margin-top: 60px; /* Adds space for the logo; adjust based on logo height */
+}
+
+/* Adjust container margin to prevent overlap with logo and navbar */
+.container {
+    max-width: 900px;
+    margin: 140px auto 20px; /* Increased from 80px to account for logo and navbar */
+    padding: 20px;
+    background: white;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+/* Night Mode Adjustments for Logo */
+.night-mode .logo-container {
+    /* No specific change needed unless logo needs a different background */
+}
+
+/* Rest of your existing CSS remains mostly unchanged; I'll highlight corrections below */
+.navbar a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    font-weight: bold;
+}
 /* Night Mode */
 body.night-mode {
     background-color: #1a1a1a;
@@ -250,6 +302,7 @@ body.night-mode {
     margin-top: 15px;
 }
 
+/* Fix potential overflow in research-item */
 .research-item {
     display: flex;
     flex-direction: row;
@@ -259,6 +312,7 @@ body.night-mode {
     padding: 15px;
     border-radius: 5px;
     border-left: 4px solid #004080;
+    overflow: hidden; /* Prevents content from spilling out */
 }
 
 .research-item img {
@@ -495,6 +549,7 @@ body.night-mode {
 }
 
 .gallery-item {
+    overflow: hidden; /* Added to prevent media overflow */
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -670,6 +725,44 @@ footer {
 }
 
 /* Responsive Adjustments */
+@media (max-width: 768px) {
+    .logo-container {
+        top: 5px;
+        left: 5px;
+    }
+    .lab-logo {
+        width: 80px; /* Smaller size for tablets */
+    }
+    .navbar {
+        margin-top: 50px; /* Adjust for smaller logo */
+        justify-content: space-around;
+        gap: 5px;
+        padding: 10px 5px;
+    }
+    .container {
+        margin-top: 120px; /* Adjust for smaller logo and navbar */
+    }
+}
+
+@media (max-width: 480px) {
+    .lab-logo {
+        width: 60px; /* Even smaller for mobile */
+    }
+    .navbar {
+        margin-top: 40px; /* Adjust for smaller logo */
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .container {
+        margin-top: 100px; /* Adjust for mobile */
+    }
+}
+
+/* Existing Night Mode Styles */
+body.night-mode {
+    background-color: #1a1a1a;
+    color: #d9d9d9;
+}
 @media (max-width: 768px) {
     .container {
         max-width: 95%;
