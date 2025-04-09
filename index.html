@@ -481,6 +481,10 @@
             <div class="research-grid">
                 <div class="research-item">
                     <img src="elegans.png" alt="News Icon" class="fit-image">
+                    <p><strong>April 08, 2025:</strong> We extend our warmest congratulations to our undergraduate students Gül Hanım Yılmaz, Elif Çakır, and Firdevs for securing 2209 funding from TÜBİTAK. <a href="https://tubitak.gov.tr/tr/duyuru/2209-universite-ogrencileri-arastirma-projeleri-destekleme-programi-20241-donemi-bilimsel-degerlendirme-sonuclari-belli-oldu">Read more</a></p>
+                </div>
+                <div class="research-item">
+                    <img src="elegans.png" alt="News Icon" class="fit-image">
                     <p><strong>March 26, 2025:</strong> We recently identified a link between CILK1/DYF-5 and cranioectodermal dysplasia by integrating patient-derived cells and <em>C. elegans</em>. models. Our study, titled <strong>"A homozygous frameshift variant in the CILK1 gene causes cranioectodermal dysplasia"</strong> has been submitted for publication.</p>
                 </div>
                 <div class="research-item">
@@ -590,37 +594,20 @@
     <!-- JavaScript -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Carousel functionality
-            const carousel = document.querySelector('.carousel-inner');
-            const items = document.querySelectorAll('.carousel-item');
-            let currentIndex = 0;
-
-            function updateCarousel() {
-                carousel.style.transform = `translateX(-${currentIndex * 100}%)`;
-            }
-
-            document.querySelector('.carousel-prev').addEventListener('click', () => {
-                currentIndex = (currentIndex > 0) ? currentIndex - 1 : items.length - 1;
-                updateCarousel();
-            });
-
-            document.querySelector('.carousel-next').addEventListener('click', () => {
-                currentIndex = (currentIndex < items.length - 1) ? currentIndex + 1 : 0;
-                updateCarousel();
-            });
-
             // Publications search
             const searchInput = document.getElementById('pub-search');
             const pubList = document.getElementById('publications-list');
             const pubs = pubList.querySelectorAll('.research-item');
 
-            searchInput.addEventListener('input', function() {
-                const query = this.value.toLowerCase();
-                pubs.forEach(pub => {
-                    const text = pub.textContent.toLowerCase();
-                    pub.style.display = text.includes(query) ? 'flex' : 'none';
+            if (searchInput && pubList) {
+                searchInput.addEventListener('input', function() {
+                    const query = this.value.toLowerCase().trim();
+                    pubs.forEach(pub => {
+                        const text = pub.textContent.toLowerCase();
+                        pub.style.display = text.includes(query) ? 'flex' : 'none';
+                    });
                 });
-            });
+            }
 
             // Lightbox functionality
             const lightbox = document.getElementById('lightbox');
