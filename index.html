@@ -45,7 +45,7 @@
             let path = ['<a href="#home" onclick="showSection(\'home\')">Home</a>'];
             if (sectionId !== 'home') {
                 const sectionTitle = document.getElementById(sectionId).querySelector('h1').textContent;
-                if (sectionId.startsWith('research-') || sectionId === 'bioinformatics') {
+                if (sectionId.startsWith('research-') || sectionId === 'bioinformatics' || sectionId === 'ciliome') {
                     path.push('<a href="#research-overview" onclick="showSection(\'research-overview\')">Research</a>');
                 } else if (sectionId.startsWith('current-') || sectionId.startsWith('former-') || sectionId === 'group-photos' || sectionId === 'open-positions') {
                     path.push('<a href="#current-members" onclick="showSection(\'current-members\')">Team</a>');
@@ -57,7 +57,7 @@
     </script>
 </head>
 <body onload="showSection('home')">
-    <!-- Navbar without Logo -->
+    <!-- Navbar -->
     <nav class="navbar">
         <a href="#home" onclick="showSection('home')">Home</a>
         <div class="dropdown">
@@ -68,6 +68,7 @@
                 <a href="#disease-modeling" onclick="showSection('disease-modeling')">Disease Modeling</a>
                 <a href="#cilia-cilia-joining" onclick="showSection('cilia-cilia-joining')">Cilia-Cilia Joining</a>
                 <a href="#bioinformatics" onclick="showSection('bioinformatics')">Bioinformatics</a>
+                <a href="#ciliome" onclick="showSection('ciliome')">Ciliome</a>
             </div>
         </div>
         <div class="dropdown">
@@ -159,6 +160,12 @@
                     <p class="research-text">We develop and maintain bioinformatics tools like ConVarT, CilioGenics, and CiliaMiner to facilitate research in ciliopathies and rare diseases.</p>
                     <a href="#bioinformatics" onclick="showSection('bioinformatics')" class="read-more-btn">Read More</a>
                 </div>
+                <div class="research-overview-item">
+                    <img src="cilia_res1.jpg" alt="Ciliome" class="overview-image">
+                    <h2>Ciliome</h2>
+                    <p class="research-text">Explore our comprehensive database of ciliary genes, including detailed annotations and references, to support research in ciliary biology and ciliopathies.</p>
+                    <a href="#ciliome" onclick="showSection('ciliome')" class="read-more-btn">Read More</a>
+                </div>
             </div>
         </section>
 
@@ -203,6 +210,35 @@
                     <p><strong>GitHub:</strong> Access our open-source code, protocols, and bioinformatics pipelines for rare disease and ciliopathy research. <a href="https://github.com/thekaplanlab">https://github.com/thekaplanlab</a></p>
                 </div>
             </div>
+        </section>
+
+        <section id="ciliome" class="section" style="display: none;">
+            <h1>Ciliome</h1>
+            <p>Explore our comprehensive database of ciliary genes, including detailed annotations and references. Search for genes by name, Ensembl ID, or other attributes, and download the full dataset as a CSV file.</p>
+            <div class="ciliome-controls">
+                <input type="text" id="ciliome-search" placeholder="Search ciliary genes..." class="pub-search">
+                <button id="download-ciliome" class="read-more-btn">Download All Genes (CSV)</button>
+            </div>
+            <table id="ciliome-table" class="ciliome-table">
+                <thead>
+                    <tr>
+                        <th>Gene</th>
+                        <th>Ensembl ID</th>
+                        <th>Gene Description</th>
+                        <th>ENTREZ ID</th>
+                        <th>Status</th>
+                        <th>Previous Symbol</th>
+                        <th>Alias Symbol</th>
+                        <th>Gene Location</th>
+                        <th>Quote about Genes</th>
+                        <th>Reference PMID</th>
+                        <th>Ciliary Localization</th>
+                    </tr>
+                </thead>
+                <tbody id="ciliome-table-body">
+                    <!-- Gene data will be populated by JavaScript -->
+                </tbody>
+            </table>
         </section>
 
         <section id="current-members" class="section" style="display: none;">
@@ -411,7 +447,7 @@
                 </div>
                 <div class="research-item">
                     <img src="elegans.png" alt="Research Icon" class="fit-image">
-                    <p>Turan MG, Orhan ME, Cevik S, Kaplan OI. <strong>CiliaMiner: an integrated database for ciliopathy genes and ciliopathies.</strong> Database (Oxford). 2023;2023:baad047. doi: <a href="https://doi.org/10.1093/database/baad047">10.1093/database/baad047</a></p>
+                    <p>Turan MG, Kantarci H, Cevik S, Kaplan OI. <strong>CiliaMiner: an integrated database for ciliopathy genes and ciliopathies.</strong> Database (Oxford). 2023;2023:baad047. doi: <a href="https://doi.org/10.1093/database/baad047">10.1093/database/baad047</a></p>
                 </div>
                 <div class="research-item">
                     <img src="elegans.png" alt="Research Icon" class="fit-image">
@@ -481,7 +517,7 @@
             <div class="research-grid">
                 <div class="research-item">
                     <img src="elegans.png" alt="News Icon" class="fit-image">
-                    <p><strong>April 21, 2025:</strong> Congratulations to Oktay on the approval of their Health Institutes of Türkiye (TÜSEB) project! </p> 
+                    <p><strong>April 21, 2025:</strong> Congratulations to Oktay on the approval of their Health Institutes of Türkiye (TÜSEB) project! </p>
                 </div>
                 <div class="research-item">
                     <img src="elegans.png" alt="News Icon" class="fit-image">
@@ -489,7 +525,7 @@
                 </div>
                 <div class="research-item">
                     <img src="elegans.png" alt="News Icon" class="fit-image">
-                    <p><strong>April 01, 2025:</strong> Our graduate student Damla Puçak has received fellowships from the European Society of Human Genetics to attend the ESHG meeting  between May 24-27, 2025 in Italy.</p> 
+                    <p><strong>April 01, 2025:</strong> Our graduate student Damla Puçak has received fellowships from the European Society of Human Genetics to attend the ESHG meeting between May 24-27, 2025 in Italy.</p>
                 </div>
                 <div class="research-item">
                     <img src="elegans.png" alt="News Icon" class="fit-image">
@@ -602,7 +638,212 @@
     <!-- JavaScript -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Publications search
+            // Gene data for Ciliome section
+            const geneData = [
+                {
+                    gene: "ABCC4",
+                    ensembl_id: "ENSG00000125257",
+                    description: "ATP binding cassette subfamily C member 4 (PEL blood group)",
+                    entrez_id: "10257",
+                    status: "Approved",
+                    previous_symbol: "NA",
+                    alias_symbol: "MRP4|EST170205|MOAT-B|MOATB",
+                    location: "13q32.1",
+                    quote: "Also known as leakytail. ATP-binding cassette transporter which transports prostaglandin E2 and other molecules across cellular membranes. Mutations in ABCC4 cause ciliogenesis defects. ABCC4-mediated PGE2 signalling acts through a ciliary G-protein-coupled receptor, EP4, to upregulate cAMP synthesis and increase anterograde IFT, thereby promoting ciliogenesis (PMID: 25173977). Zebrafish abcc4 mutants exhibited loss of connecting cilia and outer segment in photoreceptor cells, leading to mislocalization of opsins in the cell bodies of photoreceptors (PMID: 30685088). Specific missense associated with polydactyly in pigs (PMID: 32228435)",
+                    reference_pmid: "25173977; 30685088; 32228435",
+                    ciliary_localization: "Membrane"
+                },
+                {
+                    gene: "ABLIM1",
+                    ensembl_id: "ENSG00000099204",
+                    description: "actin binding LIM protein 1",
+                    entrez_id: "3983",
+                    status: "Approved",
+                    previous_symbol: "LIMAB1|ABLIM",
+                    alias_symbol: "abLIM|limatin",
+                    location: "10q25.3",
+                    quote: "Involved in ciliation-related actin dynamics and LR patterning (PMID: 22684256). Asymmetrically expressed in both the node and left lateral plate mesoderm (LPM), similar to Nodal (PMID: 20487527)",
+                    reference_pmid: "22684256; 20487527",
+                    ciliary_localization: "actin cytoskeleton"
+                },
+                {
+                    gene: "ABLIM3",
+                    ensembl_id: "ENSG00000173210",
+                    description: "actin binding LIM protein family member 3",
+                    entrez_id: "22885",
+                    status: "Approved",
+                    previous_symbol: "NA",
+                    alias_symbol: "KIAA0843",
+                    location: "5q32",
+                    quote: "PMID: 22684256",
+                    reference_pmid: "22684256",
+                    ciliary_localization: "actin cytoskeleton"
+                },
+                {
+                    gene: "ACE2",
+                    ensembl_id: "ENSG00000130234",
+                    description: "angiotensin converting enzyme 2",
+                    entrez_id: "59272",
+                    status: "Approved",
+                    previous_symbol: "NA",
+                    alias_symbol: "ACEH",
+                    location: "Xp22.2",
+                    quote: "PMID: 33116139",
+                    reference_pmid: "33116139",
+                    ciliary_localization: "Motile cilium membrane"
+                },
+                {
+                    gene: "ACTR2",
+                    ensembl_id: "ENSG00000138071",
+                    description: "actin related protein 2",
+                    entrez_id: "10097",
+                    status: "Approved",
+                    previous_symbol: "NA",
+                    alias_symbol: "ARP2",
+                    location: "2p14",
+                    quote: "PMID: 22684256",
+                    reference_pmid: "22684256",
+                    ciliary_localization: "actin cytoskeleton"
+                },
+                {
+                    gene: "ADAM17",
+                    ensembl_id: "ENSG00000151694",
+                    description: "ADAM metallopeptidase domain 17",
+                    entrez_id: "6868",
+                    status: "Approved",
+                    previous_symbol: "TACE",
+                    alias_symbol: "cSVP|CD156B",
+                    location: "2p25.1",
+                    quote: "PMID: 24226769; PMID: 15983030",
+                    reference_pmid: "24226769; 15983030",
+                    ciliary_localization: "Cytoplasm"
+                },
+                {
+                    gene: "ADAMTS20",
+                    ensembl_id: "ENSG00000173157",
+                    description: "ADAM metallopeptidase with thrombospondin type 1 motif 20",
+                    entrez_id: "80070",
+                    status: "Approved",
+                    previous_symbol: "NA",
+                    alias_symbol: "GON-1",
+                    location: "12q12",
+                    quote: "PMID: 30814516",
+                    reference_pmid: "30814516",
+                    ciliary_localization: "periciliary vesicles"
+                },
+                {
+                    gene: "ADAMTS9",
+                    ensembl_id: "ENSG00000163638",
+                    description: "ADAM metallopeptidase with thrombospondin type 1 motif 9",
+                    entrez_id: "56999",
+                    status: "Approved",
+                    previous_symbol: "NA",
+                    alias_symbol: "KIAA1312",
+                    location: "3p14.1",
+                    quote: "PMID: 30609407; PMID: 30814516",
+                    reference_pmid: "30609407; 30814516",
+                    ciliary_localization: "periciliary vesicles"
+                },
+                {
+                    gene: "ADCY3",
+                    ensembl_id: "ENSG00000138031",
+                    description: "adenylate cyclase 3",
+                    entrez_id: "109",
+                    status: "Approved",
+                    previous_symbol: "NA",
+                    alias_symbol: "AC3",
+                    location: "2p23.3",
+                    quote: "Localized to the plasma membrane of neuronal cilia (PMID: 17924533, PMID: 23392690)",
+                    reference_pmid: "17924533; 23392690",
+                    ciliary_localization: "Ciliary Membrane"
+                }
+            ];
+
+            // Populate Ciliome table
+            const ciliomeTableBody = document.getElementById('ciliome-table-body');
+            function populateCiliomeTable(data) {
+                ciliomeTableBody.innerHTML = '';
+                data.forEach(gene => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${gene.gene}</td>
+                        <td>${gene.ensembl_id}</td>
+                        <td>${gene.description}</td>
+                        <td>${gene.entrez_id}</td>
+                        <td>${gene.status}</td>
+                        <td>${gene.previous_symbol}</td>
+                        <td>${gene.alias_symbol}</td>
+                        <td>${gene.location}</td>
+                        <td>${gene.quote}</td>
+                        <td>${gene.reference_pmid}</td>
+                        <td>${gene.ciliary_localization}</td>
+                    `;
+                    ciliomeTableBody.appendChild(row);
+                });
+            }
+
+            // Initial table population
+            populateCiliomeTable(geneData);
+
+            // Ciliome search functionality
+            const ciliomeSearchInput = document.getElementById('ciliome-search');
+            if (ciliomeSearchInput) {
+                ciliomeSearchInput.addEventListener('input', function() {
+                    const query = this.value.toLowerCase().trim();
+                    const filteredData = geneData.filter(gene => {
+                        return (
+                            gene.gene.toLowerCase().includes(query) ||
+                            gene.ensembl_id.toLowerCase().includes(query) ||
+                            gene.description.toLowerCase().includes(query) ||
+                            gene.entrez_id.toString().includes(query) ||
+                            gene.status.toLowerCase().includes(query) ||
+                            gene.previous_symbol.toLowerCase().includes(query) ||
+                            gene.alias_symbol.toLowerCase().includes(query) ||
+                            gene.location.toLowerCase().includes(query) ||
+                            gene.quote.toLowerCase().includes(query) ||
+                            gene.reference_pmid.toLowerCase().includes(query) ||
+                            gene.ciliary_localization.toLowerCase().includes(query)
+                        );
+                    });
+                    populateCiliomeTable(filteredData);
+                });
+            }
+
+            // Download CSV functionality
+            const downloadButton = document.getElementById('download-ciliome');
+            if (downloadButton) {
+                downloadButton.addEventListener('click', function() {
+                    const headers = ["Gene", "Ensembl ID", "Gene Description", "ENTREZ ID", "Status", "Previous Symbol", "Alias Symbol", "Gene Location", "Quote about Genes", "Reference PMID", "Ciliary Localization"];
+                    const csvContent = [
+                        headers.join(","),
+                        ...geneData.map(gene => [
+                            `"${gene.gene}"`,
+                            `"${gene.ensembl_id}"`,
+                            `"${gene.description.replace(/"/g, '""')}"`,
+                            `"${gene.entrez_id}"`,
+                            `"${gene.status}"`,
+                            `"${gene.previous_symbol}"`,
+                            `"${gene.alias_symbol}"`,
+                            `"${gene.location}"`,
+                            `"${gene.quote.replace(/"/g, '""')}"`,
+                            `"${gene.reference_pmid}"`,
+                            `"${gene.ciliary_localization}"`
+                        ].join(","))
+                    ].join("\n");
+
+                    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                    const link = document.createElement('a');
+                    const url = URL.createObjectURL(blob);
+                    link.setAttribute('href', url);
+                    link.setAttribute('download', 'ciliary_genes.csv');
+                    link.style.visibility = 'hidden';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                });
+            }
+
+            // Existing JavaScript (Publications search, Lightbox, Back to Top, Night Mode)
             const searchInput = document.getElementById('pub-search');
             const pubList = document.getElementById('publications-list');
             const pubs = pubList.querySelectorAll('.research-item');
@@ -617,7 +858,6 @@
                 });
             }
 
-            // Lightbox functionality
             const lightbox = document.getElementById('lightbox');
             const lightboxImage = document.getElementById('lightbox-image');
             const lightboxLinks = document.querySelectorAll('.lightbox-link');
@@ -641,7 +881,6 @@
                 }
             });
 
-            // Back to Top functionality
             const backToTopBtn = document.getElementById('back-to-top');
             window.addEventListener('scroll', function() {
                 if (window.scrollY > 300) {
@@ -655,7 +894,6 @@
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             });
 
-            // Night Mode Toggle
             const nightModeToggle = document.getElementById('night-mode-toggle');
             if (localStorage.getItem('nightMode') === 'enabled') {
                 document.body.classList.add('night-mode');
