@@ -785,3 +785,100 @@ footer {
 .night-mode #night-mode-toggle:hover {
     background-color: #004d99;
 }
+/* Ciliome Section */
+.ciliome-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.ciliome-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: #e6f2ff;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.ciliome-table th,
+.ciliome-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    font-size: 0.9em;
+}
+
+.ciliome-table th {
+    background-color: #004080;
+    color: white;
+    font-weight: bold;
+}
+
+.ciliome-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.ciliome-table tr:hover {
+    background-color: #d9e6ff;
+}
+
+.night-mode .ciliome-table {
+    background: #3d3d3d;
+    box-shadow: 0 3px 10px rgba(255, 255, 255, 0.1);
+}
+
+.night-mode .ciliome-table th {
+    background-color: #0066cc;
+}
+
+.night-mode .ciliome-table tr:nth-child(even) {
+    background-color: #2e2e2e;
+}
+
+.night-mode .ciliome-table tr:hover {
+    background-color: #4a4a4a;
+}
+
+.night-mode .ciliome-table td,
+.night-mode .ciliome-table th {
+    border-bottom: 1px solid #555;
+}
+
+/* Responsive Adjustments for Ciliome Table */
+@media (max-width: 768px) {
+    .ciliome-table {
+        font-size: 0.8em;
+    }
+
+    .ciliome-table th,
+    .ciliome-table td {
+        padding: 8px;
+    }
+
+    .ciliome-controls {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    #ciliome-search,
+    #download-ciliome {
+        width: 100%;
+        max-width: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .ciliome-table {
+        font-size: 0.75em;
+    }
+
+    .ciliome-table th,
+    .ciliome-table td {
+        padding: 6px;
+    }
+}
