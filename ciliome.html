@@ -1,0 +1,705 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Ciliome Database by Kaplan's Lab - Explore ciliary genes with detailed annotations and references.">
+    <meta name="keywords" content="Ciliome, ciliary genes, ciliopathies, bioinformatics, Kaplan's Lab, rare diseases">
+    <meta name="author" content="Kaplan's Lab">
+    <title>Ciliome Database - Kaplan's Lab</title>
+    <link rel="icon" type="image/png" href="elegans2.png">
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f8fafc;
+            color: #1e293b;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: linear-gradient(90deg, #004080, #0066cc);
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1.5rem;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            transition: background-color 0.3s, border-radius 0.3s;
+        }
+
+        .navbar a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #004080;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        p {
+            font-size: 1.1rem;
+            color: #475569;
+            margin-bottom: 2rem;
+            text-align: center;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Ciliome Controls */
+        .ciliome-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .ciliome-search {
+            flex: 1;
+            max-width: 500px;
+            padding: 0.75rem;
+            border: 2px solid #004080;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .ciliome-search:focus {
+            outline: none;
+            border-color: #0066cc;
+            box-shadow: 0 0 8px rgba(0, 102, 204, 0.2);
+        }
+
+        .download-btn {
+            padding: 0.75rem 1.5rem;
+            background-color: #004080;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .download-btn:hover {
+            background-color: #002b5e;
+            transform: translateY(-2px);
+        }
+
+        /* Ciliome Table */
+        .ciliome-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .ciliome-table th,
+        .ciliome-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 0.95rem;
+        }
+
+        .ciliome-table th {
+            background: linear-gradient(90deg, #004080, #0066cc);
+            color: white;
+            font-weight: 700;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .ciliome-table tr {
+            transition: background-color 0.3s;
+        }
+
+        .ciliome-table tr:hover {
+            background-color: #f1f5f9;
+        }
+
+        .ciliome-table tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        /* Night Mode */
+        body.night-mode {
+            background-color: #1e293b;
+            color: #e2e8f0;
+        }
+
+        .night-mode .container {
+            background: #2d3748;
+            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.05);
+        }
+
+        .night-mode h1 {
+            color: #60a5fa;
+        }
+
+        .night-mode p {
+            color: #94a3b8;
+        }
+
+        .night-mode .ciliome-table {
+            background: #374151;
+        }
+
+        .night-mode .ciliome-table th {
+            background: linear-gradient(90deg, #0066cc, #0099ff);
+        }
+
+        .night-mode .ciliome-table tr:nth-child(even) {
+            background-color: #2d3748;
+        }
+
+        .night-mode .ciliome-table tr:hover {
+            background-color: #4b5563;
+        }
+
+        .night-mode .ciliome-table td,
+        .night-mode .ciliome-table th {
+            border-bottom: 1px solid #4b5563;
+        }
+
+        .night-mode .ciliome-search {
+            background: #2d3748;
+            border-color: #60a5fa;
+            color: #e2e8f0;
+        }
+
+        .night-mode .ciliome-search:focus {
+            border-color: #93c5fd;
+            box-shadow: 0 0 8px rgba(147, 197, 253, 0.2);
+        }
+
+        .night-mode .download-btn {
+            background-color: #0066cc;
+        }
+
+        .night-mode .download-btn:hover {
+            background-color: #004d99;
+        }
+
+        /* Back to Top Button */
+        #back-to-top {
+            display: none;
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background-color: #004080;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s, transform 0.3s;
+            z-index: 1000;
+        }
+
+        #back-to-top:hover {
+            background-color: #002b5e;
+            transform: scale(1.1);
+        }
+
+        .night-mode #back-to-top {
+            background-color: #0066cc;
+        }
+
+        .night-mode #back-to-top:hover {
+            background-color: #004d99;
+        }
+
+        /* Night Mode Toggle */
+        #night-mode-toggle {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            width: 40px;
+            height: 40px;
+            background-color: #004080;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.25rem;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s, transform 0.3s;
+            z-index: 1001;
+        }
+
+        #night-mode-toggle:hover {
+            background-color: #002b5e;
+            transform: scale(1.1);
+        }
+
+        .night-mode #night-mode-toggle {
+            background-color: #0066cc;
+        }
+
+        .night-mode #night-mode-toggle:hover {
+            background-color: #004d99;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(90deg, #004080, #0066cc);
+            color: white;
+            margin-top: 2rem;
+        }
+
+        .social-links {
+            margin-top: 1rem;
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+
+        .social-icon {
+            width: 30px;
+            height: 30px;
+            transition: transform 0.3s;
+        }
+
+        .social-icon:hover {
+            transform: scale(1.2);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+
+            .navbar {
+                flex-wrap: wrap;
+                gap: 0.5rem;
+                padding: 0.75rem;
+            }
+
+            .navbar a {
+                padding: 0.5rem;
+                font-size: 0.9rem;
+            }
+
+            .ciliome-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .ciliome-search,
+            .download-btn {
+                width: 100%;
+                max-width: none;
+            }
+
+            .ciliome-table {
+                font-size: 0.85rem;
+            }
+
+            .ciliome-table th,
+            .ciliome-table td {
+                padding: 0.75rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            p {
+                font-size: 1rem;
+            }
+
+            .ciliome-table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            .ciliome-table th,
+            .ciliome-table td {
+                font-size: 0.8rem;
+                padding: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="index.html">Home</a>
+        <a href="index.html#research-overview">Research</a>
+        <a href="index.html#current-members">Team</a>
+        <a href="index.html#publications">Publications</a>
+        <a href="index.html#news">News</a>
+        <a href="index.html#resources">Resources</a>
+        <a href="index.html#gallery">Gallery</a>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h1>Ciliome Database</h1>
+        <p>Explore our comprehensive database of ciliary genes, including detailed annotations and references. Search for genes by name, Ensembl ID, or other attributes, and download the full dataset as a CSV file.</p>
+        <div class="ciliome-controls">
+            <input type="text" id="ciliome-search" placeholder="Search ciliary genes..." class="ciliome-search">
+            <button id="download-ciliome" class="download-btn">Download All Genes (CSV)</button>
+        </div>
+        <table id="ciliome-table" class="ciliome-table">
+            <thead>
+                <tr>
+                    <th>Gene</th>
+                    <th>Ensembl ID</th>
+                    <th>Gene Description</th>
+                    <th>ENTREZ ID</th>
+                    <th>Status</th>
+                    <th>Previous Symbol</th>
+                    <th>Alias Symbol</th>
+                    <th>Gene Location</th>
+                    <th>Quote about Genes</th>
+                    <th>Reference PMID</th>
+                    <th>Ciliary Localization</th>
+                </tr>
+            </thead>
+            <tbody id="ciliome-table-body">
+                <!-- Gene data will be populated by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" title="Back to Top">↑</button>
+
+    <!-- Night Mode Toggle -->
+    <button id="night-mode-toggle" title="Toggle Night Mode">🌙</button>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2025 Kaplan's Lab</p>
+        <div class="social-links">
+            <a href="https://github.com/thekaplanlab" target="_blank"><img src="github-logo.png" alt="GitHub" class="social-icon"></a>
+            <a href="https://www.instagram.com/kaplanlab/?hl=en" target="_blank"><img src="instagram-logo.png" alt="Instagram" class="social-icon"></a>
+            <a href="https://www.linkedin.com/in/oktay-i-kaplan-74b16856/" target="_blank"><img src="linkedin-logo.png" alt="LinkedIn" class="social-icon"></a>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Gene data for Ciliome
+            const geneData = [
+                {
+                    gene: "ABCC4",
+                    ensembl_id: "ENSG00000125257",
+                    description: "ATP binding cassette subfamily C member 4 (PEL blood group)",
+                    entrez_id: "10257",
+                    status: "Approved",
+                    previous_symbol: "NA",
+                    alias_symbol: "MRP4|EST170205|MOAT-B|MOATB",
+                    location: "13q32.1",
+                    quote: "Also known as leakytail. ATP-binding cassette transporter which transports prostaglandin E2 and other molecules across cellular membranes. Mutations in ABCC4 cause ciliogenesis defects. ABCC4-mediated PGE2 signalling acts through a ciliary G-protein-coupled receptor, EP4, to upregulate cAMP synthesis and increase anterograde IFT, thereby promoting ciliogenesis (PMID: 25173977). Zebrafish abcc4 mutants exhibited loss of connecting cilia and outer segment in photoreceptor cells, leading to mislocalization of opsins in the cell bodies of photoreceptors (PMID: 30685088). Specific missense associated with polydactyly in pigs (PMID: 32228435)",
+                    reference_pmid: "25173977; 30685088; 32228435",
+                    ciliary_localization: " Membrane"
+                },
+                {
+                    gene: "ABLIM1",
+                    ensembl_id: "ENSG00000099204",
+                    description: "actin binding LIM protein 1",
+                    entrez_id: "3983",
+                    status: "Approved",
+                    previous_symbol: "LIMAB1|ABLIM",
+                    alias_symbol: "abLIM|limatin",
+                    location: "10q25.3",
+                    quote: "Involved in ciliation-related actin dynamics and LR patterning (PMID: 22684256). Asymmetrically expressed in both the node and left lateral plate mesoderm (LPM), similar to Nodal (PMID: 20487527)",
+                    reference_pmid: "22684256; 20487527",
+                    ciliary_localization: "actin cytoskeleton"
+                },
+                {
+                    gene: "ABLIM3",
+                    ensembl_id: "ENSG00000173210",
+                    description: "actin binding LIM protein family member 3",
+                    entrez_id: "22885",
+                    status: "Approved",
+                    previous_symbol: "NA",
+                    alias_symbol: "KIAA0843",
+                    location: "5q32",
+                    quote: "PMID: 22684256",
+                    reference_pmid: "22684256",
+                    ciliary_localization: "actin cytoskeleton"
+                },
+                {
+                    gene: "ACE2",
+                    ensembl_id: "ENSG00000130234",
+                    description: "angiotensin converting enzyme 2",
+                    entrez_id: "59272",
+                    status: "Approved",
+                    previous_symbol: "NA",
+                    alias_symbol: "ACEH",
+                    location: "Xp22.2",
+                    quote: "PMID: 33116139",
+                    reference_pmid: "33116139",
+                    ciliary_localization: "Motile cilium membrane"
+                },
+                {
+                    gene: "ACTR2",
+                    ensembl_id: "ENSG00000138071",
+                    description: "actin related protein 2",
+                    entrez_id: "10097",
+                    status: "Approved",
+                    previous_symbol: "NA",
+                    alias_symbol: "ARP2",
+                    location: "2p14",
+                    quote: "PMID: 22684256",
+                    reference_pmid: "22684256",
+                    ciliary_localization: "actin cytoskeleton"
+                },
+                {
+                    gene: "ADAM17",
+                    ensembl_id: "ENSG00000151694",
+                    description: "ADAM metallopeptidase domain 17",
+                    entrez_id: "6868",
+                    status: "Approved",
+                    previous_symbol: "TACE",
+                    alias_symbol: "cSVP|CD156B",
+                    location: "2p25.1",
+                    quote: "PMID: 24226769; PMID: 15983030",
+                    reference_pmid: "24226769; 15983030",
+                    ciliary_localization: "Cytoplasm"
+                },
+                {
+                    gene: "ADAMTS20",
+                    ensembl_id: "ENSG00000173157",
+                    description: "ADAM metallopeptidase with thrombospondin type 1 motif 20",
+                    entrez_id: "80070",
+                    status: "Approved",
+                    previous_symbol: "NA",
+                    alias_symbol: "GON-1",
+                    location: "12q12",
+                    quote: "PMID: 30814516",
+                    reference_pmid: "30814516",
+                    ciliary_localization: "periciliary vesicles"
+                },
+                {
+                    gene: "ADAMTS9",
+                    ensembl_id: "ENSG00000163638",
+                    description: "ADAM metallopeptidase with thrombospondin type 1 motif 9",
+                    entrez_id: "56999",
+                    status: "Approved",
+                    previous_symbol: "NA",
+                    alias_symbol: "KIAA1312",
+                    location: "3p14.1",
+                    quote: "PMID: 30609407; PMID: 30814516",
+                    reference_pmid: "30609407; 30814516",
+                    ciliary_localization: "periciliary vesicles"
+                },
+                {
+                    gene: "ADCY3",
+                    ensembl_id: "ENSG00000138031",
+                    description: "adenylate cyclase 3",
+                    entrez_id: "109",
+                    status: "Approved",
+                    previous_symbol: "NA",
+                    alias_symbol: "AC3",
+                    location: "2p23.3",
+                    quote: "Localized to the plasma membrane of neuronal cilia (PMID: 17924533, PMID: 23392690)",
+                    reference_pmid: "17924533; 23392690",
+                    ciliary_localization: "Ciliary Membrane"
+                }
+            ];
+
+            // Populate Ciliome table
+            const ciliomeTableBody = document.getElementById('ciliome-table-body');
+            function populateCiliomeTable(data) {
+                ciliomeTableBody.innerHTML = '';
+                data.forEach(gene => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${gene.gene}</td>
+                        <td>${gene.ensembl_id}</td>
+                        <td>${gene.description}</td>
+                        <td>${gene.entrez_id}</td>
+                        <td>${gene.status}</td>
+                        <td>${gene.previous_symbol}</td>
+                        <td>${gene.alias_symbol}</td>
+                        <td>${gene.location}</td>
+                        <td>${gene.quote}</td>
+                        <td>${gene.reference knep}</td>
+                        <td>${gene.ciliary_localization}</td>
+                    `;
+                    ciliomeTableBody.appendChild(row);
+                });
+            }
+
+            // Initial table population
+            populateCiliomeTable(geneData);
+
+            // Ciliome search functionality
+            const ciliomeSearchInput = document.getElementById('ciliome-search');
+            if (ciliomeSearchInput) {
+                ciliomeSearchInput.addEventListener('input', function() {
+                    const query = this.value.toLowerCase().trim();
+                    const filteredData = geneData.filter(gene => {
+                        return (
+                            gene.gene.toLowerCase().includes(query) ||
+                            gene.ensembl_id.toLowerCase().includes(query) ||
+                            gene.description.toLowerCase().includes(query) ||
+                            gene.entrez_id.toString().includes(query) ||
+                            gene.status.toLowerCase().includes(query) ||
+                            gene.previous_symbol.toLowerCase().includes(query) ||
+                            gene.alias_symbol.toLowerCase().includes(query) ||
+                            gene.location.toLowerCase().includes(query) ||
+                            gene.quote.toLowerCase().includes(query) ||
+                            gene.reference_pmid.toLowerCase().includes(query) ||
+                            gene.ciliary_localization.toLowerCase().includes(query)
+                        );
+                    });
+                    populateCiliomeTable(filteredData);
+                });
+            }
+
+            // Download CSV functionality
+            const downloadButton = document.getElementById('download-ciliome');
+            if (downloadButton) {
+                downloadButton.addEventListener('click', function() {
+                    const headers = ["Gene", "Ensembl ID", "Gene Description", "ENTREZ ID", "Status", "Previous Symbol", "Alias Symbol", "Gene Location", "Quote about Genes", "Reference PMID", "Ciliary Localization"];
+                    const csvContent = [
+                        headers.join(","),
+                        ...geneData.map(gene => [
+                            `"${gene.gene}"`,
+                            `"${gene.ensembl_id}"`,
+                            `"${gene.description.replace(/"/g, '""')}"`,
+                            `"${gene.entrez_id}"`,
+                            `"${gene.status}"`,
+                            `"${gene.previous_symbol}"`,
+                            `"${gene.alias_symbol}"`,
+                            `"${gene.location}"`,
+                            `"${gene.quote.replace(/"/g, '""')}"`,
+                            `"${gene.reference_pmid}"`,
+                            `"${gene.ciliary_localization}"`
+                        ].join(","))
+                    ].join("\n");
+
+                    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                    const link = document.createElement('a');
+                    const url = URL.createObjectURL(blob);
+                    link.setAttribute('href', url);
+                    link.setAttribute('download', 'ciliary_genes.csv');
+                    link.style.visibility = 'hidden';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                });
+            }
+
+            // Back to Top Button
+            const backToTopBtn = document.getElementById('back-to-top');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 300) {
+                    backToTopBtn.style.display = 'block';
+                } else {
+                    backToTopBtn.style.display = 'none';
+                }
+            });
+
+            backToTopBtn.addEventListener('click', function() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // Night Mode Toggle
+            const nightModeToggle = document.getElementById('night-mode-toggle');
+            if (localStorage.getItem('nightMode') === 'enabled') {
+                document.body.classList.add('night-mode');
+            }
+            nightModeToggle.addEventListener('click', function() {
+                document.body.classList.toggle('night-mode');
+                localStorage.setItem('nightMode', document.body.classList.contains('night-mode') ? 'enabled' : 'disabled');
+            });
+        });
+    </script>
+</body>
+</html>
