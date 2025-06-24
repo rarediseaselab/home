@@ -1,36 +1,44 @@
-// Sample data for CiliaHub table (used as fallback)
+// Sample data for CiliaHub table (from index.html)
 const ciliahubData = [
     {
-        gene: "BBS1",
-        ensemblId: "ENSG00000166266",
-        description: "Bardet-Biedl syndrome 1 protein",
-        synonym: "BBS2L2",
-        reference: "Pir et al., 2024 (DOI: 10.1093/nar/gkad1044)",
-        localization: "Axoneme"
+        gene: "ABCC4",
+        ensemblId: "ENSG00000125257",
+        description: "ATP binding cassette subfamily C member 4 (PEL blood group)",
+        synonym: "MRP4|EST170205|MOAT-B|MOATB",
+        reference: "PMID: 25173977; 30685088; 32228435",
+        localization: "Membrane"
     },
     {
-        gene: "IFT88",
-        ensemblId: "ENSG00000032742",
-        description: "Intraflagellar transport 88",
-        synonym: "TTC10",
-        reference: "CiliaMiner, 2023",
-        localization: "Basal Body"
+        gene: "ABLIM1",
+        ensemblId: "ENSG00000099204",
+        description: "actin binding LIM protein 1",
+        synonym: "abLIM|limatin",
+        reference: "PMID: 22684256; 20487527",
+        localization: "Actin Cytoskeleton"
     },
     {
-        gene: "CEP290",
-        ensemblId: "ENSG00000198707",
-        description: "Centrosomal protein 290",
-        synonym: "NPHP6",
-        reference: "CilioGenics, 2022",
-        localization: "Transition Zone"
+        gene: "ABLIM3",
+        ensemblId: "ENSG00000173210",
+        description: "actin binding LIM protein family member 3",
+        synonym: "KIAA0843",
+        reference: "PMID: 22684256",
+        localization: "Actin Cytoskeleton"
     },
     {
-        gene: "DYNC2H1",
-        ensemblId: "ENSG00000187231",
-        description: "Dynein cytoplasmic 2 heavy chain 1",
-        synonym: "DHC2",
-        reference: "Pir et al., 2024 (DOI: 10.1093/nar/gkad1044)",
-        localization: "Axoneme"
+        gene: "ACE2",
+        ensemblId: "ENSG00000130234",
+        description: "angiotensin converting enzyme 2",
+        synonym: "ACEH",
+        reference: "PMID: 33116139",
+        localization: "Motile Cilium Membrane"
+    },
+    {
+        gene: "ACTR2",
+        ensemblId: "ENSG00000138071",
+        description: "actin related protein 2",
+        synonym: "ARP2",
+        reference: "PMID: 22684256",
+        localization: "Actin Cytoskeleton"
     }
 ];
 
@@ -38,7 +46,7 @@ const ciliahubData = [
 document.addEventListener('DOMContentLoaded', function() {
     console.log('script.js loaded at', new Date().toLocaleString());
 
-    // Navigation handling
+    // Navigation handling (override inline if needed)
     const sections = document.querySelectorAll('.section');
     const navLinks = document.querySelectorAll('.navbar a');
 
@@ -50,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log(`${targetId} section displayed`);
         // Initialize CiliaHub if navigated to ciliahub
         if (targetId === 'ciliahub') {
-            initializeCiliahub(0); // Start with retry count 0
+            initializeCiliahub(0);
         }
     }
 
@@ -76,8 +84,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Night mode toggle
     const nightModeToggle = document.getElementById('night-mode-toggle');
     if (nightModeToggle) {
+        if (localStorage.getItem('nightMode') === 'enabled') {
+            document.body.classList.add('night-mode');
+        }
         nightModeToggle.addEventListener('click', function() {
             document.body.classList.toggle('night-mode');
+            localStorage.setItem('nightMode', document.body.classList.contains('night-mode') ? 'enabled' : 'disabled');
             console.log('Night mode toggled');
         });
     } else {
@@ -89,13 +101,13 @@ document.addEventListener('DOMContentLoaded', function() {
 function initializeCiliahub(retryCount) {
     console.log('Initializing CiliaHub for hash:', window.location.hash, 'Retry:', retryCount);
     const ciliahubSection = document.getElementById('ciliahub');
-    const maxRetries = 20; // Increased retries for robustness
+    const maxRetries = 20;
 
     if (!ciliahubSection) {
         console.error('Error: #ciliahub section not found in DOM');
         if (retryCount < maxRetries) {
             console.log('Retrying CiliaHub initialization...');
-            setTimeout(() => initializeCiliahub(retryCount + 1), 50); // Faster retry
+            setTimeout(() => initializeCiliahub(retryCount + 1), 50);
             return;
         }
         console.error('Max retries reached. CiliaHub section not found.');
@@ -106,9 +118,8 @@ function initializeCiliahub(retryCount) {
         return;
     }
 
-    // Check if table and tbody exist
     const table = ciliahubSection.querySelector('.ciliahub-table');
-    let tbody = table ? table.querySelector('tbody') : null;
+    let tbody = table ? document.getElementById('ciliahub-table-body') || table.querySelector('tbody') : null;
 
     if (!table || !tbody) {
         console.warn('CiliaHub table or tbody not found. Table:', !!table, 'TBody:', !!tbody);
@@ -118,6 +129,7 @@ function initializeCiliahub(retryCount) {
         } else if (!tbody) {
             console.warn('TBody missing, creating one...');
             tbody = document.createElement('tbody');
+            tbody.id = 'ciliahub-table-body';
             table.appendChild(tbody);
         }
         if (retryCount < maxRetries) {
@@ -156,7 +168,7 @@ async function loadDataAndPopulateTable() {
 // Populate CiliaHub table
 function populateCiliahubTable(data) {
     console.log('Populating CiliaHub table with', data.length, 'rows');
-    const tbody = document.querySelector('.ciliahub-table tbody');
+    const tbody = document.getElementById('ciliahub-table-body') || document.querySelector('.ciliahub-table tbody');
     if (!tbody) {
         console.error('Error: .ciliahub-table tbody not found in DOM during population');
         const tableContainer = document.querySelector('.ciliahub-table');
@@ -226,7 +238,7 @@ function setupCiliahubEventListeners() {
         console.log('CiliaHub reset button clicked');
         searchInput.value = '';
         filterSelect.value = '';
-        populateCiliahubTable(ciliahubData); // Repopulate to show all rows
+        populateCiliahubTable(ciliahubData);
     });
 
     downloadButton.addEventListener('click', () => {
@@ -242,66 +254,10 @@ function filterCiliahubTable() {
     console.log('Filtering CiliaHub table...');
     const searchInput = document.getElementById('ciliahub-search');
     const filterSelect = document.getElementById('ciliahub-filter');
-    const tbody = document.querySelector('.ciliahub-table tbody');
+    const tbody = document.getElementById('ciliahub-table-body') || document.querySelector('.ciliahub-table tbody');
 
     if (!tbody) {
         console.error('Error: CiliaHub table body not found during filtering');
         const tableContainer = document.querySelector('.ciliahub-table');
         if (tableContainer) {
-            tableContainer.innerHTML += '<p style="text-align: center; padding: 20px; color: red;">Error: Table body not found during filtering.</p>';
-        }
-        return;
-    }
-
-    const searchTerm = searchInput?.value.toLowerCase() || '';
-    const filterValue = filterSelect?.value || '';
-    const rows = tbody.querySelectorAll('tr');
-
-    if (rows.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px;">No Data Available</td></tr>';
-        console.warn('No rows to filter in CiliaHub table');
-        return;
-    }
-
-    let visibleRows = 0;
-    rows.forEach(row => {
-        const text = row.textContent.toLowerCase();
-        const matchesSearch = text.includes(searchTerm);
-        const matchesFilter = filterValue === '' || row.classList.contains(filterValue);
-        row.style.display = matchesSearch && matchesFilter ? '' : 'none';
-        if (matchesSearch && matchesFilter) visibleRows++;
-    });
-
-    if (visibleRows === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px;">No Matching Data Found</td></tr>';
-    }
-
-    console.log('CiliaHub filtered to', visibleRows, 'visible rows');
-}
-
-// Download CiliaHub data as CSV
-function downloadCiliahubCSV() {
-    console.log('Generating CiliaHub CSV download...');
-    const headers = ['Gene', 'Ensembl ID', 'Gene Description', 'Synonym', 'Reference', 'Ciliary Localization'];
-    const rows = ciliahubData.map(item => [
-        `"${item.gene || ''}"`,
-        `"${item.ensemblId || ''}"`,
-        `"${item.description || ''}"`,
-        `"${item.synonym || ''}"`,
-        `"${item.reference || ''}"`,
-        `"${item.localization || ''}"`
-    ]);
-    const csvContent = [headers.join(','), ...rows.map(row => row.join(','))].join('\n');
-
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.setAttribute('href', url);
-    link.setAttribute('download', 'ciliahub_data.csv');
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-
-    console.log('CiliaHub CSV download initiated');
-}
+            tableContainer.innerHTML += '<p style="text-align: center; padding: 20px; color
