@@ -43,9 +43,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const navLinks = document.querySelectorAll('.navbar a');
 
     function showSection(targetId) {
+        console.log('Showing section:', targetId);
         sections.forEach(section => {
             section.style.display = section.id === targetId ? 'block' : 'none';
         });
+        console.log(`${targetId} section displayed`);
         // Initialize CiliaHub if navigated to ciliahub
         if (targetId === 'ciliahub') {
             initializeCiliahub();
@@ -61,9 +63,15 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    // Handle hash changes
+    window.addEventListener('hashchange', () => {
+        const targetId = window.location.hash.substring(1) || 'home';
+        showSection(targetId);
+    });
+
     // Show section based on initial hash
-    const initialHash = window.location.hash.substring(1);
-    showSection(initialHash || 'home');
+    const initialHash = window.location.hash.substring(1) || 'home';
+    showSection(initialHash);
 
     // Night mode toggle
     const nightModeToggle = document.getElementById('night-mode-toggle');
@@ -77,9 +85,16 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// Initialize CiliaHub when needed
+// Initialize CiliaHub when section is visible
 function initializeCiliahub() {
     console.log('Initializing CiliaHub for hash:', window.location.hash);
+    // Wait for section to be visible before initializing
+    const ciliahubSection = document.getElementById('ciliahub');
+    if (!ciliahubSection || ciliahubSection.style.display === 'none') {
+        console.warn('CiliaHub section not visible yet, deferring initialization');
+        setTimeout(initializeCiliahub, 100); // Retry after 100ms
+        return;
+    }
     loadDataAndPopulateTable();
     setupCiliahubEventListeners();
 }
@@ -108,6 +123,11 @@ function populateCiliahubTable(data) {
     const tbody = document.querySelector('.ciliahub-table tbody');
     if (!tbody) {
         console.error('Error: .ciliahub-table tbody not found in DOM');
+        // Add fallback message to table container
+        const tableContainer = document.querySelector('.ciliahub-table');
+        if (tableContainer) {
+            tableContainer.innerHTML += '<p style="text-align: center; padding: 20px;">Error: Table body not found. Please check HTML structure.</p>';
+        }
         return;
     }
     tbody.innerHTML = '';
