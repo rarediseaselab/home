@@ -211,37 +211,51 @@
                 </div>
             </div>
         </section>
-
-        <section id="ciliahub" class="section" style="display: none;">
-            <h1>CiliaHub</h1>
-            <p>Explore our comprehensive database of ciliary genes, including detailed annotations and references. Search for genes by name, Ensembl ID, or other attributes, and download the full dataset as a CSV file.</p>
-            <div class="ciliahub-controls">
-                <input type="text" id="ciliahub-search" placeholder="Search ciliary genes..." class="pub-search">
-                <button id="download-ciliahub" class="read-more-btn">Download All Genes (CSV)</button>
-            </div>
-            <div class="ciliahub-table-wrapper">
-                <table id="ciliahub-table" class="ciliahub-table">
-                    <thead>
-                        <tr>
-                            <th>Gene</th>
-                            <th>Ensembl ID</th>
-                            <th>Gene Description</th>
-                            <th>ENTREZ ID</th>
-                            <th>Status</th>
-                            <th>Previous Symbol</th>
-                            <th>Alias Symbol</th>
-                            <th>Gene Location</th>
-                            <th>Quote about Genes</th>
-                            <th>Reference PMID</th>
-                            <th>Ciliary Localization</th>
-                        </tr>
-                    </thead>
-                    <tbody id="ciliahub-table-body">
-                        <!-- Gene data will be populated by JavaScript -->
-                    </tbody>
-                </table>
-            </div>
-        </section>
+<div id="ciliahub" class="section">
+    <div class="container">
+        <h1>CiliaHub: Ciliary Gene Database</h1>
+        <div class="ciliahub-controls">
+            <input type="text" id="ciliahub-search" placeholder="Search by Gene, Ensembl ID, or Synonym...">
+            <select id="ciliahub-filter">
+                <option value="">All Localizations</option>
+                <option value="axoneme">Axoneme</option>
+                <option value="basal-body">Basal Body</option>
+                <option value="transition-zone">Transition Zone</option>
+            </select>
+            <button id="ciliahub-reset">Reset</button>
+            <button id="download-ciliahub">Download Data</button>
+        </div>
+        <div class="ciliahub-legend">
+            <span class="legend-axoneme">Axoneme</span>
+            <span class="legend-basal-body">Basal Body</span>
+            <span class="legend-transition-zone">Transition Zone</span>
+        </div>
+        <table class="ciliahub-table">
+            <thead>
+                <tr>
+                    <th>Gene</th>
+                    <th>Ensembl ID</th>
+                    <th>Gene Description</th>
+                    <th>Synonym</th>
+                    <th>Reference</th>
+                    <th>Ciliary Localization</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Sample row; populate dynamically with JavaScript -->
+                <tr class="axoneme">
+                    <td>BBS1</td>
+                    <td>ENSG00000166266</td>
+                    <td>Bardet-Biedl syndrome 1 protein</td>
+                    <td>BBS2L2</td>
+                    <td data-tooltip="DOI: 10.1093/nar/gkad1044">Pir et al., 2024</td>
+                    <td>Axoneme</td>
+                </tr>
+                <!-- Add more rows as needed -->
+            </tbody>
+        </table>
+    </div>
+</div>
 
         <section id="current-members" class="section" style="display: none;">
             <h1>Current Members</h1>
