@@ -1,4 +1,4 @@
-// Sample data for CiliaHub table (used if external data fails)
+// Sample data for CiliaHub table (used as fallback)
 const ciliahubData = [
     {
         gene: "BBS1",
@@ -34,158 +34,208 @@ const ciliahubData = [
     }
 ];
 
-// Initialize CiliaHub table on page load or hash change
-document.addEventListener('DOMContentLoaded', initializeCiliahub);
-window.addEventListener('hashchange', initializeCiliahub);
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('script.js loaded at', new Date().toLocaleString());
 
-function initializeCiliahub() {
-    console.log('Initializing CiliaHub...');
-    if (window.location.hash === '#ciliahub') {
-        loadDataAndPopulateTable();
-        setupEventListeners();
+    // Navigation handling
+    const sections = document.querySelectorAll('.section');
+    const navLinks = document.querySelectorAll('.navbar a');
+
+    function showSection(targetId) {
+        sections.forEach(section => {
+            section.style.display = section.id === targetId ? 'block' : 'none';
+        });
+        // Initialize CiliaHub if navigated to ciliahub
+        if (targetId === 'ciliahub') {
+            initializeCiliahub();
+        }
     }
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href').substring(1);
+            showSection(targetId);
+            window.location.hash = targetId;
+        });
+    });
+
+    // Show section based on initial hash
+    const initialHash = window.location.hash.substring(1);
+    showSection(initialHash || 'home');
+
+    // Night mode toggle
+    const nightModeToggle = document.getElementById('night-mode-toggle');
+    if (nightModeToggle) {
+        nightModeToggle.addEventListener('click', function() {
+            document.body.classList.toggle('night-mode');
+            console.log('Night mode toggled');
+        });
+    } else {
+        console.warn('Night mode toggle button not found');
+    }
+});
+
+// Initialize CiliaHub when needed
+function initializeCiliahub() {
+    console.log('Initializing CiliaHub for hash:', window.location.hash);
+    loadDataAndPopulateTable();
+    setupCiliahubEventListeners();
 }
 
 // Load data (try external JSON, fall back to sample)
 async function loadDataAndPopulateTable() {
-    let data = ciliahubData; // Default to sample data
+    let data = ciliahubData;
+    console.log('Attempting to load CiliaHub data...');
     try {
         const response = await fetch('ciliahub_data.json');
         if (response.ok) {
             data = await response.json();
-            console.log('Loaded external data:', data);
+            console.log('Loaded external data:', data.length, 'rows');
         } else {
-            console.warn('External data fetch failed, using sample data.');
+            console.warn('External data fetch failed (status:', response.status, '). Using sample data.');
         }
     } catch (error) {
-        console.error('Error fetching ciliahub_data.json:', error);
-        console.warn('Using sample data.');
+        console.warn('Error fetching ciliahub_data.json:', error.message, '. Using sample data.');
     }
     populateCiliahubTable(data);
 }
 
-// Populate table with data
+// Populate CiliaHub table
 function populateCiliahubTable(data) {
-    try {
-        const tbody = document.querySelector('.ciliahub-table tbody');
-        if (!tbody) throw new Error('Table body not found.');
-        tbody.innerHTML = ''; // Clear existing rows
-
-        if (data.length === 0) {
-            const row = document.createElement('tr');
-            row.innerHTML = '<td colspan="6" style="text-align: center;">No Data Available</td>';
-            tbody.appendChild(row);
-            console.warn('No data to display.');
-            return;
-        }
-
-        data.forEach(item => {
-            const row = document.createElement('tr');
-            const localizationClass = item.localization.toLowerCase().replace(/\s+/g, '-');
-            row.classList.add(localizationClass);
-            row.innerHTML = `
-                <td>${item.gene}</td>
-                <td>${item.ensemblId}</td>
-                <td>${item.description}</td>
-                <td>${item.synonym}</td>
-                <td class="reference" data-tooltip="${item.reference}">${item.reference}</td>
-                <td>${item.localization}</td>
-            `;
-            tbody.appendChild(row);
-        });
-        console.log('Table populated with', data.length, 'rows.');
-    } catch (error) {
-        console.error('Error populating table:', error);
-        const tbody = document.querySelector('.ciliahub-table tbody');
-        if (tbody) {
-            tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">Error loading data. Please check console.</td></tr>';
-        }
+    console.log('Populating CiliaHub table with', data.length, 'rows');
+    const tbody = document.querySelector('.ciliahub-table tbody');
+    if (!tbody) {
+        console.error('Error: .ciliahub-table tbody not found in DOM');
+        return;
     }
+    tbody.innerHTML = '';
+
+    if (!data || data.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px;">No Data Available</td></tr>';
+        console.warn('No data to display in CiliaHub table');
+        return;
+    }
+
+    data.forEach(item => {
+        const row = document.createElement('tr');
+        const localizationClass = item.localization.toLowerCase().replace(/\s+/g, '-');
+        row.classList.add(localizationClass);
+        row.innerHTML = `
+            <td>${item.gene || ''}</td>
+            <td>${item.ensemblId || ''}</td>
+            <td>${item.description || ''}</td>
+            <td>${item.synonym || ''}</td>
+            <td class="reference" data-tooltip="${item.reference || ''}">${item.reference || ''}</td>
+            <td>${item.localization || ''}</td>
+        `;
+        tbody.appendChild(row);
+    });
+    console.log('CiliaHub table population complete');
 }
 
-// Set up event listeners for search, filter, reset, and download
-function setupEventListeners() {
-    try {
-        const searchInput = document.getElementById('ciliahub-search');
-        const filterSelect = document.getElementById('ciliahub-filter');
-        const resetButton = document.getElementById('ciliahub-reset');
-        const downloadButton = document.getElementById('download-ciliahub');
+// Set up event listeners for CiliaHub controls
+function setupCiliahubEventListeners() {
+    console.log('Setting up CiliaHub event listeners...');
+    const searchInput = document.getElementById('ciliahub-search');
+    const filterSelect = document.getElementById('ciliahub-filter');
+    const resetButton = document.getElementById('ciliahub-reset');
+    const downloadButton = document.getElementById('download-ciliahub');
 
-        if (!searchInput || !filterSelect || !resetButton || !downloadButton) {
-            throw new Error('One or more control elements not found.');
-        }
-
-        searchInput.addEventListener('input', filterTable);
-        filterSelect.addEventListener('change', filterTable);
-        resetButton.addEventListener('click', () => {
-            searchInput.value = '';
-            filterSelect.value = '';
-            filterTable();
-            console.log('Search and filter reset.');
+    if (!searchInput || !filterSelect || !resetButton || !downloadButton) {
+        console.error('Error: One or more CiliaHub control elements not found. Check IDs:', {
+            searchInput: !!searchInput,
+            filterSelect: !!filterSelect,
+            resetButton: !!resetButton,
+            downloadButton: !!downloadButton
         });
-        downloadButton.addEventListener('click', downloadCSV);
-
-        console.log('Event listeners set up successfully.');
-    } catch (error) {
-        console.error('Error setting up event listeners:', error);
+        return;
     }
+
+    searchInput.addEventListener('input', () => {
+        console.log('CiliaHub search input changed to:', searchInput.value);
+        filterCiliahubTable();
+    });
+
+    filterSelect.addEventListener('change', () => {
+        console.log('CiliaHub filter changed to:', filterSelect.value);
+        filterCiliahubTable();
+    });
+
+    resetButton.addEventListener('click', () => {
+        console.log('CiliaHub reset button clicked');
+        searchInput.value = '';
+        filterSelect.value = '';
+        populateCiliahubTable(ciliahubData); // Repopulate to show all rows
+    });
+
+    downloadButton.addEventListener('click', () => {
+        console.log('CiliaHub download button clicked');
+        downloadCiliahubCSV();
+    });
+
+    console.log('CiliaHub event listeners attached successfully');
 }
 
-// Filter table based on search and localization
-function filterTable() {
-    try {
-        const searchTerm = document.getElementById('ciliahub-search').value.toLowerCase();
-        const filterValue = document.getElementById('ciliahub-filter').value;
-        const rows = document.querySelectorAll('.ciliahub-table tbody tr');
+// Filter CiliaHub table
+function filterCiliahubTable() {
+    console.log('Filtering CiliaHub table...');
+    const searchTerm = document.getElementById('ciliahub-search')?.value.toLowerCase() || '';
+    const filterValue = document.getElementById('ciliahub-filter')?.value || '';
+    const rows = document.querySelectorAll('.ciliahub-table tbody tr');
+    const tbody = document.querySelector('.ciliahub-table tbody');
 
-        let visibleRows = 0;
-        rows.forEach(row => {
-            const text = row.textContent.toLowerCase();
-            const matchesSearch = text.includes(searchTerm);
-            const matchesFilter = filterValue === '' || row.classList.contains(filterValue);
-            row.style.display = matchesSearch && matchesFilter ? '' : 'none';
-            if (matchesSearch && matchesFilter) visibleRows++;
-        });
-
-        console.log('Filtered to', visibleRows, 'visible rows.');
-        if (visibleRows === 0 && rows.length > 0) {
-            const tbody = document.querySelector('.ciliahub-table tbody');
-            tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No matching data found.</td></tr>';
-        }
-    } catch (error) {
-        console.error('Error filtering table:', error);
+    if (!tbody) {
+        console.error('Error: CiliaHub table body not found during filtering');
+        return;
     }
+
+    if (rows.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px;">No Data Available</td></tr>';
+        console.warn('No rows to filter in CiliaHub table');
+        return;
+    }
+
+    let visibleRows = 0;
+    rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        const matchesSearch = text.includes(searchTerm);
+        const matchesFilter = filterValue === '' || row.classList.contains(filterValue);
+        row.style.display = matchesSearch && matchesFilter ? '' : 'none';
+        if (matchesSearch && matchesFilter) visibleRows++;
+    });
+
+    if (visibleRows === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px;">No Matching Data Found</td></tr>';
+    }
+
+    console.log('CiliaHub filtered to', visibleRows, 'visible rows');
 }
 
-// Download table data as CSV
-function downloadCSV() {
-    try {
-        const headers = ['Gene', 'Ensembl ID', 'Gene Description', 'Synonym', 'Reference', 'Ciliary Localization'];
-        const rows = ciliahubData.map(item => [
-            `"${item.gene}"`,
-            `"${item.ensemblId}"`,
-            `"${item.description}"`,
-            `"${item.synonym}"`,
-            `"${item.reference}"`,
-            `"${item.localization}"`
-        ]);
-        const csvContent = [
-            headers.join(','),
-            ...rows.map(row => row.join(','))
-        ].join('\n');
+// Download CiliaHub data as CSV
+function downloadCiliahubCSV() {
+    console.log('Generating CiliaHub CSV download...');
+    const headers = ['Gene', 'Ensembl ID', 'Gene Description', 'Synonym', 'Reference', 'Ciliary Localization'];
+    const rows = ciliahubData.map(item => [
+        `"${item.gene || ''}"`,
+        `"${item.ensemblId || ''}"`,
+        `"${item.description || ''}"`,
+        `"${item.synonym || ''}"`,
+        `"${item.reference || ''}"`,
+        `"${item.localization || ''}"`
+    ]);
+    const csvContent = [headers.join(','), ...rows.map(row => row.join(','))].join('\n');
 
-        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.setAttribute('href', url);
-        link.setAttribute('download', 'ciliahub_data.csv');
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', 'ciliahub_data.csv');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
 
-        console.log('CSV downloaded successfully.');
-    } catch (error) {
-        console.error('Error downloading CSV:', error);
-    }
+    console.log('CiliaHub CSV download initiated');
 }
