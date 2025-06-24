@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log(`${targetId} section displayed`);
         // Initialize CiliaHub if navigated to ciliahub
         if (targetId === 'ciliahub') {
-            initializeCiliahub();
+            initializeCiliahub(0); // Start with retry count 0
         }
     }
 
@@ -85,16 +85,41 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// Initialize CiliaHub when section is visible
-function initializeCiliahub() {
-    console.log('Initializing CiliaHub for hash:', window.location.hash);
-    // Wait for section to be visible before initializing
+// Initialize CiliaHub with retry mechanism
+function initializeCiliahub(retryCount) {
+    console.log('Initializing CiliaHub for hash:', window.location.hash, 'Retry:', retryCount);
     const ciliahubSection = document.getElementById('ciliahub');
-    if (!ciliahubSection || ciliahubSection.style.display === 'none') {
-        console.warn('CiliaHub section not visible yet, deferring initialization');
-        setTimeout(initializeCiliahub, 100); // Retry after 100ms
+    const maxRetries = 10;
+
+    if (!ciliahubSection) {
+        console.error('Error: #ciliahub section not found in DOM');
+        if (retryCount < maxRetries) {
+            setTimeout(() => initializeCiliahub(retryCount + 1), 100);
+        } else {
+            console.error('Max retries reached. CiliaHub initialization failed.');
+            // Add error message to container
+            const container = document.querySelector('.container');
+            if (container) {
+                container.innerHTML += '<p style="text-align: center; padding: 20px; color: red;">Error: CiliaHub section not found. Please check HTML.</p>';
+            }
+        }
         return;
     }
+
+    if (ciliahubSection.style.display === 'none') {
+        console.warn('CiliaHub section not visible yet, retrying...');
+        if (retryCount < maxRetries) {
+            setTimeout(() => initializeCiliahub(retryCount + 1), 100);
+        } else {
+            console.error('Max retries reached. CiliaHub section remains hidden.');
+            const container = ciliahubSection.querySelector('.container');
+            if (container) {
+                container.innerHTML += '<p style="text-align: center; padding: 20px; color: red;">Error: CiliaHub section not visible. Please check navigation.</p>';
+            }
+        }
+        return;
+    }
+
     loadDataAndPopulateTable();
     setupCiliahubEventListeners();
 }
@@ -123,10 +148,9 @@ function populateCiliahubTable(data) {
     const tbody = document.querySelector('.ciliahub-table tbody');
     if (!tbody) {
         console.error('Error: .ciliahub-table tbody not found in DOM');
-        // Add fallback message to table container
         const tableContainer = document.querySelector('.ciliahub-table');
         if (tableContainer) {
-            tableContainer.innerHTML += '<p style="text-align: center; padding: 20px;">Error: Table body not found. Please check HTML structure.</p>';
+            tableContainer.innerHTML += '<p style="text-align: center; padding: 20px; color: red;">Error: Table body not found. Please check HTML structure.</p>';
         }
         return;
     }
@@ -170,6 +194,10 @@ function setupCiliahubEventListeners() {
             resetButton: !!resetButton,
             downloadButton: !!downloadButton
         });
+        const container = document.querySelector('#ciliahub .container');
+        if (container) {
+            container.innerHTML += '<p style="text-align: center; padding: 20px; color: red;">Error: CiliaHub controls not found. Please check HTML.</p>';
+        }
         return;
     }
 
@@ -201,15 +229,22 @@ function setupCiliahubEventListeners() {
 // Filter CiliaHub table
 function filterCiliahubTable() {
     console.log('Filtering CiliaHub table...');
-    const searchTerm = document.getElementById('ciliahub-search')?.value.toLowerCase() || '';
-    const filterValue = document.getElementById('ciliahub-filter')?.value || '';
-    const rows = document.querySelectorAll('.ciliahub-table tbody tr');
+    const searchInput = document.getElementById('ciliahub-search');
+    const filterSelect = document.getElementById('ciliahub-filter');
     const tbody = document.querySelector('.ciliahub-table tbody');
 
     if (!tbody) {
         console.error('Error: CiliaHub table body not found during filtering');
+        const tableContainer = document.querySelector('.ciliahub-table');
+        if (tableContainer) {
+            tableContainer.innerHTML += '<p style="text-align: center; padding: 20px; color: red;">Error: Table body not found during filtering.</p>';
+        }
         return;
     }
+
+    const searchTerm = searchInput?.value.toLowerCase() || '';
+    const filterValue = filterSelect?.value || '';
+    const rows = tbody.querySelectorAll('tr');
 
     if (rows.length === 0) {
         tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px;">No Data Available</td></tr>';
