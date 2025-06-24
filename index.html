@@ -211,40 +211,42 @@
                 </div>
             </div>
         </section>
-        <div id="ciliahub" class="section">
-    <div class="container">
-        <h1>CiliaHub: Ciliary Gene Database</h1>
-        <div class="ciliahub-controls">
-            <input type="text" id="ciliahub-search" placeholder="Search by Gene, Ensembl ID, or Synonym...">
-            <select id="ciliahub-filter">
-                <option value="">All Localizations</option>
-                <option value="axoneme">Axoneme</option>
-                <option value="basal-body">Basal Body</option>
-                <option value="transition-zone">Transition Zone</option>
-            </select>
-            <button id="ciliahub-reset">Reset</button>
-            <button id="download-ciliahub">Download Data</button>
-        </div>
-        <div class="ciliahub-legend">
-            <span class="legend-axoneme">Axoneme</span>
-            <span class="legend-basal-body">Basal Body</span>
-            <span class="legend-transition-zone">Transition Zone</span>
-        </div>
-        <table class="ciliahub-table">
-            <thead>
-                <tr>
-                    <th>Gene</th>
-                    <th>Ensembl ID</th>
-                    <th>Gene Description</th>
-                    <th>Synonym</th>
-                    <th>Reference</th>
-                    <th>Ciliary Localization</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-    </div>
-</div>
+
+        <section id="ciliahub" class="section">
+            <div class="container">
+                <h1>CiliaHub: Ciliary Gene Database</h1>
+                <div class="ciliahub-controls">
+                    <input type="text" id="ciliahub-search" placeholder="Search by Gene, Ensembl ID, or Synonym...">
+                    <select id="ciliahub-filter">
+                        <option value="">All Localizations</option>
+                        <option value="axoneme">Axoneme</option>
+                        <option value="basal-body">Basal Body</option>
+                        <option value="transition-zone">Transition Zone</option>
+                    </select>
+                    <button id="ciliahub-reset">Reset</button>
+                    <button id="download-ciliahub">Download Data</button>
+                </div>
+                <div class="ciliahub-legend">
+                    <span class="legend-axoneme">Axoneme</span>
+                    <span class="legend-basal-body">Basal Body</span>
+                    <span class="legend-transition-zone">Transition Zone</span>
+                </div>
+                <table class="ciliahub-table">
+                    <thead>
+                        <tr>
+                            <th>Gene</th>
+                            <th>Ensembl ID</th>
+                            <th>Gene Description</th>
+                            <th>Synonym</th>
+                            <th>Reference</th>
+                            <th>Ciliary Localization</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ciliahub-table-body"></tbody>
+                </table>
+            </div>
+        </section>
+
         <section id="current-members" class="section" style="display: none;">
             <h1>Current Members</h1>
             <div class="team-grid">
@@ -640,161 +642,9 @@
     </footer>
 
     <!-- JavaScript -->
+    <script src="script.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Gene data for CiliaHub section
-            const geneData = [
-                {
-                    gene: "ABCC4",
-                    ensembl_id: "ENSG00000125257",
-                    description: "ATP binding cassette subfamily C member 4 (PEL blood group)",
-                    entrez_id: "10257",
-                    status: "Approved",
-                    previous_symbol: "NA",
-                    alias_symbol: "MRP4|EST170205|MOAT-B|MOATB",
-                    location: "13q32.1",
-                    quote: "Also known as leakytail. ATP-binding cassette transporter which transports prostaglandin E2 and other molecules across cellular membranes. Mutations in ABCC4 cause ciliogenesis defects. ABCC4-mediated PGE2 signalling acts through a ciliary G-protein-coupled receptor, EP4, to upregulate cAMP synthesis and increase anterograde IFT, thereby promoting ciliogenesis (PMID: 25173977). Zebrafish abcc4 mutants exhibited loss of connecting cilia and outer segment in photoreceptor cells, leading to mislocalization of opsins in the cell bodies of photoreceptors (PMID: 30685088). Specific missense associated with polydactyly in pigs (PMID: 32228435)",
-                    reference_pmid: "25173977; 30685088; 32228435",
-                    ciliary_localization: "Membrane"
-                },
-                {
-                    gene: "ABLIM1",
-                    ensembl_id: "ENSG00000099204",
-                    description: "actin binding LIM protein 1",
-                    entrez_id: "3983",
-                    status: "Approved",
-                    previous_symbol: "LIMAB1|ABLIM",
-                    alias_symbol: "abLIM|limatin",
-                    location: "10q25.3",
-                    quote: "Involved in ciliation-related actin dynamics and LR patterning (PMID: 22684256). Asymmetrically expressed in both the node and left lateral plate mesoderm (LPM), similar to Nodal (PMID: 20487527)",
-                    reference_pmid: "22684256; 20487527",
-                    ciliary_localization: "actin cytoskeleton"
-                },
-                {
-                    gene: "ABLIM3",
-                    ensembl_id: "ENSG00000173210",
-                    description: "actin binding LIM protein family member 3",
-                    entrez_id: "22885",
-                    status: "Approved",
-                    previous_symbol: "NA",
-                    alias_symbol: "KIAA0843",
-                    location: "5q32",
-                    quote: "Involved in actin dynamics related to ciliogenesis (PMID: 22684256)",
-                    reference_pmid: "22684256",
-                    ciliary_localization: "actin cytoskeleton"
-                },
-                {
-                    gene: "ACE2",
-                    ensembl_id: "ENSG00000130234",
-                    description: "angiotensin converting enzyme 2",
-                    entrez_id: "59272",
-                    status: "Approved",
-                    previous_symbol: "NA",
-                    alias_symbol: "ACEH",
-                    location: "Xp22.2",
-                    quote: "Localized to motile cilia membranes, implicated in ciliary function (PMID: 33116139)",
-                    reference_pmid: "33116139",
-                    ciliary_localization: "Motile cilium membrane"
-                },
-                {
-                    gene: "ACTR2",
-                    ensembl_id: "ENSG00000138071",
-                    description: "actin related protein 2",
-                    entrez_id: "10097",
-                    status: "Approved",
-                    previous_symbol: "NA",
-                    alias_symbol: "ARP2",
-                    location: "2p14",
-                    quote: "Contributes to actin cytoskeleton organization in ciliary structures (PMID: 22684256)",
-                    reference_pmid: "22684256",
-                    ciliary_localization: "actin cytoskeleton"
-                }
-            ];
-
-            // Populate CiliaHub table
-            const ciliahubTableBody = document.getElementById('ciliahub-table-body');
-            function populateCiliaHubTable(data) {
-                ciliahubTableBody.innerHTML = '';
-                data.forEach(gene => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${gene.gene}</td>
-                        <td>${gene.ensembl_id}</td>
-                        <td>${gene.description}</td>
-                        <td>${gene.entrez_id}</td>
-                        <td>${gene.status}</td>
-                        <td>${gene.previous_symbol}</td>
-                        <td>${gene.alias_symbol}</td>
-                        <td>${gene.location}</td>
-                        <td>${gene.quote}</td>
-                        <td>${gene.reference_pmid}</td>
-                        <td>${gene.ciliary_localization}</td>
-                    `;
-                    ciliahubTableBody.appendChild(row);
-                });
-            }
-
-            // Initial table population
-            populateCiliaHubTable(geneData);
-
-            // CiliaHub search functionality
-            const ciliahubSearchInput = document.getElementById('ciliahub-search');
-            if (ciliahubSearchInput) {
-                ciliahubearchInput.addEventListener('input', function() {
-                    const query = this.value.toLowerCase().trim();
-                    const filteredData = geneData.filter(gene => {
-                        return (
-                            gene.gene.toLowerCase().includes(query) ||
-                            gene.ensembl_id.toLowerCase().includes(query) ||
-                            gene.description.toLowerCase().includes(query) ||
-                            gene.entrez_id.toString().includes(query) ||
-                            gene.status.toLowerCase().includes(query) ||
-                            gene.previous_symbol.toLowerCase().includes(query) ||
-                            gene.alias_symbol.toLowerCase().includes(query) ||
-                            gene.location.toLowerCase().includes(query) ||
-                            gene.quote.toLowerCase().includes(query) ||
-                            gene.reference_pmid.toLowerCase().includes(query) ||
-                            gene.ciliary_localization.toLowerCase().includes(query)
-                        );
-                    });
-                    populateCiliaHubTable(filteredData);
-                });
-            }
-
-            // Download CSV functionality
-            const downloadButton = document.getElementById('download-ciliahub');
-            if (downloadButton) {
-                downloadButton.addEventListener('click', function() {
-                    const headers = ["Gene", "Ensembl ID", "Gene Description", "ENTREZ ID", "Status", "Previous Symbol", "Alias Symbol", "Gene Location", "Quote about Genes", "Reference PMID", "Ciliary Localization"];
-                    const csvContent = [
-                        headers.join(","),
-                        ...geneData.map(gene => [
-                            `"${gene.gene}"`,
-                            `"${gene.ensembl_id}"`,
-                            `"${gene.description.replace(/"/g, '""')}"`,
-                            `"${gene.entrez_id}"`,
-                            `"${gene.status}"`,
-                            `"${gene.previous_symbol}"`,
-                            `"${gene.alias_symbol}"`,
-                            `"${gene.location}"`,
-                            `"${gene.quote.replace(/"/g, '""')}"`,
-                            `"${gene.reference_pmid}"`,
-                            `"${gene.ciliary_localization}"`
-                        ].join(","))
-                    ].join("\n");
-
-                    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-                    const link = document.createElement('a');
-                    const url = URL.createObjectURL(blob);
-                    link.setAttribute('href', url);
-                    link.setAttribute('download', 'ciliary_genes.csv');
-                    link.style.visibility = 'hidden';
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                });
-            }
-
             // Existing JavaScript (Publications search, Lightbox, Back to Top, Night Mode)
             const searchInput = document.getElementById('pub-search');
             const pubList = document.getElementById('publications-list');
