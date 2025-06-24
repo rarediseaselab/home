@@ -89,37 +89,48 @@ document.addEventListener('DOMContentLoaded', function() {
 function initializeCiliahub(retryCount) {
     console.log('Initializing CiliaHub for hash:', window.location.hash, 'Retry:', retryCount);
     const ciliahubSection = document.getElementById('ciliahub');
-    const maxRetries = 10;
+    const maxRetries = 20; // Increased retries for robustness
 
     if (!ciliahubSection) {
         console.error('Error: #ciliahub section not found in DOM');
         if (retryCount < maxRetries) {
-            setTimeout(() => initializeCiliahub(retryCount + 1), 100);
-        } else {
-            console.error('Max retries reached. CiliaHub initialization failed.');
-            // Add error message to container
-            const container = document.querySelector('.container');
-            if (container) {
-                container.innerHTML += '<p style="text-align: center; padding: 20px; color: red;">Error: CiliaHub section not found. Please check HTML.</p>';
-            }
+            console.log('Retrying CiliaHub initialization...');
+            setTimeout(() => initializeCiliahub(retryCount + 1), 50); // Faster retry
+            return;
+        }
+        console.error('Max retries reached. CiliaHub section not found.');
+        const container = document.querySelector('.container');
+        if (container) {
+            container.innerHTML += '<p style="text-align: center; padding: 20px; color: red;">Error: CiliaHub section not found. Please check HTML.</p>';
         }
         return;
     }
 
-    if (ciliahubSection.style.display === 'none') {
-        console.warn('CiliaHub section not visible yet, retrying...');
+    // Check if table and tbody exist
+    const table = ciliahubSection.querySelector('.ciliahub-table');
+    let tbody = table ? table.querySelector('tbody') : null;
+
+    if (!table || !tbody) {
+        console.warn('CiliaHub table or tbody not found. Table:', !!table, 'TBody:', !!tbody);
+        if (!table) {
+            console.error('Error: .ciliahub-table not found in #ciliahub');
+            ciliahubSection.innerHTML += '<p style="text-align: center; padding: 20px; color: red;">Error: CiliaHub table not found. Please check HTML.</p>';
+        } else if (!tbody) {
+            console.warn('TBody missing, creating one...');
+            tbody = document.createElement('tbody');
+            table.appendChild(tbody);
+        }
         if (retryCount < maxRetries) {
-            setTimeout(() => initializeCiliahub(retryCount + 1), 100);
-        } else {
-            console.error('Max retries reached. CiliaHub section remains hidden.');
-            const container = ciliahubSection.querySelector('.container');
-            if (container) {
-                container.innerHTML += '<p style="text-align: center; padding: 20px; color: red;">Error: CiliaHub section not visible. Please check navigation.</p>';
-            }
+            console.log('Retrying CiliaHub initialization...');
+            setTimeout(() => initializeCiliahub(retryCount + 1), 50);
+            return;
         }
+        console.error('Max retries reached. CiliaHub table/tbody not available.');
+        ciliahubSection.innerHTML += '<p style="text-align: center; padding: 20px; color: red;">Error: CiliaHub table setup failed. Please check HTML.</p>';
         return;
     }
 
+    console.log('CiliaHub section and table found, proceeding with initialization');
     loadDataAndPopulateTable();
     setupCiliahubEventListeners();
 }
@@ -147,7 +158,7 @@ function populateCiliahubTable(data) {
     console.log('Populating CiliaHub table with', data.length, 'rows');
     const tbody = document.querySelector('.ciliahub-table tbody');
     if (!tbody) {
-        console.error('Error: .ciliahub-table tbody not found in DOM');
+        console.error('Error: .ciliahub-table tbody not found in DOM during population');
         const tableContainer = document.querySelector('.ciliahub-table');
         if (tableContainer) {
             tableContainer.innerHTML += '<p style="text-align: center; padding: 20px; color: red;">Error: Table body not found. Please check HTML structure.</p>';
