@@ -62,7 +62,7 @@ body {
     background-color: #f9f9f9;
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
+    z-index: 1001;
     top: 100%;
 }
 
@@ -669,6 +669,230 @@ footer {
     opacity: 0.8;
 }
 
+/* CiliaHub Section */
+.ciliahub-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
+    background-color: #e6f2ff;
+    padding: 15px;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#ciliahub-search, #ciliahub-filter, #ciliahub-reset, #download-ciliahub {
+    padding: 8px 12px;
+    border: 2px solid #004080;
+    border-radius: 4px;
+    font-size: 1em;
+    background-color: white;
+    color: #333;
+    max-width: 400px;
+    width: 100%;
+}
+
+#ciliahub-filter {
+    cursor: pointer;
+}
+
+#ciliahub-reset {
+    background-color: #f9f9f9;
+    color: #004080;
+    cursor: pointer;
+}
+
+#ciliahub-reset:hover {
+    background-color: #d9e6ff;
+}
+
+.ciliahub-legend {
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+    font-size: 0.9em;
+    color: #333;
+}
+
+.ciliahub-legend span {
+    margin-right: 15px;
+}
+
+.ciliahub-legend .legend-axoneme::before {
+    content: '';
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    background-color: #f0faff;
+    border: 1px solid #004080;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+.ciliahub-legend .legend-basal-body::before {
+    content: '';
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    background-color: #e6f2ff;
+    border: 1px solid #004080;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+.ciliahub-legend .legend-transition-zone::before {
+    content: '';
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    background-color: #f5f5f5;
+    border: 1px solid #004080;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+.ciliahub-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: #e6f2ff;
+    border-radius: 5px;
+    overflow-x: auto;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.ciliahub-table th,
+.ciliahub-table td {
+    padding: 14px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    font-size: 0.9em;
+}
+
+.ciliahub-table th {
+    background-color: #003366;
+    color: white;
+    font-weight: bold;
+    border-bottom: 2px solid #004080;
+}
+
+.ciliahub-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.ciliahub-table tr.axoneme {
+    background-color: #f0faff;
+}
+
+.ciliahub-table tr.basal-body {
+    background-color: #e6f2ff;
+}
+
+.ciliahub-table tr.transition-zone {
+    background-color: #f5f5f5;
+}
+
+.ciliahub-table tr:hover {
+    background-color: #d9e6ff;
+}
+
+.ciliahub-table td.reference {
+    position: relative;
+    cursor: pointer;
+}
+
+.ciliahub-table td.reference:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #004080;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.85em;
+    white-space: nowrap;
+    z-index: 1002;
+}
+
+.night-mode .ciliahub-controls {
+    background-color: #3d3d3d;
+}
+
+.night-mode #ciliahub-search, .night-mode #ciliahub-filter, .night-mode #ciliahub-reset, .night-mode #download-ciliahub {
+    background-color: #2e2e2e;
+    border: 2px solid #b3d9ff;
+    color: #d9d9d9;
+}
+
+.night-mode #ciliahub-reset:hover {
+    background-color: #4a4a4a;
+}
+
+.night-mode .ciliahub-legend {
+    background-color: #2e2e2e;
+    color: #d9d9d9;
+}
+
+.night-mode .ciliahub-legend .legend-axoneme::before {
+    background-color: #4a4a4a;
+    border: 1px solid #b3d9ff;
+}
+
+.night-mode .ciliahub-legend .legend-basal-body::before {
+    background-color: #3d3d3d;
+    border: 1px solid #b3d9ff;
+}
+
+.night-mode .ciliahub-legend .legend-transition-zone::before {
+    background-color: #2e2e2e;
+    border: 1px solid #b3d9ff;
+}
+
+.night-mode .ciliahub-table {
+    background: #3d3d3d;
+    box-shadow: 0 3px 10px rgba(255, 255, 255, 0.1);
+}
+
+.night-mode .ciliahub-table th {
+    background-color: #0066cc;
+    border-bottom: 2px solid #b3d9ff;
+}
+
+.night-mode .ciliahub-table tr:nth-child(even) {
+    background-color: #2e2e2e;
+}
+
+.night-mode .ciliahub-table tr.axoneme {
+    background-color: #4a4a4a;
+}
+
+.night-mode .ciliahub-table tr.basal-body {
+    background-color: #3d3d3d;
+}
+
+.night-mode .ciliahub-table tr.transition-zone {
+    background-color: #2e2e2e;
+}
+
+.night-mode .ciliahub-table tr:hover {
+    background-color: #4a4a4a;
+}
+
+.night-mode .ciliahub-table td,
+.night-mode .ciliahub-table th {
+    border-bottom: 1px solid #555;
+}
+
+.night-mode .ciliahub-table td.reference:hover::after {
+    background-color: #0066cc;
+    color: #d9d9d9;
+}
+
 /* Responsive Adjustments */
 @media (max-width: 768px) {
     .container {
@@ -721,6 +945,25 @@ footer {
     .fit-image {
         width: 120px;
     }
+    .ciliahub-table {
+        font-size: 0.8em;
+        overflow-x: auto;
+    }
+    .ciliahub-table th,
+    .ciliahub-table td {
+        padding: 8px;
+    }
+    .ciliahub-controls {
+        flex-direction: column;
+        align-items: center;
+    }
+    #ciliahub-search,
+    #ciliahub-filter,
+    #ciliahub-reset,
+    #download-ciliahub {
+        width: 100%;
+        max-width: none;
+    }
 }
 
 @media (max-width: 480px) {
@@ -753,6 +996,13 @@ footer {
     .fit-image {
         width: 100px;
     }
+    .ciliahub-table {
+        font-size: 0.75em;
+    }
+    .ciliahub-table th,
+    .ciliahub-table td {
+        padding: 6px;
+    }
 }
 
 /* Night Mode Toggle Button */
@@ -784,126 +1034,4 @@ footer {
 
 .night-mode #night-mode-toggle:hover {
     background-color: #004d99;
-}
-
-/* Ciliome Section */
-.ciliome-controls {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-    gap: 10px;
-    background-color: #e6f2ff; /* Light blue background for visual grouping */
-    padding: 10px; /* Added padding for better spacing */
-    border-radius: 4px; /* Consistent border radius */
-}
-
-#ciliome-search {
-    padding: 8px 12px; /* Improved padding for visibility */
-    border: 2px solid #004080; /* Stronger border to stand out */
-    border-radius: 4px;
-    font-size: 1em;
-    background-color: white; /* White background for clarity */
-    color: #333; /* Dark text for readability */
-    max-width: 400px; /* Consistent with pub-search */
-    width: 100%; /* Full width for responsiveness */
-}
-
-.night-mode #ciliome-search {
-    background-color: #2e2e2e; /* Dark background for night mode */
-    border: 2px solid #b3d9ff; /* Light blue border for night mode */
-    color: #d9d9d9; /* Light text for night mode */
-}
-
-.night-mode .ciliome-controls {
-    background-color: #3d3d3d; /* Darker background for night mode */
-}
-
-.ciliome-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    background: #e6f2ff;
-    border-radius: 5px;
-    overflow: hidden;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-}
-
-.ciliome-table th,
-.ciliome-table td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-    font-size: 0.9em;
-}
-
-.ciliome-table th {
-    background-color: #004080;
-    color: white;
-    font-weight: bold;
-}
-
-.ciliome-table tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
-.ciliome-table tr:hover {
-    background-color: #d9e6ff;
-}
-
-.night-mode .ciliome-table {
-    background: #3d3d3d;
-    box-shadow: 0 3px 10px rgba(255, 255, 255, 0.1);
-}
-
-.night-mode .ciliome-table th {
-    background-color: #0066cc;
-}
-
-.night-mode .ciliome-table tr:nth-child(even) {
-    background-color: #2e2e2e;
-}
-
-.night-mode .ciliome-table tr:hover {
-    background-color: #4a4a4a;
-}
-
-.night-mode .ciliome-table td,
-.night-mode .ciliome-table th {
-    border-bottom: 1px solid #555;
-}
-
-/* Responsive Adjustments for Ciliome Table */
-@media (max-width: 768px) {
-    .ciliome-table {
-        font-size: 0.8em;
-    }
-    
-    .ciliome-table th,
-    .ciliome-table td {
-        padding: 8px;
-    }
-    
-    .ciliome-controls {
-        flex-direction: column;
-        align-items: center; /* Center items for better alignment */
-    }
-    
-    #ciliome-search,
-    #download-ciliome {
-        width: 100%;
-        max-width: none;
-    }
-}
-
-@media (max-width: 480px) {
-    .ciliome-table {
-        font-size: 0.75em;
-    }
-    
-    .ciliome-table th,
-    .ciliome-table td {
-        padding: 6px;
-    }
 }
