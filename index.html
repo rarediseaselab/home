@@ -45,7 +45,7 @@
             let path = ['<a href="#home" onclick="showSection(\'home\')">Home</a>'];
             if (sectionId !== 'home') {
                 const sectionTitle = document.getElementById(sectionId).querySelector('h1').textContent;
-                if (sectionId.startsWith('research-') || sectionId === 'bioinformatics' || sectionId === 'ciliome') {
+                if (sectionId.startsWith('research-') || sectionId === 'bioinformatics' || sectionId === 'ciliahub') {
                     path.push('<a href="#research-overview" onclick="showSection(\'research-overview\')">Research</a>');
                 } else if (sectionId.startsWith('current-') || sectionId.startsWith('former-') || sectionId === 'group-photos' || sectionId === 'open-positions') {
                     path.push('<a href="#current-members" onclick="showSection(\'current-members\')">Team</a>');
@@ -83,7 +83,7 @@
         <a href="#news" onclick="showSection('news')">News</a>
         <a href="#resources" onclick="showSection('resources')">Resources</a>
         <a href="#gallery" onclick="showSection('gallery')">Gallery</a>
-        <a href="#ciliome" onclick="showSection('ciliome')">Ciliome</a>
+        <a href="#ciliahub" onclick="showSection('ciliahub')">CiliaHub</a>
     </nav>
 
     <!-- Breadcrumbs -->
@@ -161,10 +161,10 @@
                     <a href="#bioinformatics" onclick="showSection('bioinformatics')" class="read-more-btn">Read More</a>
                 </div>
                 <div class="research-overview-item">
-                    <img src="cilia_res1.jpg" alt="Ciliome" class="overview-image">
-                    <h2>Ciliome</h2>
+                    <img src="cilia_res1.jpg" alt="CiliaHub" class="overview-image">
+                    <h2>CiliaHub</h2>
                     <p class="research-text">Explore our comprehensive database of ciliary genes, including detailed annotations and references, to support research in ciliary biology and ciliopathies.</p>
-                    <a href="#ciliome" onclick="showSection('ciliome')" class="read-more-btn">Read More</a>
+                    <a href="#ciliahub" onclick="showSection('ciliahub')" class="read-more-btn">Read More</a>
                 </div>
             </div>
         </section>
@@ -212,15 +212,15 @@
             </div>
         </section>
 
-        <section id="ciliome" class="section" style="display: none;">
-            <h1>Ciliome</h1>
+        <section id="ciliahub" class="section" style="display: none;">
+            <h1>CiliaHub</h1>
             <p>Explore our comprehensive database of ciliary genes, including detailed annotations and references. Search for genes by name, Ensembl ID, or other attributes, and download the full dataset as a CSV file.</p>
-            <div class="ciliome-controls">
-                <input type="text" id="ciliome-search" placeholder="Search ciliary genes..." class="pub-search">
-                <button id="download-ciliome" class="read-more-btn">Download All Genes (CSV)</button>
+            <div class="ciliahub-controls">
+                <input type="text" id="ciliahub-search" placeholder="Search ciliary genes..." class="pub-search">
+                <button id="download-ciliahub" class="read-more-btn">Download All Genes (CSV)</button>
             </div>
-            <div class="ciliome-table-wrapper">
-                <table id="ciliome-table" class="ciliome-table">
+            <div class="ciliahub-table-wrapper">
+                <table id="ciliahub-table" class="ciliahub-table">
                     <thead>
                         <tr>
                             <th>Gene</th>
@@ -236,7 +236,7 @@
                             <th>Ciliary Localization</th>
                         </tr>
                     </thead>
-                    <tbody id="ciliome-table-body">
+                    <tbody id="ciliahub-table-body">
                         <!-- Gene data will be populated by JavaScript -->
                     </tbody>
                 </table>
@@ -640,7 +640,7 @@
     <!-- JavaScript -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Gene data for Ciliome section
+            // Gene data for CiliaHub section
             const geneData = [
                 {
                     gene: "ABCC4",
@@ -709,10 +709,10 @@
                 }
             ];
 
-            // Populate Ciliome table
-            const ciliomeTableBody = document.getElementById('ciliome-table-body');
-            function populateCiliomeTable(data) {
-                ciliomeTableBody.innerHTML = '';
+            // Populate CiliaHub table
+            const ciliahubTableBody = document.getElementById('ciliahub-table-body');
+            function populateCiliaHubTable(data) {
+                ciliahubTableBody.innerHTML = '';
                 data.forEach(gene => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
@@ -728,17 +728,17 @@
                         <td>${gene.reference_pmid}</td>
                         <td>${gene.ciliary_localization}</td>
                     `;
-                    ciliomeTableBody.appendChild(row);
+                    ciliahubTableBody.appendChild(row);
                 });
             }
 
             // Initial table population
-            populateCiliomeTable(geneData);
+            populateCiliaHubTable(geneData);
 
-            // Ciliome search functionality
-            const ciliomeSearchInput = document.getElementById('ciliome-search');
-            if (ciliomeSearchInput) {
-                ciliomeSearchInput.addEventListener('input', function() {
+            // CiliaHub search functionality
+            const ciliahubSearchInput = document.getElementById('ciliahub-search');
+            if (ciliahubSearchInput) {
+                ciliahubearchInput.addEventListener('input', function() {
                     const query = this.value.toLowerCase().trim();
                     const filteredData = geneData.filter(gene => {
                         return (
@@ -755,12 +755,12 @@
                             gene.ciliary_localization.toLowerCase().includes(query)
                         );
                     });
-                    populateCiliomeTable(filteredData);
+                    populateCiliaHubTable(filteredData);
                 });
             }
 
             // Download CSV functionality
-            const downloadButton = document.getElementById('download-ciliome');
+            const downloadButton = document.getElementById('download-ciliahub');
             if (downloadButton) {
                 downloadButton.addEventListener('click', function() {
                     const headers = ["Gene", "Ensembl ID", "Gene Description", "ENTREZ ID", "Status", "Previous Symbol", "Alias Symbol", "Gene Location", "Quote about Genes", "Reference PMID", "Ciliary Localization"];
