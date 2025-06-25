@@ -214,17 +214,18 @@
 
 <section id="ciliahub" class="section">
     <div class="container">
-        <h1>CiliaHub: Ciliary Gene Database</h1>
+        <!-- Logo above title -->
+        <img src="ciliahub-logo.png" alt="CiliaHub Logo" class="w-24 h-auto mx-auto mb-4">
+        <!-- Title with blue color matching navbar -->
+        <h1 style="color: #2563eb;">CiliaHub: Ciliary Gene Database</h1>
+        <p class="mb-4">CiliaHub is a cutting-edge resource that expands the ciliary gene catalog with 744 newly identified genes, leveraging advanced literature mining. It provides a comprehensive, up-to-date database with detailed annotations, hyperlinks to gene and reference data, and localization insights, empowering cilia research and clinical genetics to unravel ciliopathy mechanisms.</p>
         <div class="flex flex-col md:flex-row mb-4">
-            <!-- Sidebar with Logo -->
+            <!-- Sidebar with Logo (now empty except for logo placeholder) -->
             <div class="w-full md:w-1/4 bg-gray-200 p-4 mb-4 md:mb-0 md:mr-4">
-                <img src="CiliaHub_Logo.png" alt="CiliaHub Logo" class="w-32 h-auto mx-auto mb-2">
-                <p class="text-center text-gray-700">Maintained by Kaplan Lab</p>
-                <p class="text-center text-gray-700 mt-2">Report missing genes or mistakes: <a href="mailto:oktay.kaplan@agu.edu.tr" class="text-blue-600 hover:underline">oktay.kaplan@agu.edu.tr</a></p>
+                <!-- Logo already above title, so no additional content here -->
             </div>
-            <!-- Description and Controls -->
+            <!-- Controls and Table -->
             <div class="w-full md:w-3/4">
-                <p class="mb-4">CiliaHub is a cutting-edge resource that expands the ciliary gene catalog with 744 newly identified genes, leveraging advanced literature mining. It provides a comprehensive, up-to-date database with detailed annotations, hyperlinks to gene and reference data, and localization insights, empowering cilia research and clinical genetics to unravel ciliopathy mechanisms.</p>
                 <div class="ciliahub-controls">
                     <input type="text" id="ciliahub-search" placeholder="Search by Gene, Ensembl ID, or Synonym...">
                     <select id="ciliahub-filter">
@@ -254,6 +255,8 @@
                     </thead>
                     <tbody id="ciliahub-table-body"></tbody>
                 </table>
+                <!-- Feedback text below table -->
+                <p class="mt-4 text-gray-700">Report missing genes or mistakes: oktay.kaplan(@)agu.edu.tr</p>
             </div>
         </div>
     </div>
