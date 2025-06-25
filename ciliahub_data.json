@@ -1,0 +1,554 @@
+[
+  {
+    "gene": "ACTR3",
+    "ensemblId": "ENSG00000115091",
+    "description": "actin related protein 3",
+    "synonym": "ARP3",
+    "reference": "20393563 , 29945904",
+    "localization": "basal body, primary cilia"
+  },
+  {
+    "gene": "ACTRT1",
+    "ensemblId": "ENSG00000123165",
+    "description": "actin related protein T1",
+    "synonym": "AIP1,KIAA0705,ARIP1,Arp-T1",
+    "reference": "33972689",
+    "localization": "basal body, primary cilia"
+  },
+  {
+    "gene": "ADCY4",
+    "ensemblId": "ENSG00000129467",
+    "description": "adenylate cyclase 4",
+    "synonym": "AC4",
+    "reference": "18687752",
+    "localization": "cholangiocyte cilia"
+  },
+  {
+    "gene": "ADCY8",
+    "ensemblId": "ENSG00000155897",
+    "description": "adenylate cyclase 8",
+    "synonym": "HBAC1,AC8",
+    "reference": "18687752",
+    "localization": "cholangiocyte cilia"
+  },
+  {
+    "gene": "ADRB2",
+    "ensemblId": "ENSG00000169252",
+    "description": "adrenoceptor beta 2",
+    "synonym": "ADRBR,BAR,B2AR,ARB2",
+    "reference": "34385262",
+    "localization": "cilia"
+  },
+  {
+    "gene": "AGO2",
+    "ensemblId": "ENSG00000123908",
+    "description": "argonaute RISC catalytic component 2",
+    "synonym": "hAGO2,Q10,LINC00980",
+    "reference": "21880135",
+    "localization": "basal body, ciliary shaft, primary cilia"
+  },
+  {
+    "gene": "AJM1",
+    "ensemblId": "ENSG00000232434",
+    "description": "apical junction component 1 homolog",
+    "synonym": "ajm-1",
+    "reference": "27623382",
+    "localization": "distal AWC dendrite, ciliated sensory neurons"
+  },
+  {
+    "gene": "AJUBA",
+    "ensemblId": "ENSG00000129474",
+    "description": "ajuba LIM protein",
+    "synonym": "MGC15563",
+    "reference": "20457130",
+    "localization": "centrosome, basal body"
+  },
+  {
+    "gene": "AK9",
+    "ensemblId": "ENSG00000155085",
+    "description": "adenylate kinase 9",
+    "synonym": "FLJ42177,FLJ25791,dJ70A9.1,MGC26954",
+    "reference": "38100419",
+    "localization": "motile cilia"
+  },
+  {
+    "gene": "AKAP3",
+    "ensemblId": "ENSG00000111254",
+    "description": "A-kinase anchoring protein 3",
+    "synonym": "FSP95,SOB1,AKAP110,CT82",
+    "reference": "15257753, 11229805",
+    "localization": "flagella"
+  },
+  {
+    "gene": "AKAP4",
+    "ensemblId": "ENSG00000147081",
+    "description": "A-kinase anchoring protein 4",
+    "synonym": "p82,hAKAP82,AKAP82,Fsc1,HI,CT99",
+    "reference": "15257753, 11229805",
+    "localization": "flagella"
+  },
+  {
+    "gene": "AKAP5",
+    "ensemblId": "ENSG00000179841",
+    "description": "A-kinase anchoring protein 5",
+    "synonym": "AKAP75,AKAP79",
+    "reference": "18687752",
+    "localization": "cholangiocyte cilia, primary cilia"
+  },
+  {
+    "gene": "AKAP9",
+    "ensemblId": "ENSG00000127914",
+    "description": "A-kinase anchoring protein 9",
+    "synonym": "KIAA0803,AKAP350,AKAP450,CG-NAP,YOTIAO,HYPERION,PRKA9,MU-RMS-40.16A,PPP1R45,LQT11",
+    "reference": "28673820",
+    "localization": "centrosome"
+  },
+  {
+    "gene": "ANKEF1",
+    "ensemblId": "ENSG00000132623",
+    "description": "ankyrin repeat and EF-hand domain containing 1",
+    "synonym": "FLJ21669,dJ839B4.6",
+    "reference": "37367482",
+    "localization": "kinocilia"
+  },
+  {
+    "gene": "ANKH",
+    "ensemblId": "ENSG00000154122",
+    "description": "ANKH inorganic pyrophosphate transport regulator",
+    "synonym": "HANK,ANK,CPPDD,SLC62A1",
+    "reference": "19910700",
+    "localization": "primary cilia, basal body"
+  },
+  {
+    "gene": "ANKMY2",
+    "ensemblId": "ENSG00000106524",
+    "description": "ankyrin repeat and MYND domain containing 2",
+    "synonym": "DKFZP564O043,ZMYND20",
+    "reference": "21124868",
+    "localization": "sensory cilia"
+  },
+  {
+    "gene": "ANKS1A",
+    "ensemblId": "ENSG00000064999",
+    "description": "ankyrin repeat and sterile alpha motif domain containing 1A",
+    "synonym": "KIAA0229",
+    "reference": "33504787",
+    "localization": "basal body"
+  },
+  {
+    "gene": "ANXA2",
+    "ensemblId": "ENSG00000182718",
+    "description": "annexin A2",
+    "synonym": "LIP2",
+    "reference": "12198146 , 12050667 , 12660155 , 17714509, 24748648",
+    "localization": "motile cilia"
+  },
+  {
+    "gene": "ANXA5",
+    "ensemblId": "ENSG00000164111",
+    "description": "annexin A5",
+    "synonym": "CPB-I,PAP-I,VAC-alph,RPRGL3",
+    "reference": "17714509, 18336002, 24748648",
+    "localization": "motile cilia"
+  },
+  {
+    "gene": "APP",
+    "ensemblId": "ENSG00000142192",
+    "description": "amyloid beta precursor protein",
+    "synonym": "alpha-sAPP",
+    "reference": "30140428 , 34580355",
+    "localization": "motile and primary cilia"
+  },
+  {
+    "gene": "APPL1",
+    "ensemblId": "ENSG00000157500",
+    "description": "adaptor protein, phosphotyrosine interacting with PH domain and leucine zipper 1",
+    "synonym": "APPL",
+    "reference": "22228094",
+    "localization": "primary cilia, basal body"
+  },
+  {
+    "gene": "AQP1",
+    "ensemblId": "ENSG00000240583",
+    "description": "aquaporin 1 (Colton blood group)",
+    "synonym": "CHIP28",
+    "reference": "12002438",
+    "localization": "cilia"
+  },
+  {
+    "gene": "AQP2",
+    "ensemblId": "ENSG00000167580",
+    "description": "aquaporin 2",
+    "synonym": "NA",
+    "reference": "22205228",
+    "localization": "cilia"
+  },
+  {
+    "gene": "AQP3",
+    "ensemblId": "ENSG00000165272",
+    "description": "aquaporin 3 (Gill blood group)",
+    "synonym": "GIL",
+    "reference": "33110949",
+    "localization": "cilia"
+  },
+  {
+    "gene": "AQP5",
+    "ensemblId": "ENSG00000161798",
+    "description": "aquaporin 5",
+    "synonym": "NA",
+    "reference": "33110949",
+    "localization": "cilia"
+  },
+  {
+    "gene": "AQP6",
+    "ensemblId": "ENSG00000086159",
+    "description": "aquaporin 6",
+    "synonym": "NA",
+    "reference": "33110949",
+    "localization": "cilia"
+  },
+  {
+    "gene": "AQP9",
+    "ensemblId": "ENSG00000103569",
+    "description": "aquaporin 9",
+    "synonym": "SSC1,HsT17287",
+    "reference": "11027599 , 33110949",
+    "localization": "cilia"
+  },
+  {
+    "gene": "ARHGAP29",
+    "ensemblId": "ENSG00000137962",
+    "description": "Rho GTPase activating protein 29",
+    "synonym": "PARG1",
+    "reference": "32663194",
+    "localization": "centrosome"
+  },
+  {
+    "gene": "ARHGAP35",
+    "ensemblId": "ENSG00000160007",
+    "description": "Rho GTPase activating protein 35",
+    "synonym": "GRF-1,p190ARhoGAP,P190A,KIAA1722,p190RhoGAP",
+    "reference": "32663194",
+    "localization": "centrosome"
+  },
+  {
+    "gene": "ARHGAP5",
+    "ensemblId": "ENSG00000100852",
+    "description": "Rho GTPase activating protein 5",
+    "synonym": "RhoGAP5,p190-B,p190BRhoGAP",
+    "reference": "32663194",
+    "localization": "centrosome"
+  },
+  {
+    "gene": "ARHGEF18",
+    "ensemblId": "ENSG00000104880",
+    "description": "Rho/Rac guanine nucleotide exchange factor 18",
+    "synonym": "P114-RhoGEF,KIAA0521,MGC15913,p114RhoGEF",
+    "reference": "36912772",
+    "localization": "basal body, primary cilia"
+  },
+  {
+    "gene": "ARL13A",
+    "ensemblId": "ENSG00000174225",
+    "description": "ARF like GTPase 13A",
+    "synonym": "NA",
+    "reference": "30009987",
+    "localization": "cilia"
+  },
+  {
+    "gene": "ATG16L1",
+    "ensemblId": "ENSG00000281089",
+    "description": "autophagy related 16 like 1",
+    "synonym": "WDR30,FLJ10035,ATG16A",
+    "reference": "33910006",
+    "localization": "primary cilia"
+  },
+  {
+    "gene": "ATP2B1",
+    "ensemblId": "ENSG00000070961",
+    "description": "ATPase plasma membrane Ca2+ transporting 1",
+    "synonym": "PMCA1",
+    "reference": "16855061",
+    "localization": "cilia"
+  },
+  {
+    "gene": "ATXN3",
+    "ensemblId": "ENSG00000066427",
+    "description": "ataxin 3",
+    "synonym": "ATX3,JOS",
+    "reference": "33176149",
+    "localization": "basal body, ciliary axonemes"
+  },
+  {
+    "gene": "BCAS2",
+    "ensemblId": "ENSG00000116752",
+    "description": "BCAS2 pre-mRNA processing factor",
+    "synonym": "DAM1,SPF27,Snt309",
+    "reference": "37250316",
+    "localization": "nucleoplasm , centrosome"
+  },
+  {
+    "gene": "BEX1",
+    "ensemblId": "ENSG00000133169",
+    "description": "brain expressed X-linked 1",
+    "synonym": "NA",
+    "reference": "35144600",
+    "localization": "basal body"
+  },
+  {
+    "gene": "BICC1",
+    "ensemblId": "ENSG00000122870",
+    "description": "BicC family RNA binding protein 1",
+    "synonym": "NA",
+    "reference": "19666828",
+    "localization": "cilia"
+  },
+  {
+    "gene": "BICD2",
+    "ensemblId": "ENSG00000185963",
+    "description": "BICD cargo adaptor 2",
+    "synonym": "KIAA0699",
+    "reference": "11483508 , 24614806",
+    "localization": "centrosome"
+  },
+  {
+    "gene": "BIVM",
+    "ensemblId": "ENSG00000134897",
+    "description": "basic, immunoglobulin-like variable motif containing",
+    "synonym": "FLJ20159",
+    "reference": "28460059",
+    "localization": "basal body, centriole"
+  },
+  {
+    "gene": "BLOC1S6",
+    "ensemblId": "ENSG00000104164",
+    "description": "biogenesis of lysosomal organelles complex 1 subunit 6",
+    "synonym": "HPS9",
+    "reference": "28576874",
+    "localization": "basal body"
+  },
+  {
+    "gene": "BRAF",
+    "ensemblId": "ENSG00000157764",
+    "description": "B-Raf proto-oncogene, serine/threonine kinase",
+    "synonym": "BRAF1,BRAF-1",
+    "reference": "25412847",
+    "localization": "cilia"
+  },
+  {
+    "gene": "BRCA1",
+    "ensemblId": "ENSG00000012048",
+    "description": "BRCA1 DNA repair associated",
+    "synonym": "RNF53,BRCC1,PPP1R53,FANCS",
+    "reference": "30617304",
+    "localization": "centrosome"
+  },
+  {
+    "gene": "BUD31",
+    "ensemblId": "ENSG00000106245",
+    "description": "BUD31 homolog",
+    "synonym": "YCR063W,EDG-2,EDG2,fSAP17,Cwc14",
+    "reference": "37250316",
+    "localization": "centrosome"
+  },
+  {
+    "gene": "C9",
+    "ensemblId": "ENSG00000113600",
+    "description": "complement C9",
+    "synonym": "NA",
+    "reference": "27209022",
+    "localization": "cilia"
+  },
+  {
+    "gene": "CABCOCO1",
+    "ensemblId": "ENSG00000183346",
+    "description": "ciliary associated calcium binding coiled-coil 1",
+    "synonym": "bA63A2.1,Em:AC022398.2,MGC44593,ARIEL",
+    "reference": "26990073",
+    "localization": "centriole , centrosome, pericentrin, basal body, sperm flagellum"
+  },
+  {
+    "gene": "CAMK1G",
+    "ensemblId": "ENSG00000008118",
+    "description": "calcium/calmodulin dependent protein kinase IG",
+    "synonym": "VWS1,CLICKIII,dJ272L16.1",
+    "reference": "19657032",
+    "localization": "cilia"
+  },
+  {
+    "gene": "CAMK2A",
+    "ensemblId": "ENSG00000070808",
+    "description": "calcium/calmodulin dependent protein kinase II alpha",
+    "synonym": "KIAA0968,CaMKIINalpha,CaMKII?",
+    "reference": "20630945 , 21752935 , 9806913 , 23747599",
+    "localization": "base of kinocilia"
+  },
+  {
+    "gene": "CAMK2B",
+    "ensemblId": "ENSG00000058404",
+    "description": "calcium/calmodulin dependent protein kinase II beta",
+    "synonym": "CAM2,CAMK2,CaMKII閼ｽ",
+    "reference": "20630945 , 21752935 , 9806913 , 23747599",
+    "localization": "base of kinocilia"
+  },
+  {
+    "gene": "CAMK2N1",
+    "ensemblId": "ENSG00000162545",
+    "description": "calcium/calmodulin dependent protein kinase II inhibitor 1",
+    "synonym": "CaMKIINalpha",
+    "reference": "21070840",
+    "localization": "cilia"
+  },
+  {
+    "gene": "CAMSAP1",
+    "ensemblId": "ENSG00000130559",
+    "description": "calmodulin regulated spectrin associated protein 1",
+    "synonym": "FLJ31228,DKFZp434F195",
+    "reference": "32320668 , 34608154",
+    "localization": "multicilia"
+  },
+  {
+    "gene": "CAMSAP2",
+    "ensemblId": "ENSG00000118200",
+    "description": "calmodulin regulated spectrin associated protein family member 2",
+    "synonym": "KIAA1078",
+    "reference": "32320668 , 34608154",
+    "localization": "multicilia"
+  },
+  {
+    "gene": "CAMSAP3",
+    "ensemblId": "ENSG00000076826",
+    "description": "calmodulin regulated spectrin associated protein family member 3",
+    "synonym": "Nezha,PPP1R80",
+    "reference": "32320668 , 34608154",
+    "localization": "multicilia"
+  },
+  {
+    "gene": "CANX",
+    "ensemblId": "ENSG00000283777",
+    "description": "calnexin",
+    "synonym": "CNX,IP90,P90",
+    "reference": "22911743",
+    "localization": "cilia"
+  },
+  {
+    "gene": "CAPS2",
+    "ensemblId": "ENSG00000180881",
+    "description": "calcyphosine 2",
+    "synonym": "NA",
+    "reference": "38538594",
+    "localization": "centrosome , basal body, motile cilia"
+  },
+  {
+    "gene": "CAVIN1",
+    "ensemblId": "ENSG00000177469",
+    "description": "caveolae associated protein 1",
+    "synonym": "cavin-1,CGL4",
+    "reference": "36776558",
+    "localization": "transition zone"
+  },
+  {
+    "gene": "CBL",
+    "ensemblId": "ENSG00000110395",
+    "description": "Cbl proto-oncogene",
+    "synonym": "RNF55,c-Cbl",
+    "reference": "29237719",
+    "localization": "primary cilia, transition zone"
+  },
+  {
+    "gene": "CCDC116",
+    "ensemblId": "ENSG00000161180",
+    "description": "coiled-coil domain containing 116",
+    "synonym": "FLJ36046",
+    "reference": "25074808",
+    "localization": "centrosome"
+  },
+  {
+    "gene": "CCDC138",
+    "ensemblId": "ENSG00000163006",
+    "description": "coiled-coil domain containing 138",
+    "synonym": "FLJ32745",
+    "reference": "28596423",
+    "localization": "basal body"
+  },
+  {
+    "gene": "CCDC146",
+    "ensemblId": "ENSG00000135205",
+    "description": "coiled-coil domain containing 146",
+    "synonym": "KIAA1505,MBO2",
+    "reference": "25074808",
+    "localization": "centrosome"
+  },
+  {
+    "gene": "CCDC148",
+    "ensemblId": "ENSG00000153237",
+    "description": "coiled-coil domain containing 148",
+    "synonym": "MGC125588",
+    "reference": "39165107",
+    "localization": "centrin"
+  },
+  {
+    "gene": "CCDC149",
+    "ensemblId": "ENSG00000181982",
+    "description": "coiled-coil domain containing 149",
+    "synonym": "DKFZp761B107",
+    "reference": "26455799 , 27930654",
+    "localization": "basal body"
+  },
+  {
+    "gene": "CCDC162P",
+    "ensemblId": "",
+    "description": "",
+    "synonym": "bA425D10.7 , bA425D10.3 , bA487F23.3",
+    "reference": "25139857",
+    "localization": "basal body"
+  },
+  {
+    "gene": "CCDC183",
+    "ensemblId": "ENSG00000213213",
+    "description": "coiled-coil domain containing 183",
+    "synonym": "MGC15438,bA216L13.7",
+    "reference": "NA",
+    "localization": "basal body, transition zone"
+  },
+  {
+    "gene": "CCDC38",
+    "ensemblId": "ENSG00000165972",
+    "description": "coiled-coil domain containing 38",
+    "synonym": "FLJ40089",
+    "reference": "25074808",
+    "localization": "centrosome"
+  },
+  {
+    "gene": "CCDC42",
+    "ensemblId": "ENSG00000161973",
+    "description": "coiled-coil domain containing 42",
+    "synonym": "FLJ32734,CCDC42A",
+    "reference": "31475146",
+    "localization": "centrosome"
+  },
+  {
+    "gene": "CCDC50",
+    "ensemblId": "ENSG00000152492",
+    "description": "coiled-coil domain containing 50",
+    "synonym": "Ymer",
+    "reference": "NA",
+    "localization": "ciliary tip, primary cilia"
+  },
+  {
+    "gene": "CCDC61",
+    "ensemblId": "ENSG00000104983",
+    "description": "coiled-coil domain containing 61",
+    "synonym": "VFL3,hVFL3",
+    "reference": "32375023",
+    "localization": "basal body"
+  },
+  {
+    "gene": "CCDC63",
+    "ensemblId": "ENSG00000173093",
+    "description": "coiled-coil domain containing 63",
+    "synonym": "ODA5,FLJ35843",
+    "reference": "25694453",
+    "localization": "cilia"
+  }
+]
