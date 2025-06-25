@@ -219,13 +219,13 @@
         <!-- Title with blue color, justified and centered -->
         <h1 style="color: #203c78; text-align: justify; text-align-last: center;">CiliaHub: Ciliary Gene Database</h1>
         <p class="mb-4">CiliaHub is a cutting-edge resource that expands the ciliary gene catalog with 744 newly identified genes, leveraging advanced literature mining. It provides a comprehensive, up-to-date database with detailed annotations, hyperlinks to gene and reference data, and localization insights, empowering cilia research and clinical genetics to unravel ciliopathy mechanisms.</p>
-        <div class="flex flex-col md:flex-row mb-4">
+        <div class="flex flex-col md:flex-row mb-4 items-center justify-center">
             <!-- Sidebar with Logo (now empty except for logo placeholder) -->
             <div class="w-0 md:w-0">
                 <!-- Logo already above title, so no additional content here -->
             </div>
             <!-- Controls and Table -->
-            <div class="w-full">
+            <div class="w-full flex justify-center">
                 <div class="ciliahub-controls">
                     <input type="text" id="ciliahub-search" placeholder="Search by Gene, Ensembl ID, or Synonym...">
                     <select id="ciliahub-filter">
@@ -237,7 +237,7 @@
                     <button id="ciliahub-reset">Reset</button>
                     <button id="download-ciliahub">Download Data</button>
                 </div>
-                <div class="ciliahub-legend">
+                <div class="ciliahub-legend mt-2">
                     <span class="legend-axoneme">Axoneme</span>
                     <span class="legend-basal-body">Basal Body</span>
                     <span class="legend-transition-zone">Transition Zone</span>
@@ -246,11 +246,11 @@
                     <thead>
                         <tr>
                             <th style="width: 10%; min-width: 100px; overflow-wrap: break-word;">Gene</th>
-                            <th style="width: 10%; min-width: 200px; overflow-wrap: break-word;">Ensembl ID</th>
+                            <th style="width: 15%; min-width: 150px; overflow-wrap: break-word;">Ensembl ID</th>
                             <th style="width: 30%; min-width: 300px; overflow-wrap: break-word;">Gene Description</th>
-                            <th style="width: 20%; min-width: 200px; overflow-wrap: break-word;">Synonym</th>
-                            <th style="width: 15%; min-width: 150px; overflow-wrap: break-word;">Reference</th>
-                            <th style="width: 15%; min-width: 150px; overflow-wrap: break-word;">Ciliary Localization</th>
+                            <th style="width: 25%; min-width: 250px; overflow-wrap: break-word;">Synonym</th>
+                            <th style="width: 10%; min-width: 100px; overflow-wrap: break-word;">Reference</th>
+                            <th style="width: 10%; min-width: 100px; overflow-wrap: break-word;">Ciliary Localization</th>
                         </tr>
                     </thead>
                     <tbody id="ciliahub-table-body">
@@ -258,7 +258,7 @@
                     </tbody>
                 </table>
                 <!-- Feedback text below table -->
-                <p class="mt-4 text-gray-700">Report missing genes or mistakes: oktay.kaplan(@)agu.edu.tr</p>
+                <p class="mt-4 text-gray-700 text-center">Report missing genes or mistakes: oktay.kaplan(@)agu.edu.tr</p>
             </div>
         </div>
     </div>
