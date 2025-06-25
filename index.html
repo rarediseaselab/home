@@ -216,50 +216,53 @@
     <div class="container">
         <!-- Logo above title, sized to match container width -->
         <img src="CiliaHub_Logo.png" alt="CiliaHub Logo" class="w-full mx-auto mb-4" style="max-width: 100%; height: auto;">
+        
         <!-- Title with blue color, justified and centered -->
         <h1 style="color: #203c78; text-align: justify; text-align-last: center;">CiliaHub: Ciliary Gene Database</h1>
+        
         <p class="mb-4">CiliaHub is a cutting-edge resource that expands the ciliary gene catalog with 744 newly identified genes, leveraging advanced literature mining. It provides a comprehensive, up-to-date database with detailed annotations, hyperlinks to gene and reference data, and localization insights, empowering cilia research and clinical genetics to unravel ciliopathy mechanisms.</p>
-        <div class="flex flex-col md:flex-row mb-4 items-center justify-center">
-            <!-- Sidebar with Logo (now empty except for logo placeholder) -->
-            <div class="w-0 md:w-0">
-                <!-- Logo already above title, so no additional content here -->
+        
+        <!-- Wrapper for controls, legend, and table -->
+        <div class="ciliahub-table-wrapper">
+            <!-- Controls -->
+            <div class="ciliahub-controls">
+                <input type="text" id="ciliahub-search" placeholder="Search by Gene, Ensembl ID, or Synonym...">
+                <select id="ciliahub-filter">
+                    <option value="">All Localizations</option>
+                    <option value="axoneme">Axoneme</option>
+                    <option value="basal-body">Basal Body</option>
+                    <option value="transition-zone">Transition Zone</option>
+                </select>
+                <button id="ciliahub-reset">Reset</button>
+                <button id="download-ciliahub">Download Data</button>
             </div>
-            <!-- Controls and Table -->
-            <div class="w-full flex justify-center">
-                <div class="ciliahub-controls">
-                    <input type="text" id="ciliahub-search" placeholder="Search by Gene, Ensembl ID, or Synonym...">
-                    <select id="ciliahub-filter">
-                        <option value="">All Localizations</option>
-                        <option value="axoneme">Axoneme</option>
-                        <option value="basal-body">Basal Body</option>
-                        <option value="transition-zone">Transition Zone</option>
-                    </select>
-                    <button id="ciliahub-reset">Reset</button>
-                    <button id="download-ciliahub">Download Data</button>
-                </div>
-                <div class="ciliahub-legend mt-2">
-                    <span class="legend-axoneme">Axoneme</span>
-                    <span class="legend-basal-body">Basal Body</span>
-                    <span class="legend-transition-zone">Transition Zone</span>
-                </div>
-                <table class="ciliahub-table" style="width: 100%; max-width: 1200px; margin: 0 auto; table-layout: fixed;">
-                    <thead>
-                        <tr>
-                            <th style="width: 12.5%; min-width: 150px;">Gene</th>
-                            <th style="width: 12.5%; min-width: 150px;">Ensembl ID</th>
-                            <th style="width: 37.5%; min-width: 450px;">Gene Description</th>
-                            <th class="hide-column">Synonym</th>
-                            <th style="width: 12.5%; min-width: 150px;">Reference</th>
-                            <th style="width: 12.5%; min-width: 150px;">Ciliary Localization</th>
-                        </tr>
-                    </thead>
-                    <tbody id="ciliahub-table-body" style="display: contents;">
-                        <!-- Data populated by script.js -->
-                        </tbody>
-                </table>
-                <!-- Feedback text below table -->
-                <p class="mt-4 text-gray-700 text-center">Report missing genes or mistakes: oktay.kaplan(@)agu.edu.tr</p>
+
+            <!-- Legend -->
+            <div class="ciliahub-legend mt-2">
+                <span class="legend-axoneme">Axoneme</span>
+                <span class="legend-basal-body">Basal Body</span>
+                <span class="legend-transition-zone">Transition Zone</span>
             </div>
+
+            <!-- Data Table -->
+            <table class="ciliahub-table">
+                <thead>
+                    <tr>
+                        <th style="width: 12.5%; min-width: 150px;">Gene</th>
+                        <th style="width: 12.5%; min-width: 150px;">Ensembl ID</th>
+                        <th style="width: 37.5%; min-width: 450px;">Gene Description</th>
+                        <th class="hide-column">Synonym</th>
+                        <th style="width: 12.5%; min-width: 150px;">Reference</th>
+                        <th style="width: 12.5%; min-width: 150px;">Ciliary Localization</th>
+                    </tr>
+                </thead>
+                <tbody id="ciliahub-table-body" style="display: contents;">
+                    <!-- Data populated by script.js -->
+                </tbody>
+            </table>
+
+            <!-- Feedback text -->
+            <p class="mt-4 text-gray-700 text-center">Report missing genes or mistakes: oktay.kaplan(@)agu.edu.tr</p>
         </div>
     </div>
 </section>
