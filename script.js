@@ -34,11 +34,23 @@ async function loadCiliaHubData() {
     } else {
       filteredData.forEach(item => {
         const row = tableBody.insertRow();
-        row.insertCell(0).textContent = item.gene;
-        row.insertCell(1).textContent = item.ensemblId;
+        // Gene: Link to NCBI Gene
+        const geneCell = row.insertCell(0);
+        geneCell.innerHTML = `<a href="https://www.ncbi.nlm.nih.gov/gene/?term=${encodeURIComponent(item.gene)}" target="_blank">${item.gene}</a>`;
+        // Ensembl ID: Link to Ensembl
+        const ensemblCell = row.insertCell(1);
+        ensemblCell.innerHTML = `<a href="https://www.ensembl.org/id/${encodeURIComponent(item.ensemblId)}" target="_blank">${item.ensemblId}</a>`;
+        // Description
         row.insertCell(2).textContent = item.description;
+        // Synonym
         row.insertCell(3).textContent = item.synonym;
-        row.insertCell(4).textContent = item.reference;
+        // Reference: Link to PubMed for each PMID
+        const referenceCell = row.insertCell(4);
+        const pmids = item.reference.split(/[,;]\s*/).filter(pmid => pmid.trim());
+        referenceCell.innerHTML = pmids.map(pmid => 
+          `<a href="https://pubmed.ncbi.nlm.nih.gov/${encodeURIComponent(pmid.trim())}" target="_blank">${pmid.trim()}</a>`
+        ).join(', ');
+        // Localization
         row.insertCell(5).textContent = item.localization;
       });
     }
