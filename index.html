@@ -212,7 +212,7 @@
             </div>
         </section>
 
-<section id="ciliahub" class="section">
+<<section id="ciliahub" class="section">
     <div class="container">
         <!-- Logo above title, sized to match container width -->
         <img src="CiliaHub_Logo.png" alt="CiliaHub Logo" class="w-full mx-auto mb-4" style="max-width: 100%; height: auto;">
@@ -242,18 +242,20 @@
                     <span class="legend-basal-body">Basal Body</span>
                     <span class="legend-transition-zone">Transition Zone</span>
                 </div>
-                <table class="ciliahub-table w-full mx-auto" style="max-width: 100%;">
+                <table class="ciliahub-table" style="width: 800px; max-width: 800px; margin: 0 auto; table-layout: fixed;">
                     <thead>
                         <tr>
-                            <th>Gene</th>
-                            <th>Ensembl ID</th>
-                            <th>Gene Description</th>
-                            <th>Synonym</th>
-                            <th>Reference</th>
-                            <th>Ciliary Localization</th>
+                            <th style="width: 10%;">Gene</th>
+                            <th style="width: 10%;">Ensembl ID</th>
+                            <th style="width: 30%;">Gene Description</th>
+                            <th style="width: 15%; overflow-wrap: break-word;">Synonym</th>
+                            <th style="width: 15%;">Reference</th>
+                            <th style="width: 20%;">Ciliary Localization</th>
                         </tr>
                     </thead>
-                    <tbody id="ciliahub-table-body"></tbody>
+                    <tbody id="ciliahub-table-body">
+                        <!-- Table data populated by script.js -->
+                    </tbody>
                 </table>
                 <!-- Feedback text below table -->
                 <p class="mt-4 text-gray-700">Report missing genes or mistakes: oktay.kaplan(@)agu.edu.tr</p>
