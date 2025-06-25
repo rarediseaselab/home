@@ -1035,3 +1035,14 @@ footer {
 .night-mode #night-mode-toggle:hover {
     background-color: #004d99;
 }
+.ciliahub-table-wrapper {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 10px;
+}
+
+.ciliahub-table {
+    width: 100%;
+    table-layout: fixed;
+}
