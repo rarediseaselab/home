@@ -1,13 +1,13 @@
 async function loadCiliaHubData() {
     try {
-        const response = await fetch('./ciliahub_data.json'); // Use relative path
+        const response = await fetch('./ciliahub_data.json');
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
         const text = await response.text();
-        let data = JSON.parse(text);
-        console.log('Parsed entries:', data.length);
+        const data = JSON.parse(text);
+        console.log('Loaded entries:', data.length);
 
         const tableBody = document.getElementById('ciliahub-table-body');
         const searchInput = document.getElementById('ciliahub-search');
@@ -17,9 +17,7 @@ async function loadCiliaHubData() {
 
         function populateTable(filteredData = data) {
             tableBody.innerHTML = '';
-            let processedCount = 0;
-
-            filteredData.forEach((item, index) => {
+            filteredData.forEach(item => {
                 const sanitizedLocalization = (item.localization || '')
                     .toLowerCase()
                     .replace(/[\s,]+/g, '-');
@@ -45,16 +43,12 @@ async function loadCiliaHubData() {
                 `;
                 if (sanitizedLocalization) row.classList.add(sanitizedLocalization);
                 tableBody.appendChild(row);
-                processedCount++;
             });
-
-            console.log(`Rows populated: ${processedCount}`);
         }
 
-        // Initial population
         populateTable(data);
 
-        // Search
+        // Search event
         searchInput.addEventListener('input', () => {
             const query = searchInput.value.toLowerCase().trim();
             const filteredData = data.filter(item =>
@@ -67,7 +61,7 @@ async function loadCiliaHubData() {
             populateTable(filteredData);
         });
 
-        // Filter
+        // Filter event
         filterSelect.addEventListener('change', () => {
             const filterValue = filterSelect.value.toLowerCase();
             const filteredData = filterValue
@@ -78,14 +72,14 @@ async function loadCiliaHubData() {
             populateTable(filteredData);
         });
 
-        // Reset
+        // Reset button
         resetBtn.addEventListener('click', () => {
             searchInput.value = '';
             filterSelect.value = '';
             populateTable(data);
         });
 
-        // Download
+        // Download CSV
         downloadBtn.addEventListener('click', () => {
             const csv = [
                 ['Gene', 'Ensembl ID', 'Gene Description', 'Synonym', 'OMIM ID', 'Reference', 'Ciliary Localization'],
@@ -110,10 +104,10 @@ async function loadCiliaHubData() {
         });
 
     } catch (error) {
-        console.error('Error loading data:', error);
+        console.error('Error loading CiliaHub data:', error);
         document.getElementById('ciliahub-table-body').innerHTML = `<tr><td colspan="7">Error loading data: ${error.message}</td></tr>`;
     }
 }
 
-// ✅ Ensure this runs when page loads
+// Run after DOM is loaded
 document.addEventListener('DOMContentLoaded', loadCiliaHubData);
