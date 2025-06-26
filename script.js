@@ -1,6 +1,6 @@
 async function loadCiliaHubData() {
     try {
-        const response = await fetch('./ciliahub_data.json');
+        const response = await fetch('https://raw.githubusercontent.com/rarediseaselab/home/main/ciliahub_data.json');
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
