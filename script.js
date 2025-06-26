@@ -1,6 +1,8 @@
 async function loadCiliaHubData() {
     try {
-        const response = await fetch('/ciliahub_data.json'); // Adjust to '/home/ciliahub_data.json' if needed
+        const response = await fetch('ciliahub_data.json');
+        // or, safer for GitHub Pages:
+        // const response = await fetch('./ciliahub_data.json');
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status} for /ciliahub_data.json`);
         }
