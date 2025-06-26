@@ -1,9 +1,8 @@
-// Load and populate CiliaHub table
 async function loadCiliaHubData() {
     try {
-        const response = await fetch('/ciliahub_data.json');
+        const response = await fetch('/ciliahub_data.json'); // Adjust to '/home/ciliahub_data.json' if needed
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            throw new Error(`HTTP error! status: ${response.status} for /ciliahub_data.json`);
         }
         const data = await response.json();
         const tableBody = document.getElementById('ciliahub-table-body');
@@ -100,75 +99,6 @@ async function loadCiliaHubData() {
         });
     } catch (error) {
         console.error('Error loading CiliaHub data:', error);
-        document.getElementById('ciliahub-table-body').innerHTML = '<tr><td colspan="7">Error loading data. Check the console or ensure ciliahub_data.json is accessible at /ciliahub_data.json.</td></tr>';
+        document.getElementById('ciliahub-table-body').innerHTML = '<tr><td colspan="7">Error loading data. Check the console or ensure ciliahub_data.json is accessible at /ciliahub_data.json. Status: ' + error.message + '</td></tr>';
     }
-}
-
-// Load data when the page is fully loaded
-document.addEventListener('DOMContentLoaded', loadCiliaHubData);
-
-// Existing JavaScript from index.html (Publications search, Lightbox, Back to Top, Night Mode)
-const searchInput = document.getElementById('pub-search');
-const pubList = document.getElementById('publications-list');
-const pubs = pubList ? pubList.querySelectorAll('.research-item') : [];
-
-if (searchInput && pubList) {
-    searchInput.addEventListener('input', function() {
-        const query = this.value.toLowerCase().trim();
-        pubs.forEach(pub => {
-            const text = pub.textContent.toLowerCase();
-            pub.style.display = text.includes(query) ? 'flex' : 'none';
-        });
-    });
-}
-
-const lightbox = document.getElementById('lightbox');
-const lightboxImage = document.getElementById('lightbox-image');
-const lightboxLinks = document.querySelectorAll('.lightbox-link');
-const closeBtn = document.querySelector('.lightbox-close');
-
-if (lightbox && lightboxImage && lightboxLinks.length > 0 && closeBtn) {
-    lightboxLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            lightboxImage.src = this.href;
-            lightbox.style.display = 'flex';
-        });
-    });
-
-    closeBtn.addEventListener('click', function() {
-        lightbox.style.display = 'none';
-    });
-
-    lightbox.addEventListener('click', function(e) {
-        if (e.target === lightbox) {
-            lightbox.style.display = 'none';
-        }
-    });
-}
-
-const backToTopBtn = document.getElementById('back-to-top');
-if (backToTopBtn) {
-    window.addEventListener('scroll', function() {
-        if (window.scrollY > 300) {
-            backToTopBtn.style.display = 'block';
-        } else {
-            backToTopBtn.style.display = 'none';
-        }
-    });
-
-    backToTopBtn.addEventListener('click', function() {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-}
-
-const nightModeToggle = document.getElementById('night-mode-toggle');
-if (nightModeToggle) {
-    if (localStorage.getItem('nightMode') === 'enabled') {
-        document.body.classList.add('night-mode');
-    }
-    nightModeToggle.addEventListener('click', function() {
-        document.body.classList.toggle('night-mode');
-        localStorage.setItem('nightMode', document.body.classList.contains('night-mode') ? 'enabled' : 'disabled');
-    });
 }
