@@ -212,7 +212,7 @@
             </div>
         </section>
 
-       <section id="ciliahub" class="section">
+   <section id="ciliahub" class="section">
     <div class="container">
         <!-- Logo above title -->
         <img src="CiliaHub_Logo.png" alt="CiliaHub Logo" class="w-full mx-auto mb-4" style="max-width: 100%; height: auto;">
@@ -231,6 +231,9 @@
                 <option value="axoneme">Axoneme</option>
                 <option value="basal-body">Basal Body</option>
                 <option value="transition-zone">Transition Zone</option>
+                <option value="cilia">Cilia</option>
+                <option value="basal-body-cilia">Basal Body-Cilia</option>
+                <option value="cilia-basal-body-transition-zone">Cilia-Basal Body-Transition Zone</option>
             </select>
             <button id="ciliahub-reset">Reset</button>
             <button id="download-ciliahub">Download Data</button>
@@ -258,15 +261,19 @@
                     </tr>
                 </thead>
                 <tbody id="ciliahub-table-body">
-                    <!-- Example row -->
+                    <!-- Example row with links -->
                     <tr>
-                        <td>IFT88</td>
-                        <td>ENSG00000198492</td>
-                        <td>Intraflagellar transport protein 88 homolog</td>
-                        <td>Polaris</td>
-                        <td>600178</td>
-                        <td><a href="https://pubmed.ncbi.nlm.nih.gov/10642556/" target="_blank">Pazour et al.</a></td>
-                        <td>Axoneme</td>
+                        <td><a href="https://www.ncbi.nlm.nih.gov/gene/?term=B9D1" target="_blank">B9D1</a></td>
+                        <td><a href="https://www.ensembl.org/Homo_sapiens/Gene/Summary?g=ENSG00000108641" target="_blank">ENSG00000108641</a></td>
+                        <td>B9 domain containing 1</td>
+                        <td>B9,EPPB9,MKS9,MKSR-1</td>
+                        <td><a href="https://www.omim.org/entry/614144" target="_blank">614144</a></td>
+                        <td>
+                            <a href="https://pubmed.ncbi.nlm.nih.gov/21493627/" target="_blank">21493627</a>,
+                            <a href="https://pubmed.ncbi.nlm.nih.gov/21763481/" target="_blank">21763481</a>,
+                            <a href="https://pubmed.ncbi.nlm.nih.gov/22179047/" target="_blank">22179047</a>
+                        </td>
+                        <td>transition-zone-basal-body</td>
                     </tr>
                 </tbody>
             </table>
