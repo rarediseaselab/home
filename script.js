@@ -6,130 +6,158 @@ const ciliahubData = [
   { gene: "ACTR2", ensemblId: "ENSG00000138071", description: "actin related protein 2", synonym: "ARP2", reference: "22684256", localization: "Actin Cytoskeleton" }
 ];
 
+// Load and populate CiliaHub table
 async function loadCiliaHubData() {
-  let data = ciliahubData;
-  try {
-    const response = await fetch('ciliahub_data.json');
-    if (response.ok) {
-      data = await response.json();
+    try {
+        const response = await fetch('ciliahub_data.json');
+        const data = await response.json();
+        const tableBody = document.getElementById('ciliahub-table-body');
+        const searchInput = document.getElementById('ciliahub-search');
+        const filterSelect = document.getElementById('ciliahub-filter');
+        const resetBtn = document.getElementById('ciliahub-reset');
+        const downloadBtn = document.getElementById('download-ciliahub');
+
+        // Function to populate table
+        function populateTable(filteredData = data) {
+            tableBody.innerHTML = '';
+            filteredData.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.gene || ''}</td>
+                    <td>${item.ensembl_id || ''}</td>
+                    <td>${item.description || ''}</td>
+                    <td>${item.synonym || ''}</td>
+                    <td><a href="${item.reference_url || '#'}">${item.reference || 'N/A'}</a></td>
+                    <td>${item.localization || ''}</td>
+                `;
+                row.classList.add(item.localization.toLowerCase().replace(' ', '-'));
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Initial population
+        populateTable();
+
+        // Search functionality
+        searchInput.addEventListener('input', () => {
+            const query = searchInput.value.toLowerCase().trim();
+            const filteredData = data.filter(item =>
+                (item.gene && item.gene.toLowerCase().includes(query)) ||
+                (item.ensembl_id && item.ensembl_id.toLowerCase().includes(query)) ||
+                (item.synonym && item.synonym.toLowerCase().includes(query))
+            );
+            populateTable(filteredData);
+        });
+
+        // Filter functionality
+        filterSelect.addEventListener('change', () => {
+            const filterValue = filterSelect.value.toLowerCase();
+            let filteredData = data;
+            if (filterValue) {
+                filteredData = data.filter(item => item.localization.toLowerCase() === filterValue);
+            }
+            populateTable(filteredData);
+        });
+
+        // Reset functionality
+        resetBtn.addEventListener('click', () => {
+            searchInput.value = '';
+            filterSelect.value = '';
+            populateTable(data);
+        });
+
+        // Download functionality
+        downloadBtn.addEventListener('click', () => {
+            const csv = [
+                ['Gene', 'Ensembl ID', 'Gene Description', 'Synonym', 'Reference', 'Ciliary Localization'],
+                ...data.map(item => [
+                    item.gene || '',
+                    item.ensembl_id || '',
+                    item.description || '',
+                    item.synonym || '',
+                    item.reference || '',
+                    item.localization || ''
+                ])
+            ].map(row => row.join(',')).join('\n');
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'ciliahub_data.csv';
+            a.click();
+            window.URL.revokeObjectURL(url);
+        });
+    } catch (error) {
+        console.error('Error loading CiliaHub data:', error);
+        document.getElementById('ciliahub-table-body').innerHTML = '<tr><td colspan="6">Error loading data. Please check the console for details.</td></tr>';
     }
-  } catch (error) {
-    console.error('Failed to fetch ciliahub_data.json:', error);
-  }
-
-  const tableBody = document.getElementById('ciliahub-table-body');
-  const searchInput = document.getElementById('ciliahub-search');
-  const filterSelect = document.getElementById('ciliahub-filter');
-  const resetButton = document.getElementById('ciliahub-reset');
-  const downloadButton = document.getElementById('download-ciliahub');
-
-  function populateTable(filteredData) {
-    tableBody.innerHTML = '';
-    if (filteredData.length === 0) {
-      const row = tableBody.insertRow();
-      const cell = row.insertCell(0);
-      cell.colSpan = 6;
-      cell.textContent = 'No Data Available';
-      cell.style.textAlign = 'center';
-    } else {
-      filteredData.forEach(item => {
-        const row = tableBody.insertRow();
-        // Gene: Link to NCBI Gene
-        const geneCell = row.insertCell(0);
-        geneCell.innerHTML = `<a href="https://www.ncbi.nlm.nih.gov/gene/?term=${encodeURIComponent(item.gene)}" target="_blank">${item.gene}</a>`;
-        // Ensembl ID: Link to Ensembl
-        const ensemblCell = row.insertCell(1);
-        ensemblCell.innerHTML = `<a href="https://www.ensembl.org/id/${encodeURIComponent(item.ensemblId)}" target="_blank">${item.ensemblId}</a>`;
-        // Description
-        row.insertCell(2).textContent = item.description;
-        // Synonym
-        row.insertCell(3).textContent = item.synonym;
-        // Reference: Link to PubMed for each PMID
-        const referenceCell = row.insertCell(4);
-        const pmids = item.reference.split(/[,;]\s*/).filter(pmid => pmid.trim());
-        referenceCell.innerHTML = pmids.map(pmid => 
-          `<a href="https://pubmed.ncbi.nlm.nih.gov/${encodeURIComponent(pmid.trim())}" target="_blank">${pmid.trim()}</a>`
-        ).join(', ');
-        // Localization
-        row.insertCell(5).textContent = item.localization;
-      });
-    }
-  }
-
-  function applyFilters() {
-    const searchTerm = searchInput.value.toLowerCase();
-    const selectedLocalization = filterSelect.value;
-
-    const filteredData = data.filter(item => {
-      const matchesSearch = !searchTerm || (
-        item.gene.toLowerCase().includes(searchTerm) ||
-        item.ensemblId.toLowerCase().includes(searchTerm) ||
-        item.description.toLowerCase().includes(searchTerm) ||
-        item.synonym.toLowerCase().includes(searchTerm)
-      );
-      const matchesLocalization = !selectedLocalization || item.localization === selectedLocalization;
-      return matchesSearch && matchesLocalization;
-    });
-
-    populateTable(filteredData);
-  }
-
-  function populateFilterOptions() {
-    const localizations = [...new Set(data.map(item => item.localization))].sort();
-    filterSelect.innerHTML = '<option value="">All Localizations</option>';
-    localizations.forEach(loc => {
-      const option = document.createElement('option');
-      option.value = loc;
-      option.textContent = loc;
-      filterSelect.appendChild(option);
-    });
-  }
-
-  function downloadCSV() {
-    const headers = ['Gene', 'Ensembl ID', 'Gene Description', 'Synonym', 'Reference', 'Ciliary Localization'];
-    const csvRows = [headers.join(',')];
-    data.forEach(item => {
-      const row = [
-        `"${item.gene}"`,
-        `"${item.ensemblId}"`,
-        `"${item.description}"`,
-        `"${item.synonym}"`,
-        `"${item.reference}"`,
-        `"${item.localization}"`
-      ];
-      csvRows.push(row.join(','));
-    });
-    const csvContent = csvRows.join('\n');
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.setAttribute('href', url);
-    link.setAttribute('download', 'ciliahub_data.csv');
-    link.click();
-    URL.revokeObjectURL(url);
-  }
-
-  searchInput.addEventListener('input', applyFilters);
-  filterSelect.addEventListener('change', applyFilters);
-  resetButton.addEventListener('click', () => {
-    searchInput.value = '';
-    filterSelect.value = '';
-    applyFilters();
-  });
-  downloadButton.addEventListener('click', downloadCSV);
-
-  populateFilterOptions();
-  populateTable(data);
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  if (window.location.hash === '#ciliahub') {
-    loadCiliaHubData();
-  }
-});
+// Load data when the page is fully loaded
+document.addEventListener('DOMContentLoaded', loadCiliaHubData);
 
-window.addEventListener('hashchange', () => {
-  if (window.location.hash === '#ciliahub') {
-    loadCiliaHubData();
-  }
-});
+// Existing JavaScript from index.html (Publications search, Lightbox, Back to Top, Night Mode)
+const searchInput = document.getElementById('pub-search');
+const pubList = document.getElementById('publications-list');
+const pubs = pubList ? pubList.querySelectorAll('.research-item') : [];
+
+if (searchInput && pubList) {
+    searchInput.addEventListener('input', function() {
+        const query = this.value.toLowerCase().trim();
+        pubs.forEach(pub => {
+            const text = pub.textContent.toLowerCase();
+            pub.style.display = text.includes(query) ? 'flex' : 'none';
+        });
+    });
+}
+
+const lightbox = document.getElementById('lightbox');
+const lightboxImage = document.getElementById('lightbox-image');
+const lightboxLinks = document.querySelectorAll('.lightbox-link');
+const closeBtn = document.querySelector('.lightbox-close');
+
+if (lightbox && lightboxImage && lightboxLinks.length > 0 && closeBtn) {
+    lightboxLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            lightboxImage.src = this.href;
+            lightbox.style.display = 'flex';
+        });
+    });
+
+    closeBtn.addEventListener('click', function() {
+        lightbox.style.display = 'none';
+    });
+
+    lightbox.addEventListener('click', function(e) {
+        if (e.target === lightbox) {
+            lightbox.style.display = 'none';
+        }
+    });
+}
+
+const backToTopBtn = document.getElementById('back-to-top');
+if (backToTopBtn) {
+    window.addEventListener('scroll', function() {
+        if (window.scrollY > 300) {
+            backToTopBtn.style.display = 'block';
+        } else {
+            backToTopBtn.style.display = 'none';
+        }
+    });
+
+    backToTopBtn.addEventListener('click', function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+}
+
+const nightModeToggle = document.getElementById('night-mode-toggle');
+if (nightModeToggle) {
+    if (localStorage.getItem('nightMode') === 'enabled') {
+        document.body.classList.add('night-mode');
+    }
+    nightModeToggle.addEventListener('click', function() {
+        document.body.classList.toggle('night-mode');
+        localStorage.setItem('nightMode', document.body.classList.contains('night-mode') ? 'enabled' : 'disabled');
+    });
+}
