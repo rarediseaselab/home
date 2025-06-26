@@ -99,6 +99,15 @@ body {
     border-radius: 8px;
 }
 
+/* New style container for the four sections */
+.compact-section > .container {
+    max-width: 900px;    /* narrower */
+    margin: 50px auto 20px;  /* maybe less top margin */
+    box-shadow: none;    /* remove shadow for cleaner look */
+    padding: 15px;
+}
+
+
 /* Sections */
 .section {
     display: none;
