@@ -101,9 +101,9 @@ body {
 
 /* New style container for the four sections */
 .compact-section > .container {
-    max-width: 900px;    /* narrower */
-    margin: 50px auto 20px;  /* maybe less top margin */
-    box-shadow: none;    /* remove shadow for cleaner look */
+    max-width: 900px;
+    margin: 50px auto 20px;
+    box-shadow: none;
     padding: 15px;
 }
 
@@ -129,8 +129,8 @@ body {
 }
 
 .figure-image {
-    max-width: 600px; /* Adjusted to a specific width based on typical image size; adjust as needed */
     width: 100%;
+    max-width: 100%; /* Spans full width from Home to CiliaHub */
     height: auto;
     object-fit: contain;
     display: block;
@@ -166,7 +166,7 @@ body {
     border-radius: 4px;
 }
 
-/* Home Section Text Alignment with Image */
+/* Home Section Text Alignment with Full Width */
 #home {
     max-width: 100%;
     padding: 20px;
@@ -177,38 +177,50 @@ body {
 }
 
 #home .text-content {
-    max-width: 600px; /* Matches the figure-image max-width; adjust if needed */
+    width: 100%; /* Matches the full width of the section */
     margin: 0 auto;
-    padding: 0 10px;
+    padding: 0 20px;
+}
+
+#home h1 {
+    color: #004080; /* Dark blue for "Welcome to Kaplan's Lab" */
+    margin-bottom: 20px;
+    text-align: center;
 }
 
 #home p,
 #home .mission-statement,
 #home .research-updates {
-    max-width: 100%;
-    margin-left: auto;
-    margin-right: auto;
+    width: 100%; /* Ensures full width alignment */
+    margin: 0 auto 15px;
 }
 
 #home .research-grid {
-    max-width: 600px; /* Matches the text-content max-width */
+    width: 100%; /* Matches the full width */
     margin: 0 auto;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
 }
 
-@media (min-width: 768px) {
-    #home .figure-image {
-        max-width: 600px;
-    }
-    #home .text-content,
-    #home p,
-    #home .mission-statement,
-    #home .research-updates,
-    #home .research-grid {
-        max-width: 600px;
-    }
+/* Full Width for Publications, News, and Resources on Homepage */
+#publications,
+#news,
+#resources {
+    width: 100%;
+    max-width: 100%; /* Spans full width */
+    padding: 20px;
+    margin: 0 auto;
+}
+
+#publications .research-grid,
+#news .research-grid,
+#resources .research-grid {
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 /* Research Updates (Home Page) */
