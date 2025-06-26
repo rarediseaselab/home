@@ -15,33 +15,44 @@ async function loadCiliaHubData() {
         const resetBtn = document.getElementById('ciliahub-reset');
         const downloadBtn = document.getElementById('download-ciliahub');
 
+        // Batch Query elements
+        const batchTextarea = document.getElementById('batchGenes');
+        const batchQueryBtn = document.getElementById('batchQueryBtn');
+        const batchResultsContainer = document.getElementById('batchResultsContainer');
+        const batchResultsDiv = document.getElementById('batchResults');
+        const clearBatchResultsBtn = document.getElementById('clearBatchResults');
+
+        function sanitizeLocalization(localization) {
+            return (localization || '').toLowerCase().replace(/[\s,]+/g, '-');
+        }
+
+        function makeReferenceLinks(refStr) {
+            const pmids = (refStr || '').split(';').map(p => p.trim()).filter(Boolean);
+            return pmids.length
+                ? pmids.map(pmid => `<a href="https://pubmed.ncbi.nlm.nih.gov/${pmid}/" target="_blank" rel="noopener noreferrer">${pmid}</a>`).join(', ')
+                : 'N/A';
+        }
+
+        function createTableRow(item) {
+            const sanitizedLocalization = sanitizeLocalization(item.localization);
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td><a href="https://www.ncbi.nlm.nih.gov/gene/?term=${encodeURIComponent(item.gene)}" target="_blank" rel="noopener noreferrer">${item.gene}</a></td>
+                <td><a href="https://www.ensembl.org/Homo_sapiens/Gene/Summary?g=${encodeURIComponent(item.ensembl_id)}" target="_blank" rel="noopener noreferrer">${item.ensembl_id}</a></td>
+                <td>${item.description || ''}</td>
+                <td>${item.synonym || ''}</td>
+                <td><a href="https://www.omim.org/entry/${encodeURIComponent(item.omim_id)}" target="_blank" rel="noopener noreferrer">${item.omim_id}</a></td>
+                <td>${makeReferenceLinks(item.reference)}</td>
+                <td>${item.localization || ''}</td>
+            `;
+            if (sanitizedLocalization) row.classList.add(sanitizedLocalization);
+            return row;
+        }
+
         function populateTable(filteredData = data) {
             tableBody.innerHTML = '';
             filteredData.forEach(item => {
-                const sanitizedLocalization = (item.localization || '')
-                    .toLowerCase()
-                    .replace(/[\s,]+/g, '-');
-
-                const pmids = (item.reference || '')
-                    .split(';')
-                    .map(pmid => pmid.trim())
-                    .filter(pmid => pmid);
-
-                const referenceLinks = pmids.length
-                    ? pmids.map(pmid => `<a href="https://pubmed.ncbi.nlm.nih.gov/${pmid}/" target="_blank">${pmid}</a>`).join(', ')
-                    : 'N/A';
-
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td><a href="https://www.ncbi.nlm.nih.gov/gene/?term=${item.gene}" target="_blank">${item.gene}</a></td>
-                    <td><a href="https://www.ensembl.org/Homo_sapiens/Gene/Summary?g=${item.ensembl_id}" target="_blank">${item.ensembl_id}</a></td>
-                    <td>${item.description || ''}</td>
-                    <td>${item.synonym || ''}</td>
-                    <td><a href="https://www.omim.org/entry/${item.omim_id}" target="_blank">${item.omim_id}</a></td>
-                    <td>${referenceLinks}</td>
-                    <td>${item.localization || ''}</td>
-                `;
-                if (sanitizedLocalization) row.classList.add(sanitizedLocalization);
+                const row = createTableRow(item);
                 tableBody.appendChild(row);
             });
         }
@@ -66,7 +77,7 @@ async function loadCiliaHubData() {
             const filterValue = filterSelect.value.toLowerCase();
             const filteredData = filterValue
                 ? data.filter(item =>
-                    (item.localization || '').toLowerCase().replace(/[\s,]+/g, '-') === filterValue
+                    sanitizeLocalization(item.localization) === filterValue
                 )
                 : data;
             populateTable(filteredData);
@@ -92,7 +103,7 @@ async function loadCiliaHubData() {
                     item.reference || '',
                     item.localization || ''
                 ])
-            ].map(row => row.join(',')).join('\n');
+            ].map(row => row.map(cell => `"${(cell || '').replace(/"/g, '""')}"`).join(',')).join('\n');
 
             const blob = new Blob([csv], { type: 'text/csv' });
             const url = window.URL.createObjectURL(blob);
@@ -101,6 +112,81 @@ async function loadCiliaHubData() {
             a.download = 'ciliahub_data.csv';
             a.click();
             window.URL.revokeObjectURL(url);
+        });
+
+        // Batch Query event
+        batchQueryBtn.addEventListener('click', () => {
+            const rawInput = batchTextarea.value.trim();
+            if (!rawInput) {
+                alert('Please enter at least one gene name or ID for batch query.');
+                return;
+            }
+
+            // Split input by comma, space, or newline and normalize to uppercase
+            const queryGenes = rawInput.split(/[\s,]+/).map(g => g.trim().toUpperCase()).filter(Boolean);
+
+            if (queryGenes.length > 100) {
+                alert('Please limit batch query to 100 genes or fewer.');
+                return;
+            }
+
+            // Filter data for matching genes or IDs (gene, ensembl_id, synonym, omim_id)
+            const matched = data.filter(item => {
+                const geneUpper = item.gene?.toUpperCase() || '';
+                const ensemblUpper = item.ensembl_id?.toUpperCase() || '';
+                const synonymUpper = item.synonym?.toUpperCase() || '';
+                const omimUpper = item.omim_id?.toUpperCase() || '';
+                return queryGenes.some(q =>
+                    q === geneUpper ||
+                    q === ensemblUpper ||
+                    q === synonymUpper ||
+                    q === omimUpper
+                );
+            });
+
+            // Show results or no match message
+            if (!matched.length) {
+                batchResultsDiv.innerHTML = '<p>No matching entries found for the given batch query.</p>';
+            } else {
+                // Create results table
+                let html = `<table class="ciliahub-table" style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+                    <thead style="background-color: #203c78; color: white;">
+                        <tr>
+                            <th>Gene</th>
+                            <th>Ensembl ID</th>
+                            <th>Gene Description</th>
+                            <th>Synonym</th>
+                            <th>OMIM ID</th>
+                            <th>Reference</th>
+                            <th>Ciliary Localization</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+
+                matched.forEach(item => {
+                    html += `
+                        <tr>
+                            <td><a href="https://www.ncbi.nlm.nih.gov/gene/?term=${encodeURIComponent(item.gene)}" target="_blank" rel="noopener noreferrer">${item.gene}</a></td>
+                            <td><a href="https://www.ensembl.org/Homo_sapiens/Gene/Summary?g=${encodeURIComponent(item.ensembl_id)}" target="_blank" rel="noopener noreferrer">${item.ensembl_id}</a></td>
+                            <td>${item.description || ''}</td>
+                            <td>${item.synonym || ''}</td>
+                            <td><a href="https://www.omim.org/entry/${encodeURIComponent(item.omim_id)}" target="_blank" rel="noopener noreferrer">${item.omim_id}</a></td>
+                            <td>${makeReferenceLinks(item.reference)}</td>
+                            <td>${item.localization || ''}</td>
+                        </tr>`;
+                });
+
+                html += '</tbody></table>';
+                batchResultsDiv.innerHTML = html;
+            }
+
+            batchResultsContainer.style.display = 'block';
+            batchTextarea.value = '';
+        });
+
+        clearBatchResultsBtn.addEventListener('click', () => {
+            batchResultsContainer.style.display = 'none';
+            batchResultsDiv.innerHTML = '';
         });
 
     } catch (error) {
