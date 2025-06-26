@@ -57,7 +57,6 @@
     </script>
 </head>
 <body onload="showSection('home')">
-    <!-- Navbar -->
     <nav class="navbar">
         <a href="#home" onclick="showSection('home')">Home</a>
         <div class="dropdown">
@@ -86,7 +85,6 @@
         <a href="#ciliahub" onclick="showSection('ciliahub')">CiliaHub</a>
     </nav>
 
-    <!-- Breadcrumbs -->
     <div id="breadcrumbs"></div>
 
     <div class="container">
@@ -132,7 +130,7 @@
             </div>
         </section>
 
-        <section id="research-overview" class="section" style="display: none;">
+        <section id="research-overview" class="section wide-section" style="display: none;">
             <h1>Research Overview</h1>
             <p>Our lab is dedicated to uncovering the genetic and molecular mechanisms driving rare diseases, with a particular focus on ciliopathies. By integrating comparative genomics, functional assays, and cutting-edge gene editing technologies, we aim to bridge the gap between genotype and phenotype, advancing our understanding of disease mechanisms and identifying potential therapeutic targets.</p>
             <div class="research-overview-grid">
@@ -212,18 +210,15 @@
             </div>
         </section>
 
-<section id="ciliahub" class="section">
+<section id="ciliahub" class="section wide-section">
   <div class="container">
-    <!-- Logo above title -->
     <img src="CiliaHub_Logo.png" alt="CiliaHub Logo" class="w-full mx-auto mb-4" style="max-width: 100%; height: auto;">
 
-    <!-- Title -->
     <h1 style="color: #203c78; text-align: justify; text-align-last: center;">CiliaHub: Ciliary Gene Database</h1>
     <p class="mb-4">
       CiliaHub is a cutting-edge resource that expands the ciliary gene catalog with 744 newly identified genes, leveraging advanced literature mining. It provides a comprehensive, up-to-date database with detailed annotations, hyperlinks to gene and reference data, and localization insights, empowering cilia research and clinical genetics to unravel ciliopathy mechanisms.
     </p>
 
-    <!-- Controls -->
     <div class="ciliahub-controls mb-4 text-center">
       <input type="text" id="ciliahub-search" placeholder="Search by Gene, Ensembl ID, or Synonym..." />
       <select id="ciliahub-filter">
@@ -236,14 +231,12 @@
       <button id="download-ciliahub">Download Data</button>
     </div>
 
-    <!-- Legend -->
     <div class="ciliahub-legend text-center mb-4">
       <span class="legend-axoneme">Axoneme</span>
       <span class="legend-basal-body">Basal Body</span>
       <span class="legend-transition-zone">Transition Zone</span>
     </div>
 
-    <!-- Table wrapper to center table -->
     <div class="table-wrapper">
       <table class="ciliahub-table">
         <thead>
@@ -257,7 +250,6 @@
           </tr>
         </thead>
         <tbody id="ciliahub-table-body">
-          <!-- Example row -->
           <tr>
             <td>IFT88</td>
             <td>ENSG00000198492</td>
@@ -272,13 +264,11 @@
       </table>
     </div>
 
-    <!-- Citation -->
     <div class="citation-box mt-4 p-3 rounded" style="background-color: #e6f2ff; border-left: 4px solid #004080;">
       <strong>Suggested citation:</strong> Yenisert F, Kaplan OI. <em>CiliaHub: Expanded Gold Standard Ciliary Gene List</em>. 2025. RareDiseaseLab GitHub. Available at:
       <a href="https://rarediseaselab.github.io/home/#ciliahub" target="_blank">https://rarediseaselab.github.io</a>
     </div>
 
-    <!-- Feedback Button -->
     <p class="mt-3 text-center">
       <a href="mailto:oktay.kaplan@agu.edu.tr?subject=CiliaHub Feedback" class="read-more-btn"
          style="background-color: #203c78; color: white; padding: 8px 16px; border-radius: 5px; text-decoration: none;">
@@ -289,7 +279,7 @@
 </section>
 
         
-        <section id="current-members" class="section" style="display: none;">
+        <section id="current-members" class="section wide-section" style="display: none;">
             <h1>Current Members</h1>
             <div class="team-grid">
                 <div class="team-member">
@@ -495,7 +485,7 @@
                 </div>
                 <div class="research-item">
                     <img src="elegans.png" alt="Research Icon" class="fit-image">
-                    <p>Turan MG, Kantarci H, Cevik S, Kaplan OI. <strong>CiliaMiner: an integrated database for ciliopathy genes and ciliopathies.</strong> Database (Oxford). 2023;2023:baad047. doi: <a href="https://doi.org/10.1093/database/baad047">10.1093/database/baad047</a></p>
+                    <p>Turan MG, Kantarci H, Temtek SD, et al. <strong>CiliaMiner: an integrated database for ciliopathy genes and ciliopathies.</strong> Database (Oxford). 2023;2023:baad047. doi: <a href="https://doi.org/10.1093/database/baad047">10.1093/database/baad047</a></p>
                 </div>
                 <div class="research-item">
                     <img src="elegans.png" alt="Research Icon" class="fit-image">
@@ -620,7 +610,7 @@
             </div>
         </section>
 
-        <section id="gallery" class="section gallery-section" style="display: none;">
+        <section id="gallery" class="section wide-section gallery-section" style="display: none;">
             <div class="gallery-layout">
                 <div class="gallery-quote">
                     <h1>Gallery</h1>
@@ -671,7 +661,6 @@
         </section>
     </div>
 
-    <!-- Back to Top Button -->
     <button id="back-to-top" title="Back to Top">↑</button>
 
     <footer>
@@ -683,7 +672,6 @@
         </div>
     </footer>
 
-    <!-- JavaScript -->
     <script src="script.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -749,7 +737,6 @@
         });
     </script>
 
-    <!-- Night Mode Toggle -->
     <button id="night-mode-toggle" title="Toggle Night Mode"></button>
 </body>
 </html>
