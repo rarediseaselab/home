@@ -223,80 +223,71 @@
       CiliaHub is a cutting-edge resource that expands the ciliary gene catalog with 744 newly identified genes, leveraging advanced literature mining. It provides a comprehensive, up-to-date database with detailed annotations, hyperlinks to gene and reference data, and localization insights, empowering cilia research and clinical genetics to unravel ciliopathy mechanisms.
     </p>
 
-    <!-- Controls and Table -->
-    <div class="flex flex-col md:flex-row mb-4 items-center justify-center">
-      <div class="w-full flex justify-center">
-        <div class="ciliahub-controls">
-          <input type="text" id="ciliahub-search" placeholder="Search by Gene, Ensembl ID, or Synonym...">
-          <select id="ciliahub-filter">
-            <option value="">All Localizations</option>
-            <option value="axoneme">Axoneme</option>
-            <option value="basal-body">Basal Body</option>
-            <option value="transition-zone">Transition Zone</option>
-          </select>
-          <button id="ciliahub-reset">Reset</button>
-          <button id="download-ciliahub">Download Data</button>
-        </div>
-
-        <!-- Legend -->
-        <div class="ciliahub-legend mt-2">
-          <span class="legend-axoneme">Axoneme</span>
-          <span class="legend-basal-body">Basal Body</span>
-          <span class="legend-transition-zone">Transition Zone</span>
-        </div>
-
-        <!-- Table -->
-        <div class="overflow-x-auto" style="margin: 0 auto; max-width: 100%;">
-          <table class="ciliahub-table" style="width: 1400px; max-width: 1400px; margin: 0 auto; table-layout: fixed;">
-            <thead>
-              <tr>
-                <th style="width: 10%; min-width: 140px; overflow-wrap: break-word;">Gene</th>
-                <th style="width: 10%; min-width: 140px; overflow-wrap: break-word;">Ensembl ID</th>
-                <th style="width: 30%; min-width: 420px; overflow-wrap: break-word;">Gene Description</th>
-                <th style="width: 15%; min-width: 210px; overflow-wrap: break-word;">Synonym</th>
-                <th style="width: 17.5%; min-width: 245px; overflow-wrap: break-word;">Reference</th>
-                <th style="width: 17.5%; min-width: 245px; overflow-wrap: break-word;">Ciliary Localization</th>
-              </tr>
-            </thead>
-            <tbody id="ciliahub-table-body">
-              <!-- Example Row -->
-              <tr>
-                <td>IFT88</td>
-                <td>ENSG00000198492</td>
-                <td>Intraflagellar transport protein 88 homolog</td>
-                <td>Polaris</td>
-                <td class="reference" data-tooltip="Pazour et al., Cell, 2000 (PMID: 10642556)">
-                  <a href="https://pubmed.ncbi.nlm.nih.gov/10642556/" target="_blank">Pazour et al.</a>
-                </td>
-                <td>Axoneme</td>
-              </tr>
-              <!-- Additional rows populated dynamically -->
-            </tbody>
-          </table>
-        </div>
-
-        <!-- Contact -->
-        <p class="mt-4 text-gray-700 text-center">
-          Report missing genes or mistakes: oktay.kaplan(@)agu.edu.tr
-        </p>
-
-        <!-- Citation Box -->
-        <div class="citation-box mt-4 p-3 rounded" style="background-color: #e6f2ff; border-left: 4px solid #004080;">
-          <strong>Suggested citation:</strong> Yenisert F, Kaplan OI. <em>CiliaHub: Expanded Gold Standard Ciliary Gene List</em>. 2025. RareDiseaseLab GitHub. Available at:
-          <a href="https://rarediseaselab.github.io/home/#ciliahub" target="_blank">https://rarediseaselab.github.io</a>
-        </div>
-
-        <!-- Feedback Button -->
-        <p class="mt-3 text-center">
-          <a href="mailto:oktay.kaplan@agu.edu.tr?subject=CiliaHub Feedback" class="read-more-btn"
-             style="background-color: #203c78; color: white; padding: 8px 16px; border-radius: 5px; text-decoration: none;">
-            Submit Feedback
-          </a>
-        </p>
-      </div>
+    <!-- Controls -->
+    <div class="ciliahub-controls mb-4 text-center">
+      <input type="text" id="ciliahub-search" placeholder="Search by Gene, Ensembl ID, or Synonym..." />
+      <select id="ciliahub-filter">
+        <option value="">All Localizations</option>
+        <option value="axoneme">Axoneme</option>
+        <option value="basal-body">Basal Body</option>
+        <option value="transition-zone">Transition Zone</option>
+      </select>
+      <button id="ciliahub-reset">Reset</button>
+      <button id="download-ciliahub">Download Data</button>
     </div>
+
+    <!-- Legend -->
+    <div class="ciliahub-legend text-center mb-4">
+      <span class="legend-axoneme">Axoneme</span>
+      <span class="legend-basal-body">Basal Body</span>
+      <span class="legend-transition-zone">Transition Zone</span>
+    </div>
+
+    <!-- Table wrapper to center table -->
+    <div class="table-wrapper">
+      <table class="ciliahub-table">
+        <thead>
+          <tr>
+            <th style="width: 10%;">Gene</th>
+            <th style="width: 10%;">Ensembl ID</th>
+            <th style="width: 30%;">Gene Description</th>
+            <th style="width: 15%;">Synonym</th>
+            <th style="width: 17.5%;">Reference</th>
+            <th style="width: 17.5%;">Ciliary Localization</th>
+          </tr>
+        </thead>
+        <tbody id="ciliahub-table-body">
+          <!-- Example row -->
+          <tr>
+            <td>IFT88</td>
+            <td>ENSG00000198492</td>
+            <td>Intraflagellar transport protein 88 homolog</td>
+            <td>Polaris</td>
+            <td>
+              <a href="https://pubmed.ncbi.nlm.nih.gov/10642556/" target="_blank">Pazour et al.</a>
+            </td>
+            <td>Axoneme</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Citation -->
+    <div class="citation-box mt-4 p-3 rounded" style="background-color: #e6f2ff; border-left: 4px solid #004080;">
+      <strong>Suggested citation:</strong> Yenisert F, Kaplan OI. <em>CiliaHub: Expanded Gold Standard Ciliary Gene List</em>. 2025. RareDiseaseLab GitHub. Available at:
+      <a href="https://rarediseaselab.github.io/home/#ciliahub" target="_blank">https://rarediseaselab.github.io</a>
+    </div>
+
+    <!-- Feedback Button -->
+    <p class="mt-3 text-center">
+      <a href="mailto:oktay.kaplan@agu.edu.tr?subject=CiliaHub Feedback" class="read-more-btn"
+         style="background-color: #203c78; color: white; padding: 8px 16px; border-radius: 5px; text-decoration: none;">
+        Submit Feedback
+      </a>
+    </p>
   </div>
 </section>
+
         
         <section id="current-members" class="section" style="display: none;">
             <h1>Current Members</h1>
