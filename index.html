@@ -219,7 +219,7 @@
         <!-- Title -->
         <h1 style="color: #203c78; text-align: justify; text-align-last: center;">CiliaHub: Ciliary Gene Database</h1>
         <p class="mb-4" style="text-align: justify;">
-            <strong>CiliaHub</strong> is an updated and curated database of all experimentally confirmed ciliary genes — an evolution of the ciliary "Gold Standard" gene list. Using R-based text mining of scientific literature and manual expert validation, we identified and cataloged <strong> over 700 newly associated ciliary genes</strong>.
+            <strong>CiliaHub</strong> is an updated and curated database of all experimentally confirmed ciliary genes — an evolution of the ciliary "Gold Standard" gene list. Using R-based text mining of scientific literature and manual expert validation, we identified and cataloged <strong>over 700 newly associated ciliary genes</strong>.
             <br><br>
             This user-friendly platform allows researchers to:
             <ul style="margin-top: 10px; margin-bottom: 10px;">
@@ -236,7 +236,6 @@
             <input type="text" id="ciliahub-search" placeholder="Search by Gene, Ensembl ID, or Synonym..." />
             <select id="ciliahub-filter">
                 <option value="">All Localizations</option>
-                <option value="axoneme">Axoneme</option>
                 <option value="basal-body">Basal Body</option>
                 <option value="transition-zone">Transition Zone</option>
                 <option value="cilia">Cilia</option>
@@ -245,13 +244,6 @@
             </select>
             <button id="ciliahub-reset">Reset</button>
             <button id="download-ciliahub">Download Data</button>
-        </div>
-
-        <!-- Legend -->
-        <div class="ciliahub-legend text-center mb-4">
-            <span class="legend-axoneme">Axoneme</span>
-            <span class="legend-basal-body">Basal Body</span>
-            <span class="legend-transition-zone">Transition Zone</span>
         </div>
 
         <!-- Table wrapper -->
@@ -273,24 +265,8 @@
                 </tbody>
             </table>
         </div>
-
-        <!-- Citation -->
-        <div class="citation-box mt-5 mb-4 p-3 rounded" style="background-color: #e6f2ff; border-left: 4px solid #004080;">
-            <strong>Suggested citation:</strong> Yenisert F, Kaplan OI. <em>Updated Gold Standard Ciliary Gene List : Expanded Catalog of Ciliary Genes: Integration of Novel Ciliary Genes into the Ciliome</em>. 2025. Available at:
-            <a href="https://rarediseaselab.github.io/home/#ciliahub" target="_blank">CiliaHub</a>
-        </div>
-
-        <!-- Feedback Button -->
-        <p class="mt-4 text-center">
-            <a href="mailto:oktay.kaplan@agu.edu.tr?subject=CiliaHub Feedback" class="read-more-btn"
-               style="background-color: #203c78; color: white; padding: 8px 16px; border-radius: 5px; text-decoration: none;">
-                Submit Feedback
-            </a>
-        </p>
     </div>
 </section>
-
-   
         
         <section id="current-members" class="section" style="display: none;">
             <h1>Current Members</h1>
