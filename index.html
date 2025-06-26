@@ -213,57 +213,59 @@
         </section>
 
 <section id="ciliahub" class="section">
-    <div class="container">
-        <!-- Logo above title, sized to match container width -->
-        <img src="CiliaHub_Logo.png" alt="CiliaHub Logo" class="w-full mx-auto mb-4" style="max-width: 100%; height: auto;">
-        <!-- Title with blue color, justified and centered -->
-        <h1 style="color: #203c78; text-align: justify; text-align-last: center;">CiliaHub: Ciliary Gene Database</h1>
-        <p class="mb-4">CiliaHub is a cutting-edge resource that expands the ciliary gene catalog with 744 newly identified genes, leveraging advanced literature mining. It provides a comprehensive, up-to-date database with detailed annotations, hyperlinks to gene and reference data, and localization insights, empowering cilia research and clinical genetics to unravel ciliopathy mechanisms.</p>
-        <div class="flex flex-col md:flex-row mb-4 items-center justify-center">
-            <!-- Sidebar with Logo (now empty except for logo placeholder) -->
-            <div class="w-0 md:w-0">
-                <!-- Logo already above title, so no additional content here -->
-            </div>
-            <!-- Controls and Table -->
-            <div class="w-full flex justify-center">
-                <div class="ciliahub-controls">
-                    <input type="text" id="ciliahub-search" placeholder="Search by Gene, Ensembl ID, or Synonym...">
-                    <select id="ciliahub-filter">
-                        <option value="">All Localizations</option>
-                        <option value="axoneme">Axoneme</option>
-                        <option value="basal-body">Basal Body</option>
-                        <option value="transition-zone">Transition Zone</option>
-                    </select>
-                    <button id="ciliahub-reset">Reset</button>
-                    <button id="download-ciliahub">Download Data</button>
-                </div>
-                <div class="ciliahub-legend mt-2">
-                    <span class="legend-axoneme">Axoneme</span>
-                    <span class="legend-basal-body">Basal Body</span>
-                    <span class="legend-transition-zone">Transition Zone</span>
-                </div>
-                <div class="overflow-x-auto">
-                    <table class="ciliahub-table" style="width: 1400px; max-width: 1400px; margin: 0 auto; table-layout: fixed;">
-                        <thead>
-                            <tr>
-                                <th style="width: 10%; min-width: 140px; overflow-wrap: break-word;">Gene</th>
-                                <th style="width: 10%; min-width: 140px; overflow-wrap: break-word;">Ensembl ID</th>
-                                <th style="width: 30%; min-width: 420px; overflow-wrap: break-word;">Gene Description</th>
-                                <th style="width: 15%; min-width: 210px; overflow-wrap: break-word;">Synonym</th>
-                                <th style="width: 17.5%; min-width: 245px; overflow-wrap: break-word;">Reference</th>
-                                <th style="width: 17.5%; min-width: 245px; overflow-wrap: break-word;">Ciliary Localization</th>
-                            </tr>
-                        </thead>
-                        <tbody id="ciliahub-table-body">
-                            <!-- Table data populated by script.js -->
-                        </tbody>
-                    </table>
-                </div>
-                <!-- Feedback text below table -->
-                <p class="mt-4 text-gray-700 text-center">Report missing genes or mistakes: oktay.kaplan(@)agu.edu.tr</p>
-            </div>
+  <div class="container">
+    <img src="CiliaHub_Logo.png" alt="CiliaHub Logo" class="w-full mx-auto mb-4" style="max-width: 100%; height: auto;">
+    <h1 style="color: #203c78; text-align: justify; text-align-last: center;">CiliaHub: Ciliary Gene Database</h1>
+    <p class="mb-4">CiliaHub is a cutting-edge resource that expands the ciliary gene catalog with 744 newly identified genes, leveraging advanced literature mining. It provides a comprehensive, up-to-date database with detailed annotations, hyperlinks to gene and reference data, and localization insights, empowering cilia research and clinical genetics to unravel ciliopathy mechanisms.</p>
+
+    <!-- Wrapper to center the table and controls -->
+    <div style="display: flex; justify-content: center;">
+      <div style="width: 100%; max-width: 1400px;">
+
+        <!-- Controls -->
+        <div class="ciliahub-controls">
+          <input type="text" id="ciliahub-search" placeholder="Search by Gene, Ensembl ID, or Synonym...">
+          <select id="ciliahub-filter">
+            <option value="">All Localizations</option>
+            <option value="axoneme">Axoneme</option>
+            <option value="basal-body">Basal Body</option>
+            <option value="transition-zone">Transition Zone</option>
+          </select>
+          <button id="ciliahub-reset">Reset</button>
+          <button id="download-ciliahub">Download Data</button>
         </div>
+
+        <!-- Legend -->
+        <div class="ciliahub-legend mt-2">
+          <span class="legend-axoneme">Axoneme</span>
+          <span class="legend-basal-body">Basal Body</span>
+          <span class="legend-transition-zone">Transition Zone</span>
+        </div>
+
+        <!-- Table -->
+        <div class="overflow-x-auto">
+          <table class="ciliahub-table" style="width: 100%; table-layout: fixed;">
+            <thead>
+              <tr>
+                <th style="width: 12%; min-width: 140px;">Gene</th>
+                <th style="width: 15%; min-width: 180px;">Ensembl ID</th>
+                <th style="width: 28%; min-width: 380px;">Gene Description</th>
+                <th style="width: 15%; min-width: 200px;">Synonym</th>
+                <th style="width: 15%; min-width: 200px;">Reference</th>
+                <th style="width: 15%; min-width: 200px;">Ciliary Localization</th>
+              </tr>
+            </thead>
+            <tbody id="ciliahub-table-body">
+              <!-- Data populated by script.js -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Feedback -->
+        <p class="mt-4 text-gray-700 text-center">Report missing genes or mistakes: oktay.kaplan(@)agu.edu.tr</p>
+      </div>
     </div>
+  </div>
 </section>
         
         <section id="current-members" class="section" style="display: none;">
