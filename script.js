@@ -4,10 +4,16 @@ async function loadCiliaHubData() {
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status} for /ciliahub_data.json`);
         }
-        const text = await response.text(); // Get raw text first for debugging
-        console.log('Raw JSON text:', text.substring(0, 500) + '...'); // Log first 500 chars
-        const data = JSON.parse(text); // Parse manually
-        console.log('Parsed data length:', Array.isArray(data) ? data.length : 'Not an array, object length: ' + Object.keys(data).length); // Debug: Check structure
+        const text = await response.text(); // Get raw text
+        console.log('Raw JSON text (first 500 chars):', text.substring(0, 500) + '...'); // Log raw data
+        let data;
+        try {
+            data = JSON.parse(text); // Attempt to parse
+            console.log('Parsed data structure:', typeof data, 'Length:', Array.isArray(data) ? data.length : Object.keys(data).length);
+        } catch (parseError) {
+            console.error('JSON Parse Error:', parseError, 'Raw text:', text);
+            throw new Error('Failed to parse JSON');
+        }
         const tableBody = document.getElementById('ciliahub-table-body');
         const searchInput = document.getElementById('ciliahub-search');
         const filterSelect = document.getElementById('ciliahub-filter');
@@ -18,11 +24,17 @@ async function loadCiliaHubData() {
         function populateTable(filteredData = data) {
             tableBody.innerHTML = '';
             let processedCount = 0;
-            Object.values(filteredData).forEach((item, index) => { // Use Object.values for object iteration
+            const entries = Array.isArray(filteredData) ? filteredData : Object.values(filteredData);
+            console.log('Entries to process:', entries.length); // Debug: Number of entries
+            entries.forEach((item, index) => {
                 try {
+                    if (!item || typeof item !== 'object') {
+                        console.warn(`Skipping invalid entry at index ${index}:`, item);
+                        return;
+                    }
                     const sanitizedLocalization = (item.localization || '')
                         .toLowerCase()
-                        .replace(/[\s,]+/g, '-'); // Replace spaces and commas with hyphens
+                        .replace(/[\s,]+/g, '-');
                     const pmids = (item.reference || '').split(';').map(pmid => pmid.trim()).filter(pmid => pmid);
                     const referenceLinks = pmids.length > 0
                         ? pmids.map(pmid => `<a href="https://pubmed.ncbi.nlm.nih.gov/${pmid}/" target="_blank">${pmid}</a>`).join(', ')
@@ -55,7 +67,8 @@ async function loadCiliaHubData() {
         // Search functionality
         searchInput.addEventListener('input', () => {
             const query = searchInput.value.toLowerCase().trim();
-            const filteredData = Object.values(data).filter(item =>
+            const entries = Array.isArray(data) ? data : Object.values(data);
+            const filteredData = entries.filter(item =>
                 (item.gene && item.gene.toLowerCase().includes(query)) ||
                 (item.ensembl_id && item.ensembl_id.toLowerCase().includes(query)) ||
                 (item.synonym && item.synonym.toLowerCase().includes(query)) ||
@@ -68,9 +81,10 @@ async function loadCiliaHubData() {
         // Filter functionality
         filterSelect.addEventListener('change', () => {
             const filterValue = filterSelect.value.toLowerCase();
-            let filteredData = Object.values(data);
+            const entries = Array.isArray(data) ? data : Object.values(data);
+            let filteredData = entries;
             if (filterValue) {
-                filteredData = filteredData.filter(item => 
+                filteredData = entries.filter(item => 
                     (item.localization || '').toLowerCase().replace(/[\s,]+/g, '-') === filterValue
                 );
             }
@@ -81,14 +95,15 @@ async function loadCiliaHubData() {
         resetBtn.addEventListener('click', () => {
             searchInput.value = '';
             filterSelect.value = '';
-            populateTable(Object.values(data));
+            populateTable(Array.isArray(data) ? data : Object.values(data));
         });
 
         // Download functionality
         downloadBtn.addEventListener('click', () => {
+            const entries = Array.isArray(data) ? data : Object.values(data);
             const csv = [
                 ['Gene', 'Ensembl ID', 'Gene Description', 'Synonym', 'OMIM ID', 'Reference', 'Ciliary Localization'],
-                ...Object.values(data).map(item => [
+                ...entries.map(item => [
                     item.gene || '',
                     item.ensembl_id || '',
                     item.description || '',
