@@ -1,11 +1,3 @@
-const ciliahubData = [
-  { gene: "ABCC4", ensemblId: "ENSG00000125257", description: "ATP binding cassette subfamily C member 4 (PEL blood group)", synonym: "MRP4|EST170205|MOAT-B|MOATB", reference: "25173977;30685088;32228435", localization: "Membrane" },
-  { gene: "ABLIM1", ensemblId: "ENSG00000099204", description: "actin binding LIM protein 1", synonym: "abLIM|limatin", reference: "22684256;20487527", localization: "Actin Cytoskeleton" },
-  { gene: "ABLIM3", ensemblId: "ENSG00000173210", description: "actin binding LIM protein family member 3", synonym: "KIAA0843", reference: "22684256", localization: "Actin Cytoskeleton" },
-  { gene: "ACE2", ensemblId: "ENSG00000130234", description: "angiotensin converting enzyme 2", synonym: "ACEH", reference: "33116139", localization: "Motile Cilium Membrane" },
-  { gene: "ACTR2", ensemblId: "ENSG00000138071", description: "actin related protein 2", synonym: "ARP2", reference: "22684256", localization: "Actin Cytoskeleton" }
-];
-
 // Load and populate CiliaHub table
 async function loadCiliaHubData() {
     try {
@@ -27,6 +19,7 @@ async function loadCiliaHubData() {
                     <td>${item.ensembl_id || ''}</td>
                     <td>${item.description || ''}</td>
                     <td>${item.synonym || ''}</td>
+                    <td>${item.omim_id || ''}</td>
                     <td><a href="${item.reference_url || '#'}">${item.reference || 'N/A'}</a></td>
                     <td>${item.localization || ''}</td>
                 `;
@@ -44,7 +37,8 @@ async function loadCiliaHubData() {
             const filteredData = data.filter(item =>
                 (item.gene && item.gene.toLowerCase().includes(query)) ||
                 (item.ensembl_id && item.ensembl_id.toLowerCase().includes(query)) ||
-                (item.synonym && item.synonym.toLowerCase().includes(query))
+                (item.synonym && item.synonym.toLowerCase().includes(query)) ||
+                (item.omim_id && item.omim_id.toLowerCase().includes(query))
             );
             populateTable(filteredData);
         });
@@ -69,12 +63,13 @@ async function loadCiliaHubData() {
         // Download functionality
         downloadBtn.addEventListener('click', () => {
             const csv = [
-                ['Gene', 'Ensembl ID', 'Gene Description', 'Synonym', 'Reference', 'Ciliary Localization'],
+                ['Gene', 'Ensembl ID', 'Gene Description', 'Synonym', 'OMIM ID', 'Reference', 'Ciliary Localization'],
                 ...data.map(item => [
                     item.gene || '',
                     item.ensembl_id || '',
                     item.description || '',
                     item.synonym || '',
+                    item.omim_id || '',
                     item.reference || '',
                     item.localization || ''
                 ])
@@ -89,7 +84,7 @@ async function loadCiliaHubData() {
         });
     } catch (error) {
         console.error('Error loading CiliaHub data:', error);
-        document.getElementById('ciliahub-table-body').innerHTML = '<tr><td colspan="6">Error loading data. Please check the console for details.</td></tr>';
+        document.getElementById('ciliahub-table-body').innerHTML = '<tr><td colspan="7">Error loading data. Please check the console for details.</td></tr>';
     }
 }
 
