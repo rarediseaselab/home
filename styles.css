@@ -107,7 +107,6 @@ body {
     padding: 15px;
 }
 
-
 /* Sections */
 .section {
     display: none;
@@ -130,12 +129,12 @@ body {
 }
 
 .figure-image {
+    max-width: 600px; /* Adjusted to a specific width based on typical image size; adjust as needed */
     width: 100%;
-    max-width: 860px;
     height: auto;
     object-fit: contain;
     display: block;
-    margin: 15px auto;
+    margin: 0 auto 20px;
     border-radius: 4px;
 }
 
@@ -165,6 +164,51 @@ body {
     display: block;
     margin: 15px auto;
     border-radius: 4px;
+}
+
+/* Home Section Text Alignment with Image */
+#home {
+    max-width: 100%;
+    padding: 20px;
+}
+
+#home .container {
+    max-width: 100%;
+}
+
+#home .text-content {
+    max-width: 600px; /* Matches the figure-image max-width; adjust if needed */
+    margin: 0 auto;
+    padding: 0 10px;
+}
+
+#home p,
+#home .mission-statement,
+#home .research-updates {
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#home .research-grid {
+    max-width: 600px; /* Matches the text-content max-width */
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+@media (min-width: 768px) {
+    #home .figure-image {
+        max-width: 600px;
+    }
+    #home .text-content,
+    #home p,
+    #home .mission-statement,
+    #home .research-updates,
+    #home .research-grid {
+        max-width: 600px;
+    }
 }
 
 /* Research Updates (Home Page) */
@@ -272,6 +316,7 @@ body {
     -webkit-box-orient: vertical;
 }
 
+/* Read More Button */
 .read-more-btn {
     margin-top: 10px;
     padding: 8px 15px;
@@ -766,11 +811,13 @@ footer {
 
 .ciliahub-table {
     width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    table-layout: fixed;
     border-collapse: collapse;
-    margin-top: 20px;
     background: #e6f2ff;
     border-radius: 5px;
-    overflow-x: auto;
+    overflow: hidden;
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -780,6 +827,10 @@ footer {
     text-align: left;
     border-bottom: 1px solid #ddd;
     font-size: 0.9em;
+    word-wrap: break-word;
+    word-break: break-word;
+    white-space: normal;
+    vertical-align: top;
 }
 
 .ciliahub-table th {
@@ -810,27 +861,27 @@ footer {
 }
 
 .ciliahub-table td.reference {
-  position: relative;
-  cursor: help;
+    position: relative;
+    cursor: help;
 }
 
 .ciliahub-table td.reference:hover::after {
-  content: attr(data-tooltip);
-  position: absolute;
-  top: -45px;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: #004080;
-  color: #fff;
-  padding: 8px 12px;
-  border-radius: 6px;
-  font-size: 0.85rem;
-  white-space: nowrap;
-  z-index: 1002;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    content: attr(data-tooltip);
+    position: absolute;
+    top: -45px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #004080;
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    z-index: 1002;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
-
+/* Night Mode for CiliaHub */
 .night-mode .ciliahub-controls {
     background-color: #3d3d3d;
 }
@@ -1046,80 +1097,4 @@ footer {
 
 .night-mode #night-mode-toggle:hover {
     background-color: #004d99;
-}
-/* --- Centered and Readable CiliaHub Table --- */
-.ciliahub-table {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    table-layout: fixed;
-    border-collapse: collapse;
-    background: #e6f2ff;
-    border-radius: 5px;
-    overflow: hidden;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-}
-
-.ciliahub-table th,
-.ciliahub-table td {
-    padding: 14px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-    font-size: 0.9em;
-    word-wrap: break-word;
-    word-break: break-word;
-    white-space: normal;
-    vertical-align: top;
-}
-
-.ciliahub-table th {
-    background-color: #003366;
-    color: white;
-    font-weight: bold;
-    border-bottom: 2px solid #004080;
-}
-
-.ciliahub-table tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
-.ciliahub-table tr.axoneme {
-    background-color: #f0faff;
-}
-
-.ciliahub-table tr.basal-body {
-    background-color: #e6f2ff;
-}
-
-.ciliahub-table tr.transition-zone {
-    background-color: #f5f5f5;
-}
-
-.ciliahub-table tr:hover {
-    background-color: #d9e6ff;
-}
-
-/* Responsive wrapper to avoid overflow on smaller screens */
-.ciliahub-table-wrapper {
-    width: 100%;
-    overflow-x: auto;
-    margin-top: 20px;
-}
-
-/* Hide column if desired */
-.hide-column {
-    display: none;
-}
-
-/* Optional: keep Synonym <th> hidden but not removed */
-th.hide-column,
-td.hide-column {
-    display: none;
-}
-
-@media (max-width: 768px) {
-    .ciliahub-table {
-        font-size: 0.8em;
-        min-width: 800px;
-    }
 }
