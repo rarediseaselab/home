@@ -72,28 +72,15 @@ async function loadCiliaHubData() {
     }
 
     try {
-        // Check localStorage cache
-        const cachedData = localStorage.getItem('ciliahub_data');
-        if (cachedData) {
-            data = JSON.parse(cachedData);
-            console.log('Loaded cached entries:', data.length);
-            populateTable();
-            updatePopularGenes();
-        } else {
-            const response = await fetch('https://raw.githubusercontent.com/rarediseaselab/home/main/ciliahub_data.json');
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const text = await response.text();
-            data = JSON.parse(text);
-            localStorage.setItem('ciliahub_data', JSON.stringify(data));
-            console.log('Loaded entries:', data.length);
-            populateTable();
-            updatePopularGenes();
-        }
+        // Reverted to original data loading code
+        const response = await fetch('https://raw.githubusercontent.com/rarediseaselab/home/main/ciliahub_data.json');
+        data = await response.json();
+        console.log('Loaded entries:', data.length);
+        populateTable();
+        updatePopularGenes();
     } catch (error) {
         console.error('Error loading CiliaHub data:', error);
-        showError('Failed to load CiliaHub data. Please try again later or contact support.');
+        showError('Failed to load CiliaHub data. Please check your network or contact support.');
         return;
     }
 
@@ -214,4 +201,32 @@ async function loadCiliaHubData() {
                             : 'N/A';
                         return `
                             <tr>
-                                <td style="padding: 10px; border-bottom:
+                                <td style="padding: 10px; border-bottom: 1px solid #ddd;"><a href="https://www.ncbi.nlm.nih.gov/gene/?term=${item.gene}" target="_blank">${item.gene}</a></td>
+                                <td style="padding: 10px; border-bottom: 1px solid #ddd;"><a href="https://www.ensembl.org/Homo_sapiens/Gene/Summary?g=${item.ensembl_id}" target="_blank">${item.ensembl_id}</a></td>
+                                <td style="padding: 10px; border-bottom: 1px solid #ddd;">${item.description || ''}</td>
+                                <td style="padding: 10px; border-bottom: 1px solid #ddd;">${item.synonym || ''}</td>
+                                <td style="padding: 10px; border-bottom: 1px solid #ddd;"><a href="https://www.omim.org/entry/${item.omim_id}" target="_blank">${item.omim_id}</a></td>
+                                <td style="padding: 10px; border-bottom: 1px solid #ddd;">${referenceLinks}</td>
+                                <td style="padding: 10px; border-bottom: 1px solid #ddd;">${item.localization || ''}</td>
+                            </tr>
+                        `;
+                    }).join('')}
+                </tbody>
+            </table>
+        `;
+        batchResultsContainer.style.display = 'block';
+    });
+
+    clearBatchResultsBtn.addEventListener('click', () => {
+        batchResultsDiv.innerHTML = '';
+        batchResultsContainer.style.display = 'none';
+        batchGenesInput.value = '';
+    });
+}
+
+// Call the function when the DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    if (document.getElementById('ciliahub')) {
+        loadCiliaHubData();
+    }
+});
