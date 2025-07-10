@@ -211,112 +211,115 @@
                 </div>
             </div>
         </section>
-<section id="ciliahub" class="section">
-    <div class="container">
-        <!-- Logo above title -->
-        <img src="CiliaHub_Logo.png" alt="CiliaHub Logo" class="w-full mx-auto mb-4" style="max-width: 100%; height: auto;">
 
-        <!-- Title -->
-        <h1 style="color: #203c78; text-align: justify; text-align-last: center;">CiliaHub: Ciliary Gene Database</h1>
-        <p class="mb-4" style="text-align: justify;">
-            <strong>CiliaHub</strong> is an updated and curated database of all experimentally confirmed ciliary genes — an evolution of the ciliary "Gold Standard" gene list. Through a combination of R-based text mining of the scientific literature and manual expert review, the database now includes over 1,800 genes, including <strong> 1000+ newly associated ciliary genes</strong>.
-            <br><br>
-            This user-friendly platform allows researchers to:
-            <ul style="margin-top: 10px; margin-bottom: 10px;">
-                <li>✔️ Explore curated gene entries with descriptions and known synonyms</li>
-                <li>✔️ Access references linked to each gene</li>
-                <li>✔️ Navigate to external databases via direct hyperlinks</li>
-                <li>✔️ Download the full gene list for further analysis</li>
-            </ul>
-            <strong>CiliaHub</strong> empowers both basic and clinical researchers in the fields of cell biology and genetics to explore the molecular basis of cilia-related functions and ciliopathies.
-        </p>
+        <section id="ciliahub" class="section">
+            <div class="container">
+                <!-- Error Message -->
+                <div id="ciliahub-error" style="display: none; color: red; text-align: center; margin-bottom: 20px;"></div>
 
-        <!-- How to Use (collapsible box) -->
-        <details class="mb-4" style="background: #f5faff; border: 1px solid #cce0f5; padding: 15px; border-radius: 5px;">
-            <summary style="font-weight: bold; cursor: pointer;">📘 How to Use CiliaHub</summary>
-            <div style="margin-top: 10px;">
-                <ul>
-                    <li><strong>🔍 Search:</strong> Enter a gene name, Ensembl ID, OMIM ID, or synonym to find specific entries.</li>
-                    <li><strong>🧭 Filter:</strong> Use the dropdown menu to display genes based on ciliary localization (e.g., Basal Body).</li>
-                    <li><strong>♻️ Reset:</strong> Click <em>Reset</em> to clear search and filters, and reload all results.</li>
-                    <li><strong>⬇️ Download:</strong> Export the full gene list as a CSV file for offline analysis or custom sorting.</li>
-                    <li><strong>🔗 External Links:</strong> Gene names, Ensembl IDs, OMIM IDs, and references are hyperlinked to authoritative databases.</li>
-                    <li><strong>🗂 Batch Query:</strong> Paste multiple genes or IDs below and click "Batch Query" to retrieve all matching entries at once.</li>
-                </ul>
+                <!-- Logo above title -->
+                <img src="CiliaHub_Logo.png" alt="CiliaHub Logo" class="w-full mx-auto mb-4" style="max-width: 100%; height: auto;">
+
+                <!-- Title -->
+                <h1 style="color: #203c78; text-align: justify; text-align-last: center;">CiliaHub: Ciliary Gene Database</h1>
+                <p class="mb-4" style="text-align: justify;">
+                    <strong>CiliaHub</strong> is an updated and curated database of all experimentally confirmed ciliary genes — an evolution of the ciliary "Gold Standard" gene list. Through a combination of R-based text mining of the scientific literature and manual expert review, the database now includes over 1,800 genes, including <strong>1000+ newly associated ciliary genes</strong>.
+                    <br><br>
+                    This user-friendly platform allows researchers to:
+                    <ul style="margin-top: 10px; margin-bottom: 10px;">
+                        <li>✔️ Explore curated gene entries with descriptions and known synonyms</li>
+                        <li>✔️ Access references linked to each gene</li>
+                        <li>✔️ Navigate to external databases via direct hyperlinks</li>
+                        <li>✔️ Download the full gene list for further analysis</li>
+                    </ul>
+                    <strong>CiliaHub</strong> empowers both basic and clinical researchers in the fields of cell biology and genetics to explore the molecular basis of cilia-related functions and ciliopathies.
+                </p>
+
+                <!-- How to Use (collapsible box) -->
+                <details class="mb-4" style="background: #f5faff; border: 1px solid #cce0f5; padding: 15px; border-radius: 5px;">
+                    <summary style="font-weight: bold; cursor: pointer;">📘 How to Use CiliaHub</summary>
+                    <div style="margin-top: 10px;">
+                        <ul>
+                            <li><strong>🔍 Search:</strong> Enter a gene name, Ensembl ID, OMIM ID, or synonym to find specific entries.</li>
+                            <li><strong>🧭 Filter:</strong> Use the dropdown menu to display genes based on ciliary localization (e.g., Basal Body).</li>
+                            <li><strong>♻️ Reset:</strong> Click <em>Reset</em> to clear search and filters, and reload all results.</li>
+                            <li><strong>⬇️ Download:</strong> Export the full gene list as a CSV file for offline analysis or custom sorting.</li>
+                            <li><strong>🔗 External Links:</strong> Gene names, Ensembl IDs, OMIM IDs, and references are hyperlinked to authoritative databases.</li>
+                            <li><strong>🗂 Batch Query:</strong> Paste multiple genes or IDs below and click "Batch Query" to retrieve all matching entries at once.</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <!-- Controls -->
+                <div class="ciliahub-controls mb-4 text-center">
+                    <input type="text" id="ciliahub-search" placeholder="Search by Gene, Ensembl ID, or Synonym..." aria-label="Search CiliaHub database">
+                    <select id="ciliahub-filter" aria-label="Filter by ciliary localization">
+                        <option value="">All Localizations</option>
+                        <option value="basal-body">Basal Body</option>
+                        <option value="transition-zone">Transition Zone</option>
+                        <option value="cilia">Cilia</option>
+                        <option value="basal-body-cilia">Basal Body-Cilia</option>
+                        <option value="cilia-basal-body-transition-zone">Cilia-Basal Body-Transition Zone</option>
+                    </select>
+                    <button id="ciliahub-reset" aria-label="Reset search and filters">Reset</button>
+                    <button id="download-ciliahub" aria-label="Download CiliaHub data as CSV">Download Data</button>
+                </div>
+
+                <!-- Popular Genes Widget -->
+                <div id="popularGenesWidget" style="max-width: 600px; margin: 20px auto; padding: 15px; border: 1px solid #cce0f5; background: #f0f8ff; border-radius: 6px; color: #203c78;">
+                    <h3 style="text-align:center; margin-top:0;">🔥 Popular Genes This Session</h3>
+                    <ul id="popularGenesList" style="list-style: none; padding-left: 10px;"></ul>
+                </div>
+
+                <!-- Batch Query UI -->
+                <div class="batch-query mb-5" style="max-width:600px; margin: 0 auto 30px; text-align: left;">
+                    <label for="batchGenes" style="font-weight:bold;">Batch Query: Enter gene names or IDs (comma, space, or newline separated):</label><br>
+                    <textarea id="batchGenes" rows="4" style="width: 100%; font-family: monospace;" placeholder="e.g. IFT88, BBS1, NPHP1" aria-label="Enter multiple gene names or IDs for batch query"></textarea><br>
+                    <button id="batchQueryBtn" style="margin-top: 8px; padding: 8px 16px; background-color:#203c78; color:white; border:none; border-radius:5px; cursor:pointer;" aria-label="Submit batch query">Batch Query</button>
+                </div>
+
+                <!-- Batch Query Results -->
+                <div id="batchResultsContainer" class="mb-5" style="max-width:900px; margin: 0 auto; display:none;">
+                    <h3 style="color: #203c78; text-align: center;">Batch Query Results</h3>
+                    <div id="batchResults"></div>
+                    <button id="clearBatchResults" style="margin-top:10px; padding: 6px 12px; background:#888; color:#fff; border:none; border-radius:4px; cursor:pointer;" aria-label="Clear batch query results">Clear Results</button>
+                </div>
+
+                <!-- Table wrapper -->
+                <div class="table-wrapper mb-5">
+                    <div id="ciliahub-loading" style="text-align: center; padding: 20px;">Loading data...</div>
+                    <table class="ciliahub-table" style="display: none;">
+                        <thead>
+                            <tr>
+                                <th style="width: 10%;">Gene</th>
+                                <th style="width: 10%;">Ensembl ID</th>
+                                <th style="width: 25%;">Gene Description</th>
+                                <th style="width: 10%;">Synonym</th>
+                                <th style="width: 10%;">OMIM ID</th>
+                                <th style="width: 20%;">Reference</th>
+                                <th style="width: 15%;">Ciliary Localization</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ciliahub-table-body"></tbody>
+                    </table>
+                </div>
+
+                <!-- Citation -->
+                <div class="citation-box mt-5 mb-4 p-3 rounded" style="background-color: #e6f2ff; border-left: 4px solid #004080;">
+                    <strong>Suggested citation:</strong> Yenisert F, Kaplan OI. <em>Updated Gold Standard Ciliary Gene List: Expanded Catalog of Ciliary Genes: Integration of Novel Ciliary Genes into the Ciliome</em>. 2025. Available at:
+                    <a href="https://rarediseaselab.github.io/home/#ciliahub" target="_blank">CiliaHub</a>
+                </div>
+
+                <!-- Feedback Button -->
+                <p class="mt-4 text-center">
+                    <a href="mailto:oktay.kaplan@agu.edu.tr?subject=CiliaHub Feedback" class="read-more-btn"
+                       style="background-color: #203c78; color: white; padding: 8px 16px; border-radius: 5px; text-decoration: none;" aria-label="Submit feedback for CiliaHub">
+                        Submit Feedback
+                    </a>
+                </p>
             </div>
-        </details>
+        </section>
 
-        <!-- Controls -->
-        <div class="ciliahub-controls mb-4 text-center">
-            <input type="text" id="ciliahub-search" placeholder="Search by Gene, Ensembl ID, or Synonym..." />
-            <select id="ciliahub-filter">
-                <option value="">All Localizations</option>
-                <option value="basal-body">Basal Body</option>
-                <option value="transition-zone">Transition Zone</option>
-                <option value="cilia">Cilia</option>
-                <option value="basal-body-cilia">Basal Body-Cilia</option>
-                <option value="cilia-basal-body-transition-zone">Cilia-Basal Body-Transition Zone</option>
-            </select>
-            <button id="ciliahub-reset">Reset</button>
-            <button id="download-ciliahub">Download Data</button>
-        </div>
-        <!-- Popular Genes Widget -->
-        <div id="popularGenesWidget" style="max-width: 600px; margin: 20px auto; padding: 15px; border: 1px solid #cce0f5; background: #f0f8ff; border-radius: 6px; color: #203c78;">
-          <h3 style="text-align:center; margin-top:0;">🔥 Popular Genes This Session</h3>
-          <ul id="popularGenesList" style="list-style: none; padding-left: 10px;"></ul>
-        </div>
-
-        <!-- Batch Query UI -->
-        <div class="batch-query mb-5" style="max-width:600px; margin: 0 auto 30px; text-align: left;">
-            <label for="batchGenes" style="font-weight:bold;">Batch Query: Enter gene names or IDs (comma, space, or newline separated):</label><br>
-            <textarea id="batchGenes" rows="4" style="width: 100%; font-family: monospace;" placeholder="e.g. IFT88, BBS1, NPHP1"></textarea><br>
-            <button id="batchQueryBtn" style="margin-top: 8px; padding: 8px 16px; background-color:#203c78; color:white; border:none; border-radius:5px; cursor:pointer;">
-                Batch Query
-            </button>
-        </div>
-
-        <!-- Batch Query Results -->
-        <div id="batchResultsContainer" class="mb-5" style="max-width:900px; margin: 0 auto; display:none;">
-            <h3 style="color: #203c78; text-align: center;">Batch Query Results</h3>
-            <div id="batchResults"></div>
-            <button id="clearBatchResults" style="margin-top:10px; padding: 6px 12px; background:#888; color:#fff; border:none; border-radius:4px; cursor:pointer;">Clear Results</button>
-        </div>
-
-        <!-- Table wrapper -->
-        <div class="table-wrapper mb-5">
-            <table class="ciliahub-table">
-                <thead>
-                    <tr>
-                        <th style="width: 10%;">Gene</th>
-                        <th style="width: 10%;">Ensembl ID</th>
-                        <th style="width: 20%;">Gene Description</th>
-                        <th style="width: 10%;">Synonym</th>
-                        <th style="width: 10%;">OMIM ID</th>
-                        <th style="width: 20%;">Reference</th>
-                        <th style="width: 20%;">Ciliary Localization</th>
-                    </tr>
-                </thead>
-                <tbody id="ciliahub-table-body">
-                    <!-- JavaScript will populate this -->
-                </tbody>
-            </table>
-        </div>
-
-        <!-- Citation -->
-        <div class="citation-box mt-5 mb-4 p-3 rounded" style="background-color: #e6f2ff; border-left: 4px solid #004080;">
-            <strong>Suggested citation:</strong> Yenisert F, Kaplan OI. <em>Updated Gold Standard Ciliary Gene List: Expanded Catalog of Ciliary Genes: Integration of Novel Ciliary Genes into the Ciliome</em>. 2025. Available at:
-            <a href="https://rarediseaselab.github.io/home/#ciliahub" target="_blank">CiliaHub</a>
-        </div>
-
-        <!-- Feedback Button -->
-        <p class="mt-4 text-center">
-            <a href="mailto:oktay.kaplan@agu.edu.tr?subject=CiliaHub Feedback" class="read-more-btn"
-               style="background-color: #203c78; color: white; padding: 8px 16px; border-radius: 5px; text-decoration: none;">
-                Submit Feedback
-            </a>
-        </p>
-    </div>
-</section>        
         <section id="current-members" class="section" style="display: none;">
             <h1>Current Members</h1>
             <div class="team-grid">
@@ -499,7 +502,7 @@
 
         <section id="publications" class="section" style="display: none;">
             <h1>Publications</h1>
-            <input type="text" id="pub-search" placeholder="Search publications..." class="pub-search">
+            <input type="text" id="pub-search" placeholder="Search publications..." class="pub-search" aria-label="Search publications">
             <div class="research-grid" id="publications-list">
                 <div class="research-item">
                     <img src="elegans.png" alt="Research Icon" class="fit-image">
@@ -704,7 +707,7 @@
     </div>
 
     <!-- Back to Top Button -->
-    <button id="back-to-top" title="Back to Top">↑</button>
+    <button id="back-to-top" title="Back to Top" aria-label="Scroll back to top">↑</button>
 
     <footer>
         <p>© 2025 Kaplan's Lab</p>
@@ -719,7 +722,6 @@
     <script src="script.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Existing JavaScript (Publications search, Lightbox, Back to Top, Night Mode)
             const searchInput = document.getElementById('pub-search');
             const pubList = document.getElementById('publications-list');
             const pubs = pubList.querySelectorAll('.research-item');
@@ -782,6 +784,6 @@
     </script>
 
     <!-- Night Mode Toggle -->
-    <button id="night-mode-toggle" title="Toggle Night Mode"></button>
+    <button id="night-mode-toggle" title="Toggle Night Mode" aria-label="Toggle night mode"></button>
 </body>
 </html>
