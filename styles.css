@@ -825,7 +825,7 @@ footer {
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
-    table-layout: fixed;
+    table-layout: auto; /* Changed from fixed to auto for better column sizing */
     border-collapse: collapse;
     background: #e6f2ff;
     border-radius: 5px;
@@ -839,9 +839,6 @@ footer {
     text-align: left;
     border-bottom: 1px solid #ddd;
     font-size: 0.9em;
-    word-wrap: break-word;
-    word-break: break-word;
-    white-space: normal;
     vertical-align: top;
 }
 
@@ -850,6 +847,29 @@ footer {
     color: white;
     font-weight: bold;
     border-bottom: 2px solid #004080;
+}
+
+/* Ensure Ensembl ID column is fully visible and clickable */
+.ciliahub-table th:nth-child(2),
+.ciliahub-table td:nth-child(2) {
+    width: 15%; /* Increased width for Ensembl ID */
+    white-space: normal; /* Allow wrapping to prevent truncation */
+    overflow: visible; /* Ensure no content is hidden */
+}
+
+/* Style for Ensembl ID links */
+.ciliahub-table td:nth-child(2) a {
+    color: #004080;
+    text-decoration: underline;
+    font-weight: normal;
+    display: inline-block;
+    width: 100%;
+    word-break: break-all; /* Break long IDs for readability */
+}
+
+.ciliahub-table td:nth-child(2) a:hover {
+    color: #002b5e;
+    text-decoration: underline;
 }
 
 .ciliahub-table tr:nth-child(even) {
@@ -1089,13 +1109,21 @@ footer {
     .ciliahub-table {
         font-size: 0.8em;
         overflow-x: auto;
+        display: block; /* Allow horizontal scrolling for table */
     }
     .ciliahub-table th,
     .ciliahub-table td {
         padding: 8px;
+        min-width: 100px; /* Ensure columns are wide enough */
     }
-    .ciliahub-table td a {
-        font-size: 0.8em;
+    .ciliahub-table th:nth-child(2),
+    .ciliahub-table td:nth-child(2) {
+        min-width: 150px; /* Ensure Ensembl ID column is wide enough */
+        white-space: normal; /* Allow wrapping */
+        overflow: visible;
+    }
+    .ciliahub-table td:nth-child(2) a {
+        word-break: break-all; /* Break long IDs for readability */
     }
     .ciliahub-controls {
         flex-direction: column;
@@ -1146,8 +1174,16 @@ footer {
     .ciliahub-table th,
     .ciliahub-table td {
         padding: 6px;
+        min-width: 80px; /* Adjust for smaller screens */
     }
-    .ciliahub-table td a {
+    .ciliahub-table th:nth-child(2),
+    .ciliahub-table td:nth-child(2) {
+        min-width: 120px; /* Ensure Ensembl ID remains visible */
+        white-space: normal;
+        overflow: visible;
+    }
+    .ciliahub-table td:nth-child(2) a {
+        word-break: break-all;
         font-size: 0.75em;
     }
 }
