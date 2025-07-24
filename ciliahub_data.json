@@ -301,7 +301,7 @@
   },
   {
     "gene": "ATAT1",
-    "ensembl_id": "ENSG00000231257,ENSG00000206488,ENSG00000229061,ENSG00000223752,ENSG00000234549,ENSG00000235658,ENSG00000137343",
+    "ensembl_id": "ENSG00000231257, ENSG00000206488, ENSG00000229061, ENSG00000223752, ENSG00000234549, ENSG00000235658, ENSG00000137343",
     "description": "alpha tubulin acetyltransferase 1 [Source:HGNC Symbol;Acc:HGNC:21186]",
     "synonym": "C6ORF134,EM:AB023049.7,FLJ13158,MEC17",
     "omim_id": "615556",
@@ -371,7 +371,7 @@
   },
   {
     "gene": "BAG6",
-    "ensembl_id": "ENSG00000229524,ENSG00000096155,ENSG00000204463,ENSG00000234651,ENSG00000228760,ENSG00000227761,ENSG00000233348",
+    "ensembl_id": "ENSG00000229524, ENSG00000096155, ENSG00000204463, ENSG00000234651, ENSG00000228760, ENSG00000227761, ENSG00000233348",
     "description": "BAG cochaperone 6 [Source:HGNC Symbol;Acc:HGNC:13919]",
     "synonym": "BAT3,D6S52E,G3,SCYTHE",
     "omim_id": "142590",
@@ -491,7 +491,7 @@
   },
   {
     "gene": "CACNA1C",
-    "ensembl_id": "ENSG00000285479,ENSG00000151067",
+    "ensembl_id": "ENSG00000285479, ENSG00000151067",
     "description": "calcium voltage-gated channel subunit alpha1 C [Source:HGNC Symbol;Acc:HGNC:1390]",
     "synonym": "CACH2,CACN2,CACNA1C-IT2,CACNL1A1,CAV1.2,CCHL1A1,LQT8,TS",
     "omim_id": "114205",
@@ -581,7 +581,7 @@
   },
   {
     "gene": "CCDC40",
-    "ensembl_id": "ENSG00000291505,ENSG00000141519",
+    "ensembl_id": "ENSG00000291505, ENSG00000141519",
     "description": "coiled-coil domain 40 molecular ruler complex subunit [Source:HGNC Symbol;Acc:HGNC:26090]",
     "synonym": "CFAP172,CILD15,FAP172,FLJ20753,FLJ32021,KIAA1640",
     "omim_id": "613799",
@@ -811,7 +811,7 @@
   },
   {
     "gene": "CEP170",
-    "ensembl_id": "ENSG00000276725,ENSG00000143702",
+    "ensembl_id": "ENSG00000276725, ENSG00000143702",
     "description": "centrosomal protein 170 [Source:HGNC Symbol;Acc:HGNC:28920]",
     "synonym": "FAM68A,KAB,KIAA0470",
     "omim_id": "613023",
@@ -831,7 +831,7 @@
   },
   {
     "gene": "CEP20",
-    "ensembl_id": "ENSG00000276914,ENSG00000133393",
+    "ensembl_id": "ENSG00000276914, ENSG00000133393",
     "description": "centrosomal protein 20 [Source:HGNC Symbol;Acc:HGNC:26435]",
     "synonym": "C16ORF63,DKFZP686N1651,FLJ31153,FOPNL,FOR20,PHSECRG2",
     "omim_id": "617149",
@@ -891,7 +891,7 @@
   },
   {
     "gene": "CEP72",
-    "ensembl_id": "ENSG00000112877,ENSG00000280688",
+    "ensembl_id": "ENSG00000112877, ENSG00000280688",
     "description": "centrosomal protein 72 [Source:HGNC Symbol;Acc:HGNC:25547]",
     "synonym": "FLJ10565,KIAA1519",
     "omim_id": "616475",
@@ -941,7 +941,7 @@
   },
   {
     "gene": "CETN2",
-    "ensembl_id": "ENSG00000147400,ENSG00000292191",
+    "ensembl_id": "ENSG00000147400, ENSG00000292191",
     "description": "centrin 2 [Source:HGNC Symbol;Acc:HGNC:1867]",
     "synonym": "CALT,CEN2",
     "omim_id": "300006",
@@ -1331,7 +1331,7 @@
   },
   {
     "gene": "CPLANE2",
-    "ensembl_id": "ENSG00000291382,ENSG00000132881",
+    "ensembl_id": "ENSG00000291382, ENSG00000132881",
     "description": "ciliogenesis and planar polarity effector complex subunit 2 [Source:HGNC Symbol;Acc:HGNC:28127]",
     "synonym": "C1ORF89,MGC10731,RSG1",
     "omim_id": "620487",
@@ -1531,7 +1531,7 @@
   },
   {
     "gene": "DNAH10",
-    "ensembl_id": "ENSG00000281935,ENSG00000197653",
+    "ensembl_id": "ENSG00000281935, ENSG00000197653",
     "description": "dynein axonemal heavy chain 10 [Source:HGNC Symbol;Acc:HGNC:2941]",
     "synonym": "FLJ43808",
     "omim_id": "605884",
@@ -2231,7 +2231,7 @@
   },
   {
     "gene": "GLIS2",
-    "ensembl_id": "ENSG00000126603,ENSG00000274636",
+    "ensembl_id": "ENSG00000126603, ENSG00000274636",
     "description": "GLIS family zinc finger 2 [Source:HGNC Symbol;Acc:HGNC:29450]",
     "synonym": "NPHP7",
     "omim_id": "608539",
@@ -2301,7 +2301,7 @@
   },
   {
     "gene": "GPR20",
-    "ensembl_id": "ENSG00000291465,ENSG00000204882,ENSG00000275181",
+    "ensembl_id": "ENSG00000291465, ENSG00000204882, ENSG00000275181",
     "description": "G protein-coupled receptor 20 [Source:HGNC Symbol;Acc:HGNC:4475]",
     "synonym": "NA",
     "omim_id": "601908",
@@ -2311,7 +2311,7 @@
   },
   {
     "gene": "GPR22",
-    "ensembl_id": "ENSG00000283812,ENSG00000172209",
+    "ensembl_id": "ENSG00000283812, ENSG00000172209",
     "description": "G protein-coupled receptor 22 [Source:HGNC Symbol;Acc:HGNC:4477]",
     "synonym": "NA",
     "omim_id": "601910",
@@ -2851,7 +2851,7 @@
   },
   {
     "gene": "KCNQ1",
-    "ensembl_id": "ENSG00000282076,ENSG00000053918",
+    "ensembl_id": "ENSG00000282076, ENSG00000053918",
     "description": "potassium voltage-gated channel subfamily Q member 1 [Source:HGNC Symbol;Acc:HGNC:6294]",
     "synonym": "JLNS1,KCNA8,KCNA9,KV7.1,KVLQT1,LQT,LQT1",
     "omim_id": "607542",
@@ -3051,7 +3051,7 @@
   },
   {
     "gene": "KIFC1",
-    "ensembl_id": "ENSG00000237649,ENSG00000056678,ENSG00000233450,ENSG00000204197",
+    "ensembl_id": "ENSG00000237649, ENSG00000056678, ENSG00000233450, ENSG00000204197",
     "description": "kinesin family member C1 [Source:HGNC Symbol;Acc:HGNC:6389]",
     "synonym": "HSET,KNSL2",
     "omim_id": "603763",
@@ -3161,7 +3161,7 @@
   },
   {
     "gene": "LRRC56",
-    "ensembl_id": "ENSG00000273831,ENSG00000161328",
+    "ensembl_id": "ENSG00000273831, ENSG00000161328",
     "description": "leucine rich repeat containing 56 [Source:HGNC Symbol;Acc:HGNC:25430]",
     "synonym": "DKFZP761L1518,DNAAF12,FLJ00101,ODA8",
     "omim_id": "618227",
@@ -3261,7 +3261,7 @@
   },
   {
     "gene": "MAPK15",
-    "ensembl_id": "ENSG00000181085,ENSG00000274205",
+    "ensembl_id": "ENSG00000181085, ENSG00000274205",
     "description": "mitogen-activated protein kinase 15 [Source:HGNC Symbol;Acc:HGNC:24667]",
     "synonym": "ERK7,ERK8",
     "omim_id": "618616",
@@ -3561,7 +3561,7 @@
   },
   {
     "gene": "NDE1",
-    "ensembl_id": "ENSG00000072864,ENSG00000275911",
+    "ensembl_id": "ENSG00000072864, ENSG00000275911",
     "description": "nudE neurodevelopment protein 1 [Source:HGNC Symbol;Acc:HGNC:17619]",
     "synonym": "FLJ20101,NDE,NUDE",
     "omim_id": "609449",
@@ -3641,7 +3641,7 @@
   },
   {
     "gene": "NEURL4",
-    "ensembl_id": "ENSG00000288301,ENSG00000215041",
+    "ensembl_id": "ENSG00000288301, ENSG00000215041",
     "description": "neuralized E3 ubiquitin protein ligase 4 [Source:HGNC Symbol;Acc:HGNC:34410]",
     "synonym": "KIAA1787",
     "omim_id": "615865",
@@ -4031,7 +4031,7 @@
   },
   {
     "gene": "OPRL1",
-    "ensembl_id": "ENSG00000125510,ENSG00000277044",
+    "ensembl_id": "ENSG00000125510, ENSG00000277044",
     "description": "opioid related nociceptin receptor 1 [Source:HGNC Symbol;Acc:HGNC:8155]",
     "synonym": "KOR-3,NOCIR,NOPR,OOR,ORL1,PNOCR",
     "omim_id": "602548",
@@ -4401,7 +4401,7 @@
   },
   {
     "gene": "PQBP1",
-    "ensembl_id": "ENSG00000102103,ENSG00000292208",
+    "ensembl_id": "ENSG00000102103, ENSG00000292208",
     "description": "polyglutamine binding protein 1 [Source:HGNC Symbol;Acc:HGNC:9330]",
     "synonym": "MRX2,MRX55,MRXS3,MRXS8,RENS1,SHS",
     "omim_id": "300463",
@@ -4441,7 +4441,7 @@
   },
   {
     "gene": "PRKACA",
-    "ensembl_id": "ENSG00000288516,ENSG00000072062",
+    "ensembl_id": "ENSG00000288516, ENSG00000072062",
     "description": "protein kinase cAMP-activated catalytic subunit alpha [Source:HGNC Symbol;Acc:HGNC:9380]",
     "synonym": "PKACA",
     "omim_id": "601639",
@@ -4471,7 +4471,7 @@
   },
   {
     "gene": "PRPF31",
-    "ensembl_id": "ENSG00000275117,ENSG00000277154,ENSG00000274651,ENSG00000277953,ENSG00000274894,ENSG00000276421,ENSG00000274144,ENSG00000277707,ENSG00000275885,ENSG00000105618",
+    "ensembl_id": "ENSG00000275117, ENSG00000277154, ENSG00000274651, ENSG00000277953, ENSG00000274894, ENSG00000276421, ENSG00000274144, ENSG00000277707, ENSG00000275885, ENSG00000105618",
     "description": "pre-mRNA processing factor 31 [Source:HGNC Symbol;Acc:HGNC:15446]",
     "synonym": "HPRP31,NY-BR-99,PRP31,RP11,SNRNP61",
     "omim_id": "606419",
@@ -4491,7 +4491,7 @@
   },
   {
     "gene": "PRPF8",
-    "ensembl_id": "ENSG00000274442,ENSG00000174231",
+    "ensembl_id": "ENSG00000274442, ENSG00000174231",
     "description": "pre-mRNA processing factor 8 [Source:HGNC Symbol;Acc:HGNC:17340]",
     "synonym": "HPRP8,PRP8,PRPC8,RP13,SNRNP220",
     "omim_id": "NA",
@@ -4591,7 +4591,7 @@
   },
   {
     "gene": "RAB11FIP3",
-    "ensembl_id": "ENSG00000275338,ENSG00000090565",
+    "ensembl_id": "ENSG00000275338, ENSG00000090565",
     "description": "RAB11 family interacting protein 3 [Source:HGNC Symbol;Acc:HGNC:17224]",
     "synonym": "EFERIN,KIAA0665,RAB11-FIP3",
     "omim_id": "608738",
@@ -4821,7 +4821,7 @@
   },
   {
     "gene": "RP1L1",
-    "ensembl_id": "ENSG00000292297,ENSG00000183638",
+    "ensembl_id": "ENSG00000292297, ENSG00000183638",
     "description": "RP1 like 1 [Source:HGNC Symbol;Acc:HGNC:15946]",
     "synonym": "DCDC4B",
     "omim_id": "608581",
@@ -5011,7 +5011,7 @@
   },
   {
     "gene": "SDCCAG8",
-    "ensembl_id": "ENSG00000054282,ENSG00000276111",
+    "ensembl_id": "ENSG00000054282, ENSG00000276111",
     "description": "SHH signaling and ciliogenesis regulator SDCCAG8 [Source:HGNC Symbol;Acc:HGNC:10671]",
     "synonym": "BBS16,CCCAP,NPHP10,NY-CO-8,SLSN7",
     "omim_id": "613524",
@@ -5071,7 +5071,7 @@
   },
   {
     "gene": "SIRT2",
-    "ensembl_id": "ENSG00000283100,ENSG00000068903",
+    "ensembl_id": "ENSG00000283100, ENSG00000068903",
     "description": "sirtuin 2 [Source:HGNC Symbol;Acc:HGNC:10886]",
     "synonym": "SIR2L",
     "omim_id": "604480",
@@ -6041,7 +6041,7 @@
   },
   {
     "gene": "TUBGCP3",
-    "ensembl_id": "ENSG00000126216,ENSG00000282003",
+    "ensembl_id": "ENSG00000126216, ENSG00000282003",
     "description": "tubulin gamma complex component 3 [Source:HGNC Symbol;Acc:HGNC:18598]",
     "synonym": "GCP3,SPBC98,SPC98P",
     "omim_id": "617818",
@@ -6061,7 +6061,7 @@
   },
   {
     "gene": "TUBGCP5",
-    "ensembl_id": "ENSG00000276856,ENSG00000280807,ENSG00000275835",
+    "ensembl_id": "ENSG00000276856, ENSG00000280807, ENSG00000275835",
     "description": "tubulin gamma complex component 5 [Source:HGNC Symbol;Acc:HGNC:18600]",
     "synonym": "GCP5,KIAA1899",
     "omim_id": "608147",
@@ -6391,7 +6391,7 @@
   },
   {
     "gene": "AAAS",
-    "ensembl_id": "ENSG00000291836,ENSG00000094914",
+    "ensembl_id": "ENSG00000291836, ENSG00000094914",
     "description": "aladin WD repeat nucleoporin [Source:HGNC Symbol;Acc:HGNC:13666]",
     "synonym": "NA",
     "omim_id": "605378",
@@ -6511,7 +6511,7 @@
   },
   {
     "gene": "ACTN4",
-    "ensembl_id": "ENSG00000282844,ENSG00000130402",
+    "ensembl_id": "ENSG00000282844, ENSG00000130402",
     "description": "actinin alpha 4 [Source:HGNC Symbol;Acc:HGNC:166]",
     "synonym": "FSGS1",
     "omim_id": "604638",
@@ -6541,7 +6541,7 @@
   },
   {
     "gene": "ACTR1B",
-    "ensembl_id": "ENSG00000115073,ENSG00000291597",
+    "ensembl_id": "ENSG00000115073, ENSG00000291597",
     "description": "actin related protein 1B [Source:HGNC Symbol;Acc:HGNC:168]",
     "synonym": "ARP1B,CTRN2",
     "omim_id": "605144",
@@ -6601,7 +6601,7 @@
   },
   {
     "gene": "ADAM32",
-    "ensembl_id": "ENSG00000275594,ENSG00000197140",
+    "ensembl_id": "ENSG00000275594, ENSG00000197140",
     "description": "ADAM metallopeptidase domain 32 [Source:HGNC Symbol;Acc:HGNC:15479]",
     "synonym": "NA",
     "omim_id": "618602",
@@ -6611,7 +6611,7 @@
   },
   {
     "gene": "ADAM9",
-    "ensembl_id": "ENSG00000282230,ENSG00000168615",
+    "ensembl_id": "ENSG00000282230, ENSG00000168615",
     "description": "ADAM metallopeptidase domain 9 [Source:HGNC Symbol;Acc:HGNC:216]",
     "synonym": "MLTNG,MDC9,CORD9,MCMP,KIAA0021",
     "omim_id": "602713",
@@ -6631,7 +6631,7 @@
   },
   {
     "gene": "ADCY4",
-    "ensembl_id": "ENSG00000129467,ENSG00000284814",
+    "ensembl_id": "ENSG00000129467, ENSG00000284814",
     "description": "adenylate cyclase 4 [Source:HGNC Symbol;Acc:HGNC:235]",
     "synonym": "AC4",
     "omim_id": "600292",
@@ -6731,7 +6731,7 @@
   },
   {
     "gene": "AGBL2",
-    "ensembl_id": "ENSG00000165923,ENSG00000285501",
+    "ensembl_id": "ENSG00000165923, ENSG00000285501",
     "description": "AGBL carboxypeptidase 2 [Source:HGNC Symbol;Acc:HGNC:26296]",
     "synonym": "CCP2,FLJ23598",
     "omim_id": "617345",
@@ -6841,7 +6841,7 @@
   },
   {
     "gene": "AKT3",
-    "ensembl_id": "ENSG00000117020,ENSG00000275199",
+    "ensembl_id": "ENSG00000117020, ENSG00000275199",
     "description": "AKT serine/threonine kinase 3 [Source:HGNC Symbol;Acc:HGNC:393]",
     "synonym": "PKBG,RAC-GAMMA,PRKBG",
     "omim_id": "611223",
@@ -7261,7 +7261,7 @@
   },
   {
     "gene": "ATG16L1",
-    "ensembl_id": "ENSG00000281089,ENSG00000085978",
+    "ensembl_id": "ENSG00000281089, ENSG00000085978",
     "description": "autophagy related 16 like 1 [Source:HGNC Symbol;Acc:HGNC:21498]",
     "synonym": "ATG16L,WDR30,ATG16A,APG16L,FLJ10035",
     "omim_id": "610767",
@@ -7741,7 +7741,7 @@
   },
   {
     "gene": "CACNA2D4",
-    "ensembl_id": "ENSG00000151062,ENSG00000284953",
+    "ensembl_id": "ENSG00000151062, ENSG00000284953",
     "description": "calcium voltage-gated channel auxiliary subunit alpha2delta 4 [Source:HGNC Symbol;Acc:HGNC:20202]",
     "synonym": "ALPHA2DELTA-4",
     "omim_id": "608171",
@@ -7871,7 +7871,7 @@
   },
   {
     "gene": "CANX",
-    "ensembl_id": "ENSG00000127022,ENSG00000283777",
+    "ensembl_id": "ENSG00000127022, ENSG00000283777",
     "description": "calnexin [Source:HGNC Symbol;Acc:HGNC:1473]",
     "synonym": "CNX,P90,IP90",
     "omim_id": "114217",
@@ -7991,7 +7991,7 @@
   },
   {
     "gene": "CATSPERB",
-    "ensembl_id": "ENSG00000133962,ENSG00000274338",
+    "ensembl_id": "ENSG00000133962, ENSG00000274338",
     "description": "cation channel sperm associated auxiliary subunit beta [Source:HGNC Symbol;Acc:HGNC:20500]",
     "synonym": "C14ORF161,FLJ14298",
     "omim_id": "611169",
@@ -8101,7 +8101,7 @@
   },
   {
     "gene": "CC2D1A",
-    "ensembl_id": "ENSG00000132024,ENSG00000288293",
+    "ensembl_id": "ENSG00000132024, ENSG00000288293",
     "description": "coiled-coil and C2 domain containing 1A [Source:HGNC Symbol;Acc:HGNC:30237]",
     "synonym": "MRT3,AKI-1,FLJ20241,LGD2,TAPE,FREUD-1",
     "omim_id": "610055",
@@ -8241,7 +8241,7 @@
   },
   {
     "gene": "CCDC33",
-    "ensembl_id": "ENSG00000288407,ENSG00000140481",
+    "ensembl_id": "ENSG00000288407, ENSG00000140481",
     "description": "coiled-coil domain containing 33 [Source:HGNC Symbol;Acc:HGNC:26552]",
     "synonym": "FLJ32855,CC2D3,CT61",
     "omim_id": "618525",
@@ -8331,7 +8331,7 @@
   },
   {
     "gene": "CCDC74B",
-    "ensembl_id": "ENSG00000292118,ENSG00000152076",
+    "ensembl_id": "ENSG00000292118, ENSG00000152076",
     "description": "coiled-coil domain containing 74B [Source:HGNC Symbol;Acc:HGNC:25267]",
     "synonym": "DKFZP434E2321",
     "omim_id": "NA",
@@ -8371,7 +8371,7 @@
   },
   {
     "gene": "CCDC92",
-    "ensembl_id": "ENSG00000275035,ENSG00000119242",
+    "ensembl_id": "ENSG00000275035, ENSG00000119242",
     "description": "coiled-coil domain containing 92 [Source:HGNC Symbol;Acc:HGNC:29563]",
     "synonym": "FLJ22471",
     "omim_id": "NA",
@@ -8481,7 +8481,7 @@
   },
   {
     "gene": "CDC42EP5",
-    "ensembl_id": "ENSG00000273633,ENSG00000273622,ENSG00000167617,ENSG00000278444",
+    "ensembl_id": "ENSG00000273633, ENSG00000273622, ENSG00000167617, ENSG00000278444",
     "description": "CDC42 effector protein 5 [Source:HGNC Symbol;Acc:HGNC:17408]",
     "synonym": "BORG3,CEP5",
     "omim_id": "609171",
@@ -9401,7 +9401,7 @@
   },
   {
     "gene": "CSNK2B",
-    "ensembl_id": "ENSG00000224398,ENSG00000206406,ENSG00000224774,ENSG00000232960,ENSG00000228875,ENSG00000230700,ENSG00000204435",
+    "ensembl_id": "ENSG00000224398, ENSG00000206406, ENSG00000224774, ENSG00000232960, ENSG00000228875, ENSG00000230700, ENSG00000204435",
     "description": "casein kinase 2 beta [Source:HGNC Symbol;Acc:HGNC:2460]",
     "synonym": "CKB2,CKB1",
     "omim_id": "115441",
@@ -9761,7 +9761,7 @@
   },
   {
     "gene": "DLG5",
-    "ensembl_id": "ENSG00000151208,ENSG00000274429",
+    "ensembl_id": "ENSG00000151208, ENSG00000274429",
     "description": "discs large MAGUK scaffold protein 5 [Source:HGNC Symbol;Acc:HGNC:2904]",
     "synonym": "P-DLG,KIAA0583",
     "omim_id": "604090",
@@ -9981,7 +9981,7 @@
   },
   {
     "gene": "DYNC1I2",
-    "ensembl_id": "ENSG00000292102,ENSG00000077380",
+    "ensembl_id": "ENSG00000292102, ENSG00000077380",
     "description": "dynein cytoplasmic 1 intermediate chain 2 [Source:HGNC Symbol;Acc:HGNC:2964]",
     "synonym": "DIC74,DNCI2",
     "omim_id": "603331",
@@ -10141,7 +10141,7 @@
   },
   {
     "gene": "EIF4A3",
-    "ensembl_id": "ENSG00000291508,ENSG00000141543",
+    "ensembl_id": "ENSG00000291508, ENSG00000141543",
     "description": "eukaryotic translation initiation factor 4A3 [Source:HGNC Symbol;Acc:HGNC:18683]",
     "synonym": "FAL1,DDX48,EIF4AIII,KIAA0111",
     "omim_id": "608546",
@@ -10371,7 +10371,7 @@
   },
   {
     "gene": "EPCIP",
-    "ensembl_id": "ENSG00000205929,ENSG00000262938",
+    "ensembl_id": "ENSG00000205929, ENSG00000262938",
     "description": "exosomal polycystin 1 interacting protein [Source:HGNC Symbol;Acc:HGNC:1305]",
     "synonym": "B37,C21ORF120,C21ORF62,CU062,PRED81",
     "omim_id": "NA",
@@ -10541,7 +10541,7 @@
   },
   {
     "gene": "FAN1",
-    "ensembl_id": "ENSG00000276787,ENSG00000198690",
+    "ensembl_id": "ENSG00000276787, ENSG00000198690",
     "description": "FANCD2 and FANCI associated nuclease 1 [Source:HGNC Symbol;Acc:HGNC:29170]",
     "synonym": "KIAA1018,MTMR15",
     "omim_id": "613534",
@@ -10701,7 +10701,7 @@
   },
   {
     "gene": "FLOT1",
-    "ensembl_id": "ENSG00000137312,ENSG00000206379,ENSG00000230143,ENSG00000232280,ENSG00000223654,ENSG00000236271,ENSG00000224740,ENSG00000206480",
+    "ensembl_id": "ENSG00000137312, ENSG00000206379, ENSG00000230143, ENSG00000232280, ENSG00000223654, ENSG00000236271, ENSG00000224740, ENSG00000206480",
     "description": "flotillin 1 [Source:HGNC Symbol;Acc:HGNC:3757]",
     "synonym": "NA",
     "omim_id": "606998",
@@ -10851,7 +10851,7 @@
   },
   {
     "gene": "GABBR1",
-    "ensembl_id": "ENSG00000232632,ENSG00000237051,ENSG00000206511,ENSG00000237112,ENSG00000206466,ENSG00000232569,ENSG00000204681",
+    "ensembl_id": "ENSG00000232632, ENSG00000237051, ENSG00000206511, ENSG00000237112, ENSG00000206466, ENSG00000232569, ENSG00000204681",
     "description": "gamma-aminobutyric acid type B receptor subunit 1 [Source:HGNC Symbol;Acc:HGNC:4070]",
     "synonym": "HGB1A,GPRC3A",
     "omim_id": "603540",
@@ -10871,7 +10871,7 @@
   },
   {
     "gene": "GARRE1",
-    "ensembl_id": "ENSG00000282735,ENSG00000166398,ENSG00000279389",
+    "ensembl_id": "ENSG00000282735, ENSG00000166398, ENSG00000279389",
     "description": "granule associated Rac and RHOG effector 1 [Source:HGNC Symbol;Acc:HGNC:29016]",
     "synonym": "KIAA0355,MINIBAR",
     "omim_id": "619335",
@@ -11061,7 +11061,7 @@
   },
   {
     "gene": "GPRC5C",
-    "ensembl_id": "ENSG00000170412,ENSG00000291917",
+    "ensembl_id": "ENSG00000170412, ENSG00000291917",
     "description": "G protein-coupled receptor class C group 5 member C [Source:HGNC Symbol;Acc:HGNC:13309]",
     "synonym": "RAIG-3",
     "omim_id": "605949",
@@ -11111,7 +11111,7 @@
   },
   {
     "gene": "GRK1",
-    "ensembl_id": "ENSG00000281988,ENSG00000288263,ENSG00000185974",
+    "ensembl_id": "ENSG00000281988, ENSG00000288263, ENSG00000185974",
     "description": "G protein-coupled receptor kinase 1 [Source:HGNC Symbol;Acc:HGNC:10013]",
     "synonym": "GPRK1,RK,RHOK",
     "omim_id": "180381",
@@ -11221,7 +11221,7 @@
   },
   {
     "gene": "H3-4",
-    "ensembl_id": "ENSG00000285435,ENSG00000168148",
+    "ensembl_id": "ENSG00000285435, ENSG00000168148",
     "description": "H3.4 histone, cluster member [Source:HGNC Symbol;Acc:HGNC:4778]",
     "synonym": "H3C16,H3/G,HIST3H3,H3.4,H3FT,H3T",
     "omim_id": "602820",
@@ -11491,7 +11491,7 @@
   },
   {
     "gene": "HRAS",
-    "ensembl_id": "ENSG00000174775,ENSG00000276536",
+    "ensembl_id": "ENSG00000174775, ENSG00000276536",
     "description": "HRas proto-oncogene, GTPase [Source:HGNC Symbol;Acc:HGNC:5173]",
     "synonym": "HRAS1",
     "omim_id": "190020",
@@ -11521,7 +11521,7 @@
   },
   {
     "gene": "HSPA1A",
-    "ensembl_id": "ENSG00000234475,ENSG00000215328,ENSG00000235941,ENSG00000204389,ENSG00000237724",
+    "ensembl_id": "ENSG00000234475, ENSG00000215328, ENSG00000235941, ENSG00000204389, ENSG00000237724",
     "description": "heat shock protein family A (Hsp70) member 1A [Source:HGNC Symbol;Acc:HGNC:5232]",
     "synonym": "HSPA1,HSP70-1",
     "omim_id": "140550",
@@ -11531,7 +11531,7 @@
   },
   {
     "gene": "HSPA1B",
-    "ensembl_id": "ENSG00000212866,ENSG00000231555,ENSG00000204388,ENSG00000224501,ENSG00000232804",
+    "ensembl_id": "ENSG00000212866, ENSG00000231555, ENSG00000204388, ENSG00000224501, ENSG00000232804",
     "description": "heat shock protein family A (Hsp70) member 1B [Source:HGNC Symbol;Acc:HGNC:5233]",
     "synonym": "HSP70-2",
     "omim_id": "603012",
@@ -11541,7 +11541,7 @@
   },
   {
     "gene": "HSPA1L",
-    "ensembl_id": "ENSG00000234258,ENSG00000226704,ENSG00000204390,ENSG00000206383,ENSG00000236251",
+    "ensembl_id": "ENSG00000234258, ENSG00000226704, ENSG00000204390, ENSG00000206383, ENSG00000236251",
     "description": "heat shock protein family A (Hsp70) member 1 like [Source:HGNC Symbol;Acc:HGNC:5234]",
     "synonym": "HSP70-HOM,HUM70T",
     "omim_id": "140559",
@@ -12011,7 +12011,7 @@
   },
   {
     "gene": "KIF26B",
-    "ensembl_id": "ENSG00000281216,ENSG00000162849",
+    "ensembl_id": "ENSG00000281216, ENSG00000162849",
     "description": "kinesin family member 26B [Source:HGNC Symbol;Acc:HGNC:25484]",
     "synonym": "FLJ10157",
     "omim_id": "614026",
@@ -12181,7 +12181,7 @@
   },
   {
     "gene": "KRT31",
-    "ensembl_id": "ENSG00000094796,ENSG00000262993,ENSG00000292029",
+    "ensembl_id": "ENSG00000094796, ENSG00000262993, ENSG00000292029",
     "description": "keratin 31 [Source:HGNC Symbol;Acc:HGNC:6448]",
     "synonym": "KRTHA1,HA-1",
     "omim_id": "601077",
@@ -12191,7 +12191,7 @@
   },
   {
     "gene": "KRT33A",
-    "ensembl_id": "ENSG00000292027,ENSG00000261986,ENSG00000006059",
+    "ensembl_id": "ENSG00000292027, ENSG00000261986, ENSG00000006059",
     "description": "keratin 33A [Source:HGNC Symbol;Acc:HGNC:6450]",
     "synonym": "KRTHA3A,HA-3I,KRT1-3",
     "omim_id": "602761",
@@ -12201,7 +12201,7 @@
   },
   {
     "gene": "KRT33B",
-    "ensembl_id": "ENSG00000263012,ENSG00000131738,ENSG00000292028",
+    "ensembl_id": "ENSG00000263012, ENSG00000131738, ENSG00000292028",
     "description": "keratin 33B [Source:HGNC Symbol;Acc:HGNC:6451]",
     "synonym": "HA-3II,KRTHA3B",
     "omim_id": "602762",
@@ -12211,7 +12211,7 @@
   },
   {
     "gene": "KRT34",
-    "ensembl_id": "ENSG00000292033,ENSG00000262045,ENSG00000131737",
+    "ensembl_id": "ENSG00000292033, ENSG00000262045, ENSG00000131737",
     "description": "keratin 34 [Source:HGNC Symbol;Acc:HGNC:6452]",
     "synonym": "KRTHA4,HA-4",
     "omim_id": "602763",
@@ -12221,7 +12221,7 @@
   },
   {
     "gene": "KRT39",
-    "ensembl_id": "ENSG00000262164,ENSG00000196859",
+    "ensembl_id": "ENSG00000262164, ENSG00000196859",
     "description": "keratin 39 [Source:HGNC Symbol;Acc:HGNC:32971]",
     "synonym": "KA35",
     "omim_id": "616678",
@@ -12431,7 +12431,7 @@
   },
   {
     "gene": "LRP6",
-    "ensembl_id": "ENSG00000281324,ENSG00000070018",
+    "ensembl_id": "ENSG00000281324, ENSG00000070018",
     "description": "LDL receptor related protein 6 [Source:HGNC Symbol;Acc:HGNC:6698]",
     "synonym": "ADCAD2",
     "omim_id": "603507",
@@ -12721,7 +12721,7 @@
   },
   {
     "gene": "MAPT",
-    "ensembl_id": "ENSG00000186868,ENSG00000276155,ENSG00000277956",
+    "ensembl_id": "ENSG00000186868, ENSG00000276155, ENSG00000277956",
     "description": "microtubule associated protein tau [Source:HGNC Symbol;Acc:HGNC:6893]",
     "synonym": "MSTD,FLJ31424,MTBT2,PPP1R103,PPND,DDPAC,TAU,FTDP-17,TAU-40,MAPTL,MTBT1,TAU-PHF6,MGC138549",
     "omim_id": "157140",
@@ -12821,7 +12821,7 @@
   },
   {
     "gene": "MIF",
-    "ensembl_id": "ENSG00000240972,ENSG00000276701",
+    "ensembl_id": "ENSG00000240972, ENSG00000276701",
     "description": "macrophage migration inhibitory factor [Source:HGNC Symbol;Acc:HGNC:7097]",
     "synonym": "GIF,GLIF",
     "omim_id": "153620",
@@ -12971,7 +12971,7 @@
   },
   {
     "gene": "MUC20",
-    "ensembl_id": "ENSG00000274843,ENSG00000176945,ENSG00000278114,ENSG00000275501,ENSG00000281630,ENSG00000275430,ENSG00000277753,ENSG00000276583",
+    "ensembl_id": "ENSG00000274843, ENSG00000176945, ENSG00000278114, ENSG00000275501, ENSG00000281630, ENSG00000275430, ENSG00000277753, ENSG00000276583",
     "description": "mucin 20, cell surface associated [Source:HGNC Symbol;Acc:HGNC:23282]",
     "synonym": "KIAA1359,FLJ14408",
     "omim_id": "610360",
@@ -12981,7 +12981,7 @@
   },
   {
     "gene": "MUC4",
-    "ensembl_id": "ENSG00000277585,ENSG00000275164,ENSG00000278303,ENSG00000273822,ENSG00000273984,ENSG00000276613,ENSG00000145113,ENSG00000278468",
+    "ensembl_id": "ENSG00000277585, ENSG00000275164, ENSG00000278303, ENSG00000273822, ENSG00000273984, ENSG00000276613, ENSG00000145113, ENSG00000278468",
     "description": "mucin 4, cell surface associated [Source:HGNC Symbol;Acc:HGNC:7514]",
     "synonym": "MUC-4,ASGP",
     "omim_id": "158372",
@@ -13071,7 +13071,7 @@
   },
   {
     "gene": "NBPF1",
-    "ensembl_id": "ENSG00000219481,ENSG00000292225",
+    "ensembl_id": "ENSG00000219481, ENSG00000292225",
     "description": "NBPF member 1 [Source:HGNC Symbol;Acc:HGNC:26088]",
     "synonym": "KIAA1693,FLJ20719",
     "omim_id": "610501",
@@ -13151,7 +13151,7 @@
   },
   {
     "gene": "NBPF26",
-    "ensembl_id": "ENSG00000273136,ENSG00000291975",
+    "ensembl_id": "ENSG00000273136, ENSG00000291975",
     "description": "NBPF member 26 [Source:HGNC Symbol;Acc:HGNC:49571]",
     "synonym": "NA",
     "omim_id": "NA",
@@ -13221,7 +13221,7 @@
   },
   {
     "gene": "NDUFA11",
-    "ensembl_id": "ENSG00000174886,ENSG00000292058",
+    "ensembl_id": "ENSG00000174886, ENSG00000292058",
     "description": "NADH:ubiquinone oxidoreductase subunit A11 [Source:HGNC Symbol;Acc:HGNC:20371]",
     "synonym": "B14.7",
     "omim_id": "612638",
@@ -13231,7 +13231,7 @@
   },
   {
     "gene": "NDUFA6",
-    "ensembl_id": "ENSG00000281013,ENSG00000184983,ENSG00000272765,ENSG00000273397,ENSG00000277365",
+    "ensembl_id": "ENSG00000281013, ENSG00000184983, ENSG00000272765, ENSG00000273397, ENSG00000277365",
     "description": "NADH:ubiquinone oxidoreductase subunit A6 [Source:HGNC Symbol;Acc:HGNC:7690]",
     "synonym": "LYRM6,NADHB14,CI-B14,B14",
     "omim_id": "602138",
@@ -13771,7 +13771,7 @@
   },
   {
     "gene": "PCDHB15",
-    "ensembl_id": "ENSG00000113248,ENSG00000291695",
+    "ensembl_id": "ENSG00000113248, ENSG00000291695",
     "description": "protocadherin beta 15 [Source:HGNC Symbol;Acc:HGNC:8686]",
     "synonym": "PCDH-BETA15",
     "omim_id": "606341",
@@ -13781,7 +13781,7 @@
   },
   {
     "gene": "PCDHB16",
-    "ensembl_id": "ENSG00000291684,ENSG00000272674",
+    "ensembl_id": "ENSG00000291684, ENSG00000272674",
     "description": "protocadherin beta 16 [Source:HGNC Symbol;Acc:HGNC:14546]",
     "synonym": "PCDH-BETA16,PCDH3X,ME1,PCDHB8A,KIAA1621",
     "omim_id": "606345",
@@ -14291,7 +14291,7 @@
   },
   {
     "gene": "POU5F1",
-    "ensembl_id": "ENSG00000235068,ENSG00000230336,ENSG00000229094,ENSG00000204531,ENSG00000206454,ENSG00000233911,ENSG00000237582",
+    "ensembl_id": "ENSG00000235068, ENSG00000230336, ENSG00000229094, ENSG00000204531, ENSG00000206454, ENSG00000233911, ENSG00000237582",
     "description": "POU class 5 homeobox 1 [Source:HGNC Symbol;Acc:HGNC:9221]",
     "synonym": "OCT3/4,OCT4,OCT3,OCT-4,MGC22487,OTF3",
     "omim_id": "164177",
@@ -14371,7 +14371,7 @@
   },
   {
     "gene": "PPP2R3B",
-    "ensembl_id": "ENSG00000273850,ENSG00000167393,ENSG00000292327,ENSG00000276438",
+    "ensembl_id": "ENSG00000273850, ENSG00000167393, ENSG00000292327, ENSG00000276438",
     "description": "protein phosphatase 2 regulatory subunit B''beta [Source:HGNC Symbol;Acc:HGNC:13417]",
     "synonym": "PPP2R3LY,PR70,PR48,PPP2R3L",
     "omim_id": "300339",
@@ -14431,7 +14431,7 @@
   },
   {
     "gene": "PPP4R4",
-    "ensembl_id": "ENSG00000119698,ENSG00000278326",
+    "ensembl_id": "ENSG00000119698, ENSG00000278326",
     "description": "protein phosphatase 4 regulatory subunit 4 [Source:HGNC Symbol;Acc:HGNC:23788]",
     "synonym": "KIAA1622,CFAP14,PP4R4",
     "omim_id": "616790",
@@ -14571,7 +14571,7 @@
   },
   {
     "gene": "PROM2",
-    "ensembl_id": "ENSG00000155066,ENSG00000292084",
+    "ensembl_id": "ENSG00000155066, ENSG00000292084",
     "description": "prominin 2 [Source:HGNC Symbol;Acc:HGNC:20685]",
     "synonym": "NA",
     "omim_id": "617160",
@@ -14691,7 +14691,7 @@
   },
   {
     "gene": "PSMC4",
-    "ensembl_id": "ENSG00000281221,ENSG00000013275",
+    "ensembl_id": "ENSG00000281221, ENSG00000013275",
     "description": "proteasome 26S subunit, ATPase 4 [Source:HGNC Symbol;Acc:HGNC:9551]",
     "synonym": "TBP-7,TBP7,MGC8570,MGC23214,RPT3,MGC13687,MIP224,S6",
     "omim_id": "602707",
@@ -14761,7 +14761,7 @@
   },
   {
     "gene": "PTEN",
-    "ensembl_id": "ENSG00000284792,ENSG00000171862",
+    "ensembl_id": "ENSG00000284792, ENSG00000171862",
     "description": "phosphatase and tensin homolog [Source:HGNC Symbol;Acc:HGNC:9588]",
     "synonym": "TEP1,MHAM,BZS,PTEN1,MMAC1",
     "omim_id": "601728",
@@ -14811,7 +14811,7 @@
   },
   {
     "gene": "PTPRK",
-    "ensembl_id": "ENSG00000152894,ENSG00000273993",
+    "ensembl_id": "ENSG00000152894, ENSG00000273993",
     "description": "protein tyrosine phosphatase receptor type K [Source:HGNC Symbol;Acc:HGNC:9674]",
     "synonym": "R-PTP-KAPPA",
     "omim_id": "602545",
@@ -14911,7 +14911,7 @@
   },
   {
     "gene": "RAB6C",
-    "ensembl_id": "ENSG00000292140,ENSG00000222014",
+    "ensembl_id": "ENSG00000292140, ENSG00000222014",
     "description": "RAB6C, member RAS oncogene family [Source:HGNC Symbol;Acc:HGNC:16525]",
     "synonym": "WTH3",
     "omim_id": "612909",
@@ -15121,7 +15121,7 @@
   },
   {
     "gene": "RHOU",
-    "ensembl_id": "ENSG00000284984,ENSG00000116574",
+    "ensembl_id": "ENSG00000284984, ENSG00000116574",
     "description": "ras homolog family member U [Source:HGNC Symbol;Acc:HGNC:17794]",
     "synonym": "FLJ10616,WRCH-1,ARHU,CDC42L1,FJ646B12.2,WRCH1,HG28K,DJ646B12.2",
     "omim_id": "606366",
@@ -15281,7 +15281,7 @@
   },
   {
     "gene": "RPS6KA1",
-    "ensembl_id": "ENSG00000281877,ENSG00000117676",
+    "ensembl_id": "ENSG00000281877, ENSG00000117676",
     "description": "ribosomal protein S6 kinase A1 [Source:HGNC Symbol;Acc:HGNC:10430]",
     "synonym": "HU-1,MAPKAPK1,P90RSK,RSK1",
     "omim_id": "601684",
@@ -15441,7 +15441,7 @@
   },
   {
     "gene": "SCG5",
-    "ensembl_id": "ENSG00000281931,ENSG00000166922,ENSG00000277614",
+    "ensembl_id": "ENSG00000281931, ENSG00000166922, ENSG00000277614",
     "description": "secretogranin V [Source:HGNC Symbol;Acc:HGNC:10816]",
     "synonym": "7B2,SGV,SGNE1",
     "omim_id": "173120",
@@ -15531,7 +15531,7 @@
   },
   {
     "gene": "SEPTIN9",
-    "ensembl_id": "ENSG00000184640,ENSG00000282302",
+    "ensembl_id": "ENSG00000184640, ENSG00000282302",
     "description": "septin 9 [Source:HGNC Symbol;Acc:HGNC:7323]",
     "synonym": "PNUTL4,SEPTD1,MSF1,AF17Q25,KIAA0991,SEPT9,MSF",
     "omim_id": "604061",
@@ -15601,7 +15601,7 @@
   },
   {
     "gene": "SKA1",
-    "ensembl_id": "ENSG00000262634,ENSG00000154839",
+    "ensembl_id": "ENSG00000262634, ENSG00000154839",
     "description": "spindle and kinetochore associated complex subunit 1 [Source:HGNC Symbol;Acc:HGNC:28109]",
     "synonym": "MGC10200,C18ORF24",
     "omim_id": "616673",
@@ -15771,7 +15771,7 @@
   },
   {
     "gene": "SLC9C1",
-    "ensembl_id": "ENSG00000172139,ENSG00000285044",
+    "ensembl_id": "ENSG00000172139, ENSG00000285044",
     "description": "solute carrier family 9 member C1 [Source:HGNC Symbol;Acc:HGNC:31401]",
     "synonym": "NHE,SLC9A10",
     "omim_id": "612738",
@@ -15881,7 +15881,7 @@
   },
   {
     "gene": "SNTB2",
-    "ensembl_id": "ENSG00000168807,ENSG00000260873",
+    "ensembl_id": "ENSG00000168807, ENSG00000260873",
     "description": "syntrophin beta 2 [Source:HGNC Symbol;Acc:HGNC:11169]",
     "synonym": "SNT3,EST25263,SNTL,D16S2531E,SNT2B2",
     "omim_id": "600027",
@@ -15911,7 +15911,7 @@
   },
   {
     "gene": "SPACA7",
-    "ensembl_id": "ENSG00000153498,ENSG00000275865",
+    "ensembl_id": "ENSG00000153498, ENSG00000275865",
     "description": "sperm acrosome associated 7 [Source:HGNC Symbol;Acc:HGNC:29575]",
     "synonym": "C13ORF28",
     "omim_id": "NA",
@@ -16151,7 +16151,7 @@
   },
   {
     "gene": "SSBP1",
-    "ensembl_id": "ENSG00000106028,ENSG00000262771",
+    "ensembl_id": "ENSG00000106028, ENSG00000262771",
     "description": "single stranded DNA binding protein 1 [Source:HGNC Symbol;Acc:HGNC:11317]",
     "synonym": "SSBP,MTSSB",
     "omim_id": "600439",
@@ -16201,7 +16201,7 @@
   },
   {
     "gene": "STING1",
-    "ensembl_id": "ENSG00000184584,ENSG00000288243",
+    "ensembl_id": "ENSG00000184584, ENSG00000288243",
     "description": "stimulator of interferon response cGAMP interactor 1 [Source:HGNC Symbol;Acc:HGNC:27962]",
     "synonym": "STING,MITA,NET23,MPYS,TMEM173,FLJ38577,ERIS",
     "omim_id": "612374",
@@ -16391,7 +16391,7 @@
   },
   {
     "gene": "TAS2R43",
-    "ensembl_id": "ENSG00000282537,ENSG00000255374,ENSG00000262612",
+    "ensembl_id": "ENSG00000282537, ENSG00000255374, ENSG00000262612",
     "description": "taste 2 receptor member 43 [Source:HGNC Symbol;Acc:HGNC:18875]",
     "synonym": "T2R52",
     "omim_id": "612668; 613967",
@@ -16401,7 +16401,7 @@
   },
   {
     "gene": "TAS2R46",
-    "ensembl_id": "ENSG00000278111,ENSG00000226761,ENSG00000262525",
+    "ensembl_id": "ENSG00000278111, ENSG00000226761, ENSG00000262525",
     "description": "taste 2 receptor member 46 [Source:HGNC Symbol;Acc:HGNC:18877]",
     "synonym": "T2R54",
     "omim_id": "612774",
@@ -16461,7 +16461,7 @@
   },
   {
     "gene": "TDO2",
-    "ensembl_id": "ENSG00000151790,ENSG00000262635",
+    "ensembl_id": "ENSG00000151790, ENSG00000262635",
     "description": "tryptophan 2,3-dioxygenase [Source:HGNC Symbol;Acc:HGNC:11708]",
     "synonym": "TDO,TPH2",
     "omim_id": "191070",
@@ -16581,7 +16581,7 @@
   },
   {
     "gene": "TOLLIP",
-    "ensembl_id": "ENSG00000078902,ENSG00000291426",
+    "ensembl_id": "ENSG00000078902, ENSG00000291426",
     "description": "toll interacting protein [Source:HGNC Symbol;Acc:HGNC:16476]",
     "synonym": "IL-1RACPIP",
     "omim_id": "606277",
@@ -16671,7 +16671,7 @@
   },
   {
     "gene": "TRAPPC12",
-    "ensembl_id": "ENSG00000171853,ENSG00000274891",
+    "ensembl_id": "ENSG00000171853, ENSG00000274891",
     "description": "trafficking protein particle complex subunit 12 [Source:HGNC Symbol;Acc:HGNC:24284]",
     "synonym": "TTC-15,CGI-87,TTC15",
     "omim_id": "614139",
@@ -16941,7 +16941,7 @@
   },
   {
     "gene": "TUBA3E",
-    "ensembl_id": "ENSG00000292120,ENSG00000152086",
+    "ensembl_id": "ENSG00000292120, ENSG00000152086",
     "description": "tubulin alpha 3e [Source:HGNC Symbol;Acc:HGNC:20765]",
     "synonym": "NA",
     "omim_id": "619918",
@@ -16951,7 +16951,7 @@
   },
   {
     "gene": "TUBB",
-    "ensembl_id": "ENSG00000224156,ENSG00000227739,ENSG00000229684,ENSG00000235067,ENSG00000196230,ENSG00000232421,ENSG00000183311,ENSG00000232575",
+    "ensembl_id": "ENSG00000224156, ENSG00000227739, ENSG00000229684, ENSG00000235067, ENSG00000196230, ENSG00000232421, ENSG00000183311, ENSG00000232575",
     "description": "tubulin beta class I [Source:HGNC Symbol;Acc:HGNC:20778]",
     "synonym": "MGC16435,OK/SW-CL.56,M40,TUBB5",
     "omim_id": "191130",
@@ -17221,7 +17221,7 @@
   },
   {
     "gene": "VARS1",
-    "ensembl_id": "ENSG00000231116,ENSG00000227686,ENSG00000096171,ENSG00000226589,ENSG00000204394,ENSG00000224264,ENSG00000231945",
+    "ensembl_id": "ENSG00000231116, ENSG00000227686, ENSG00000096171, ENSG00000226589, ENSG00000204394, ENSG00000224264, ENSG00000231945",
     "description": "valyl-tRNA synthetase 1 [Source:HGNC Symbol;Acc:HGNC:12651]",
     "synonym": "VARS2,VARS",
     "omim_id": "192150",
@@ -17281,7 +17281,7 @@
   },
   {
     "gene": "VPS11",
-    "ensembl_id": "ENSG00000280616,ENSG00000160695",
+    "ensembl_id": "ENSG00000280616, ENSG00000160695",
     "description": "VPS11 core subunit of CORVET and HOPS complexes [Source:HGNC Symbol;Acc:HGNC:14583]",
     "synonym": "PEP5,RNF108",
     "omim_id": "608549",
@@ -17471,7 +17471,7 @@
   },
   {
     "gene": "YBX2",
-    "ensembl_id": "ENSG00000288504,ENSG00000006047",
+    "ensembl_id": "ENSG00000288504, ENSG00000006047",
     "description": "Y-box binding protein 2 [Source:HGNC Symbol;Acc:HGNC:17948]",
     "synonym": "CSDA3,MSY2,CONTRIN",
     "omim_id": "611447",
@@ -17761,7 +17761,7 @@
   },
   {
     "gene": "ATMIN",
-    "ensembl_id": "ENSG00000291953,ENSG00000166454",
+    "ensembl_id": "ENSG00000291953, ENSG00000166454",
     "description": "ATM interactor [Source:HGNC Symbol;Acc:HGNC:29034]",
     "synonym": "KIAA0431,ZNF822,ASCIZ",
     "omim_id": "614693",
@@ -17941,7 +17941,7 @@
   },
   {
     "gene": "CDK7",
-    "ensembl_id": "ENSG00000277273,ENSG00000134058",
+    "ensembl_id": "ENSG00000277273, ENSG00000134058",
     "description": "cyclin dependent kinase 7 [Source:HGNC Symbol;Acc:HGNC:1778]",
     "synonym": "CAK,CDKN7,CAK1,MO15,STK1",
     "omim_id": "601955",
@@ -18561,7 +18561,7 @@
   },
   {
     "gene": "HNF1B",
-    "ensembl_id": "ENSG00000275410,ENSG00000276194",
+    "ensembl_id": "ENSG00000275410, ENSG00000276194",
     "description": "HNF1 homeobox B [Source:HGNC Symbol;Acc:HGNC:11630]",
     "synonym": "HNF1BETA,MODY5,VHNF1,HNF1B,LFB3,TCF2",
     "omim_id": "189907",
@@ -18921,7 +18921,7 @@
   },
   {
     "gene": "MUC5AC",
-    "ensembl_id": "ENSG00000291363,ENSG00000215182",
+    "ensembl_id": "ENSG00000291363, ENSG00000215182",
     "description": "mucin 5AC, oligomeric mucus/gel-forming [Source:HGNC Symbol;Acc:HGNC:7515]",
     "synonym": "MUC5",
     "omim_id": "158373",
@@ -19251,7 +19251,7 @@
   },
   {
     "gene": "PTCHD3",
-    "ensembl_id": "ENSG00000276595,ENSG00000182077",
+    "ensembl_id": "ENSG00000276595, ENSG00000182077",
     "description": "patched domain containing 3 (gene/pseudogene) [Source:HGNC Symbol;Acc:HGNC:24776]",
     "synonym": "FLJ44037,PTR",
     "omim_id": "611791",
@@ -19471,7 +19471,7 @@
   },
   {
     "gene": "SLC9A3",
-    "ensembl_id": "ENSG00000281861,ENSG00000066230",
+    "ensembl_id": "ENSG00000281861, ENSG00000066230",
     "description": "solute carrier family 9 member A3 [Source:HGNC Symbol;Acc:HGNC:11073]",
     "synonym": "NHE-3,NHE3",
     "omim_id": "182307",
@@ -19701,7 +19701,7 @@
   },
   {
     "gene": "TRPV5",
-    "ensembl_id": "ENSG00000274348,ENSG00000127412",
+    "ensembl_id": "ENSG00000274348, ENSG00000127412",
     "description": "transient receptor potential cation channel subfamily V member 5 [Source:HGNC Symbol;Acc:HGNC:3145]",
     "synonym": "ECAC1,CAT2",
     "omim_id": "606679",
@@ -19711,7 +19711,7 @@
   },
   {
     "gene": "TRPV6",
-    "ensembl_id": "ENSG00000276971,ENSG00000165125",
+    "ensembl_id": "ENSG00000276971, ENSG00000165125",
     "description": "transient receptor potential cation channel subfamily V member 6 [Source:HGNC Symbol;Acc:HGNC:14006]",
     "synonym": "CAT1,ECAC2",
     "omim_id": "606680",
@@ -19871,7 +19871,7 @@
   },
   {
     "gene": "WNT3",
-    "ensembl_id": "ENSG00000277641,ENSG00000277626,ENSG00000108379",
+    "ensembl_id": "ENSG00000277641, ENSG00000277626, ENSG00000108379",
     "description": "Wnt family member 3 [Source:HGNC Symbol;Acc:HGNC:12782]",
     "synonym": "MGC138321,MGC131950,INT4,MGC138323",
     "omim_id": "165330",
