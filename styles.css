@@ -823,9 +823,9 @@ footer {
 
 .ciliahub-table {
     width: 100%;
-    max-width: 1200px;
+    max-width: 800px; /* Matches approximate width of navbar text content */
     margin: 0 auto;
-    table-layout: auto; /* Changed from fixed to auto for better column sizing */
+    table-layout: fixed; /* Reverted to original fixed layout */
     border-collapse: collapse;
     background: #e6f2ff;
     border-radius: 5px;
@@ -852,7 +852,7 @@ footer {
 /* Ensure Ensembl ID column is fully visible and clickable */
 .ciliahub-table th:nth-child(2),
 .ciliahub-table td:nth-child(2) {
-    width: 15%; /* Increased width for Ensembl ID */
+    width: 20%; /* Increased width for Ensembl ID */
     white-space: normal; /* Allow wrapping to prevent truncation */
     overflow: visible; /* Ensure no content is hidden */
 }
@@ -1108,8 +1108,8 @@ footer {
     }
     .ciliahub-table {
         font-size: 0.8em;
-        overflow-x: auto;
-        display: block; /* Allow horizontal scrolling for table */
+        max-width: 100%; /* Allow table to fit within container on smaller screens */
+        overflow-x: auto; /* Enable horizontal scrolling */
     }
     .ciliahub-table th,
     .ciliahub-table td {
@@ -1170,6 +1170,7 @@ footer {
     }
     .ciliahub-table {
         font-size: 0.75em;
+        max-width: 100%; /* Fit within container */
     }
     .ciliahub-table th,
     .ciliahub-table td {
@@ -1201,7 +1202,7 @@ footer {
     border-radius: 50%;
     font-size: 20px;
     cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+   appel    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
     transition: background-color 0.3s, transform 0.3s;
     z-index: 1001;
 }
