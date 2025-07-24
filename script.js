@@ -29,6 +29,32 @@ async function loadCiliaHubData() {
         errorDiv.style.display = 'none';
     }
 
+    function formatReference(reference) {
+        if (!reference) return 'N/A';
+        const refs = reference.split(';').map(ref => ref.trim()).filter(ref => ref);
+        const formattedRefs = refs.map(ref => {
+            // Check if the reference is a PMID (numeric)
+            if (/^\d+$/.test(ref)) {
+                return `<a href="https://pubmed.ncbi.nlm.nih.gov/${ref}/" target="_blank">${ref}</a>`;
+            }
+            // Check if the reference is a DOI (starts with https://doi.org/ or a raw DOI like 10.xxxx)
+            else if (ref.startsWith('https://doi.org/') || /^10\.\d{4,}/.test(ref)) {
+                const doi = ref.startsWith('https://doi.org/') ? ref.replace('https://doi.org/', '') : ref;
+                const doiUrl = `https://doi.org/${doi}`;
+                return `<a href="${doiUrl}" target="_blank">${doi}</a>`;
+            }
+            // Treat as a general URL
+            else if (ref.startsWith('http://') || ref.startsWith('https://')) {
+                return `<a href="${ref}" target="_blank">${ref}</a>`;
+            }
+            // Fallback for invalid references
+            else {
+                return ref;
+            }
+        });
+        return formattedRefs.join(', ');
+    }
+
     function populateTable(filteredData = data) {
         tableBody.innerHTML = '';
         filteredData.forEach(item => {
@@ -36,14 +62,7 @@ async function loadCiliaHubData() {
                 .toLowerCase()
                 .replace(/[\s,]+/g, '-');
 
-            const pmids = (item.reference || '')
-                .split(';')
-                .map(pmid => pmid.trim())
-                .filter(pmid => pmid);
-
-            const referenceLinks = pmids.length
-                ? pmids.map(pmid => `<a href="https://pubmed.ncbi.nlm.nih.gov/${pmid}/" target="_blank">${pmid}</a>`).join(', ')
-                : 'N/A';
+            const referenceLinks = formatReference(item.reference);
 
             const row = document.createElement('tr');
             row.innerHTML = `
@@ -72,7 +91,6 @@ async function loadCiliaHubData() {
     }
 
     try {
-        // Reverted to original data loading code
         const response = await fetch('https://raw.githubusercontent.com/rarediseaselab/home/main/ciliahub_data.json');
         data = await response.json();
         console.log('Loaded entries:', data.length);
@@ -195,10 +213,7 @@ async function loadCiliaHubData() {
                 </thead>
                 <tbody>
                     ${filteredData.map(item => {
-                        const pmids = (item.reference || '').split(';').map(pmid => pmid.trim()).filter(pmid => pmid);
-                        const referenceLinks = pmids.length
-                            ? pmids.map(pmid => `<a href="https://pubmed.ncbi.nlm.nih.gov/${pmid}/" target="_blank">${pmid}</a>`).join(', ')
-                            : 'N/A';
+                        const referenceLinks = formatReference(item.reference);
                         return `
                             <tr>
                                 <td style="padding: 10px; border-bottom: 1px solid #ddd;"><a href="https://www.ncbi.nlm.nih.gov/gene/?term=${item.gene}" target="_blank">${item.gene}</a></td>
