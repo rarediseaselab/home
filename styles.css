@@ -214,6 +214,7 @@ body {
 }
 
 #publications .research-grid,
+#news:opacity: 0.5;
 #news .research-grid,
 #resources .research-grid {
     width: 100%;
@@ -366,7 +367,7 @@ body {
 
 .team-member:hover {
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    box-shadow: personally;
 }
 
 .team-photo {
@@ -852,9 +853,10 @@ footer {
 /* Ensure Ensembl ID column is fully visible and clickable */
 .ciliahub-table th:nth-child(2),
 .ciliahub-table td:nth-child(2) {
-    width: 25%; /* Increased width for Ensembl ID within constrained table */
-    white-space: normal; /* Allow wrapping to prevent truncation */
+    width: 30%; /* Increased width for Ensembl ID */
+    white-space: normal; /* Allow wrapping */
     overflow: visible; /* Ensure no content is hidden */
+    word-break: break-all; /* Break long IDs for readability */
 }
 
 /* Style for Ensembl ID links */
@@ -864,10 +866,50 @@ footer {
     font-weight: normal;
     display: inline-block;
     width: 100%;
-    word-break: break-all; /* Break long IDs for readability */
 }
 
-.ciliahub-table td:nth-child(2) a:hover {
+/* Ensure Synonym column is clear and properly formatted */
+.ciliahub-table th:nth-child(4),
+.ciliahub-table td:nth-child(4) {
+    width: 25%; /* Increased width for Synonym */
+    white-space: normal; /* Allow wrapping */
+    overflow: visible; /* Ensure no content is hidden */
+}
+
+/* Format comma-separated synonyms as a list */
+.ciliahub-table td:nth-child(4) {
+    display: block; /* Treat as block for list formatting */
+    line-height: 1.5; /* Improve readability */
+}
+
+/* Style for other columns to fit within table */
+.ciliahub-table th:nth-child(1),
+.ciliahub-table td:nth-child(1) {
+    width: 10%; /* Gene */
+}
+
+.ciliahub-table th:nth-child(3),
+.ciliahub-table td:nth-child(3) {
+    width: 20%; /* Gene Description */
+}
+
+.ciliahub-table th:nth-child(5),
+.ciliahub-table td:nth-child(5) {
+    width: 10%; /* OMIM ID */
+}
+
+.ciliahub-table th:nth-child(6),
+.ciliahub-table td:nth-child(6) {
+    width: 10%; /* Reference */
+}
+
+.ciliahub-table th:nth-child(7),
+.ciliahub-table td:nth-child(7) {
+    width: 15%; /* Ciliary Localization */
+}
+
+.ciliahub-table td:nth-child(2) a:hover,
+.ciliahub-table td:nth-child(6) a:hover {
     color: #002b5e;
     text-decoration: underline;
 }
@@ -902,11 +944,6 @@ footer {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-}
-
-.ciliahub-table td a:hover {
-    color: #002b5e;
-    text-decoration: underline;
 }
 
 /* Tooltip for Reference column */
@@ -1114,16 +1151,20 @@ footer {
     .ciliahub-table th,
     .ciliahub-table td {
         padding: 8px;
-        min-width: 100px; /* Ensure columns are wide enough */
+        min-width: 80px; /* Ensure columns are wide enough */
     }
     .ciliahub-table th:nth-child(2),
     .ciliahub-table td:nth-child(2) {
-        min-width: 120px; /* Ensure Ensembl ID column is wide enough */
-        white-space: normal; /* Allow wrapping */
+        min-width: 100px; /* Adjusted for Ensembl ID visibility */
+        white-space: normal;
         overflow: visible;
+        word-break: break-all;
     }
-    .ciliahub-table td:nth-child(2) a {
-        word-break: break-all; /* Break long IDs for readability */
+    .ciliahub-table th:nth-child(4),
+    .ciliahub-table td:nth-child(4) {
+        min-width: 100px; /* Adjusted for Synonym visibility */
+        white-space: normal;
+        overflow: visible;
     }
     .ciliahub-controls {
         flex-direction: column;
@@ -1175,17 +1216,20 @@ footer {
     .ciliahub-table th,
     .ciliahub-table td {
         padding: 6px;
-        min-width: 80px; /* Adjust for smaller screens */
+        min-width: 60px; /* Adjusted for smaller screens */
     }
     .ciliahub-table th:nth-child(2),
     .ciliahub-table td:nth-child(2) {
-        min-width: 100px; /* Ensure Ensembl ID remains visible */
+        min-width: 80px; /* Ensure Ensembl ID remains visible */
         white-space: normal;
         overflow: visible;
-    }
-    .ciliahub-table td:nth-child(2) a {
         word-break: break-all;
-        font-size: 0.75em;
+    }
+    .ciliahub-table th:nth-child(4),
+    .ciliahub-table td:nth-child(4) {
+        min-width: 80px; /* Ensure Synonym remains visible */
+        white-space: normal;
+        overflow: visible;
     }
 }
 
