@@ -872,6 +872,24 @@ footer {
     background-color: #d9e6ff;
 }
 
+/* Specific styling for links in the Reference column */
+.ciliahub-table td a {
+    color: #004080;
+    text-decoration: underline;
+    font-weight: normal;
+    display: inline-block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.ciliahub-table td a:hover {
+    color: #002b5e;
+    text-decoration: underline;
+}
+
+/* Tooltip for Reference column */
 .ciliahub-table td.reference {
     position: relative;
     cursor: help;
@@ -963,40 +981,59 @@ footer {
     border-bottom: 1px solid #555;
 }
 
+.night-mode .ciliahub-table td a {
+    color: #b3d9ff;
+}
+
+.night-mode .ciliahub-table td a:hover {
+    color: #cce6ff;
+}
+
 .night-mode .ciliahub-table td.reference:hover::after {
     background-color: #0066cc;
     color: #d9d9d9;
 }
+
 .ciliahub-table tr.basal-body-cilia {
     background-color: #e6f2ff;
 }
+
 .ciliahub-table tr.cilia-basal-body {
     background-color: #e6f2ff;
 }
+
 .ciliahub-table tr.flagella-cilia {
     background-color: #f0faff;
 }
+
 .ciliahub-table tr.flagella-cilia-basal-body {
     background-color: #f0faff;
 }
+
 .ciliahub-table tr.ciliary-associated-gene {
     background-color: #f5f5f5;
 }
+
 .night-mode .ciliahub-table tr.basal-body-cilia {
     background-color: #3d3d3d;
 }
+
 .night-mode .ciliahub-table tr.cilia-basal-body {
     background-color: #3d3d3d;
 }
+
 .night-mode .ciliahub-table tr.flagella-cilia {
     background-color: #4a4a4a;
 }
+
 .night-mode .ciliahub-table tr.flagella-cilia-basal-body {
     background-color: #4a4a4a;
 }
+
 .night-mode .ciliahub-table tr.ciliary-associated-gene {
     background-color: #2e2e2e;
 }
+
 /* Responsive Adjustments */
 @media (max-width: 768px) {
     .container {
@@ -1057,6 +1094,9 @@ footer {
     .ciliahub-table td {
         padding: 8px;
     }
+    .ciliahub-table td a {
+        font-size: 0.8em;
+    }
     .ciliahub-controls {
         flex-direction: column;
         align-items: center;
@@ -1106,6 +1146,9 @@ footer {
     .ciliahub-table th,
     .ciliahub-table td {
         padding: 6px;
+    }
+    .ciliahub-table td a {
+        font-size: 0.75em;
     }
 }
 
