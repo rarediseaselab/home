@@ -214,7 +214,6 @@ body {
 }
 
 #publications .research-grid,
-#news:opacity: 0.5;
 #news .research-grid,
 #resources .research-grid {
     width: 100%;
@@ -367,7 +366,7 @@ body {
 
 .team-member:hover {
     transform: translateY(-2px);
-    box-shadow: personally;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
 }
 
 .team-photo {
@@ -824,7 +823,7 @@ footer {
 
 .ciliahub-table {
     width: 100%;
-    max-width: 100%; /* Matches approximate width of provided text */
+    max-width: 700px; /* Matches approximate width of provided text */
     margin: 0 auto;
     table-layout: fixed;
     border-collapse: collapse;
@@ -853,7 +852,7 @@ footer {
 /* Ensure Ensembl ID column is fully visible and clickable */
 .ciliahub-table th:nth-child(2),
 .ciliahub-table td:nth-child(2) {
-    width: 30%; /* Increased width for Ensembl ID */
+    width: 30%; /* Increased width for Ensembl ID (~210px) */
     white-space: normal; /* Allow wrapping */
     overflow: visible; /* Ensure no content is hidden */
     word-break: break-all; /* Break long IDs for readability */
@@ -871,44 +870,40 @@ footer {
 /* Ensure Synonym column is clear and properly formatted */
 .ciliahub-table th:nth-child(4),
 .ciliahub-table td:nth-child(4) {
-    width: 25%; /* Increased width for Synonym */
+    width: 25%; /* Increased width for Synonym (~175px) */
     white-space: normal; /* Allow wrapping */
     overflow: visible; /* Ensure no content is hidden */
-}
-
-/* Format comma-separated synonyms as a list */
-.ciliahub-table td:nth-child(4) {
-    display: block; /* Treat as block for list formatting */
     line-height: 1.5; /* Improve readability */
 }
 
 /* Style for other columns to fit within table */
 .ciliahub-table th:nth-child(1),
 .ciliahub-table td:nth-child(1) {
-    width: 10%; /* Gene */
+    width: 10%; /* Gene (~70px) */
 }
 
 .ciliahub-table th:nth-child(3),
 .ciliahub-table td:nth-child(3) {
-    width: 20%; /* Gene Description */
+    width: 20%; /* Gene Description (~140px) */
 }
 
 .ciliahub-table th:nth-child(5),
 .ciliahub-table td:nth-child(5) {
-    width: 10%; /* OMIM ID */
+    width: 10%; /* OMIM ID (~70px) */
 }
 
 .ciliahub-table th:nth-child(6),
 .ciliahub-table td:nth-child(6) {
-    width: 10%; /* Reference */
+    width: 10%; /* Reference (~70px) */
 }
 
 .ciliahub-table th:nth-child(7),
 .ciliahub-table td:nth-child(7) {
-    width: 15%; /* Ciliary Localization */
+    width: 15%; /* Ciliary Localization (~105px) */
 }
 
 .ciliahub-table td:nth-child(2) a:hover,
+.ciliahub-table td:nth-child(5) a:hover,
 .ciliahub-table td:nth-child(6) a:hover {
     color: #002b5e;
     text-decoration: underline;
