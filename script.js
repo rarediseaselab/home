@@ -56,30 +56,32 @@ async function loadCiliaHubData() {
     }
 
     function populateTable(filteredData = data) {
-        tableBody.innerHTML = '';
-        filteredData.forEach(item => {
-            const sanitizedLocalization = (item.localization || '')
-                .toLowerCase()
-                .replace(/[\s,]+/g, '-');
+    tableBody.innerHTML = '';
+    filteredData.forEach(item => {
+        const sanitizedLocalization = (item.localization || '')
+            .toLowerCase()
+            .replace(/[\s,]+/g, '-');
 
-            const referenceLinks = formatReference(item.reference);
+        const referenceLinks = formatReference(item.reference);
+        // Format synonyms as a list with line breaks
+        const synonyms = item.synonym ? item.synonym.split(',').map(s => s.trim()).join('<br>') : '';
 
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td><a href="https://www.ncbi.nlm.nih.gov/gene/?term=${item.gene}" target="_blank">${item.gene}</a></td>
-                <td><a href="https://www.ensembl.org/Homo_sapiens/Gene/Summary?g=${item.ensembl_id}" target="_blank">${item.ensembl_id}</a></td>
-                <td class="description" data-full-text="${item.description || ''}">${item.description || ''}</td>
-                <td>${item.synonym || ''}</td>
-                <td><a href="https://www.omim.org/entry/${item.omim_id}" target="_blank">${item.omim_id}</a></td>
-                <td>${referenceLinks}</td>
-                <td>${item.localization || ''}</td>
-            `;
-            if (sanitizedLocalization) row.classList.add(sanitizedLocalization);
-            tableBody.appendChild(row);
-        });
-        loadingDiv.style.display = 'none';
-        table.style.display = 'table';
-    }
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td><a href="https://www.ncbi.nlm.nih.gov/gene/?term=${item.gene}" target="_blank">${item.gene}</a></td>
+            <td><a href="https://www.ensembl.org/Homo_sapiens/Gene/Summary?g=${item.ensembl_id}" target="_blank">${item.ensembl_id}</a></td>
+            <td class="description" data-full-text="${item.description || ''}">${item.description || ''}</td>
+            <td>${synonyms}</td>
+            <td><a href="https://www.omim.org/entry/${item.omim_id}" target="_blank">${item.omim_id}</a></td>
+            <td class="reference" data-tooltip="${item.reference || ''}">${referenceLinks}</td>
+            <td>${item.localization || ''}</td>
+        `;
+        if (sanitizedLocalization) row.classList.add(sanitizedLocalization);
+        tableBody.appendChild(row);
+    });
+    loadingDiv.style.display = 'none';
+    table.style.display = 'table';
+}
 
     function updatePopularGenes() {
         const sortedGenes = Object.entries(searchCounts)
