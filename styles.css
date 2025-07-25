@@ -823,7 +823,7 @@ footer {
 
 .ciliahub-table {
     width: 100%;
-    max-width: 700px; /* Matches approximate width of provided text */
+    max-width: 100%; /* Matches approximate width of provided text */
     margin: 0 auto;
     table-layout: fixed;
     border-collapse: collapse;
