@@ -127,15 +127,13 @@ body {
     object-fit: contain;
     border-radius: 50%;
 }
-
 .figure-image {
-    width: 100%;
-    max-width: 100%; /* Spans full width from Home to CiliaHub */
-    height: auto;
-    object-fit: contain;
     display: block;
     margin: 0 auto 20px;
-    border-radius: 4px;
+    width: 100%;
+    max-width: 960px; /* Match your text container width */
+    height: auto;
+    object-fit: contain;
 }
 
 .overview-image {
