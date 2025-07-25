@@ -128,14 +128,14 @@ body {
     border-radius: 50%;
 }
 .figure-image {
-    display: block;
-    margin: 0 auto 20px;
-    width: 100%;
-    max-width: 960px; /* Match your text container width */
+    width: 100%;            /* This is OK if the parent is constrained */
+    max-width: none;        /* Remove any overriding max */
     height: auto;
     object-fit: contain;
+    display: block;
+    margin: 0 auto 20px;
+    border-radius: 4px;
 }
-
 .overview-image {
     width: 100%;
     max-width: 860px;
