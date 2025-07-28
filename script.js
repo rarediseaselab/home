@@ -1,6 +1,7 @@
 async function loadCiliaHubData() {
     const tableBody = document.getElementById('ciliahub-table-body');
     const searchInput = document.getElementById('ciliahub-search');
+    const searchBtn = document.getElementById('ciliahub-search-btn');
     const filterSelect = document.getElementById('ciliahub-filter');
     const resetBtn = document.getElementById('ciliahub-reset');
     const downloadBtn = document.getElementById('download-ciliahub');
@@ -13,10 +14,12 @@ async function loadCiliaHubData() {
     const errorDiv = document.getElementById('ciliahub-error');
     const loadingDiv = document.getElementById('ciliahub-loading');
     const table = document.querySelector('.ciliahub-table');
+    const totalGenesSpan = document.getElementById('total-genes');
 
     let data = [];
     let searchCounts = JSON.parse(sessionStorage.getItem('popularGenes')) || {};
-    let debounceTimeout;
+    let sortColumn = null;
+    let sortDirection = 'asc';
 
     function showError(message) {
         errorDiv.textContent = message;
@@ -32,70 +35,68 @@ async function loadCiliaHubData() {
     function formatReference(reference) {
         if (!reference) return 'N/A';
         const refs = reference.split(';').map(ref => ref.trim()).filter(ref => ref);
-        const formattedRefs = refs.map(ref => {
-            // Check if the reference is a PMID (numeric)
+        return refs.map(ref => {
             if (/^\d+$/.test(ref)) {
                 return `<a href="https://pubmed.ncbi.nlm.nih.gov/${ref}/" target="_blank">${ref}</a>`;
-            }
-            // Check if the reference is a DOI (starts with https://doi.org/ or a raw DOI like 10.xxxx)
-            else if (ref.startsWith('https://doi.org/') || /^10\.\d{4,}/.test(ref)) {
+            } else if (ref.startsWith('https://doi.org/') || /^10\.\d{4,}/.test(ref)) {
                 const doi = ref.startsWith('https://doi.org/') ? ref.replace('https://doi.org/', '') : ref;
-                const doiUrl = `https://doi.org/${doi}`;
-                return `<a href="${doiUrl}" target="_blank">${doi}</a>`;
-            }
-            // Treat as a general URL
-            else if (ref.startsWith('http://') || ref.startsWith('https://')) {
+                return `<a href="https://doi.org/${doi}" target="_blank">${doi}</a>`;
+            } else if (ref.startsWith('http://') || ref.startsWith('https://')) {
                 return `<a href="${ref}" target="_blank">${ref}</a>`;
-            }
-            // Fallback for invalid references
-            else {
+            } else {
                 return ref;
             }
-        });
-        return formattedRefs.join(', ');
+        }).join(', ');
     }
 
     function populateTable(filteredData = data) {
-    tableBody.innerHTML = '';
-    filteredData.forEach(item => {
-        const sanitizedLocalization = (item.localization || '')
-            .toLowerCase()
-            .replace(/[\s,]+/g, '-');
+        tableBody.innerHTML = '';
+        filteredData.forEach(item => {
+            const sanitizedLocalization = (item.localization || '').toLowerCase().replace(/[\s,]+/g, '-');
+            const referenceLinks = formatReference(item.reference);
+            const synonyms = item.synonym ? item.synonym.split(',').map(s => s.trim()).join('<br>') : '';
 
-        const referenceLinks = formatReference(item.reference);
-        // Format synonyms as a list with line breaks
-        const synonyms = item.synonym ? item.synonym.split(',').map(s => s.trim()).join('<br>') : '';
-
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td><a href="https://www.ncbi.nlm.nih.gov/gene/?term=${item.gene}" target="_blank">${item.gene}</a></td>
-            <td><a href="https://www.ensembl.org/Homo_sapiens/Gene/Summary?g=${item.ensembl_id}" target="_blank">${item.ensembl_id}</a></td>
-            <td class="description" data-full-text="${item.description || ''}">${item.description || ''}</td>
-            <td>${synonyms}</td>
-            <td><a href="https://www.omim.org/entry/${item.omim_id}" target="_blank">${item.omim_id}</a></td>
-            <td class="reference" data-tooltip="${item.reference || ''}">${referenceLinks}</td>
-            <td>${item.localization || ''}</td>
-        `;
-        if (sanitizedLocalization) row.classList.add(sanitizedLocalization);
-        tableBody.appendChild(row);
-    });
-    loadingDiv.style.display = 'none';
-    table.style.display = 'table';
-}
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td><a href="https://www.ncbi.nlm.nih.gov/gene/?term=${item.gene}" target="_blank">${item.gene}</a></td>
+                <td><a href="https://www.ensembl.org/Homo_sapiens/Gene/Summary?g=${item.ensembl_id}" target="_blank">${item.ensembl_id}</a></td>
+                <td>${item.description || ''}</td>
+                <td>${synonyms}</td>
+                <td><a href="https://www.omim.org/entry/${item.omim_id}" target="_blank">${item.omim_id}</a></td>
+                <td>${referenceLinks}</td>
+                <td>${item.localization || ''}</td>
+            `;
+            if (sanitizedLocalization) row.classList.add(sanitizedLocalization);
+            tableBody.appendChild(row);
+        });
+        loadingDiv.style.display = 'none';
+        table.style.display = 'table';
+    }
 
     function updatePopularGenes() {
-        const sortedGenes = Object.entries(searchCounts)
-            .sort((a, b) => b[1] - a[1])
-            .slice(0, 5);
+        const sortedGenes = Object.entries(searchCounts).sort((a, b) => b[1] - a[1]).slice(0, 5);
         popularGenesList.innerHTML = sortedGenes.length
             ? sortedGenes.map(([gene, count]) => `<li>${gene} (${count} searches)</li>`).join('')
             : '<li>No searches yet.</li>';
     }
 
+    function sortData(column, direction) {
+        const sortedData = [...data].sort((a, b) => {
+            const valA = (a[column] || '').toString().toLowerCase();
+            const valB = (b[column] || '').toString().toLowerCase();
+            if (direction === 'asc') {
+                return valA.localeCompare(valB);
+            } else {
+                return valB.localeCompare(valA);
+            }
+        });
+        populateTable(sortedData);
+    }
+
     try {
         const response = await fetch('https://raw.githubusercontent.com/rarediseaselab/home/main/ciliahub_data.json');
         data = await response.json();
-        console.log('Loaded entries:', data.length);
+        totalGenesSpan.textContent = data.length;
         populateTable();
         updatePopularGenes();
     } catch (error) {
@@ -104,14 +105,7 @@ async function loadCiliaHubData() {
         return;
     }
 
-    function debounce(func, wait) {
-        return function (...args) {
-            clearTimeout(debounceTimeout);
-            debounceTimeout = setTimeout(() => func.apply(this, args), wait);
-        };
-    }
-
-    searchInput.addEventListener('input', debounce(() => {
+    searchBtn.addEventListener('click', () => {
         hideError();
         const query = searchInput.value.toLowerCase().trim();
         if (query) {
@@ -127,7 +121,7 @@ async function loadCiliaHubData() {
             (item.reference && item.reference.toLowerCase().includes(query))
         );
         populateTable(filteredData);
-    }, 300));
+    });
 
     filterSelect.addEventListener('change', () => {
         hideError();
@@ -203,14 +197,14 @@ async function loadCiliaHubData() {
         batchResultsDiv.innerHTML = `
             <table style="width: 100%; border-collapse: collapse;">
                 <thead>
-                    <tr style="background-color: #003366; color: white;">
-                        <th style="padding: 10px; width: 10%;">Gene</th>
-                        <th style="padding: 10px; width: 10%;">Ensembl ID</th>
-                        <th style="padding: 10px; width: 25%;">Description</th>
-                        <th style="padding: 10px; width: 10%;">Synonym</th>
-                        <th style="padding: 10px; width: 10%;">OMIM ID</th>
-                        <th style="padding: 10px; width: 20%;">Reference</th>
-                        <th style="padding: 10px; width: 15%;">Localization</th>
+                    <tr style="background-color: #004080; color: white;">
+                        <th style="padding: 12px;">Gene</th>
+                        <th style="padding: 12px;">Ensembl ID</th>
+                        <th style="padding: 12px;">Description</th>
+                        <th style="padding: 12px;">Synonym</th>
+                        <th style="padding: 12px;">OMIM ID</th>
+                        <th style="padding: 12px;">Reference</th>
+                        <th style="padding: 12px;">Localization</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -218,13 +212,13 @@ async function loadCiliaHubData() {
                         const referenceLinks = formatReference(item.reference);
                         return `
                             <tr>
-                                <td style="padding: 10px; border-bottom: 1px solid #ddd;"><a href="https://www.ncbi.nlm.nih.gov/gene/?term=${item.gene}" target="_blank">${item.gene}</a></td>
-                                <td style="padding: 10px; border-bottom: 1px solid #ddd;"><a href="https://www.ensembl.org/Homo_sapiens/Gene/Summary?g=${item.ensembl_id}" target="_blank">${item.ensembl_id}</a></td>
-                                <td style="padding: 10px; border-bottom: 1px solid #ddd;">${item.description || ''}</td>
-                                <td style="padding: 10px; border-bottom: 1px solid #ddd;">${item.synonym || ''}</td>
-                                <td style="padding: 10px; border-bottom: 1px solid #ddd;"><a href="https://www.omim.org/entry/${item.omim_id}" target="_blank">${item.omim_id}</a></td>
-                                <td style="padding: 10px; border-bottom: 1px solid #ddd;">${referenceLinks}</td>
-                                <td style="padding: 10px; border-bottom: 1px solid #ddd;">${item.localization || ''}</td>
+                                <td style="padding: 12px; border-bottom: 1px solid #e0e0e0;"><a href="https://www.ncbi.nlm.nih.gov/gene/?term=${item.gene}" target="_blank">${item.gene}</a></td>
+                                <td style="padding: 12px; border-bottom: 1px solid #e0e0e0;"><a href="https://www.ensembl.org/Homo_sapiens/Gene/Summary?g=${item.ensembl_id}" target="_blank">${item.ensembl_id}</a></td>
+                                <td style="padding: 12px; border-bottom: 1px solid #e0e0e0;">${item.description || ''}</td>
+                                <td style="padding: 12px; border-bottom: 1px solid #e0e0e0;">${item.synonym || ''}</td>
+                                <td style="padding: 12px; border-bottom: 1px solid #e0e0e0;"><a href="https://www.omim.org/entry/${item.omim_id}" target="_blank">${item.omim_id}</a></td>
+                                <td style="padding: 12px; border-bottom: 1px solid #e0e0e0;">${referenceLinks}</td>
+                                <td style="padding: 12px; border-bottom: 1px solid #e0e0e0;">${item.localization || ''}</td>
                             </tr>
                         `;
                     }).join('')}
@@ -239,9 +233,23 @@ async function loadCiliaHubData() {
         batchResultsContainer.style.display = 'none';
         batchGenesInput.value = '';
     });
+
+    // Table Sorting
+    document.querySelectorAll('.ciliahub-table th').forEach((header, index) => {
+        header.addEventListener('click', () => {
+            const columns = ['gene', 'ensembl_id', 'description', 'synonym', 'omim_id', 'reference', 'localization'];
+            const column = columns[index];
+            if (sortColumn === column) {
+                sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                sortColumn = column;
+                sortDirection = 'asc';
+            }
+            sortData(column, sortDirection);
+        });
+    });
 }
 
-// Call the function when the DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     if (document.getElementById('ciliahub')) {
         loadCiliaHubData();
