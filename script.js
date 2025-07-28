@@ -1,3 +1,4 @@
+```javascript
 // Navigation and Section Display
 function showSection(sectionId) {
     document.querySelectorAll('.section').forEach(section => {
@@ -58,7 +59,7 @@ document.getElementById('lightbox-close').addEventListener('click', (e) => {
 });
 
 // CiliaHub Functionality
-async function loadCiliaHubData() {
+function loadCiliaHubData() {
     const tableBody = document.getElementById('ciliahub-table-body');
     const table = document.getElementById('ciliahub-table');
     const searchInput = document.getElementById('ciliahub-search');
@@ -77,8 +78,6 @@ async function loadCiliaHubData() {
 
     let data = [];
     let searchCounts = JSON.parse(sessionStorage.getItem('popularGenes')) || {};
-    let sortColumn = null;
-    let sortDirection = 'asc';
 
     function showError(message) {
         errorDiv.textContent = message;
@@ -112,21 +111,16 @@ async function loadCiliaHubData() {
         tableBody.innerHTML = '';
         if (filteredData.length) {
             filteredData.forEach(item => {
-                const sanitizedLocalization = (item.localization || '').toLowerCase().replace(/[\s,]+/g, '-');
-                const referenceLinks = formatReference(item.reference);
-                const synonyms = item.synonym ? item.synonym.split(',').map(s => s.trim()).join('<br>') : '';
-
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td><a href="https://www.ncbi.nlm.nih.gov/gene/?term=${item.gene}" target="_blank">${item.gene}</a></td>
                     <td><a href="https://www.ensembl.org/Homo_sapiens/Gene/Summary?g=${item.ensembl_id}" target="_blank">${item.ensembl_id}</a></td>
                     <td>${item.description || ''}</td>
-                    <td>${synonyms}</td>
-                    <td><a href="https://www.omim.org/entry/${item.omim_id}" target="_blank">${item.omim_id}</a></td>
-                    <td>${referenceLinks}</td>
+                    <td>${item.synonym || ''}</td>
+                    <td><a href="https://www.omim.org/entry/${item.omim_id}" target="_blank">${item.omim_id || ''}</a></td>
+                    <td>${formatReference(item.reference)}</td>
                     <td>${item.localization || ''}</td>
                 `;
-                if (sanitizedLocalization) row.classList.add(sanitizedLocalization);
                 tableBody.appendChild(row);
             });
             table.style.display = 'table';
@@ -144,18 +138,6 @@ async function loadCiliaHubData() {
             : '<li>No searches yet.</li>';
     }
 
-    function sortData(column, direction) {
-        const sortedData = [...data].sort((a, b) => {
-            const valA = (a[column] || '').toString().toLowerCase();
-            const valB = (b[column] || '').toString().toLowerCase();
-            if (direction === 'asc') {
-                return valA.localeCompare(valB);
-            }
-            return valB.localeCompare(valA);
-        });
-        populateTable(sortedData);
-    }
-
     // Fetch with timeout
     const fetchWithTimeout = async (url, timeout = 10000) => {
         const controller = new AbortController();
@@ -170,32 +152,34 @@ async function loadCiliaHubData() {
         }
     };
 
-    try {
-        const response = await fetchWithTimeout('https://raw.githubusercontent.com/rarediseaselab/home/main/ciliahub_data.json');
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        data = await response.json();
-        if (!Array.isArray(data) || data.length === 0) {
-            throw new Error('Data is empty or not in the expected format.');
-        }
-        updatePopularGenes();
-        loadingDiv.style.display = 'none';
-    } catch (error) {
-        console.error('Error loading CiliaHub data:', error);
-        let errorMessage = 'Failed to load CiliaHub data. Please check your network or contact support.';
-        if (error.name === 'AbortError') {
-            errorMessage = 'Data loading timed out. Please try again later.';
-        } else if (error.message.includes('404')) {
-            errorMessage = 'Data file not found. Please contact support.';
-        } else if (error.message.includes('403')) {
-            errorMessage = 'Access to data file is restricted. Please contact support.';
-        } else if (error.message.includes('not in the expected format')) {
-            errorMessage = 'Data format is invalid. Please contact support.';
-        }
-        showError(errorMessage);
-        return;
-    }
+    // Load data
+    fetchWithTimeout('https://raw.githubusercontent.com/rarediseaselab/home/main/ciliahub_data.json')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(jsonData => {
+            data = jsonData;
+            if (!Array.isArray(data) || data.length === 0) {
+                throw new Error('Data is empty or not in the expected format.');
+            }
+            loadingDiv.style.display = 'none';
+            updatePopularGenes();
+        })
+        .catch(error => {
+            console.error('Error loading CiliaHub data:', error);
+            let errorMessage = 'Failed to load CiliaHub data. Please try again later or contact support.';
+            if (error.name === 'AbortError') {
+                errorMessage = 'Data loading timed out. Please try again.';
+            } else if (error.message.includes('404')) {
+                errorMessage = 'Data file not found. Please contact support.';
+            } else if (error.message.includes('403')) {
+                errorMessage = 'Access to data file is restricted. Please contact support.';
+            }
+            showError(errorMessage);
+        });
 
     searchBtn.addEventListener('click', () => {
         hideError();
@@ -209,18 +193,16 @@ async function loadCiliaHubData() {
         sessionStorage.setItem('popularGenes', JSON.stringify(searchCounts));
         updatePopularGenes();
         const filterValue = filterSelect.value.toLowerCase();
-        let filteredData = data.filter(item =>
-            (item.gene && item.gene.toLowerCase().includes(query)) ||
-            (item.ensembl_id && item.ensembl_id.toLowerCase().includes(query)) ||
-            (item.synonym && item.synonym.toLowerCase().includes(query)) ||
-            (item.omim_id && item.omim_id.toLowerCase().includes(query)) ||
-            (item.description && item.description.toLowerCase().includes(query)) ||
-            (item.reference && item.reference.toLowerCase().includes(query))
-        );
-        if (filterValue) {
-            filteredData = filteredData.filter(item =>
-                (item.localization || '').toLowerCase().replace(/[\s,]+/g, '-') === filterValue
+        let filteredData = data.filter(item => {
+            return (
+                (item.gene && item.gene.toLowerCase().includes(query)) ||
+                (item.ensembl_id && item.ensembl_id.toLowerCase().includes(query)) ||
+                (item.synonym && item.synonym.toLowerCase().includes(query)) ||
+                (item.omim_id && item.omim_id.toLowerCase().includes(query))
             );
+        });
+        if (filterValue) {
+            filteredData = filteredData.filter(item => (item.localization || '').toLowerCase().replace(/[\s,]+/g, '-') === filterValue);
         }
         populateTable(filteredData);
     });
@@ -230,19 +212,17 @@ async function loadCiliaHubData() {
         const query = searchInput.value.trim().toLowerCase();
         const filterValue = filterSelect.value.toLowerCase();
         let filteredData = query
-            ? data.filter(item =>
-                (item.gene && item.gene.toLowerCase().includes(query)) ||
-                (item.ensembl_id && item.ensembl_id.toLowerCase().includes(query)) ||
-                (item.synonym && item.synonym.toLowerCase().includes(query)) ||
-                (item.omim_id && item.omim_id.toLowerCase().includes(query)) ||
-                (item.description && item.description.toLowerCase().includes(query)) ||
-                (item.reference && item.reference.toLowerCase().includes(query))
-            )
+            ? data.filter(item => {
+                return (
+                    (item.gene && item.gene.toLowerCase().includes(query)) ||
+                    (item.ensembl_id && item.ensembl_id.toLowerCase().includes(query)) ||
+                    (item.synonym && item.synonym.toLowerCase().includes(query)) ||
+                    (item.omim_id && item.omim_id.toLowerCase().includes(query))
+                );
+            })
             : data;
         if (filterValue) {
-            filteredData = filteredData.filter(item =>
-                (item.localization || '').toLowerCase().replace(/[\s,]+/g, '-') === filterValue
-            );
+            filteredData = filteredData.filter(item => (item.localization || '').toLowerCase().replace(/[\s,]+/g, '-') === filterValue);
         }
         populateTable(filteredData);
     });
@@ -254,9 +234,6 @@ async function loadCiliaHubData() {
         table.style.display = 'none';
         batchResultsContainer.style.display = 'none';
         batchGenesInput.value = '';
-        searchCounts = {};
-        sessionStorage.removeItem('popularGenes');
-        updatePopularGenes();
     });
 
     downloadBtn.addEventListener('click', () => {
@@ -287,7 +264,6 @@ async function loadCiliaHubData() {
         const input = batchGenesInput.value.trim();
         if (!input) {
             showError('Please enter at least one gene name or ID.');
-            batchResultsContainer.style.display = 'block';
             return;
         }
         const queries = input.split(/[,;\s]+/).filter(q => q.trim()).map(q => q.toLowerCase());
@@ -296,79 +272,37 @@ async function loadCiliaHubData() {
         });
         sessionStorage.setItem('popularGenes', JSON.stringify(searchCounts));
         updatePopularGenes();
-        const filteredData = data.filter(item =>
-            queries.some(query =>
+        const filteredData = data.filter(item => {
+            return queries.some(query => (
                 (item.gene && item.gene.toLowerCase().includes(query)) ||
                 (item.ensembl_id && item.ensembl_id.toLowerCase().includes(query)) ||
                 (item.synonym && item.synonym.toLowerCase().includes(query)) ||
-                (item.omim_id && item.omim_id.toLowerCase().includes(query)) ||
-                (item.description && item.description.toLowerCase().includes(query)) ||
-                (item.reference && item.reference.toLowerCase().includes(query))
-            )
-        );
-        if (!filteredData.length) {
-            batchResultsDiv.innerHTML = '<p style="color: red;">No matching data found.</p>';
-            batchResultsContainer.style.display = 'block';
-            table.style.display = 'none';
-            showError('No matching genes found.');
-            return;
-        }
-        batchResultsDiv.innerHTML = `
-            <table style="width: 100%; border-collapse: collapse;">
-                <thead>
-                    <tr style="background-color: #004080; color: white;">
-                        <th style="padding: 12px;">Gene</th>
-                        <th style="padding: 12px;">Ensembl ID</th>
-                        <th style="padding: 12px;">Description</th>
-                        <th style="padding: 12px;">Synonym</th>
-                        <th style="padding: 12px;">OMIM ID</th>
-                        <th style="padding: 12px;">Reference</th>
-                        <th style="padding: 12px;">Localization</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    ${filteredData.map(item => {
-                        const referenceLinks = formatReference(item.reference);
-                        return `
-                            <tr>
-                                <td style="padding: 8px; border-bottom: 1px solid #e0e0e0;"><a href="https://www.ncbi.nlm.nih.gov/gene/?term=${item.gene}" target="_blank">${item.gene}</a></td>
-                                <td style="padding: 8px; border-bottom: 1px solid #e0e0e0;"><a href="https://www.ensembl.org/Homo_sapiens/Gene/Summary?g=${item.ensembl_id}" target="_blank">${item.ensembl_id}</a></td>
-                                <td style="padding: 8px; border-bottom: 1px solid #e0e0e0;">${item.description || ''}</td>
-                                <td style="padding: 8px; border-bottom: 1px solid #e0e0e0;">${item.synonym || ''}</td>
-                                <td style="padding: 8px; border-bottom: 1px solid #e0e0e0;"><a href="https://www.omim.org/entry/${item.omim_id}" target="_blank">${item.omim_id || ''}</a></td>
-                                <td style="padding: 8px; border-bottom: 1px solid #e0e0e0;">${referenceLinks}</td>
-                                <td style="padding: 8px; border-bottom: 1px solid #e0e0e0;">${item.localization || ''}</td>
-                            </tr>
-                        `;
-                    }).join('')}
-                </tbody>
-            </table>
-        `;
+                (item.omim_id && item.omim_id.toLowerCase().includes(query))
+            ));
+        });
+        batchResultsDiv.innerHTML = filteredData.length
+            ? filteredData.map(item => {
+                return `
+                    <div style="margin-bottom: 10px;">
+                        <strong>Gene:</strong> <a href="https://www.ncbi.nlm.nih.gov/gene/?term=${item.gene}" target="_blank">${item.gene}</a><br>
+                        <strong>Ensembl ID:</strong> <a href="https://www.ensembl.org/Homo_sapiens/Gene/Summary?g=${item.ensembl_id}" target="_blank">${item.ensembl_id}</a><br>
+                        <strong>Description:</strong> ${item.description || ''}<br>
+                        <strong>Synonym:</strong> ${item.synonym || ''}<br>
+                        <strong>OMIM ID:</strong> <a href="https://www.omim.org/entry/${item.omim_id}" target="_blank">${item.omim_id || ''}</a><br>
+                        <strong>Reference:</strong> ${formatReference(item.reference)}<br>
+                        <strong>Localization:</strong> ${item.localization || ''}<br>
+                    </div>
+                `;
+            }).join('')
+            : '<p style="color: red;">No matching data found.</p>';
         batchResultsContainer.style.display = 'block';
-        table.style.display = 'none';
     });
 
     clearBatchResultsBtn.addEventListener('click', () => {
         batchResultsDiv.innerHTML = '';
         batchResultsContainer.style.display = 'none';
         batchGenesInput.value = '';
-        table.style.display = 'none';
         hideError();
-    });
-
-    // Table Sorting
-    document.querySelectorAll('.ciliahub-table th').forEach((header, index) => {
-        header.addEventListener('click', () => {
-            const columns = ['gene', 'ensembl_id', 'description', 'synonym', 'omim_id', 'reference', 'localization'];
-            const column = columns[index];
-            if (sortColumn === column) {
-                sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
-            } else {
-                sortColumn = column;
-                sortDirection = 'asc';
-            }
-            sortData(column, sortDirection);
-        });
     });
 }
 
@@ -378,3 +312,4 @@ document.addEventListener('DOMContentLoaded', () => {
         loadCiliaHubData();
     }
 });
+```
