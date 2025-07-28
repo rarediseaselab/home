@@ -735,353 +735,338 @@ footer {
 }
 
 /* CiliaHub Section */
-.ciliahub-controls {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-    gap: 10px;
-    background-color: #e6f2ff;
-    padding: 15px;
-    border-radius: 4px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+#ciliahub {
+    background: #f7f9fc;
+    padding: 40px 0;
 }
 
-#ciliahub-search, #ciliahub-filter, #ciliahub-reset, #download-ciliahub {
-    padding: 8px 12px;
-    border: 2px solid #004080;
+/* Header */
+.ciliahub-header {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    background: linear-gradient(to right, #004080, #0066cc);
+    color: white;
+    border-radius: 8px 8px 0 0;
+    margin-bottom: 20px;
+}
+
+.ciliahub-logo {
+    width: 80px;
+    height: auto;
+    margin-right: 20px;
+}
+
+.ciliahub-header h1 {
+    font-size: 2em;
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+}
+
+/* Main Layout */
+.ciliahub-main {
+    display: flex;
+    gap: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.ciliahub-sidebar {
+    width: 250px;
+    flex-shrink: 0;
+}
+
+.ciliahub-content {
+    flex-grow: 1;
+}
+
+/* Controls */
+.ciliahub-controls {
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.search-panel, .filter-panel {
+    display: flex;
+    gap: 10px;
+    flex: 1;
+    min-width: 300px;
+}
+
+#ciliahub-search {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #004080;
     border-radius: 4px;
-    font-size: 1em;
-    background-color: white;
-    color: #333;
-    max-width: 400px;
-    width: 100%;
+    font-family: 'Roboto', sans-serif;
+}
+
+#ciliahub-search-btn, #ciliahub-reset, #download-ciliahub, #batchQueryBtn, #clearBatchResults {
+    padding: 10px 20px;
+    background: #004080;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Roboto', sans-serif;
+}
+
+#ciliahub-search-btn:hover, #ciliahub-reset:hover, #download-ciliahub:hover, #batchQueryBtn:hover, #clearBatchResults:hover {
+    background: #002b5e;
 }
 
 #ciliahub-filter {
-    cursor: pointer;
-}
-
-#ciliahub-reset {
-    background-color: #f9f9f9;
-    color: #004080;
-    cursor: pointer;
-}
-
-#ciliahub-reset:hover {
-    background-color: #d9e6ff;
-}
-
-.ciliahub-legend {
-    margin-bottom: 15px;
     padding: 10px;
-    background-color: #f9f9f9;
+    border: 1px solid #004080;
     border-radius: 4px;
+    font-family: 'Roboto', sans-serif;
+    flex-grow: 1;
+}
+
+/* Sidebar Widgets */
+.stats-widget, .quick-links {
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.stats-widget h3, .quick-links h3 {
+    font-size: 1.3em;
+    color: #004080;
+    margin-bottom: 10px;
+}
+
+.stats-widget p, .quick-links ul {
     font-size: 0.9em;
     color: #333;
 }
 
-.ciliahub-legend span {
-    margin-right: 15px;
+.quick-links ul {
+    list-style: none;
+    padding: 0;
 }
 
-.ciliahub-legend .legend-axoneme::before {
-    content: '';
-    display: inline-block;
-    width: 12px;
-    height: 12px;
-    background-color: #f0faff;
+.quick-links ul li {
+    margin-bottom: 10px;
+}
+
+.quick-links ul li a {
+    color: #004080;
+    text-decoration: none;
+}
+
+.quick-links ul li a:hover {
+    text-decoration: underline;
+}
+
+/* Description and How to Use */
+.ciliahub-description {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.how-to-use {
+    margin-top: 15px;
+    background: #f5faff;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.how-to-use summary {
+    font-weight: bold;
+    cursor: pointer;
+    color: #004080;
+}
+
+.how-to-use ul {
+    margin-top: 10px;
+    padding-left: 20px;
+}
+
+/* Popular Genes */
+.popular-genes {
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.popular-genes h3 {
+    font-size: 1.2em;
+    color: #004080;
+    margin-bottom: 10px;
+}
+
+.popular-genes ul {
+    list-style: none;
+    padding: 0;
+}
+
+.popular-genes ul li {
+    font-size: 0.9em;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+/* Batch Query */
+.batch-query {
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.batch-query h3 {
+    font-size: 1.2em;
+    color: #004080;
+    margin-bottom: 10px;
+}
+
+#batchGenes {
+    width: 100%;
+    padding: 10px;
     border: 1px solid #004080;
-    margin-right: 5px;
-    vertical-align: middle;
+    border-radius: 4px;
+    font-family: 'Roboto', sans-serif;
+    margin-bottom: 10px;
 }
 
-.ciliahub-legend .legend-basal-body::before {
-    content: '';
-    display: inline-block;
-    width: 12px;
-    height: 12px;
-    background-color: #e6f2ff;
-    border: 1px solid #004080;
-    margin-right: 5px;
-    vertical-align: middle;
-}
-
-.ciliahub-legend .legend-transition-zone::before {
-    content: '';
-    display: inline-block;
-    width: 12px;
-    height: 12px;
-    background-color: #f5f5f5;
-    border: 1px solid #004080;
-    margin-right: 5px;
-    vertical-align: middle;
-}
-
+/* Table */
 .ciliahub-table {
     width: 100%;
-    max-width: 100%; /* Matches approximate width of provided text */
-    margin: 0 auto;
-    table-layout: fixed;
     border-collapse: collapse;
-    background: #e6f2ff;
-    border-radius: 5px;
+    background: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
 }
 
-.ciliahub-table th,
-.ciliahub-table td {
-    padding: 14px;
+.ciliahub-table th, .ciliahub-table td {
+    padding: 12px;
     text-align: left;
-    border-bottom: 1px solid #ddd;
-    font-size: 0.9em;
-    vertical-align: top;
+    border-bottom: 1px solid #e0e0e0;
 }
 
 .ciliahub-table th {
-    background-color: #003366;
+    background: #004080;
     color: white;
-    font-weight: bold;
-    border-bottom: 2px solid #004080;
-}
-
-/* Ensure Ensembl ID column is fully visible and clickable */
-.ciliahub-table th:nth-child(2),
-.ciliahub-table td:nth-child(2) {
-    width: 30%; /* Increased width for Ensembl ID (~210px) */
-    white-space: normal; /* Allow wrapping */
-    overflow: visible; /* Ensure no content is hidden */
-    word-break: break-all; /* Break long IDs for readability */
-}
-
-/* Style for Ensembl ID links */
-.ciliahub-table td:nth-child(2) a {
-    color: #004080;
-    text-decoration: underline;
-    font-weight: normal;
-    display: inline-block;
-    width: 100%;
-}
-
-/* Ensure Synonym column is clear and properly formatted */
-.ciliahub-table th:nth-child(4),
-.ciliahub-table td:nth-child(4) {
-    width: 25%; /* Increased width for Synonym (~175px) */
-    white-space: normal; /* Allow wrapping */
-    overflow: visible; /* Ensure no content is hidden */
-    line-height: 1.5; /* Improve readability */
-}
-
-/* Style for other columns to fit within table */
-.ciliahub-table th:nth-child(1),
-.ciliahub-table td:nth-child(1) {
-    width: 10%; /* Gene (~70px) */
-}
-
-.ciliahub-table th:nth-child(3),
-.ciliahub-table td:nth-child(3) {
-    width: 20%; /* Gene Description (~140px) */
-}
-
-.ciliahub-table th:nth-child(5),
-.ciliahub-table td:nth-child(5) {
-    width: 10%; /* OMIM ID (~70px) */
-}
-
-.ciliahub-table th:nth-child(6),
-.ciliahub-table td:nth-child(6) {
-    width: 10%; /* Reference (~70px) */
-}
-
-.ciliahub-table th:nth-child(7),
-.ciliahub-table td:nth-child(7) {
-    width: 15%; /* Ciliary Localization (~105px) */
-}
-
-.ciliahub-table td:nth-child(2) a:hover,
-.ciliahub-table td:nth-child(5) a:hover,
-.ciliahub-table td:nth-child(6) a:hover {
-    color: #002b5e;
-    text-decoration: underline;
+    font-family: 'Roboto', sans-serif;
 }
 
 .ciliahub-table tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
-.ciliahub-table tr.axoneme {
-    background-color: #f0faff;
-}
-
-.ciliahub-table tr.basal-body {
-    background-color: #e6f2ff;
-}
-
-.ciliahub-table tr.transition-zone {
-    background-color: #f5f5f5;
+    background: #f9f9f9;
 }
 
 .ciliahub-table tr:hover {
-    background-color: #d9e6ff;
+    background: #e6f2ff;
 }
 
-/* Specific styling for links in the Reference column */
 .ciliahub-table td a {
     color: #004080;
+    text-decoration: none;
+}
+
+.ciliahub-table td a:hover {
     text-decoration: underline;
-    font-weight: normal;
+}
+
+/* Citation and Feedback */
+.citation-box, .feedback {
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.feedback-btn {
     display: inline-block;
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    padding: 10px 20px;
+    background: #004080;
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
 }
 
-/* Tooltip for Reference column */
-.ciliahub-table td.reference {
-    position: relative;
-    cursor: help;
+.feedback-btn:hover {
+    background: #002b5e;
 }
 
-.ciliahub-table td.reference:hover::after {
-    content: attr(data-tooltip);
-    position: absolute;
-    top: -45px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #004080;
-    color: #fff;
-    padding: 8px 12px;
-    border-radius: 6px;
-    font-size: 0.85rem;
-    white-space: nowrap;
-    z-index: 1002;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+/* Night Mode */
+.night-mode #ciliahub {
+    background: #1a1a1a;
 }
 
-/* Night Mode for CiliaHub */
-.night-mode .ciliahub-controls {
-    background-color: #3d3d3d;
+.night-mode .ciliahub-header {
+    background: linear-gradient(to right, #0066cc, #004d99);
 }
 
-.night-mode #ciliahub-search, .night-mode #ciliahub-filter, .night-mode #ciliahub-reset, .night-mode #download-ciliahub {
-    background-color: #2e2e2e;
-    border: 2px solid #b3d9ff;
-    color: #d9d9d9;
-}
-
-.night-mode #ciliahub-reset:hover {
-    background-color: #4a4a4a;
-}
-
-.night-mode .ciliahub-legend {
-    background-color: #2e2e2e;
-    color: #d9d9d9;
-}
-
-.night-mode .ciliahub-legend .legend-axoneme::before {
-    background-color: #4a4a4a;
-    border: 1px solid #b3d9ff;
-}
-
-.night-mode .ciliahub-legend .legend-basal-body::before {
-    background-color: #3d3d3d;
-    border: 1px solid #b3d9ff;
-}
-
-.night-mode .ciliahub-legend .legend-transition-zone::before {
-    background-color: #2e2e2e;
-    border: 1px solid #b3d9ff;
+.night-mode .ciliahub-controls, .night-mode .ciliahub-description, .night-mode .stats-widget, .night-mode .quick-links, .night-mode .popular-genes, .night-mode .batch-query, .night-mode .citation-box, .night-mode .feedback {
+    background: #2e2e2e;
+    box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1);
 }
 
 .night-mode .ciliahub-table {
-    background: #3d3d3d;
-    box-shadow: 0 3px 10px rgba(255, 255, 255, 0.1);
+    background: #2e2e2e;
 }
 
 .night-mode .ciliahub-table th {
-    background-color: #0066cc;
-    border-bottom: 2px solid #b3d9ff;
+    background: #0066cc;
 }
 
 .night-mode .ciliahub-table tr:nth-child(even) {
-    background-color: #2e2e2e;
-}
-
-.night-mode .ciliahub-table tr.axoneme {
-    background-color: #4a4a4a;
-}
-
-.night-mode .ciliahub-table tr.basal-body {
-    background-color: #3d3d3d;
-}
-
-.night-mode .ciliahub-table tr.transition-zone {
-    background-color: #2e2e2e;
+    background: #3d3d3d;
 }
 
 .night-mode .ciliahub-table tr:hover {
-    background-color: #4a4a4a;
+    background: #4a4a4a;
 }
 
-.night-mode .ciliahub-table td,
-.night-mode .ciliahub-table th {
-    border-bottom: 1px solid #555;
-}
-
-.night-mode .ciliahub-table td a {
+.night-mode .ciliahub-table td a, .night-mode .quick-links ul li a, .night-mode .feedback-btn {
     color: #b3d9ff;
 }
 
-.night-mode .ciliahub-table td a:hover {
+.night-mode .ciliahub-table td a:hover, .night-mode .quick-links ul li a:hover, .night-mode .feedback-btn:hover {
     color: #cce6ff;
 }
 
-.night-mode .ciliahub-table td.reference:hover::after {
-    background-color: #0066cc;
+.night-mode .ciliahub-description p, .night-mode .stats-widget p, .night-mode .quick-links ul li, .night-mode .popular-genes ul li {
     color: #d9d9d9;
 }
 
-.ciliahub-table tr.basal-body-cilia {
-    background-color: #e6f2ff;
-}
-
-.ciliahub-table tr.cilia-basal-body {
-    background-color: #e6f2ff;
-}
-
-.ciliahub-table tr.flagella-cilia {
-    background-color: #f0faff;
-}
-
-.ciliahub-table tr.flagella-cilia-basal-body {
-    background-color: #f0faff;
-}
-
-.ciliahub-table tr.ciliary-associated-gene {
-    background-color: #f5f5f5;
-}
-
-.night-mode .ciliahub-table tr.basal-body-cilia {
-    background-color: #3d3d3d;
-}
-
-.night-mode .ciliahub-table tr.cilia-basal-body {
-    background-color: #3d3d3d;
-}
-
-.night-mode .ciliahub-table tr.flagella-cilia {
-    background-color: #4a4a4a;
-}
-
-.night-mode .ciliahub-table tr.flagella-cilia-basal-body {
-    background-color: #4a4a4a;
-}
-
-.night-mode .ciliahub-table tr.ciliary-associated-gene {
-    background-color: #2e2e2e;
+/* Responsive Design */
+@media (max-width: 768px) {
+    .ciliahub-main {
+        flex-direction: column;
+    }
+    .ciliahub-sidebar {
+        width: 100%;
+    }
+    .ciliahub-controls {
+        flex-direction: column;
+    }
+    .search-panel, .filter-panel {
+        flex-direction: column;
+        min-width: auto;
+    }
+    .ciliahub-table {
+        font-size: 0.8em;
+        overflow-x: auto;
+    }
 }
 
 /* Responsive Adjustments */
