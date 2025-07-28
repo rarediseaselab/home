@@ -1,4 +1,3 @@
-```css
 /* General Reset */
 * {
     margin: 0;
@@ -129,8 +128,8 @@ body {
     border-radius: 50%;
 }
 .figure-image {
-    width: 100%;            /* This is OK if the parent is constrained */
-    max-width: none;        /* Remove any overriding max */
+    width: 100%;
+    max-width: none;
     height: auto;
     object-fit: contain;
     display: block;
@@ -176,13 +175,13 @@ body {
 }
 
 #home .text-content {
-    width: 100%; /* Matches the full width of the section */
+    width: 100%;
     margin: 0 auto;
     padding: 0 20px;
 }
 
 #home h1 {
-    color: #004080; /* Dark blue for "Welcome to Kaplan's Lab" */
+    color: #004080;
     margin-bottom: 20px;
     text-align: center;
 }
@@ -190,12 +189,12 @@ body {
 #home p,
 #home .mission-statement,
 #home .research-updates {
-    width: 100%; /* Ensures full width alignment */
+    width: 100%;
     margin: 0 auto 15px;
 }
 
 #home .research-grid {
-    width: 100%; /* Matches the full width */
+    width: 100%;
     margin: 0 auto;
     display: flex;
     flex-wrap: wrap;
@@ -207,7 +206,7 @@ body {
 #news,
 #resources {
     width: 100%;
-    max-width: 100%; /* Spans full width */
+    max-width: 100%;
     padding: 20px;
     margin: 0 auto;
 }
@@ -1144,4 +1143,3 @@ footer {
 .night-mode #night-mode-toggle:hover {
     background-color: #004d99;
 }
-```
