@@ -752,7 +752,7 @@ footer {
 }
 
 .ciliahub-logo {
-    width: 80px;
+    width: 100px;
     height: auto;
     margin-right: 20px;
 }
@@ -763,59 +763,53 @@ footer {
     margin: 0;
 }
 
-/* Main Layout */
-.ciliahub-main {
-    display: flex;
-    gap: 20px;
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-.ciliahub-sidebar {
-    width: 250px;
-    flex-shrink: 0;
-}
-
-.ciliahub-content {
-    flex-grow: 1;
-}
-
-/* Controls */
-.ciliahub-controls {
+/* Search Section */
+.ciliahub-search-section {
     background: #fff;
-    padding: 15px;
+    padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
 }
 
-.search-panel, .filter-panel {
+.ciliahub-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.search-panel {
+    flex: 2;
     display: flex;
     gap: 10px;
-    flex: 1;
     min-width: 300px;
+}
+
+.filter-panel {
+    flex: 1;
+    display: flex;
+    gap: 10px;
+    min-width: 200px;
 }
 
 #ciliahub-search {
     flex-grow: 1;
-    padding: 10px;
+    padding: 12px;
     border: 1px solid #004080;
     border-radius: 4px;
     font-family: 'Roboto', sans-serif;
+    font-size: 1em;
 }
 
 #ciliahub-search-btn, #ciliahub-reset, #download-ciliahub, #batchQueryBtn, #clearBatchResults {
-    padding: 10px 20px;
+    padding: 12px 20px;
     background: #004080;
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     font-family: 'Roboto', sans-serif;
+    font-size: 0.9em;
 }
 
 #ciliahub-search-btn:hover, #ciliahub-reset:hover, #download-ciliahub:hover, #batchQueryBtn:hover, #clearBatchResults:hover {
@@ -823,49 +817,19 @@ footer {
 }
 
 #ciliahub-filter {
-    padding: 10px;
+    padding: 12px;
     border: 1px solid #004080;
     border-radius: 4px;
     font-family: 'Roboto', sans-serif;
+    font-size: 0.9em;
     flex-grow: 1;
 }
 
-/* Sidebar Widgets */
-.stats-widget, .quick-links {
-    background: #fff;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-}
-
-.stats-widget h3, .quick-links h3 {
-    font-size: 1.3em;
-    color: #004080;
-    margin-bottom: 10px;
-}
-
-.stats-widget p, .quick-links ul {
-    font-size: 0.9em;
-    color: #333;
-}
-
-.quick-links ul {
-    list-style: none;
-    padding: 0;
-}
-
-.quick-links ul li {
-    margin-bottom: 10px;
-}
-
-.quick-links ul li a {
-    color: #004080;
-    text-decoration: none;
-}
-
-.quick-links ul li a:hover {
-    text-decoration: underline;
+/* Content */
+.ciliahub-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
 
 /* Description and How to Use */
@@ -1015,7 +979,7 @@ footer {
     background: linear-gradient(to right, #0066cc, #004d99);
 }
 
-.night-mode .ciliahub-controls, .night-mode .ciliahub-description, .night-mode .stats-widget, .night-mode .quick-links, .night-mode .popular-genes, .night-mode .batch-query, .night-mode .citation-box, .night-mode .feedback {
+.night-mode .ciliahub-search-section, .night-mode .ciliahub-description, .night-mode .popular-genes, .night-mode .batch-query, .night-mode .citation-box, .night-mode .feedback {
     background: #2e2e2e;
     box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1);
 }
@@ -1036,37 +1000,16 @@ footer {
     background: #4a4a4a;
 }
 
-.night-mode .ciliahub-table td a, .night-mode .quick-links ul li a, .night-mode .feedback-btn {
+.night-mode .ciliahub-table td a, .night-mode .feedback-btn {
     color: #b3d9ff;
 }
 
-.night-mode .ciliahub-table td a:hover, .night-mode .quick-links ul li a:hover, .night-mode .feedback-btn:hover {
+.night-mode .ciliahub-table td a:hover, .night-mode .feedback-btn:hover {
     color: #cce6ff;
 }
 
-.night-mode .ciliahub-description p, .night-mode .stats-widget p, .night-mode .quick-links ul li, .night-mode .popular-genes ul li {
+.night-mode .ciliahub-description p, .night-mode .popular-genes ul li {
     color: #d9d9d9;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .ciliahub-main {
-        flex-direction: column;
-    }
-    .ciliahub-sidebar {
-        width: 100%;
-    }
-    .ciliahub-controls {
-        flex-direction: column;
-    }
-    .search-panel, .filter-panel {
-        flex-direction: column;
-        min-width: auto;
-    }
-    .ciliahub-table {
-        font-size: 0.8em;
-        overflow-x: auto;
-    }
 }
 
 /* Responsive Adjustments */
@@ -1121,39 +1064,19 @@ footer {
     .fit-image {
         width: 120px;
     }
-    .ciliahub-table {
-        font-size: 0.8em;
-        max-width: 100%; /* Fit within container on smaller screens */
-        overflow-x: auto; /* Enable horizontal scrolling */
-    }
-    .ciliahub-table th,
-    .ciliahub-table td {
-        padding: 8px;
-        min-width: 80px; /* Ensure columns are wide enough */
-    }
-    .ciliahub-table th:nth-child(2),
-    .ciliahub-table td:nth-child(2) {
-        min-width: 100px; /* Adjusted for Ensembl ID visibility */
-        white-space: normal;
-        overflow: visible;
-        word-break: break-all;
-    }
-    .ciliahub-table th:nth-child(4),
-    .ciliahub-table td:nth-child(4) {
-        min-width: 100px; /* Adjusted for Synonym visibility */
-        white-space: normal;
-        overflow: visible;
+    .ciliahub-search-section {
+        padding: 15px;
     }
     .ciliahub-controls {
         flex-direction: column;
-        align-items: center;
     }
-    #ciliahub-search,
-    #ciliahub-filter,
-    #ciliahub-reset,
-    #download-ciliahub {
-        width: 100%;
-        max-width: none;
+    .search-panel, .filter-panel {
+        flex-direction: column;
+        min-width: auto;
+    }
+    .ciliahub-table {
+        font-size: 0.8em;
+        overflow-x: auto;
     }
 }
 
@@ -1186,28 +1109,6 @@ footer {
     }
     .fit-image {
         width: 100px;
-    }
-    .ciliahub-table {
-        font-size: 0.75em;
-        max-width: 100%; /* Fit within container */
-    }
-    .ciliahub-table th,
-    .ciliahub-table td {
-        padding: 6px;
-        min-width: 60px; /* Adjusted for smaller screens */
-    }
-    .ciliahub-table th:nth-child(2),
-    .ciliahub-table td:nth-child(2) {
-        min-width: 80px; /* Ensure Ensembl ID remains visible */
-        white-space: normal;
-        overflow: visible;
-        word-break: break-all;
-    }
-    .ciliahub-table th:nth-child(4),
-    .ciliahub-table td:nth-child(4) {
-        min-width: 80px; /* Ensure Synonym remains visible */
-        white-space: normal;
-        overflow: visible;
     }
 }
 
