@@ -1,3 +1,4 @@
+```css
 /* General Reset */
 * {
     margin: 0;
@@ -1052,6 +1053,7 @@ footer {
         align-items: center;
     }
     .gallery-media {
+        width: 100%;
         max-width: 100%;
     }
     .figure-image, .overview-image, .crispr-image {
@@ -1126,7 +1128,7 @@ footer {
     font-size: 20px;
     cursor: pointer;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-    transition: background-color 0.3s, transform 0.3s;
+    transition: background-color: 0.3s, transform 0.3s;
     z-index: 1001;
 }
 
@@ -1142,3 +1144,4 @@ footer {
 .night-mode #night-mode-toggle:hover {
     background-color: #004d99;
 }
+```
