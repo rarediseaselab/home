@@ -1,4 +1,3 @@
-```javascript
 // Navigation and Section Display
 function showSection(sectionId) {
     document.querySelectorAll('.section').forEach(section => {
@@ -61,7 +60,7 @@ document.getElementById('lightbox-close').addEventListener('click', (e) => {
 // CiliaHub Functionality
 async function loadCiliaHubData() {
     const tableBody = document.getElementById('ciliahub-table-body');
-    const table = document.querySelector('.ciliahub-table');
+    const table = document.getElementById('ciliahub-table');
     const searchInput = document.getElementById('ciliahub-search');
     const searchBtn = document.getElementById('ciliahub-search-btn');
     const filterSelect = document.getElementById('ciliahub-filter');
@@ -133,6 +132,7 @@ async function loadCiliaHubData() {
             table.style.display = 'table';
         } else {
             table.style.display = 'none';
+            showError('No results found for the search query.');
         }
         loadingDiv.style.display = 'none';
     }
@@ -156,21 +156,42 @@ async function loadCiliaHubData() {
         populateTable(sortedData);
     }
 
+    // Fetch with timeout
+    const fetchWithTimeout = async (url, timeout = 10000) => {
+        const controller = new AbortController();
+        const id = setTimeout(() => controller.abort(), timeout);
+        try {
+            const response = await fetch(url, { signal: controller.signal });
+            clearTimeout(id);
+            return response;
+        } catch (error) {
+            clearTimeout(id);
+            throw error;
+        }
+    };
+
     try {
-        const response = await fetch('https://raw.githubusercontent.com/rarediseaselab/home/main/ciliahub_data.json');
+        const response = await fetchWithTimeout('https://raw.githubusercontent.com/rarediseaselab/home/main/ciliahub_data.json');
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
         data = await response.json();
+        if (!Array.isArray(data) || data.length === 0) {
+            throw new Error('Data is empty or not in the expected format.');
+        }
         updatePopularGenes();
         loadingDiv.style.display = 'none';
     } catch (error) {
         console.error('Error loading CiliaHub data:', error);
         let errorMessage = 'Failed to load CiliaHub data. Please check your network or contact support.';
-        if (error.message.includes('404')) {
+        if (error.name === 'AbortError') {
+            errorMessage = 'Data loading timed out. Please try again later.';
+        } else if (error.message.includes('404')) {
             errorMessage = 'Data file not found. Please contact support.';
         } else if (error.message.includes('403')) {
             errorMessage = 'Access to data file is restricted. Please contact support.';
+        } else if (error.message.includes('not in the expected format')) {
+            errorMessage = 'Data format is invalid. Please contact support.';
         }
         showError(errorMessage);
         return;
@@ -193,15 +214,13 @@ async function loadCiliaHubData() {
             (item.ensembl_id && item.ensembl_id.toLowerCase().includes(query)) ||
             (item.synonym && item.synonym.toLowerCase().includes(query)) ||
             (item.omim_id && item.omim_id.toLowerCase().includes(query)) ||
+            (item.description && item.description.toLowerCase().includes(query)) ||
             (item.reference && item.reference.toLowerCase().includes(query))
         );
         if (filterValue) {
             filteredData = filteredData.filter(item =>
                 (item.localization || '').toLowerCase().replace(/[\s,]+/g, '-') === filterValue
             );
-        }
-        if (!filteredData.length) {
-            showError('No results found for "' + query + '".');
         }
         populateTable(filteredData);
     });
@@ -215,17 +234,15 @@ async function loadCiliaHubData() {
                 (item.gene && item.gene.toLowerCase().includes(query)) ||
                 (item.ensembl_id && item.ensembl_id.toLowerCase().includes(query)) ||
                 (item.synonym && item.synonym.toLowerCase().includes(query)) ||
-                (item.name_id && item.id.toLowerCase().includes(query)) ||
+                (item.omim_id && item.omim_id.toLowerCase().includes(query)) ||
+                (item.description && item.description.toLowerCase().includes(query)) ||
                 (item.reference && item.reference.toLowerCase().includes(query))
             )
             : data;
         if (filterValue) {
             filteredData = filteredData.filter(item =>
-                (item.localization || '').toLowerCase().replace(/[\s/,]+/g, '-') === filterValue
+                (item.localization || '').toLowerCase().replace(/[\s,]+/g, '-') === filterValue
             );
-        }
-        if (!filteredData.length && query) {
-            showError('No results found for "' + query + '" with selected filter.');
         }
         populateTable(filteredData);
     });
@@ -249,13 +266,12 @@ async function loadCiliaHubData() {
                 item.gene || '',
                 item.ensembl_id || '',
                 item.description || '',
-                item.description || '',
                 item.synonym || '',
-                item.name_id || '',
+                item.omim_id || '',
                 item.reference || '',
                 item.localization || ''
             ])
-        ].map(row => row.map(cell => `"${cell.replace(/"/g, '"')}"`).join(',')).join('\n');
+        ].map(row => row.map(cell => `"${cell.replace(/"/g, '""')}"`).join(',')).join('\n');
 
         const blob = new Blob([csv], { type: 'text/csv' });
         const url = window.URL.createObjectURL(blob);
@@ -284,8 +300,10 @@ async function loadCiliaHubData() {
             queries.some(query =>
                 (item.gene && item.gene.toLowerCase().includes(query)) ||
                 (item.ensembl_id && item.ensembl_id.toLowerCase().includes(query)) ||
-                (item.synonym && item.id.toLowerCase().includes(query)) ||
-                (item.name_id && item.id.toLowerCase().includes(query))
+                (item.synonym && item.synonym.toLowerCase().includes(query)) ||
+                (item.omim_id && item.omim_id.toLowerCase().includes(query)) ||
+                (item.description && item.description.toLowerCase().includes(query)) ||
+                (item.reference && item.reference.toLowerCase().includes(query))
             )
         );
         if (!filteredData.length) {
@@ -315,14 +333,14 @@ async function loadCiliaHubData() {
                             <tr>
                                 <td style="padding: 8px; border-bottom: 1px solid #e0e0e0;"><a href="https://www.ncbi.nlm.nih.gov/gene/?term=${item.gene}" target="_blank">${item.gene}</a></td>
                                 <td style="padding: 8px; border-bottom: 1px solid #e0e0e0;"><a href="https://www.ensembl.org/Homo_sapiens/Gene/Summary?g=${item.ensembl_id}" target="_blank">${item.ensembl_id}</a></td>
-                                <td style="padding: 8px; border-bottom: none1px solid #e0e0e0;">${item.description || ''}</td>
-<td style="padding: 8px; border-bottom: 1px solid #e0e0e0;">${item.synonym || ''}</td>
-<td style="padding: 8px; border-bottom: 1px solid #e0e0e0;"><a href="https://www.omim.org/entry/${item.id}" target="_blank">${item.omim_id || ''}</a></td>
-<td style="padding: 8px; border-bottom: 1px solid #e0e0e0;">${referenceLinks}</td>
-<td style="padding: 8px; border-bottom: 1px solid #e0e0e0;">${item.localization || ''}</td>
+                                <td style="padding: 8px; border-bottom: 1px solid #e0e0e0;">${item.description || ''}</td>
+                                <td style="padding: 8px; border-bottom: 1px solid #e0e0e0;">${item.synonym || ''}</td>
+                                <td style="padding: 8px; border-bottom: 1px solid #e0e0e0;"><a href="https://www.omim.org/entry/${item.omim_id}" target="_blank">${item.omim_id || ''}</a></td>
+                                <td style="padding: 8px; border-bottom: 1px solid #e0e0e0;">${referenceLinks}</td>
+                                <td style="padding: 8px; border-bottom: 1px solid #e0e0e0;">${item.localization || ''}</td>
                             </tr>
                         `;
-                    }).join('')
+                    }).join('')}
                 </tbody>
             </table>
         `;
@@ -360,4 +378,3 @@ document.addEventListener('DOMContentLoaded', () => {
         loadCiliaHubData();
     }
 });
-```
