@@ -90,22 +90,30 @@ function loadCiliaHubData() {
         errorDiv.style.display = 'none';
     }
 
-    function formatReference(reference) {
-        if (!reference) return 'N/A';
-        const refs = reference.split(';').map(ref => ref.trim()).filter(ref => ref);
-        return refs.map(ref => {
-            if (/^\d+$/.test(ref)) {
-                return `<a href="https://pubmed.ncbi.nlm.nih.gov/${ref}/" target="_blank">${ref}</a>`;
-            } else if (ref.startsWith('https://doi.org/') || /^10\.\d{4,}/.test(ref)) {
-                const doi = ref.startsWith('https://doi.org/') ? ref.replace('https://doi.org/', '') : ref;
-                return `<a href="https://doi.org/${doi}" target="_blank">${doi}</a>`;
-            } else if (ref.startsWith('http://') || ref.startsWith('https://')) {
-                return `<a href="${ref}" target="_blank">${ref}</a>`;
-            } else {
-                return ref;
-            }
-        }).join(', ');
-    }
+    function populateTable(filteredData) { // Line 95
+        tableBody.innerHTML = '';          // Line 96
+        if (filteredData.length) {         // Line 97
+            filteredData.forEach(item => { // Line 98 (Your error was reported here in console but likely caused earlier)
+                const row = document.createElement('tr'); // Line 99
+                row.innerHTML = `          // Line 100 - Ensure this backtick is present and correctly placed
+                    <td><a href="https://www.ncbi.nlm.nih.gov/gene/?term=${item.gene}" target="_blank">${item.gene}</a></td> // Line 101
+                    <td><a href="https://www.ensembl.org/Homo_sapiens/Gene/Summary?g=${item.ensembl_id}" target="_blank">${item.ensembl_id}</a></td> // Line 102
+                    <td>${item.description || ''}</td>      // Line 103
+                    <td>${item.synonym || ''}</td>          // Line 104
+                    <td><a href="https://www.omim.org/entry/${item.omim_id}" target="_blank">${item.omim_id || ''}</a></td> // Line 105
+                    <td>${formatReference(item.reference)}</td> // Line 106
+                    <td>${item.localization || ''}</td>     // Line 107
+                `; // Line 108 - This is the crucial closing backtick.
+                tableBody.appendChild(row); // Line 109
+            });
+            table.style.display = 'table';  // Line 110
+        } else {                            // Line 111
+            table.style.display = 'none';   // Line 112
+            showError('No results found for the search query.'); // Line 113
+        }
+        loadingDiv.style.display = 'none';  // Line 114
+    }                                       // Line 115 - Closing brace for populateTable
+
 
     function populateTable(filteredData) {
         tableBody.innerHTML = '';
