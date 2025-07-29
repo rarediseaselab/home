@@ -1,443 +1,1258 @@
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const searchInput = document.getElementById('pub-search');
-        const pubList = document.getElementById('publications-list');
-        const pubs = pubList ? pubList.querySelectorAll('.research-item') : [];
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
 
-        if (searchInput && pubList) {
-            searchInput.addEventListener('input', function() {
-                const query = this.value.toLowerCase().trim();
-                pubs.forEach(pub => {
-                    const text = pub.textContent.toLowerCase();
-                    pub.style.display = text.includes(query) ? 'flex' : 'none';
-                });
-            });
-        }
+body {
+    background-color: #f5f5f5;
+    color: #333;
+    line-height: 1.6;
+}
 
-        const lightbox = document.getElementById('lightbox');
-        const lightboxImage = document.getElementById('lightbox-image');
-        const lightboxLinks = document.querySelectorAll('.lightbox-link');
-        const closeBtn = document.querySelector('.lightbox-close');
+/* Navbar */
+.navbar {
+    background-color: #004080;
+    padding: 10px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    z-index: 1000;
+    height: 60px;
+}
 
-        lightboxLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                if (lightboxImage) {
-                    lightboxImage.src = this.href;
-                    if (lightbox) lightbox.style.display = 'flex';
-                }
-            });
-        });
+/* Navbar Links */
+.navbar a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    font-weight: bold;
+}
 
-        if (closeBtn) {
-            closeBtn.addEventListener('click', function() {
-                if (lightbox) lightbox.style.display = 'none';
-            });
-        }
+.navbar a:hover {
+    background-color: #002b5e;
+    border-radius: 5px;
+}
 
-        if (lightbox) {
-            lightbox.addEventListener('click', function(e) {
-                if (e.target === lightbox) {
-                    lightbox.style.display = 'none';
-                }
-            });
-        }
+/* Dropdown Menu */
+.dropdown {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
 
-        const backToTopBtn = document.getElementById('back-to-top');
-        if (backToTopBtn) {
-            window.addEventListener('scroll', function() {
-                backToTopBtn.style.display = window.scrollY > 300 ? 'block' : 'none';
-            });
+.dropbtn {
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
 
-            backToTopBtn.addEventListener('click', function() {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            });
-        }
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1001;
+    top: 100%;
+}
 
-        const nightModeToggle = document.getElementById('night-mode-toggle');
-        if (nightModeToggle) {
-            if (localStorage.getItem('nightMode') === 'enabled') {
-                document.body.classList.add('night-mode');
-            }
-            nightModeToggle.addEventListener('click', function() {
-                document.body.classList.toggle('night-mode');
-                localStorage.setItem('nightMode', document.body.classList.contains('night-mode') ? 'enabled' : 'disabled');
-            });
-        }
+.dropdown-content a {
+    color: #004080;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-weight: normal;
+}
 
-        // Smart Search with Auto-suggestions for CiliaHub
-        async function loadCiliaHubData() {
-            const tableBody = document.getElementById('ciliahub-table-body');
-            const searchInput = document.getElementById('ciliahub-search');
-            const filterSelect = document.getElementById('ciliahub-filter');
-            const resetBtn = document.getElementById('ciliahub-reset');
-            const downloadBtn = document.getElementById('download-ciliahub');
-            const batchQueryBtn = document.getElementById('batchQueryBtn');
-            const batchGenesInput = document.getElementById('batchGenes');
-            const batchResultsDiv = document.getElementById('batchResults');
-            const batchResultsContainer = document.getElementById('batchResultsContainer');
-            const clearBatchResultsBtn = document.getElementById('clearBatchResults');
-            const popularGenesList = document.getElementById('popularGenesList');
-            const errorDiv = document.getElementById('ciliahub-error');
-            const loadingDiv = document.getElementById('ciliahub-loading');
-            const table = document.querySelector('.ciliahub-table');
-            const suggestions = document.getElementById('suggestions');
+.dropdown-content a:hover {
+    background-color: #004080;
+    color: white;
+}
 
-            let data = [];
-            let searchCounts = JSON.parse(sessionStorage.getItem('popularGenes')) || {};
-            let debounceTimeout;
+.dropdown:hover .dropdown-content {
+    display: block;
+}
 
-            function showError(message) {
-                if (errorDiv) {
-                    errorDiv.textContent = message;
-                    errorDiv.style.display = 'block';
-                }
-                if (loadingDiv) loadingDiv.style.display = 'none';
-                if (table) table.style.display = 'none';
-            }
+.dropdown:hover .dropbtn {
+    background-color: #002b5e;
+    border-radius: 5px;
+}
 
-            function hideError() {
-                if (errorDiv) errorDiv.style.display = 'none';
-            }
+/* Container */
+.container {
+    width: 100%;
+    max-width: 1400px;
+    margin: 80px auto 20px;
+    padding: 20px;
+    background: white;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
 
-            function formatReference(reference) {
-                if (!reference) return 'N/A';
-                const refs = reference.split(';').map(ref => ref.trim()).filter(ref => ref);
-                const formattedRefs = refs.map(ref => {
-                    if (/^\d+$/.test(ref)) {
-                        return `<a href="https://pubmed.ncbi.nlm.nih.gov/${ref}/" target="_blank">${ref}</a>`;
-                    } else if (ref.startsWith('https://doi.org/') || /^10\.\d{4,}/.test(ref)) {
-                        const doi = ref.startsWith('https://doi.org/') ? ref.replace('https://doi.org/', '') : ref;
-                        const doiUrl = `https://doi.org/${doi}`;
-                        return `<a href="${doiUrl}" target="_blank">${doi}</a>`;
-                    } else if (ref.startsWith('http://') || ref.startsWith('https://')) {
-                        return `<a href="${ref}" target="_blank">${ref}</a>`;
-                    } else {
-                        return ref;
-                    }
-                });
-                return formattedRefs.join(', ');
-            }
+/* New style container for the four sections */
+.compact-section > .container {
+    max-width: 900px;
+    margin: 50px auto 20px;
+    box-shadow: none;
+    padding: 15px;
+}
 
-            function populateTable(filteredData = []) {
-                if (!tableBody) return;
-                tableBody.innerHTML = '';
+/* Sections */
+.section {
+    display: none;
+}
 
-                if (filteredData.length === 0) {
-                    if (loadingDiv) loadingDiv.style.display = 'none';
-                    if (table) table.style.display = 'none';
-                    return;
-                }
+/* Image Styling */
+.fit-image {
+    width: 150px;
+    height: auto;
+    object-fit: contain;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
 
-                filteredData.forEach(item => {
-                    const sanitizedLocalization = (item.localization || '')
-                        .toLowerCase()
-                        .replace(/[\s,]+/g, '-');
+.team-image {
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+    border-radius: 50%;
+}
+.figure-image {
+    width: 100%;            /* This is OK if the parent is constrained */
+    max-width: none;        /* Remove any overriding max */
+    height: auto;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto 20px;
+    border-radius: 4px;
+}
+.overview-image {
+    width: 100%;
+    max-width: 860px;
+    height: auto;
+    object-fit: contain;
+    display: block;
+    margin: 15px auto;
+    border-radius: 4px;
+}
 
-                    const referenceLinks = formatReference(item.reference);
-                    const synonyms = item.synonym ? item.synonym.split(',').map(s => s.trim()).join('<br>') : '';
+.large-image {
+    width: 100%;
+    max-width: 700px;
+    height: auto;
+    display: block;
+    margin: 15px auto;
+    border-radius: 4px;
+}
 
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td><a href="https://www.ncbi.nlm.nih.gov/gene/?term=${item.gene || ''}" target="_blank">${item.gene || ''}</a></td>
-                        <td><a href="https://www.ensembl.org/Homo_sapiens/Gene/Summary?g=${item.ensembl_id || ''}" target="_blank">${item.ensembl_id || ''}</a></td>
-                        <td class="description" data-full-text="${item.description || ''}">${item.description || ''}</td>
-                        <td>${synonyms}</td>
-                        <td><a href="https://www.omim.org/entry/${item.omim_id || ''}" target="_blank">${item.omim_id || ''}</a></td>
-                        <td class="reference" data-tooltip="${item.reference || ''}">${referenceLinks}</td>
-                        <td>${item.localization || ''}</td>
-                    `;
-                    if (sanitizedLocalization) row.classList.add(sanitizedLocalization);
-                    tableBody.appendChild(row);
-                });
+.crispr-image {
+    width: 100%;
+    max-width: 800px;
+    height: auto;
+    display: block;
+    margin: 15px auto;
+    border-radius: 4px;
+}
 
-                if (loadingDiv) loadingDiv.style.display = 'none';
-                if (table) table.style.display = 'table';
-            }
+/* Home Section Text Alignment with Full Width */
+#home {
+    max-width: 100%;
+    padding: 20px;
+}
 
-            function updatePopularGenes() {
-                if (!popularGenesList) return;
-                const sortedGenes = Object.entries(searchCounts)
-                    .sort((a, b) => b[1] - a[1])
-                    .slice(0, 5);
-                popularGenesList.innerHTML = sortedGenes.length
-                    ? sortedGenes.map(([gene, count]) => `<li>${gene} (${count} searches)</li>`).join('')
-                    : '<li>No searches yet.</li>';
-            }
+#home .container {
+    max-width: 100%;
+}
 
-            function showSearchPrompt() {
-                if (loadingDiv) {
-                    loadingDiv.innerHTML = 'Enter a search term to explore the CiliaHub database...';
-                    loadingDiv.style.display = 'block';
-                }
-                if (table) table.style.display = 'none';
-            }
+#home .text-content {
+    width: 100%; /* Matches the full width of the section */
+    margin: 0 auto;
+    padding: 0 20px;
+}
 
-            function showSuggestions() {
-                if (!searchInput || !suggestions) return;
-                const query = searchInput.value.toLowerCase().trim();
-                suggestions.innerHTML = '';
-                if (query.length < 2) {
-                    suggestions.style.display = 'none';
-                    return;
-                }
+#home h1 {
+    color: #004080; /* Dark blue for "Welcome to Kaplan's Lab" */
+    margin-bottom: 20px;
+    text-align: center;
+}
 
-                const filteredGenes = data.filter(item => {
-                    const searchableText = [
-                        item.gene || '',
-                        item.ensembl_id || '',
-                        item.description || '',
-                        item.synonym || '',
-                        item.omim_id || '',
-                        item.localization || ''
-                    ].join(' ').toLowerCase();
-                    return searchableText.includes(query);
-                });
+#home p,
+#home .mission-statement,
+#home .research-updates {
+    width: 100%; /* Ensures full width alignment */
+    margin: 0 auto 15px;
+}
 
-                filteredGenes.slice(0, 5).forEach(item => {
-                    const div = document.createElement('div');
-                    div.className = 'suggestion-item';
-                    div.textContent = `${item.gene || ''} (${item.ensembl_id || ''})`;
-                    div.addEventListener('click', () => {
-                        searchInput.value = item.gene || '';
-                        suggestions.style.display = 'none';
-                        const filteredData = data.filter(d =>
-                            (d.gene && d.gene.toLowerCase().includes(item.gene.toLowerCase())) ||
-                            (d.ensembl_id && d.ensembl_id.toLowerCase().includes(item.gene.toLowerCase())) ||
-                            (d.synonym && d.synonym.toLowerCase().includes(item.gene.toLowerCase())) ||
-                            (d.omim_id && d.omim_id.toLowerCase().includes(item.gene.toLowerCase()))
-                        );
-                        populateTable(filteredData);
-                    });
-                    suggestions.appendChild(div);
-                });
+#home .research-grid {
+    width: 100%; /* Matches the full width */
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
 
-                suggestions.style.display = filteredGenes.length > 0 ? 'block' : 'none';
-            }
+/* Full Width for Publications, News, and Resources on Homepage */
+#publications,
+#news,
+#resources {
+    width: 100%;
+    max-width: 100%; /* Spans full width */
+    padding: 20px;
+    margin: 0 auto;
+}
 
-            function hideSuggestions() {
-                if (suggestions) {
-                    suggestions.style.display = 'none';
-                }
-            }
+#publications .research-grid,
+#news .research-grid,
+#resources .research-grid {
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
 
-            function debounce(func, wait) {
-                return function (...args) {
-                    clearTimeout(debounceTimeout);
-                    debounceTimeout = setTimeout(() => func.apply(this, args), wait);
-                };
-            }
+/* Research Updates (Home Page) */
+.research-updates {
+    margin-top: 20px;
+}
 
-            try {
-                const response = await fetch('https://raw.githubusercontent.com/rarediseaselab/home/main/ciliahub_data.json');
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                data = await response.json();
-                console.log('Loaded entries:', data.length);
+.research-updates h2 {
+    background-color: #004080;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    margin-bottom: 15px;
+}
 
-                showSearchPrompt();
-                updatePopularGenes();
-            } catch (error) {
-                console.error('Error loading CiliaHub data:', error);
-                showError('Failed to load CiliaHub data. Please check your network or contact support.');
-                return;
-            }
+/* Generic Research Grid */
+.research-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 15px;
+}
 
-            if (searchInput) {
-                searchInput.addEventListener('input', debounce(() => {
-                    hideError();
-                    showSuggestions();
-                    const query = searchInput.value.toLowerCase().trim();
+.research-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 15px;
+    background: #e6f2ff;
+    padding: 15px;
+    border-radius: 5px;
+    border-left: 4px solid #004080;
+    overflow: hidden;
+}
 
-                    if (!query) {
-                        showSearchPrompt();
-                        return;
-                    }
+.research-item img {
+    flex-shrink: 0;
+    margin-right: 15px;
+}
 
-                    searchCounts[query] = (searchCounts[query] || 0) + 1;
-                    sessionStorage.setItem('popularGenes', JSON.stringify(searchCounts));
-                    updatePopularGenes();
+.research-text {
+    flex-grow: 1;
+}
 
-                    const filteredData = data.filter(item =>
-                        (item.gene && item.gene.toLowerCase().includes(query)) ||
-                        (item.ensembl_id && item.ensembl_id.toLowerCase().includes(query)) ||
-                        (item.synonym && item.synonym.toLowerCase().includes(query)) ||
-                        (item.omim_id && item.omim_id.toLowerCase().includes(query)) ||
-                        (item.reference && item.reference.toLowerCase().includes(query))
-                    );
+.research-item p, .research-item ul {
+    margin: 0;
+}
 
-                    populateTable(filteredData);
-                }, 300));
+.research-item ul {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 5px;
+}
 
-                searchInput.addEventListener('focus', showSuggestions);
-                searchInput.addEventListener('blur', () => {
-                    setTimeout(hideSuggestions, 200);
-                });
-            }
+.research-item ul li {
+    margin-bottom: 3px;
+    font-size: 0.9em;
+}
 
-            if (filterSelect) {
-                filterSelect.addEventListener('change', () => {
-                    hideError();
-                    const filterValue = filterSelect.value.toLowerCase();
-                    const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
+.research-item h3 {
+    width: 100%;
+    text-align: left;
+    background: none;
+    padding: 0;
+    margin-bottom: 10px;
+    color: #004080;
+    font-size: 1.1em;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 5px;
+}
 
-                    if (!query && !filterValue) {
-                        showSearchPrompt();
-                        return;
-                    }
+/* Research Overview Grid */
+.research-overview-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-top: 20px;
+}
 
-                    let filteredData = data;
+.research-overview-item {
+    background: #e6f2ff;
+    padding: 15px;
+    border-radius: 5px;
+    border-left: 4px solid #004080;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
 
-                    if (query) {
-                        filteredData = filteredData.filter(item =>
-                            (item.gene && item.gene.toLowerCase().includes(query)) ||
-                            (item.ensembl_id && item.ensembl_id.toLowerCase().includes(query)) ||
-                            (item.synonym && item.synonym.toLowerCase().includes(query)) ||
-                            (item.omim_id && item.omim_id.toLowerCase().includes(query)) ||
-                            (item.reference && item.reference.toLowerCase().includes(query))
-                        );
-                    }
+.research-overview-item h2 {
+    font-size: 1.5em;
+    color: #004080;
+    margin: 10px 0;
+}
 
-                    if (filterValue) {
-                        filteredData = filteredData.filter(item =>
-                            (item.localization || '').toLowerCase().replace(/[\s,]+/g, '-') === filterValue
-                        );
-                    }
+.research-text {
+    font-size: 1em;
+    color: #333;
+    line-height: 1.5;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
 
-                    populateTable(filteredData);
-                });
-            }
+/* Read More Button */
+.read-more-btn {
+    margin-top: 10px;
+    padding: 8px 15px;
+    background-color: #004080;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: bold;
+}
 
-            if (resetBtn) {
-                resetBtn.addEventListener('click', () => {
-                    hideError();
-                    if (searchInput) searchInput.value = '';
-                    if (filterSelect) filterSelect.value = '';
-                    searchCounts = {};
-                    sessionStorage.removeItem('popularGenes');
-                    updatePopularGenes();
-                    showSearchPrompt();
-                    if (suggestions) suggestions.style.display = 'none';
-                });
-            }
+.read-more-btn:hover {
+    background-color: #002b5e;
+    text-decoration: none;
+}
 
-            if (downloadBtn) {
-                downloadBtn.addEventListener('click', () => {
-                    const csv = [
-                        ['Gene', 'Ensembl ID', 'Gene Description', 'Synonym', 'OMIM ID', 'Reference', 'Ciliary Localization'],
-                        ...data.map(item => [
-                            item.gene || '',
-                            item.ensembl_id || '',
-                            item.description || '',
-                            item.synonym || '',
-                            item.omim_id || '',
-                            item.reference || '',
-                            item.localization || ''
-                        ])
-                    ].map(row => row.map(cell => `"${cell.replace(/"/g, '""')}"`).join(',')).join('\n');
+/* Team Section Styling */
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-top: 20px;
+}
 
-                    const blob = new Blob([csv], { type: 'text/csv' });
-                    const url = window.URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = 'ciliahub_data.csv';
-                    a.click();
-                    window.URL.revokeObjectURL(url);
-                });
-            }
+.team-member {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    background: #e6f2ff;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 4px solid #004080;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
 
-            if (batchQueryBtn && batchGenesInput && batchResultsDiv && batchResultsContainer) {
-                batchQueryBtn.addEventListener('click', () => {
-                    hideError();
-                    const input = batchGenesInput.value.trim();
-                    if (!input) {
-                        batchResultsDiv.innerHTML = '<p style="color: red;">Please enter at least one gene name or ID.</p>';
-                        batchResultsContainer.style.display = 'block';
-                        return;
-                    }
-                    const queries = input.split(/[\s,\n]+/).filter(q => q.trim()).map(q => q.toLowerCase());
-                    queries.forEach(query => {
-                        searchCounts[query] = (searchCounts[query] || 0) + 1;
-                        sessionStorage.setItem('popularGenes', JSON.stringify(searchCounts));
-                    });
-                    updatePopularGenes();
-                    const filteredData = data.filter(item =>
-                        queries.some(query =>
-                            (item.gene && item.gene.toLowerCase() === query) ||
-                            (item.ensembl_id && item.ensembl_id.toLowerCase() === query) ||
-                            (item.synonym && item.synonym.toLowerCase().includes(query)) ||
-                            (item.omim_id && item.omim_id.toLowerCase() === query)
-                        )
-                    );
-                    if (filteredData.length === 0) {
-                        batchResultsDiv.innerHTML = '<p>No matching genes found.</p>';
-                        batchResultsContainer.style.display = 'block';
-                        return;
-                    }
-                    batchResultsDiv.innerHTML = `
-                        <table style="width: 100%; border-collapse: collapse;">
-                            <thead>
-                                <tr style="background-color: #003366; color: white;">
-                                    <th style="padding: 10px; width: 10%;">Gene</th>
-                                    <th style="padding: 10px; width: 10%;">Ensembl ID</th>
-                                    <th style="padding: 10px; width: 25%;">Description</th>
-                                    <th style="padding: 10px; width: 10%;">Synonym</th>
-                                    <th style="padding: 10px; width: 10%;">OMIM ID</th>
-                                    <th style="padding: 10px; width: 20%;">Reference</th>
-                                    <th style="padding: 10px; width: 15%;">Localization</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${filteredData.map(item => {
-                                    const referenceLinks = formatReference(item.reference);
-                                    return `
-                                        <tr>
-                                            <td style="padding: 10px; border-bottom: 1px solid #ddd;"><a href="https://www.ncbi.nlm.nih.gov/gene/?term=${item.gene || ''}" target="_blank">${item.gene || ''}</a></td>
-                                            <td style="padding: 10px; border-bottom: 1px solid #ddd;"><a href="https://www.ensembl.org/Homo_sapiens/Gene/Summary?g=${item.ensembl_id || ''}" target="_blank">${item.ensembl_id || ''}</a></td>
-                                            <td style="padding: 10px; border-bottom: 1px solid #ddd;">${item.description || ''}</td>
-                                            <td style="padding: 10px; border-bottom: 1px solid #ddd;">${item.synonym || ''}</td>
-                                            <td style="padding: 10px; border-bottom: 1px solid #ddd;"><a href="https://www.omim.org/entry/${item.omim_id || ''}" target="_blank">${item.omim_id || ''}</a></td>
-                                            <td style="padding: 10px; border-bottom: 1px solid #ddd;">${referenceLinks}</td>
-                                            <td style="padding: 10px; border-bottom: 1px solid #ddd;">${item.localization || ''}</td>
-                                        </tr>
-                                    `;
-                                }).join('')}
-                            </tbody>
-                        </table>
-                    `;
-                    batchResultsContainer.style.display = 'block';
-                });
-            }
+.team-member:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+}
 
-            if (clearBatchResultsBtn) {
-                clearBatchResultsBtn.addEventListener('click', () => {
-                    if (batchResultsDiv) batchResultsDiv.innerHTML = '';
-                    if (batchResultsContainer) batchResultsContainer.style.display = 'none';
-                    if (batchGenesInput) batchGenesInput.value = '';
-                });
-            }
-        }
+.team-photo {
+    flex-shrink: 0;
+    margin-right: 20px;
+}
 
-        // Initialize CiliaHub only when the section is shown
-        function initializeCiliaHub() {
-            if (document.getElementById('ciliahub')) {
-                loadCiliaHubData();
-            }
-        }
+.team-info {
+    flex-grow: 1;
+}
 
-        // Override showSection to initialize CiliaHub when section is shown
-        const originalShowSection = showSection;
-        showSection = function(sectionId) {
-            originalShowSection(sectionId);
-            if (sectionId === 'ciliahub') {
-                initializeCiliaHub();
-            }
-        };
+.team-name {
+    font-size: 1.4em;
+    font-weight: bold;
+    color: #004080;
+    margin-bottom: 5px;
+}
 
-        // Initial load: only initialize if ciliahub is the active section
-        if (document.getElementById('ciliahub').style.display === 'block') {
-            initializeCiliaHub();
-        }
-    });
-</script>
+.team-title {
+    font-size: 1.1em;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.team-member p, .team-member ul {
+    font-size: 1em;
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+.team-member ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+/* Gallery Section */
+.gallery-section {
+    background: url('cilia_neuron.png') no-repeat center center;
+    background-size: cover;
+    padding: 40px 20px;
+    position: relative;
+}
+
+.gallery-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.85);
+    z-index: 0;
+}
+
+.gallery-layout {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.gallery-quote {
+    flex: 1;
+    min-width: 300px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 8px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.gallery-quote h1 {
+    font-size: 2.5em;
+    color: #004080;
+    margin-bottom: 20px;
+}
+
+.gallery-quote p {
+    font-style: italic;
+    font-size: 1.2em;
+    color: #444;
+    line-height: 1.6;
+}
+
+.gallery-items {
+    flex: 2;
+    min-width: 300px;
+}
+
+.gallery-subsection {
+    margin-bottom: 40px;
+}
+
+.gallery-subsection h2 {
+    font-size: 1.8em;
+    color: #004080;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #004080;
+    padding-bottom: 5px;
+}
+
+.gallery-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.gallery-item {
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    min-height: 250px;
+}
+
+.gallery-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.gallery-media {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    object-fit: contain;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+.gallery-text {
+    flex-grow: 1;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.gallery-text h3 {
+    font-size: 1.2em;
+    color: #004080;
+    margin-bottom: 10px;
+}
+
+.gallery-text p {
+    font-size: 1em;
+    color: #555;
+    line-height: 1.5;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+}
+
+/* Publications Search */
+.pub-search {
+    width: 100%;
+    max-width: 400px;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #004080;
+    border-radius: 4px;
+    font-size: 1em;
+}
+
+/* Back to Top Button */
+#back-to-top {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background-color: #004080;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s, transform 0.3s;
+    z-index: 1000;
+}
+
+#back-to-top:hover {
+    background-color: #002b5e;
+    transform: scale(1.1);
+}
+
+/* Night Mode */
+body.night-mode {
+    background-color: #1a1a1a;
+    color: #d9d9d9;
+}
+
+.night-mode .container {
+    background: #2b2b2b;
+    box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1);
+}
+
+.night-mode .navbar {
+    background: linear-gradient(90deg, #ff6f61, #6b5b95, #88b04b);
+}
+
+.night-mode .navbar a,
+.night-mode .dropbtn {
+    color: #e6e6e6;
+}
+
+.night-mode .navbar a:hover,
+.night-mode .dropdown:hover .dropbtn {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.night-mode .dropdown-content {
+    background-color: #333;
+}
+
+.night-mode .dropdown-content a {
+    color: #b3d9ff;
+}
+
+.night-mode .dropdown-content a:hover {
+    background-color: #004d99;
+    color: #fff;
+}
+
+.night-mode .section,
+.night-mode h1,
+.night-mode h2,
+.night-mode h3,
+.night-mode p {
+    color: #d9d9d9;
+}
+
+.night-mode .research-item,
+.night-mode .team-member,
+.night-mode .gallery-item {
+    background: #3d3d3d;
+    border-left: 4px solid #0066cc;
+}
+
+.night-mode .research-updates h2 {
+    background-color: #ff6f61;
+}
+
+.night-mode footer {
+    background-color: #003366;
+}
+
+.night-mode a {
+    color: #b3d9ff;
+}
+
+.night-mode a:hover {
+    color: #cce6ff;
+}
+
+.night-mode #back-to-top {
+    background-color: #0066cc;
+}
+
+.night-mode #back-to-top:hover {
+    background-color: #004d99;
+}
+
+/* Make all bold text steelblue */
+strong, b, [style*="font-weight: bold"] {
+    color: #004080;
+}
+
+.night-mode strong,
+.night-mode b,
+.night-mode [style*="font-weight: bold"] {
+    color: #b3d9ff;
+}
+
+/* Link Styling */
+a {
+    color: #004080;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: #002b5e;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #004080;
+    color: white;
+}
+
+.social-links {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.social-icon {
+    width: 30px;
+    height: 30px;
+    transition: transform 0.3s;
+}
+
+.social-icon:hover {
+    transform: scale(1.1);
+}
+
+/* Lightbox Styles */
+.lightbox {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.lightbox-content {
+    max-width: 90%;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: 4px;
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: #fff;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.lightbox-close:hover {
+    color: #ccc;
+}
+
+.lightbox-link {
+    cursor: pointer;
+}
+
+.lightbox-link img {
+    transition: opacity 0.3s ease;
+}
+
+.lightbox-link:hover img {
+    opacity: 0.8;
+}
+
+/* CiliaHub Section */
+.ciliahub-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
+    background-color: #e6f2ff;
+    padding: 15px;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#ciliahub-search, #ciliahub-filter, #ciliahub-reset, #download-ciliahub {
+    padding: 8px 12px;
+    border: 2px solid #004080;
+    border-radius: 4px;
+    font-size: 1em;
+    background-color: white;
+    color: #333;
+    max-width: 400px;
+    width: 100%;
+}
+
+#ciliahub-filter {
+    cursor: pointer;
+}
+
+#ciliahub-reset {
+    background-color: #f9f9f9;
+    color: #004080;
+    cursor: pointer;
+}
+
+#ciliahub-reset:hover {
+    background-color: #d9e6ff;
+}
+
+.ciliahub-legend {
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+    font-size: 0.9em;
+    color: #333;
+}
+
+.ciliahub-legend span {
+    margin-right: 15px;
+}
+
+.ciliahub-legend .legend-axoneme::before {
+    content: '';
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    background-color: #f0faff;
+    border: 1px solid #004080;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+.ciliahub-legend .legend-basal-body::before {
+    content: '';
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    background-color: #e6f2ff;
+    border: 1px solid #004080;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+.ciliahub-legend .legend-transition-zone::before {
+    content: '';
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    background-color: #f5f5f5;
+    border: 1px solid #004080;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+.ciliahub-table {
+    width: 100%;
+    max-width: 100%; /* Matches approximate width of provided text */
+    margin: 0 auto;
+    table-layout: fixed;
+    border-collapse: collapse;
+    background: #e6f2ff;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.ciliahub-table th,
+.ciliahub-table td {
+    padding: 14px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    font-size: 0.9em;
+    vertical-align: top;
+}
+
+.ciliahub-table th {
+    background-color: #003366;
+    color: white;
+    font-weight: bold;
+    border-bottom: 2px solid #004080;
+}
+
+/* Ensure Ensembl ID column is fully visible and clickable */
+.ciliahub-table th:nth-child(2),
+.ciliahub-table td:nth-child(2) {
+    width: 30%; /* Increased width for Ensembl ID (~210px) */
+    white-space: normal; /* Allow wrapping */
+    overflow: visible; /* Ensure no content is hidden */
+    word-break: break-all; /* Break long IDs for readability */
+}
+
+/* Style for Ensembl ID links */
+.ciliahub-table td:nth-child(2) a {
+    color: #004080;
+    text-decoration: underline;
+    font-weight: normal;
+    display: inline-block;
+    width: 100%;
+}
+
+/* Ensure Synonym column is clear and properly formatted */
+.ciliahub-table th:nth-child(4),
+.ciliahub-table td:nth-child(4) {
+    width: 25%; /* Increased width for Synonym (~175px) */
+    white-space: normal; /* Allow wrapping */
+    overflow: visible; /* Ensure no content is hidden */
+    line-height: 1.5; /* Improve readability */
+}
+
+/* Style for other columns to fit within table */
+.ciliahub-table th:nth-child(1),
+.ciliahub-table td:nth-child(1) {
+    width: 10%; /* Gene (~70px) */
+}
+
+.ciliahub-table th:nth-child(3),
+.ciliahub-table td:nth-child(3) {
+    width: 20%; /* Gene Description (~140px) */
+}
+
+.ciliahub-table th:nth-child(5),
+.ciliahub-table td:nth-child(5) {
+    width: 10%; /* OMIM ID (~70px) */
+}
+
+.ciliahub-table th:nth-child(6),
+.ciliahub-table td:nth-child(6) {
+    width: 10%; /* Reference (~70px) */
+}
+
+.ciliahub-table th:nth-child(7),
+.ciliahub-table td:nth-child(7) {
+    width: 15%; /* Ciliary Localization (~105px) */
+}
+
+.ciliahub-table td:nth-child(2) a:hover,
+.ciliahub-table td:nth-child(5) a:hover,
+.ciliahub-table td:nth-child(6) a:hover {
+    color: #002b5e;
+    text-decoration: underline;
+}
+
+.ciliahub-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.ciliahub-table tr.axoneme {
+    background-color: #f0faff;
+}
+
+.ciliahub-table tr.basal-body {
+    background-color: #e6f2ff;
+}
+
+.ciliahub-table tr.transition-zone {
+    background-color: #f5f5f5;
+}
+
+.ciliahub-table tr:hover {
+    background-color: #d9e6ff;
+}
+
+/* Specific styling for links in the Reference column */
+.ciliahub-table td a {
+    color: #004080;
+    text-decoration: underline;
+    font-weight: normal;
+    display: inline-block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Tooltip for Reference column */
+.ciliahub-table td.reference {
+    position: relative;
+    cursor: help;
+}
+
+.ciliahub-table td.reference:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    top: -45px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #004080;
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    z-index: 1002;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Night Mode for CiliaHub */
+.night-mode .ciliahub-controls {
+    background-color: #3d3d3d;
+}
+
+.night-mode #ciliahub-search, .night-mode #ciliahub-filter, .night-mode #ciliahub-reset, .night-mode #download-ciliahub {
+    background-color: #2e2e2e;
+    border: 2px solid #b3d9ff;
+    color: #d9d9d9;
+}
+
+.night-mode #ciliahub-reset:hover {
+    background-color: #4a4a4a;
+}
+
+.night-mode .ciliahub-legend {
+    background-color: #2e2e2e;
+    color: #d9d9d9;
+}
+
+.night-mode .ciliahub-legend .legend-axoneme::before {
+    background-color: #4a4a4a;
+    border: 1px solid #b3d9ff;
+}
+
+.night-mode .ciliahub-legend .legend-basal-body::before {
+    background-color: #3d3d3d;
+    border: 1px solid #b3d9ff;
+}
+
+.night-mode .ciliahub-legend .legend-transition-zone::before {
+    background-color: #2e2e2e;
+    border: 1px solid #b3d9ff;
+}
+
+.night-mode .ciliahub-table {
+    background: #3d3d3d;
+    box-shadow: 0 3px 10px rgba(255, 255, 255, 0.1);
+}
+
+.night-mode .ciliahub-table th {
+    background-color: #0066cc;
+    border-bottom: 2px solid #b3d9ff;
+}
+
+.night-mode .ciliahub-table tr:nth-child(even) {
+    background-color: #2e2e2e;
+}
+
+.night-mode .ciliahub-table tr.axoneme {
+    background-color: #4a4a4a;
+}
+
+.night-mode .ciliahub-table tr.basal-body {
+    background-color: #3d3d3d;
+}
+
+.night-mode .ciliahub-table tr.transition-zone {
+    background-color: #2e2e2e;
+}
+
+.night-mode .ciliahub-table tr:hover {
+    background-color: #4a4a4a;
+}
+
+.night-mode .ciliahub-table td,
+.night-mode .ciliahub-table th {
+    border-bottom: 1px solid #555;
+}
+
+.night-mode .ciliahub-table td a {
+    color: #b3d9ff;
+}
+
+.night-mode .ciliahub-table td a:hover {
+    color: #cce6ff;
+}
+
+.night-mode .ciliahub-table td.reference:hover::after {
+    background-color: #0066cc;
+    color: #d9d9d9;
+}
+
+.ciliahub-table tr.basal-body-cilia {
+    background-color: #e6f2ff;
+}
+
+.ciliahub-table tr.cilia-basal-body {
+    background-color: #e6f2ff;
+}
+
+.ciliahub-table tr.flagella-cilia {
+    background-color: #f0faff;
+}
+
+.ciliahub-table tr.flagella-cilia-basal-body {
+    background-color: #f0faff;
+}
+
+.ciliahub-table tr.ciliary-associated-gene {
+    background-color: #f5f5f5;
+}
+
+.night-mode .ciliahub-table tr.basal-body-cilia {
+    background-color: #3d3d3d;
+}
+
+.night-mode .ciliahub-table tr.cilia-basal-body {
+    background-color: #3d3d3d;
+}
+
+.night-mode .ciliahub-table tr.flagella-cilia {
+    background-color: #4a4a4a;
+}
+
+.night-mode .ciliahub-table tr.flagella-cilia-basal-body {
+    background-color: #4a4a4a;
+}
+
+.night-mode .ciliahub-table tr.ciliary-associated-gene {
+    background-color: #2e2e2e;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .container {
+        max-width: 95%;
+        padding: 15px;
+    }
+    .navbar {
+        height: 60px;
+        justify-content: space-around;
+        gap: 5px;
+        padding: 10px 5px;
+    }
+    .navbar a, .dropbtn {
+        padding: 8px 10px;
+        font-size: 0.9em;
+    }
+    .research-item {
+        flex-direction: row;
+        align-items: center;
+    }
+    .research-item img {
+        width: 120px;
+        margin-right: 10px;
+    }
+    .team-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .team-member {
+        flex-direction: column;
+        text-align: center;
+    }
+    .team-photo {
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
+    .gallery-item {
+        flex-direction: column;
+        align-items: center;
+    }
+    .gallery-media {
+        max-width: 100%;
+    }
+    .figure-image, .overview-image, .crispr-image {
+        max-width: 90%;
+    }
+    .team-image {
+        width: 120px;
+        height: 120px;
+    }
+    .fit-image {
+        width: 120px;
+    }
+    .ciliahub-table {
+        font-size: 0.8em;
+        max-width: 100%; /* Fit within container on smaller screens */
+        overflow-x: auto; /* Enable horizontal scrolling */
+    }
+    .ciliahub-table th,
+    .ciliahub-table td {
+        padding: 8px;
+        min-width: 80px; /* Ensure columns are wide enough */
+    }
+    .ciliahub-table th:nth-child(2),
+    .ciliahub-table td:nth-child(2) {
+        min-width: 100px; /* Adjusted for Ensembl ID visibility */
+        white-space: normal;
+        overflow: visible;
+        word-break: break-all;
+    }
+    .ciliahub-table th:nth-child(4),
+    .ciliahub-table td:nth-child(4) {
+        min-width: 100px; /* Adjusted for Synonym visibility */
+        white-space: normal;
+        overflow: visible;
+    }
+    .ciliahub-controls {
+        flex-direction: column;
+        align-items: center;
+    }
+    #ciliahub-search,
+    #ciliahub-filter,
+    #ciliahub-reset,
+    #download-ciliahub {
+        width: 100%;
+        max-width: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar {
+        height: 60px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .navbar a, .dropbtn {
+        padding: 5px 8px;
+        font-size: 0.85em;
+    }
+    .research-item {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    .research-item img {
+        width: 100px;
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+    .team-grid {
+        grid-template-columns: 1fr;
+    }
+    .team-image {
+        width: 100px;
+        height: 100px;
+    }
+    .fit-image {
+        width: 100px;
+    }
+    .ciliahub-table {
+        font-size: 0.75em;
+        max-width: 100%; /* Fit within container */
+    }
+    .ciliahub-table th,
+    .ciliahub-table td {
+        padding: 6px;
+        min-width: 60px; /* Adjusted for smaller screens */
+    }
+    .ciliahub-table th:nth-child(2),
+    .ciliahub-table td:nth-child(2) {
+        min-width: 80px; /* Ensure Ensembl ID remains visible */
+        white-space: normal;
+        overflow: visible;
+        word-break: break-all;
+    }
+    .ciliahub-table th:nth-child(4),
+    .ciliahub-table td:nth-child(4) {
+        min-width: 80px; /* Ensure Synonym remains visible */
+        white-space: normal;
+        overflow: visible;
+    }
+}
+
+/* Night Mode Toggle Button */
+#night-mode-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    background-color: #004080;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s, transform 0.3s;
+    z-index: 1001;
+}
+
+#night-mode-toggle:hover {
+    background-color: #002b5e;
+    transform: scale(1.1);
+}
+
+.night-mode #night-mode-toggle {
+    background-color: #0066cc;
+}
+
+.night-mode #night-mode-toggle:hover {
+    background-color: #004d99;
+}
