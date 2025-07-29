@@ -16,43 +16,6 @@
         gtag('js', new Date());
         gtag('config', 'G-EKT3SLJ516');
     </script>
-    <style>
-        /* Suggestions Dropdown Styling */
-        .suggestions-dropdown {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: #fff;
-            border: 1px solid #cce0f5;
-            border-radius: 4px;
-            max-height: 200px;
-            overflow-y: auto;
-            z-index: 1000;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-            display: none;
-        }
-        .suggestion-item {
-            padding: 8px 12px;
-            cursor: pointer;
-            font-family: Arial, sans-serif;
-            font-size: 14px;
-        }
-        .suggestion-item:hover {
-            background: #f0f8ff;
-        }
-        .ciliahub-controls {
-            position: relative;
-        }
-        .search-input {
-            width: 100%;
-            max-width: 400px;
-            padding: 8px;
-            border: 1px solid #cce0f5;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-    </style>
     <script>
         function showSection(sectionId) {
             console.log("Showing section: " + sectionId);
@@ -289,10 +252,7 @@
 
                 <!-- Controls -->
                 <div class="ciliahub-controls mb-4 text-center">
-                    <div style="position: relative; display: inline-block; width: 100%; max-width: 400px;">
-                        <input type="text" id="ciliahub-search" class="search-input" placeholder="Search by Gene, Ensembl ID, or Synonym..." aria-label="Search CiliaHub database">
-                        <div id="suggestions" class="suggestions-dropdown"></div>
-                    </div>
+                    <input type="text" id="ciliahub-search" placeholder="Search by Gene, Ensembl ID, or Synonym..." aria-label="Search CiliaHub database">
                     <select id="ciliahub-filter" aria-label="Filter by ciliary localization">
                         <option value="">All Localizations</option>
                         <option value="basal-body">Basal Body</option>
@@ -824,117 +784,6 @@
                 document.body.classList.toggle('night-mode');
                 localStorage.setItem('nightMode', document.body.classList.contains('night-mode') ? 'enabled' : 'disabled');
             });
-
-            // Smart Search with Auto-suggestions for CiliaHub
-            const csearchInput = document.getElementById('ciliahub-search');
-            const suggestions = document.getElementById('suggestions');
-            let geneData = [];
-
-            // Sample gene data (replace with actual data fetching logic)
-            function loadGeneData() {
-                // This should be replaced with actual data fetching from your database or API
-                geneData = [
-                    { gene: "IFT88", ensembl_id: "ENSG00000032742", description: "Intraflagellar transport 88", synonym: "TTC10", omim_id: "600577", localization: "Cilia" },
-                    { gene: "BBS1", ensembl_id: "ENSG00000166266", description: "Bardet-Biedl syndrome 1", synonym: "BBS2L2", omim_id: "209900", localization: "Basal Body" },
-                    { gene: "NPHP1", ensembl_id: "ENSG00000144029", description: "Nephronophthisis 1", synonym: "NPH1", omim_id: "607100", localization: "Transition Zone" },
-                    // Add more gene entries as needed
-                ];
-            }
-
-            function showSuggestions() {
-                const query = csearchInput.value.toLowerCase().trim();
-                suggestions.innerHTML = '';
-                if (query.length < 2) {
-                    suggestions.style.display = 'none';
-                    return;
-                }
-
-                const filteredGenes = geneData.filter(gene => {
-                    const searchableText = [
-                        gene.gene || '',
-                        gene.ensembl_id || '',
-                        gene.description || '',
-                        gene.synonym || '',
-                        gene.omim_id || '',
-                        gene.localization || ''
-                    ].join(' ').toLowerCase();
-                    return searchableText.includes(query);
-                });
-
-                filteredGenes.slice(0, 5).forEach(gene => {
-                    const div = document.createElement('div');
-                    div.className = 'suggestion-item';
-                    div.textContent = `${gene.gene} (${gene.ensembl_id})`;
-                    div.addEventListener('click', () => {
-                        csearchInput.value = gene.gene;
-                        suggestions.style.display = 'none';
-                        filterTable();
-                    });
-                    suggestions.appendChild(div);
-                });
-
-                suggestions.style.display = filteredGenes.length > 0 ? 'block' : 'none';
-            }
-
-            function hideSuggestions() {
-                suggestions.style.display = 'none';
-            }
-
-            function filterTable() {
-                const query = csearchInput.value.toLowerCase().trim();
-                const filter = document.getElementById('ciliahub-filter').value;
-                const tableBody = document.getElementById('ciliahub-table-body');
-                tableBody.innerHTML = '';
-
-                const filteredGenes = geneData.filter(gene => {
-                    const searchableText = [
-                        gene.gene || '',
-                        gene.ensembl_id || '',
-                        gene.description || '',
-                        gene.synonym || '',
-                        gene.omim_id || '',
-                        gene.localization || ''
-                    ].join(' ').toLowerCase();
-                    const matchesQuery = query ? searchableText.includes(query) : true;
-                    const matchesFilter = filter ? (gene.localization || '').toLowerCase() === filter.toLowerCase() : true;
-                    return matchesQuery && matchesFilter;
-                });
-
-                filteredGenes.forEach(gene => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${gene.gene}</td>
-                        <td>${gene.ensembl_id}</td>
-                        <td>${gene.description}</td>
-                        <td>${gene.synonym}</td>
-                        <td>${gene.omim_id}</td>
-                        <td>Reference</td>
-                        <td>${gene.localization}</td>
-                    `;
-                    tableBody.appendChild(row);
-                });
-
-                document.getElementById('ciliahub-table').style.display = filteredGenes.length > 0 ? 'table' : 'none';
-                document.getElementById('ciliahub-loading').style.display = filteredGenes.length > 0 ? 'none' : 'block';
-            }
-
-            csearchInput.addEventListener('input', showSuggestions);
-            csearchInput.addEventListener('focus', showSuggestions);
-            csearchInput.addEventListener('blur', () => {
-                setTimeout(hideSuggestions, 200);
-            });
-            csearchInput.addEventListener('input', filterTable);
-            document.getElementById('ciliahub-filter').addEventListener('change', filterTable);
-            document.getElementById('ciliahub-reset').addEventListener('click', () => {
-                csearchInput.value = '';
-                document.getElementById('ciliahub-filter').value = '';
-                suggestions.style.display = 'none';
-                filterTable();
-            });
-
-            // Load gene data on page load
-            loadGeneData();
-            filterTable();
         });
     </script>
 
