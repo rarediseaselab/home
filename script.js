@@ -139,11 +139,11 @@
 
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                        <td><a href="https://www.ncbi.nlm.nih.gov/gene/?term=${item.gene}" target="_blank">${item.gene}</a></td>
-                        <td><a href="https://www.ensembl.org/Homo_sapiens/Gene/Summary?g=${item.ensembl_id}" target="_blank">${item.ensembl_id}</a></td>
+                        <td><a href="https://www.ncbi.nlm.nih.gov/gene/?term=${item.gene || ''}" target="_blank">${item.gene || ''}</a></td>
+                        <td><a href="https://www.ensembl.org/Homo_sapiens/Gene/Summary?g=${item.ensembl_id || ''}" target="_blank">${item.ensembl_id || ''}</a></td>
                         <td class="description" data-full-text="${item.description || ''}">${item.description || ''}</td>
                         <td>${synonyms}</td>
-                        <td><a href="https://www.omim.org/entry/${item.omim_id}" target="_blank">${item.omim_id}</a></td>
+                        <td><a href="https://www.omim.org/entry/${item.omim_id || ''}" target="_blank">${item.omim_id || ''}</a></td>
                         <td class="reference" data-tooltip="${item.reference || ''}">${referenceLinks}</td>
                         <td>${item.localization || ''}</td>
                     `;
@@ -197,9 +197,9 @@
                 filteredGenes.slice(0, 5).forEach(item => {
                     const div = document.createElement('div');
                     div.className = 'suggestion-item';
-                    div.textContent = `${item.gene} (${item.ensembl_id})`;
+                    div.textContent = `${item.gene || ''} (${item.ensembl_id || ''})`;
                     div.addEventListener('click', () => {
-                        searchInput.value = item.gene;
+                        searchInput.value = item.gene || '';
                         suggestions.style.display = 'none';
                         const filteredData = data.filter(d =>
                             (d.gene && d.gene.toLowerCase().includes(item.gene.toLowerCase())) ||
@@ -230,6 +230,9 @@
 
             try {
                 const response = await fetch('https://raw.githubusercontent.com/rarediseaselab/home/main/ciliahub_data.json');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
                 data = await response.json();
                 console.log('Loaded entries:', data.length);
 
@@ -390,11 +393,11 @@
                                     const referenceLinks = formatReference(item.reference);
                                     return `
                                         <tr>
-                                            <td style="padding: 10px; border-bottom: 1px solid #ddd;"><a href="https://www.ncbi.nlm.nih.gov/gene/?term=${item.gene}" target="_blank">${item.gene}</a></td>
-                                            <td style="padding: 10px; border-bottom: 1px solid #ddd;"><a href="https://www.ensembl.org/Homo_sapiens/Gene/Summary?g=${item.ensembl_id}" target="_blank">${item.ensembl_id}</a></td>
+                                            <td style="padding: 10px; border-bottom: 1px solid #ddd;"><a href="https://www.ncbi.nlm.nih.gov/gene/?term=${item.gene || ''}" target="_blank">${item.gene || ''}</a></td>
+                                            <td style="padding: 10px; border-bottom: 1px solid #ddd;"><a href="https://www.ensembl.org/Homo_sapiens/Gene/Summary?g=${item.ensembl_id || ''}" target="_blank">${item.ensembl_id || ''}</a></td>
                                             <td style="padding: 10px; border-bottom: 1px solid #ddd;">${item.description || ''}</td>
                                             <td style="padding: 10px; border-bottom: 1px solid #ddd;">${item.synonym || ''}</td>
-                                            <td style="padding: 10px; border-bottom: 1px solid #ddd;"><a href="https://www.omim.org/entry/${item.omim_id}" target="_blank">${item.omim_id}</a></td>
+                                            <td style="padding: 10px; border-bottom: 1px solid #ddd;"><a href="https://www.omim.org/entry/${item.omim_id || ''}" target="_blank">${item.omim_id || ''}</a></td>
                                             <td style="padding: 10px; border-bottom: 1px solid #ddd;">${referenceLinks}</td>
                                             <td style="padding: 10px; border-bottom: 1px solid #ddd;">${item.localization || ''}</td>
                                         </tr>
