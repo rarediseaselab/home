@@ -1,165 +1,692 @@
-/* General styles */
+/* General Reset */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: Arial, sans-serif;
 }
 
 body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
+    background-color: #f5f5f5;
     color: #333;
-    background-color: #f4f4f4;
+    line-height: 1.6;
 }
 
-.container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 20px;
-    background: white;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
-
-.header {
-    text-align: center;
-    padding: 2rem 0;
-}
-
-.header img {
-    max-width: 150px;
-}
-
-.header h1 {
-    font-size: 2.5rem;
-    color: #004080;
-}
-
+/* Navbar */
 .navbar {
-    background: #004080;
-    padding: 1rem;
-    position: sticky;
+    background-color: #004080;
+    padding: 10px;
+    position: fixed;
+    width: 100%;
     top: 0;
-    z-index: 1000;
-}
-
-.navbar ul {
-    list-style: none;
+    left: 0;
     display: flex;
     justify-content: center;
+    align-items: center;
+    gap: 15px;
+    z-index: 1000;
+    height: 60px;
 }
 
+/* Navbar Links */
 .navbar a {
     color: white;
     text-decoration: none;
-    padding: 0.5rem 1rem;
+    padding: 10px 15px;
     font-weight: bold;
 }
 
 .navbar a:hover {
-    background: #0066cc;
+    background-color: #002b5e;
     border-radius: 5px;
 }
 
-.breadcrumb {
-    margin: 1rem 0;
-    font-size: 0.9rem;
+/* Dropdown Menu */
+.dropdown {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
 }
 
-.breadcrumb a {
+.dropbtn {
+    color: white;
     text-decoration: none;
-    color: #0066cc;
+    padding: 10px 15px;
+    font-weight: bold;
+    cursor: pointer;
 }
 
-.breadcrumb a:hover {
-    text-decoration: underline;
-}
-
-.section {
+.dropdown-content {
     display: none;
-    padding: 2rem 0;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1001;
+    top: 100%;
 }
 
-.section.active {
+.dropdown-content a {
+    color: #004080;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-weight: normal;
+}
+
+.dropdown-content a:hover {
+    background-color: #004080;
+    color: white;
+}
+
+.dropdown:hover .dropdown-content {
     display: block;
 }
 
-.footer {
-    text-align: center;
-    padding: 1rem;
-    background: #004080;
-    color: white;
-    position: relative;
-    bottom: 0;
-    width: 100%;
-}
-
-#back-to-top {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: #0066cc;
-    color: white;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-    display: none;
-    border-radius: 50%;
-}
-
-#night-mode-toggle {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background: #0066cc;
-    color: white;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
+.dropdown:hover .dropbtn {
+    background-color: #002b5e;
     border-radius: 5px;
 }
 
-/* Night mode styles */
-.night-mode {
-    background-color: #121212;
-    color: #e0e0e0;
+/* Container */
+.container {
+    width: 100%;
+    max-width: 1400px;
+    margin: 80px auto 20px;
+    padding: 20px;
+    background: white;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+/* New style container for the four sections */
+.compact-section > .container {
+    max-width: 900px;
+    margin: 50px auto 20px;
+    box-shadow: none;
+    padding: 15px;
+}
+
+/* Sections */
+.section {
+    display: none;
+}
+
+/* Image Styling */
+.fit-image {
+    width: 150px;
+    height: auto;
+    object-fit: contain;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.team-image {
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+    border-radius: 50%;
+}
+.figure-image {
+    width: 100%;            /* This is OK if the parent is constrained */
+    max-width: none;        /* Remove any overriding max */
+    height: auto;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto 20px;
+    border-radius: 4px;
+}
+.overview-image {
+    width: 100%;
+    max-width: 860px;
+    height: auto;
+    object-fit: contain;
+    display: block;
+    margin: 15px auto;
+    border-radius: 4px;
+}
+
+.large-image {
+    width: 100%;
+    max-width: 700px;
+    height: auto;
+    display: block;
+    margin: 15px auto;
+    border-radius: 4px;
+}
+
+.crispr-image {
+    width: 100%;
+    max-width: 800px;
+    height: auto;
+    display: block;
+    margin: 15px auto;
+    border-radius: 4px;
+}
+
+/* Home Section Text Alignment with Full Width */
+#home {
+    max-width: 100%;
+    padding: 20px;
+}
+
+#home .container {
+    max-width: 100%;
+}
+
+#home .text-content {
+    width: 100%; /* Matches the full width of the section */
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+#home h1 {
+    color: #004080; /* Dark blue for "Welcome to Kaplan's Lab" */
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#home p,
+#home .mission-statement,
+#home .research-updates {
+    width: 100%; /* Ensures full width alignment */
+    margin: 0 auto 15px;
+}
+
+#home .research-grid {
+    width: 100%; /* Matches the full width */
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* Full Width for Publications, News, and Resources on Homepage */
+#publications,
+#news,
+#resources {
+    width: 100%;
+    max-width: 100%; /* Spans full width */
+    padding: 20px;
+    margin: 0 auto;
+}
+
+#publications .research-grid,
+#news .research-grid,
+#resources .research-grid {
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* Research Updates (Home Page) */
+.research-updates {
+    margin-top: 20px;
+}
+
+.research-updates h2 {
+    background-color: #004080;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+/* Generic Research Grid */
+.research-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.research-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 15px;
+    background: #e6f2ff;
+    padding: 15px;
+    border-radius: 5px;
+    border-left: 4px solid #004080;
+    overflow: hidden;
+}
+
+.research-item img {
+    flex-shrink: 0;
+    margin-right: 15px;
+}
+
+.research-text {
+    flex-grow: 1;
+}
+
+.research-item p, .research-item ul {
+    margin: 0;
+}
+
+.research-item ul {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 5px;
+}
+
+.research-item ul li {
+    margin-bottom: 3px;
+    font-size: 0.9em;
+}
+
+.research-item h3 {
+    width: 100%;
+    text-align: left;
+    background: none;
+    padding: 0;
+    margin-bottom: 10px;
+    color: #004080;
+    font-size: 1.1em;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 5px;
+}
+
+/* Research Overview Grid */
+.research-overview-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.research-overview-item {
+    background: #e6f2ff;
+    padding: 15px;
+    border-radius: 5px;
+    border-left: 4px solid #004080;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.research-overview-item h2 {
+    font-size: 1.5em;
+    color: #004080;
+    margin: 10px 0;
+}
+
+.research-text {
+    font-size: 1em;
+    color: #333;
+    line-height: 1.5;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+/* Read More Button */
+.read-more-btn {
+    margin-top: 10px;
+    padding: 8px 15px;
+    background-color: #004080;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.read-more-btn:hover {
+    background-color: #002b5e;
+    text-decoration: none;
+}
+
+/* Team Section Styling */
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.team-member {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    background: #e6f2ff;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 4px solid #004080;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.team-member:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+}
+
+.team-photo {
+    flex-shrink: 0;
+    margin-right: 20px;
+}
+
+.team-info {
+    flex-grow: 1;
+}
+
+.team-name {
+    font-size: 1.4em;
+    font-weight: bold;
+    color: #004080;
+    margin-bottom: 5px;
+}
+
+.team-title {
+    font-size: 1.1em;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.team-member p, .team-member ul {
+    font-size: 1em;
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+.team-member ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+/* Gallery Section */
+.gallery-section {
+    background: url('cilia_neuron.png') no-repeat center center;
+    background-size: cover;
+    padding: 40px 20px;
+    position: relative;
+}
+
+.gallery-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.85);
+    z-index: 0;
+}
+
+.gallery-layout {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.gallery-quote {
+    flex: 1;
+    min-width: 300px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 8px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.gallery-quote h1 {
+    font-size: 2.5em;
+    color: #004080;
+    margin-bottom: 20px;
+}
+
+.gallery-quote p {
+    font-style: italic;
+    font-size: 1.2em;
+    color: #444;
+    line-height: 1.6;
+}
+
+.gallery-items {
+    flex: 2;
+    min-width: 300px;
+}
+
+.gallery-subsection {
+    margin-bottom: 40px;
+}
+
+.gallery-subsection h2 {
+    font-size: 1.8em;
+    color: #004080;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #004080;
+    padding-bottom: 5px;
+}
+
+.gallery-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.gallery-item {
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    min-height: 250px;
+}
+
+.gallery-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.gallery-media {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    object-fit: contain;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+.gallery-text {
+    flex-grow: 1;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.gallery-text h3 {
+    font-size: 1.2em;
+    color: #004080;
+    margin-bottom: 10px;
+}
+
+.gallery-text p {
+    font-size: 1em;
+    color: #555;
+    line-height: 1.5;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+}
+
+/* Publications Search */
+.pub-search {
+    width: 100%;
+    max-width: 400px;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #004080;
+    border-radius: 4px;
+    font-size: 1em;
+}
+
+/* Back to Top Button */
+#back-to-top {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background-color: #004080;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s, transform 0.3s;
+    z-index: 1000;
+}
+
+#back-to-top:hover {
+    background-color: #002b5e;
+    transform: scale(1.1);
+}
+
+/* Night Mode */
+body.night-mode {
+    background-color: #1a1a1a;
+    color: #d9d9d9;
 }
 
 .night-mode .container {
-    background: #1e1e1e;
-    box-shadow: 0 0 10px rgba(255,255,255,0.1);
-}
-
-.night-mode .header h1 {
-    color: #b3d9ff;
+    background: #2b2b2b;
+    box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1);
 }
 
 .night-mode .navbar {
-    background: #003366;
+    background: linear-gradient(90deg, #ff6f61, #6b5b95, #88b04b);
 }
 
-.night-mode .navbar a:hover {
-    background: #004080;
+.night-mode .navbar a,
+.night-mode .dropbtn {
+    color: #e6e6e6;
 }
 
-.night-mode .footer {
-    background: #003366;
+.night-mode .navbar a:hover,
+.night-mode .dropdown:hover .dropbtn {
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
-.night-mode .research-item {
-    background: #2e2e2e;
+.night-mode .dropdown-content {
+    background-color: #333;
 }
 
-.night-mode .research-item:hover {
+.night-mode .dropdown-content a {
+    color: #b3d9ff;
+}
+
+.night-mode .dropdown-content a:hover {
+    background-color: #004d99;
+    color: #fff;
+}
+
+.night-mode .section,
+.night-mode h1,
+.night-mode h2,
+.night-mode h3,
+.night-mode p {
+    color: #d9d9d9;
+}
+
+.night-mode .research-item,
+.night-mode .team-member,
+.night-mode .gallery-item {
     background: #3d3d3d;
+    border-left: 4px solid #0066cc;
 }
 
-.night-mode #pub-search {
-    background: #2e2e2e;
-    color: #e0e0e0;
-    border-color: #b3d9ff;
+.night-mode .research-updates h2 {
+    background-color: #ff6f61;
 }
 
-/* Lightbox styles */
+.night-mode footer {
+    background-color: #003366;
+}
+
+.night-mode a {
+    color: #b3d9ff;
+}
+
+.night-mode a:hover {
+    color: #cce6ff;
+}
+
+.night-mode #back-to-top {
+    background-color: #0066cc;
+}
+
+.night-mode #back-to-top:hover {
+    background-color: #004d99;
+}
+
+/* Make all bold text steelblue */
+strong, b, [style*="font-weight: bold"] {
+    color: #004080;
+}
+
+.night-mode strong,
+.night-mode b,
+.night-mode [style*="font-weight: bold"] {
+    color: #b3d9ff;
+}
+
+/* Link Styling */
+a {
+    color: #004080;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: #002b5e;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #004080;
+    color: white;
+}
+
+.social-links {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.social-icon {
+    width: 30px;
+    height: 30px;
+    transition: transform 0.3s;
+}
+
+.social-icon:hover {
+    transform: scale(1.1);
+}
+
+/* Lightbox Styles */
 .lightbox {
     display: none;
     position: fixed;
@@ -167,808 +694,565 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.8);
+    background: rgba(0, 0, 0, 0.8);
     justify-content: center;
     align-items: center;
     z-index: 1000;
 }
 
-.lightbox img {
+.lightbox-content {
     max-width: 90%;
-    max-height: 90%;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: 4px;
 }
 
 .lightbox-close {
     position: absolute;
     top: 20px;
-    right: 20px;
-    color: white;
-    font-size: 24px;
+    right: 30px;
+    color: #fff;
+    font-size: 40px;
+    font-weight: bold;
     cursor: pointer;
-}
-
-/* Publication section */
-#publications-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.research-item {
-    display: flex;
-    gap: 1rem;
-    padding: 1rem;
-    background: #f9f9f9;
-    border-radius: 5px;
-}
-
-.research-item img {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    border-radius: 5px;
-}
-
-.research-item h3 {
-    font-size: 1.2rem;
-    color: #004080;
-}
-
-.research-item p {
-    font-size: 0.9rem;
-    color: #666;
-}
-
-.research-item a {
-    color: #0066cc;
     text-decoration: none;
 }
 
-.research-item a:hover {
-    text-decoration: underline;
-}
-
-#pub-search {
-    width: 100%;
-    padding: 0.5rem;
-    margin-bottom: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-/* Enhanced CiliaHub styles */
-#ciliahub * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-#ciliahub {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
-    color: #333;
-}
-
-#ciliahub .ciliahub-container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-#ciliahub .header {
-    text-align: center;
-    margin-bottom: 30px;
-    color: white;
-}
-
-#ciliahub .header h1 {
-    font-size: 2.5em;
-    margin-bottom: 10px;
-}
-
-#ciliahub .header p {
-    font-size: 1.2em;
-    color: rgba(255, 255, 255, 0.8);
-}
-
-#ciliahub .dashboard {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-    margin-bottom: 30px;
-}
-
-#ciliahub .stat-card {
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 12px;
-    padding: 20px;
-    text-align: center;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(10px);
-    transition: transform 0.3s ease;
-}
-
-#ciliahub .stat-card:hover {
-    transform: translateY(-5px);
-}
-
-#ciliahub .stat-number {
-    font-size: 2em;
-    font-weight: bold;
-    color: #667eea;
-}
-
-#ciliahub .stat-label {
-    font-size: 1em;
-    color: #666;
-}
-
-#ciliahub .main-panel {
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(10px);
-}
-
-#ciliahub .search-section {
-    margin-bottom: 20px;
-}
-
-#ciliahub .search-container {
-    position: relative;
-    max-width: 600px;
-    margin: 0 auto 20px;
-}
-
-#ciliahub .search-input {
-    width: 100%;
-    padding: 12px 40px 12px 20px;
-    border: 1px solid #ddd;
-    border-radius: 25px;
-    font-size: 1em;
-    outline: none;
-    transition: border-color 0.3s, box-shadow 0.3s;
-}
-
-#ciliahub .search-input:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-}
-
-#ciliahub .search-icon {
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #666;
-}
-
-#ciliahub .suggestions-dropdown {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    max-height: 200px;
-    overflow-y: auto;
-    z-index: 1000;
-    display: none;
-}
-
-#ciliahub .suggestion-item {
-    padding: 10px 15px;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
-#ciliahub .suggestion-item:hover {
-    background: #f0f0f0;
-}
-
-#ciliahub .filters-section {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    margin-bottom: 15px;
-    justify-content: center;
-}
-
-#ciliahub .filter-group {
-    flex: 1;
-    min-width: 200px;
-}
-
-#ciliahub .filter-label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: 600;
-    color: #333;
-}
-
-#ciliahub .filter-select,
-#ciliahub .filter-input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 0.9em;
-    outline: none;
-}
-
-#ciliahub .filter-select[multiple] {
-    height: 100px;
-}
-
-#ciliahub .filter-chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 15px;
-}
-
-#ciliahub .filter-chip {
-    background: #e6f2ff;
-    color: #004080;
-    padding: 5px 10px;
-    border-radius: 15px;
-    font-size: 0.9em;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-#ciliahub .chip-remove {
-    cursor: pointer;
-    font-weight: bold;
-}
-
-#ciliahub .view-controls {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-#ciliahub .view-toggle {
-    display: flex;
-    gap: 10px;
-}
-
-#ciliahub .view-btn {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 8px;
-    background: #e6f2ff;
-    color: #004080;
-    cursor: pointer;
-    font-size: 0.9em;
-    transition: background 0.3s;
-}
-
-#ciliahub .view-btn.active,
-#ciliahub .view-btn:hover {
-    background: #667eea;
-    color: white;
-}
-
-#ciliahub .action-buttons {
-    display: flex;
-    gap: 10px;
-}
-
-#ciliahub .btn {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 0.9em;
-    transition: background 0.3s;
-}
-
-#ciliahub .btn-primary {
-    background: #667eea;
-    color: white;
-}
-
-#ciliahub .btn-primary:hover {
-    background: #5a6dd1;
-}
-
-#ciliahub .btn-secondary {
-    background: #e6f2ff;
-    color: #004080;
-}
-
-#ciliahub .btn-secondary:hover {
-    background: #d1e6ff;
-}
-
-#ciliahub .results-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-}
-
-#ciliahub .results-count {
-    font-size: 1em;
-    color: #666;
-}
-
-#ciliahub .sort-controls {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-#ciliahub .sort-controls label {
-    font-weight: 600;
-}
-
-#ciliahub .table-container {
-    overflow-x: auto;
-}
-
-#ciliahub .results-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: white;
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-#ciliahub .results-table th,
-#ciliahub .results-table td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-}
-
-#ciliahub .results-table th {
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color: white;
-    font-weight: 600;
-}
-
-#ciliahub .results-table tr:hover {
-    background: #f5f5f5;
-}
-
-#ciliahub .cards-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-}
-
-#ciliahub .gene-card {
-    background: white;
-    border-radius: 12px;
-    padding: 15px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
-}
-
-#ciliahub .gene-card:hover {
-    transform: translateY(-5px);
-}
-
-#ciliahub .card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-#ciliahub .gene-name {
-    font-size: 1.2em;
-    font-weight: bold;
-    color: #004080;
-}
-
-#ciliahub .gene-id {
-    font-size: 0.9em;
-    color: #666;
-}
-
-#ciliahub .bookmark-btn {
-    background: none;
-    border: none;
-    font-size: 1.2em;
-    cursor: pointer;
+.lightbox-close:hover {
     color: #ccc;
 }
 
-#ciliahub .bookmark-btn.bookmarked {
-    color: #ffd700;
-}
-
-#ciliahub .card-content {
-    margin-bottom: 10px;
-}
-
-#ciliahub .gene-description {
-    font-size: 0.9em;
-    color: #666;
-    margin-bottom: 10px;
-}
-
-#ciliahub .gene-details {
-    display: grid;
-    gap: 8px;
-}
-
-#ciliahub .detail-item {
-    display: flex;
-    gap: 10px;
-}
-
-#ciliahub .detail-label {
-    font-weight: 600;
-    color: #333;
-    flex: 0 0 120px;
-}
-
-#ciliahub .detail-value {
-    color: #666;
-}
-
-#ciliahub .card-actions {
-    display: flex;
-    gap: 10px;
-}
-
-#ciliahub .card-btn {
-    padding: 8px 12px;
-    border: none;
-    border-radius: 8px;
+.lightbox-link {
     cursor: pointer;
-    font-size: 0.9em;
-    background: #e6f2ff;
-    color: #004080;
-    transition: background 0.3s;
 }
 
-#ciliahub .card-btn:hover {
-    background: #d1e6ff;
+.lightbox-link img {
+    transition: opacity 0.3s ease;
 }
 
-#ciliahub .gene-link {
-    color: #0066cc;
-    text-decoration: none;
+.lightbox-link:hover img {
+    opacity: 0.8;
 }
 
-#ciliahub .gene-link:hover {
-    text-decoration: underline;
-}
-
-#ciliahub .comparison-panel {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 400px;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.95);
-    box-shadow: -4px 0 15px rgba(0, 0, 0, 0.1);
-    transform: translateX(100%);
-    transition: transform 0.3s ease;
-    z-index: 1000;
-}
-
-#ciliahub .comparison-panel.open {
-    transform: translateX(0);
-}
-
-#ciliahub .comparison-header {
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color: white;
-    padding: 15px;
+/* CiliaHub Section */
+.ciliahub-controls {
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
-
-#ciliahub .comparison-content {
-    padding: 15px;
-    overflow-y: auto;
-    height: calc(100% - 60px);
-}
-
-#ciliahub .compared-gene {
-    background: #f9f9f9;
-    border-radius: 8px;
-    padding: 10px;
-    margin-bottom: 10px;
-    position: relative;
-}
-
-#ciliahub .remove-comparison {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: none;
-    border: none;
-    font-size: 1.2em;
-    cursor: pointer;
-    color: #666;
-}
-
-#ciliahub .user-panel {
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 12px;
-    padding: 20px;
     margin-bottom: 20px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(10px);
+    flex-wrap: wrap;
+    gap: 10px;
+    background-color: #e6f2ff;
+    padding: 15px;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-#ciliahub .user-menu {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+#ciliahub-search, #ciliahub-filter, #ciliahub-reset, #download-ciliahub {
+    padding: 8px 12px;
+    border: 2px solid #004080;
+    border-radius: 4px;
+    font-size: 1em;
+    background-color: white;
+    color: #333;
+    max-width: 400px;
+    width: 100%;
 }
 
-#ciliahub .user-stats {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-}
-
-#ciliahub .user-stat {
-    text-align: center;
-}
-
-#ciliahub .user-stat-number {
-    font-size: 1.5em;
-    font-weight: bold;
-    color: #667eea;
-}
-
-#ciliahub .user-stat-label {
-    font-size: 0.9em;
-    color: #666;
-}
-
-#ciliahub .recent-search-item {
-    padding: 5px 10px;
-    background: #e6f2ff;
-    color: #004080;
-    border-radius: 15px;
+#ciliahub-filter {
     cursor: pointer;
-    margin: 5px 0;
-    transition: background 0.3s;
 }
 
-#ciliahub .recent-search-item:hover {
-    background: #d1e6ff;
+#ciliahub-reset {
+    background-color: #f9f9f9;
+    color: #004080;
+    cursor: pointer;
 }
 
-/* Night mode styles for CiliaHub */
-.night-mode #ciliahub {
-    background: linear-gradient(135deg, #3a4a8a 0%, #4a2a6a 100%);
+#ciliahub-reset:hover {
+    background-color: #d9e6ff;
 }
 
-.night-mode #ciliahub .header {
+.ciliahub-legend {
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+    font-size: 0.9em;
+    color: #333;
+}
+
+.ciliahub-legend span {
+    margin-right: 15px;
+}
+
+.ciliahub-legend .legend-axoneme::before {
+    content: '';
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    background-color: #f0faff;
+    border: 1px solid #004080;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+.ciliahub-legend .legend-basal-body::before {
+    content: '';
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    background-color: #e6f2ff;
+    border: 1px solid #004080;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+.ciliahub-legend .legend-transition-zone::before {
+    content: '';
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    background-color: #f5f5f5;
+    border: 1px solid #004080;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+.ciliahub-table {
+    width: 100%;
+    max-width: 100%; /* Matches approximate width of provided text */
+    margin: 0 auto;
+    table-layout: fixed;
+    border-collapse: collapse;
+    background: #e6f2ff;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.ciliahub-table th,
+.ciliahub-table td {
+    padding: 14px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    font-size: 0.9em;
+    vertical-align: top;
+}
+
+.ciliahub-table th {
+    background-color: #003366;
+    color: white;
+    font-weight: bold;
+    border-bottom: 2px solid #004080;
+}
+
+/* Ensure Ensembl ID column is fully visible and clickable */
+.ciliahub-table th:nth-child(2),
+.ciliahub-table td:nth-child(2) {
+    width: 30%; /* Increased width for Ensembl ID (~210px) */
+    white-space: normal; /* Allow wrapping */
+    overflow: visible; /* Ensure no content is hidden */
+    word-break: break-all; /* Break long IDs for readability */
+}
+
+/* Style for Ensembl ID links */
+.ciliahub-table td:nth-child(2) a {
+    color: #004080;
+    text-decoration: underline;
+    font-weight: normal;
+    display: inline-block;
+    width: 100%;
+}
+
+/* Ensure Synonym column is clear and properly formatted */
+.ciliahub-table th:nth-child(4),
+.ciliahub-table td:nth-child(4) {
+    width: 25%; /* Increased width for Synonym (~175px) */
+    white-space: normal; /* Allow wrapping */
+    overflow: visible; /* Ensure no content is hidden */
+    line-height: 1.5; /* Improve readability */
+}
+
+/* Style for other columns to fit within table */
+.ciliahub-table th:nth-child(1),
+.ciliahub-table td:nth-child(1) {
+    width: 10%; /* Gene (~70px) */
+}
+
+.ciliahub-table th:nth-child(3),
+.ciliahub-table td:nth-child(3) {
+    width: 20%; /* Gene Description (~140px) */
+}
+
+.ciliahub-table th:nth-child(5),
+.ciliahub-table td:nth-child(5) {
+    width: 10%; /* OMIM ID (~70px) */
+}
+
+.ciliahub-table th:nth-child(6),
+.ciliahub-table td:nth-child(6) {
+    width: 10%; /* Reference (~70px) */
+}
+
+.ciliahub-table th:nth-child(7),
+.ciliahub-table td:nth-child(7) {
+    width: 15%; /* Ciliary Localization (~105px) */
+}
+
+.ciliahub-table td:nth-child(2) a:hover,
+.ciliahub-table td:nth-child(5) a:hover,
+.ciliahub-table td:nth-child(6) a:hover {
+    color: #002b5e;
+    text-decoration: underline;
+}
+
+.ciliahub-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.ciliahub-table tr.axoneme {
+    background-color: #f0faff;
+}
+
+.ciliahub-table tr.basal-body {
+    background-color: #e6f2ff;
+}
+
+.ciliahub-table tr.transition-zone {
+    background-color: #f5f5f5;
+}
+
+.ciliahub-table tr:hover {
+    background-color: #d9e6ff;
+}
+
+/* Specific styling for links in the Reference column */
+.ciliahub-table td a {
+    color: #004080;
+    text-decoration: underline;
+    font-weight: normal;
+    display: inline-block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Tooltip for Reference column */
+.ciliahub-table td.reference {
+    position: relative;
+    cursor: help;
+}
+
+.ciliahub-table td.reference:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    top: -45px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #004080;
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    z-index: 1002;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Night Mode for CiliaHub */
+.night-mode .ciliahub-controls {
+    background-color: #3d3d3d;
+}
+
+.night-mode #ciliahub-search, .night-mode #ciliahub-filter, .night-mode #ciliahub-reset, .night-mode #download-ciliahub {
+    background-color: #2e2e2e;
+    border: 2px solid #b3d9ff;
     color: #d9d9d9;
 }
 
-.night-mode #ciliahub .stat-card {
-    background: rgba(60, 60, 60, 0.95);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+.night-mode #ciliahub-reset:hover {
+    background-color: #4a4a4a;
 }
 
-.night-mode #ciliahub .main-panel {
-    background: rgba(60, 60, 60, 0.95);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.night-mode #ciliahub .search-input {
-    background: #2e2e2e;
-    border-color: #b3d9ff;
+.night-mode .ciliahub-legend {
+    background-color: #2e2e2e;
     color: #d9d9d9;
 }
 
-.night-mode #ciliahub .search-input:focus {
-    border-color: #b3d9ff;
-    box-shadow: 0 0 0 3px rgba(179, 217, 255, 0.1);
+.night-mode .ciliahub-legend .legend-axoneme::before {
+    background-color: #4a4a4a;
+    border: 1px solid #b3d9ff;
 }
 
-.night-mode #ciliahub .suggestions-dropdown {
-    background: #2e2e2e;
-    border-color: #555;
+.night-mode .ciliahub-legend .legend-basal-body::before {
+    background-color: #3d3d3d;
+    border: 1px solid #b3d9ff;
 }
 
-.night-mode #ciliahub .suggestion-item {
-    color: #d9d9d9;
+.night-mode .ciliahub-legend .legend-transition-zone::before {
+    background-color: #2e2e2e;
+    border: 1px solid #b3d9ff;
 }
 
-.night-mode #ciliahub .suggestion-item:hover {
-    background: #4a4a4a;
-}
-
-.night-mode #ciliahub .filter-chip {
-    background: #4a4a4a;
-    color: #b3d9ff;
-}
-
-.night-mode #ciliahub .results-table {
+.night-mode .ciliahub-table {
     background: #3d3d3d;
+    box-shadow: 0 3px 10px rgba(255, 255, 255, 0.1);
 }
 
-.night-mode #ciliahub .results-table th {
-    background: linear-gradient(135deg, #3a4a8a, #4a2a6a);
+.night-mode .ciliahub-table th {
+    background-color: #0066cc;
+    border-bottom: 2px solid #b3d9ff;
 }
 
-.night-mode #ciliahub .results-table tr:hover {
-    background: #4a4a4a;
+.night-mode .ciliahub-table tr:nth-child(even) {
+    background-color: #2e2e2e;
 }
 
-.night-mode #ciliahub .gene-card {
-    background: #3d3d3d;
-    border: 1px solid #555;
+.night-mode .ciliahub-table tr.axoneme {
+    background-color: #4a4a4a;
 }
 
-.night-mode #ciliahub .comparison-panel {
-    background: #2e2e2e;
+.night-mode .ciliahub-table tr.basal-body {
+    background-color: #3d3d3d;
 }
 
-.night-mode #ciliahub .comparison-header {
-    background: linear-gradient(135deg, #3a4a8a, #4a2a6a);
+.night-mode .ciliahub-table tr.transition-zone {
+    background-color: #2e2e2e;
 }
 
-.night-mode #ciliahub .compared-gene {
-    background: #4a4a4a;
+.night-mode .ciliahub-table tr:hover {
+    background-color: #4a4a4a;
 }
 
-.night-mode #ciliahub .user-panel {
-    background: rgba(60, 60, 60, 0.95);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+.night-mode .ciliahub-table td,
+.night-mode .ciliahub-table th {
+    border-bottom: 1px solid #555;
 }
 
-.night-mode #ciliahub .recent-search-item {
-    background: #4a4a4a;
+.night-mode .ciliahub-table td a {
     color: #b3d9ff;
 }
 
-.night-mode #ciliahub .recent-search-item:hover {
-    background: #5a5a5a;
+.night-mode .ciliahub-table td a:hover {
+    color: #cce6ff;
 }
 
-.night-mode #ciliahub .gene-link {
-    color: #b3d9ff;
+.night-mode .ciliahub-table td.reference:hover::after {
+    background-color: #0066cc;
+    color: #d9d9d9;
 }
 
-.night-mode #ciliahub .btn-primary {
-    background: #3a4a8a;
+.ciliahub-table tr.basal-body-cilia {
+    background-color: #e6f2ff;
 }
 
-.night-mode #ciliahub .btn-primary:hover {
-    background: #4a5a9a;
+.ciliahub-table tr.cilia-basal-body {
+    background-color: #e6f2ff;
 }
 
-.night-mode #ciliahub .btn-secondary {
-    background: #4a4a4a;
-    color: #b3d9ff;
+.ciliahub-table tr.flagella-cilia {
+    background-color: #f0faff;
 }
 
-.night-mode #ciliahub .btn-secondary:hover {
-    background: #5a5a5a;
+.ciliahub-table tr.flagella-cilia-basal-body {
+    background-color: #f0faff;
 }
 
-.night-mode #ciliahub .card-btn {
-    background: #4a4a4a;
-    color: #b3d9ff;
+.ciliahub-table tr.ciliary-associated-gene {
+    background-color: #f5f5f5;
 }
 
-.night-mode #ciliahub .card-btn:hover {
-    background: #5a5a5a;
+.night-mode .ciliahub-table tr.basal-body-cilia {
+    background-color: #3d3d3d;
 }
 
-/* Responsive styles */
+.night-mode .ciliahub-table tr.cilia-basal-body {
+    background-color: #3d3d3d;
+}
+
+.night-mode .ciliahub-table tr.flagella-cilia {
+    background-color: #4a4a4a;
+}
+
+.night-mode .ciliahub-table tr.flagella-cilia-basal-body {
+    background-color: #4a4a4a;
+}
+
+.night-mode .ciliahub-table tr.ciliary-associated-gene {
+    background-color: #2e2e2e;
+}
+
+/* Responsive Adjustments */
 @media (max-width: 768px) {
     .container {
-        padding: 10px;
+        max-width: 95%;
+        padding: 15px;
     }
-
-    .navbar ul {
+    .navbar {
+        height: 60px;
+        justify-content: space-around;
+        gap: 5px;
+        padding: 10px 5px;
+    }
+    .navbar a, .dropbtn {
+        padding: 8px 10px;
+        font-size: 0.9em;
+    }
+    .research-item {
+        flex-direction: row;
+        align-items: center;
+    }
+    .research-item img {
+        width: 120px;
+        margin-right: 10px;
+    }
+    .team-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .team-member {
+        flex-direction: column;
+        text-align: center;
+    }
+    .team-photo {
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
+    .gallery-item {
         flex-direction: column;
         align-items: center;
     }
-
-    .navbar a {
-        padding: 0.5rem;
+    .gallery-media {
+        max-width: 100%;
     }
+    .figure-image, .overview-image, .crispr-image {
+        max-width: 90%;
+    }
+    .team-image {
+        width: 120px;
+        height: 120px;
+    }
+    .fit-image {
+        width: 120px;
+    }
+    .ciliahub-table {
+        font-size: 0.8em;
+        max-width: 100%; /* Fit within container on smaller screens */
+        overflow-x: auto; /* Enable horizontal scrolling */
+    }
+    .ciliahub-table th,
+    .ciliahub-table td {
+        padding: 8px;
+        min-width: 80px; /* Ensure columns are wide enough */
+    }
+    .ciliahub-table th:nth-child(2),
+    .ciliahub-table td:nth-child(2) {
+        min-width: 100px; /* Adjusted for Ensembl ID visibility */
+        white-space: normal;
+        overflow: visible;
+        word-break: break-all;
+    }
+    .ciliahub-table th:nth-child(4),
+    .ciliahub-table td:nth-child(4) {
+        min-width: 100px; /* Adjusted for Synonym visibility */
+        white-space: normal;
+        overflow: visible;
+    }
+    .ciliahub-controls {
+        flex-direction: column;
+        align-items: center;
+    }
+    #ciliahub-search,
+    #ciliahub-filter,
+    #ciliahub-reset,
+    #download-ciliahub {
+        width: 100%;
+        max-width: none;
+    }
+}
 
+@media (max-width: 480px) {
+    .navbar {
+        height: 60px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .navbar a, .dropbtn {
+        padding: 5px 8px;
+        font-size: 0.85em;
+    }
     .research-item {
         flex-direction: column;
         align-items: center;
         text-align: center;
     }
-
     .research-item img {
-        width: 80px;
-        height: 80px;
+        width: 100px;
+        margin-right: 0;
+        margin-bottom: 10px;
     }
-
-    #ciliahub .ciliahub-container {
-        padding: 10px;
-    }
-
-    #ciliahub .dashboard {
+    .team-grid {
         grid-template-columns: 1fr;
     }
-
-    #ciliahub .filters-section {
-        flex-direction: column;
+    .team-image {
+        width: 100px;
+        height: 100px;
     }
-
-    #ciliahub .filter-group {
-        min-width: 100%;
+    .fit-image {
+        width: 100px;
     }
-
-    #ciliahub .view-controls {
-        flex-direction: column;
-        align-items: flex-start;
+    .ciliahub-table {
+        font-size: 0.75em;
+        max-width: 100%; /* Fit within container */
     }
-
-    #ciliahub .results-header {
-        flex-direction: column;
-        gap: 10px;
+    .ciliahub-table th,
+    .ciliahub-table td {
+        padding: 6px;
+        min-width: 60px; /* Adjusted for smaller screens */
     }
-
-    #ciliahub .comparison-panel {
-        width: 100%;
+    .ciliahub-table th:nth-child(2),
+    .ciliahub-table td:nth-child(2) {
+        min-width: 80px; /* Ensure Ensembl ID remains visible */
+        white-space: normal;
+        overflow: visible;
+        word-break: break-all;
+    }
+    .ciliahub-table th:nth-child(4),
+    .ciliahub-table td:nth-child(4) {
+        min-width: 80px; /* Ensure Synonym remains visible */
+        white-space: normal;
+        overflow: visible;
     }
 }
 
-/* Commented out old CiliaHub styles to avoid conflicts */
-/*
-.ciliahub-controls {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-bottom: 1rem;
+/* Night Mode Toggle Button */
+#night-mode-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    background-color: #004080;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s, transform 0.3s;
+    z-index: 1001;
 }
-.ciliahub-controls input,
-.ciliahub-controls select,
-.ciliahub-controls textarea,
-.ciliahub-controls button {
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+
+#night-mode-toggle:hover {
+    background-color: #002b5e;
+    transform: scale(1.1);
 }
-.ciliahub-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 1rem;
+
+.night-mode #night-mode-toggle {
+    background-color: #0066cc;
 }
-.ciliahub-table th,
-.ciliahub-table td {
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    text-align: left;
+
+.night-mode #night-mode-toggle:hover {
+    background-color: #004d99;
 }
-.ciliahub-table th {
-    background: #f4f4f4;
-}
-.night-mode .ciliahub-table th {
-    background: #2e2e2e;
-}
-.night-mode .ciliahub-table {
-    background: #1e1e1e;
-    color: #e0e0e0;
-}
-.night-mode .ciliahub-controls input,
-.night-mode .ciliahub-controls select,
-.night-mode .ciliahub-controls textarea {
-    background: #2e2e2e;
-    color: #e0e0e0;
-    border-color: #b3d9ff;
-}
-*/
