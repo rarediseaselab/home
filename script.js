@@ -1,4 +1,4 @@
-// Updated loadCiliaHubData function with search-only display and statistical analysis
+// Updated loadCiliaHubData function with search-only display
 async function loadCiliaHubData() {
     const tableBody = document.getElementById('ciliahub-table-body');
     const searchInput = document.getElementById('ciliahub-search');
@@ -14,12 +14,6 @@ async function loadCiliaHubData() {
     const errorDiv = document.getElementById('ciliahub-error');
     const loadingDiv = document.getElementById('ciliahub-loading');
     const table = document.querySelector('.ciliahub-table');
-    // New elements for statistics
-    const totalGenesSpan = document.getElementById('total-genes');
-    const newGenesSpan = document.getElementById('new-genes');
-    const newGenesPercentageSpan = document.getElementById('new-genes-percentage');
-    const localizationStatsList = document.getElementById('localization-stats');
-    const localizationChartCanvas = document.getElementById('localization-chart');
 
     let data = [];
     let searchCounts = JSON.parse(sessionStorage.getItem('popularGenes')) || {};
@@ -114,237 +108,193 @@ async function loadCiliaHubData() {
         table.style.display = 'none';
     }
 
-    // New function to compute and display statistics
-    function displayStatistics(data) {
-        const totalGenes = data.length;
-        const newGenes = 1300; // As per document
-        const newGenesPercentage = ((newGenes / totalGenes) * 100).toFixed(1);
+    try {
+        const response = await fetch('https://raw.githubusercontent.com/rarediseaselab/home/main/ciliahub_data.json');
+        data = await response.json();
+        console.log('Loaded entries:', data.length);
+        
+        // Show search prompt instead of populating table
+        showSearchPrompt();
+        updatePopularGenes();
+    } catch (error) {
+        console.error('Error loading CiliaHub data:', error);
+        showError('Failed to load CiliaHub data. Please check your network or contact support.');
+        return;
+    }
 
-        // Compute distribution by localization
-        const localizationCounts = {};
-        data.forEach(item => {
-            const localization = item.localization || 'Unknown';
-            localizationCounts[localization] = (localizationCounts[localization] || 0) + 1;
-        });
+    function debounce(func, wait) {
+        return function (...args) {
+            clearTimeout(debounceTimeout);
+            debounceTimeout = setTimeout(() => func.apply(this, args), wait);
+        };
+    }
 
-        // Update DOM with stats
-        totalGenesSpan.textContent = totalGenes;
-        newGenesSpan.textContent = newGenes;
-        newGenesPercentageSpan.textContent = newGenesPercentage;
-
-        // Populate localization stats
-        localizationStatsList.innerHTML = Object.entries(localizationCounts)
-            .map(([loc, count]) => `<li>${loc}: ${count} genes (${((count / totalGenes) * 100).toFixed(1)}%)</li>`)
-            .join('');
-
-        // Create Chart.js bar chart
-        ```chartjs
-        {
-            "type": "bar",
-            "data": {
-                "labels": Object.keys(localizationCounts),
-                "datasets": [{
-                    "label": "Genes by Ciliary Localization",
-                    "data": Object.values(localizationCounts),
-                    "backgroundColor": [
-                        "#004080", "#0066cc", "#3399ff", "#66b3ff", "#99ccff",
-                        "#003366", "#004d99", "#0077b3", "#00a3cc", "#b3d9ff"
-                    ],
-                    "borderColor": "#002b5e",
-                    "borderWidth": 1
-                }]
-            },
-            "options": {
-                "responsive": true,
-                "maintainAspectRatio": false,
-                "scales": {
-                    "y": {
-                        "beginAtZero": true,
-                        "title": {
-                            "display": true,
-                            "text": "Number of Genes",
-                            "color": "#203c78"
-                        },
-                        "ticks": {
-                            "color": "#203c78"
-                        }
-                    },
-                    "x": {
-                        "title": {
-                            "display": true,
-                            "text": "Ciliary Localization",
-                            "color": "#203c78"
-                        },
-                        "ticks": {
-                            "color": "#203c78",
-                            "maxRotation": 45,
-                            "minRotation": 45
-                        }
-                    }
-                },
-                "plugins": {
-                    "legend": {
-                        "display": false
-                    },
-                    "title": {
-                        "display": true,
-                        "text": "Distribution of Genes by Ciliary Localization",
-                        "color": "#203c78",
-                        "font": {
-                            "size": 16
-                        }
-                    }
-                }
-            }
+    searchInput.addEventListener('input', debounce(() => {
+        hideError();
+        const query = searchInput.value.toLowerCase().trim();
+        
+        if (!query) {
+            // If search is empty, hide table and show search prompt
+            showSearchPrompt();
+            return;
         }
-}
 
-try {
-const response = await fetch('https://raw.githubusercontent.com/rarediseaselab/home/main/ciliahub_data.json');
-data = await response.json();
-console.log('Loaded entries:', data.length);
+        // Track search for popular genes
+        searchCounts[query] = (searchCounts[query] || 0) + 1;
+        sessionStorage.setItem('popularGenes', JSON.stringify(searchCounts));
+        updatePopularGenes();
 
-// Display statistics
-displayStatistics(data);
+        const filteredData = data.filter(item =>
+            (item.gene && item.gene.toLowerCase().includes(query)) ||
+            (item.ensembl_id && item.ensembl_id.toLowerCase().includes(query)) ||
+            (item.synonym && item.synonym.toLowerCase().includes(query)) ||
+            (item.omim_id && item.omim_id.toLowerCase().includes(query)) ||
+            (item.reference && item.reference.toLowerCase().includes(query))
+        );
+        
+        populateTable(filteredData);
+    }, 300));
 
-// Show search prompt instead of populating table
-showSearchPrompt();
-updatePopularGenes();
-} catch (error) {
-console.error('Error loading CiliaHub data:', error);
-showError('Failed to load CiliaHub data. Please check your network or contact support.');
-return;
-}
+    filterSelect.addEventListener('change', () => {
+        hideError();
+        const filterValue = filterSelect.value.toLowerCase();
+        const query = searchInput.value.toLowerCase().trim();
+        
+        // Only show results if there's a search query or filter is applied
+        if (!query && !filterValue) {
+            showSearchPrompt();
+            return;
+        }
 
-function debounce(func, wait) {
-return function (...args) {
-clearTimeout(debounceTimeout);
-debounceTimeout = setTimeout(() => func.apply(this, args), wait);
-};
-}
+        let filteredData = data;
+        
+        // Apply search filter if query exists
+        if (query) {
+            filteredData = filteredData.filter(item =>
+                (item.gene && item.gene.toLowerCase().includes(query)) ||
+                (item.ensembl_id && item.ensembl_id.toLowerCase().includes(query)) ||
+                (item.synonym && item.synonym.toLowerCase().includes(query)) ||
+                (item.omim_id && item.omim_id.toLowerCase().includes(query)) ||
+                (item.reference && item.reference.toLowerCase().includes(query))
+            );
+        }
+        
+        // Apply localization filter if selected
+        if (filterValue) {
+            filteredData = filteredData.filter(item =>
+                (item.localization || '').toLowerCase().replace(/[\s,]+/g, '-') === filterValue
+            );
+        }
+        
+        populateTable(filteredData);
+    });
 
-searchInput.addEventListener('input', debounce(() => {
-hideError();
-const query = searchInput.value.toLowerCase().trim();
+    resetBtn.addEventListener('click', () => {
+        hideError();
+        searchInput.value = '';
+        filterSelect.value = '';
+        searchCounts = {};
+        sessionStorage.removeItem('popularGenes');
+        updatePopularGenes();
+        
+        // Show search prompt instead of all data
+        showSearchPrompt();
+    });
 
-if (!query) {
-// If search is empty, hide table and show search prompt
-showSearchPrompt();
-return;
-}
+    downloadBtn.addEventListener('click', () => {
+        const csv = [
+            ['Gene', 'Ensembl ID', 'Gene Description', 'Synonym', 'OMIM ID', 'Reference', 'Ciliary Localization'],
+            ...data.map(item => [
+                item.gene || '',
+                item.ensembl_id || '',
+                item.description || '',
+                item.synonym || '',
+                item.omim_id || '',
+                item.reference || '',
+                item.localization || ''
+            ])
+        ].map(row => row.map(cell => `"${cell.replace(/"/g, '""')}"`).join(',')).join('\n');
 
-// Track search for popular genes
-searchCounts[query] = (searchCounts[query] || 0) + 1;
-sessionStorage.setItem('popularGenes', JSON.stringify(searchCounts));
-updatePopularGenes();
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'ciliahub_data.csv';
+        a.click();
+        window.URL.revokeObjectURL(url);
+    });
 
-const filteredData = data.filter(item =>
-(item.gene && item.gene.toLowerCase().includes(query)) ||
-(item.ensembl_id && item.ensembl_id.toLowerCase().includes(query)) ||
-(item.synonym && item.synonym.toLowerCase().includes(query)) ||
-(item.omim_id && item.omim_id.toLowerCase().includes(query)) ||
-(item.reference && item.reference.toLowerCase().includes(query))
-);
+    batchQueryBtn.addEventListener('click', () => {
+        hideError();
+        const input = batchGenesInput.value.trim();
+        if (!input) {
+            batchResultsDiv.innerHTML = '<p style="color: red;">Please enter at least one gene name or ID.</p>';
+            batchResultsContainer.style.display = 'block';
+            return;
+        }
+        const queries = input.split(/[\s,\n]+/).filter(q => q.trim()).map(q => q.toLowerCase());
+        queries.forEach(query => {
+            searchCounts[query] = (searchCounts[query] || 0) + 1;
+            sessionStorage.setItem('popularGenes', JSON.stringify(searchCounts));
+        });
+        updatePopularGenes();
+        const filteredData = data.filter(item =>
+            queries.some(query =>
+                (item.gene && item.gene.toLowerCase() === query) ||
+                (item.ensembl_id && item.ensembl_id.toLowerCase() === query) ||
+                (item.synonym && item.synonym.toLowerCase().includes(query)) ||
+                (item.omim_id && item.omim_id.toLowerCase() === query)
+            )
+        );
+        if (filteredData.length === 0) {
+            batchResultsDiv.innerHTML = '<p>No matching genes found.</p>';
+            batchResultsContainer.style.display = 'block';
+            return;
+        }
+        batchResultsDiv.innerHTML = `
+            <table style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr style="background-color: #003366; color: white;">
+                        <th style="padding: 10px; width: 10%;">Gene</th>
+                        <th style="padding: 10px; width: 10%;">Ensembl ID</th>
+                        <th style="padding: 10px; width: 25%;">Description</th>
+                        <th style="padding: 10px; width: 10%;">Synonym</th>
+                        <th style="padding: 10px; width: 10%;">OMIM ID</th>
+                        <th style="padding: 10px; width: 20%;">Reference</th>
+                        <th style="padding: 10px; width: 15%;">Localization</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${filteredData.map(item => {
+                        const referenceLinks = formatReference(item.reference);
+                        return `
+                            <tr>
+                                <td style="padding: 10px; border-bottom: 1px solid #ddd;"><a href="https://www.ncbi.nlm.nih.gov/gene/?term=${item.gene}" target="_blank">${item.gene}</a></td>
+                                <td style="padding: 10px; border-bottom: 1px solid #ddd;"><a href="https://www.ensembl.org/Homo_sapiens/Gene/Summary?g=${item.ensembl_id}" target="_blank">${item.ensembl_id}</a></td>
+                                <td style="padding: 10px; border-bottom: 1px solid #ddd;">${item.description || ''}</td>
+                                <td style="padding: 10px; border-bottom: 1px solid #ddd;">${item.synonym || ''}</td>
+                                <td style="padding: 10px; border-bottom: 1px solid #ddd;"><a href="https://www.omim.org/entry/${item.omim_id}" target="_blank">${item.omim_id}</a></td>
+                                <td style="padding: 10px; border-bottom: 1px solid #ddd;">${referenceLinks}</td>
+                                <td style="padding: 10px; border-bottom: 1px solid #ddd;">${item.localization || ''}</td>
+                            </tr>
+                        `;
+                    }).join('')}
+                </tbody>
+            </table>
+        `;
+        batchResultsContainer.style.display = 'block';
+    });
 
-populateTable(filteredData);
-}, 300));
-
-filterSelect.addEventListener('change', () => {
-hideError();
-const filterValue = filterSelect.value.toLowerCase();
-const query = searchInput.value.toLowerCase().trim();
-
-// Only show results if there's a search query or filter is applied
-if (!query && !filterValue) {
-showSearchPrompt();
-return;
-}
-
-let filteredData = data;
-
-// Apply search filter if query exists
-if (query) {
-filteredData = filteredData.filter(item =>
-(item.gene && item.gene.toLowerCase().includes(query)) ||
-(item.ensembl_id && item.ensembl_id.toLowerCase().includes(query)) ||
-(item.synonym && item.synonym.toLowerCase().includes(query)) ||
-(item.omim_id && item.omim_id.toLowerCase().includes(query)) ||
-(item.reference && item.reference.toLowerCase().includes(query))
-);
-}
-
-// Apply localization filter if selected
-if (filterValue) {
-filteredData = filteredData.filter(item =>
-(item.localization || '').toLowerCase().replace(/[\s,]+/g, '-') === filterValue
-);
-}
-
-populateTable(filteredData);
-});
-
-resetBtn.addEventListener('click', () => {
-hideError();
-searchInput.value = '';
-filterSelect.value = '';
-searchCounts = {};
-sessionStorage.removeItem('popularGenes');
-updatePopularGenes();
-
-// Show search prompt instead of all data
-showSearchPrompt();
-});
-
-downloadBtn.addEventListener('click', () => {
-const csv = [
-['Gene', 'Ensembl ID', 'Gene Description', 'Synonym', 'OMIM ID', 'Reference', 'Ciliary Localization'],
-...data.map(item => [
-item.gene || '',
-item.ensembl_id || '',
-item.description || '',
-item.synonym || '',
-item.omim_id || '',
-item.reference || '',
-item.localization || ''
-])
-].map(row => row.map(cell => "${cell.replace(/"/g, '""')}").join(',')).join('\n');
-
-const blob = new Blob([csv], { type: 'text/csv' });
-const url = window.URL.createObjectURL(blob);
-const a = document.createElement('a');
-a.href = url;
-a.download = 'ciliahub_data.csv';
-a.click();
-window.URL.revokeObjectURL(url);
-});
-
-batchQueryBtn.addEventListener('click', () => {
-hideError();
-const input = batchGenesInput.value.trim();
-if (!input) {
-batchResultsDiv.innerHTML = '
-
-Please enter at least one gene name or ID.
-
-'; batchResultsContainer.style.display = 'block'; return; } const queries = input.split(/[\s,\n]+/).filter(q => q.trim()).map(q => q.toLowerCase()); queries.forEach(query => { searchCounts[query] = (searchCounts[query] || 0) + 1; sessionStorage.setItem('popularGenes', JSON.stringify(searchCounts)); }); updatePopularGenes(); const filteredData = data.filter(item => queries.some(query => (item.gene && item.gene.toLowerCase() === query) || (item.ensembl_id && item.ensembl_id.toLowerCase() === query) || (item.synonym && item.synonym.toLowerCase().includes(query)) || (item.omim_id && item.omim_id.toLowerCase() === query) ) ); if (filteredData.length === 0) { batchResultsDiv.innerHTML = '
-No matching genes found.
-
-'; batchResultsContainer.style.display = 'block'; return; } batchResultsDiv.innerHTML = `
-${filteredData.map(item => { const referenceLinks = formatReference(item.reference); return ` `; }).join('')}
-
-Gene	Ensembl ID	Description	Synonym	OMIM ID	Reference	Localization
-${item.gene}	${item.ensembl_id}	${item.description || ''}	${item.synonym || ''}	${item.omim_id}	${referenceLinks}	${item.localization || ''}
-`; batchResultsContainer.style.display = 'block'; });
-clearBatchResultsBtn.addEventListener('click', () => {
-batchResultsDiv.innerHTML = '';
-batchResultsContainer.style.display = 'none';
-batchGenesInput.value = '';
-});
+    clearBatchResultsBtn.addEventListener('click', () => {
+        batchResultsDiv.innerHTML = '';
+        batchResultsContainer.style.display = 'none';
+        batchGenesInput.value = '';
+    });
 }
 
 // Call the function when the DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-if (document.getElementById('ciliahub')) {
-loadCiliaHubData();
-}
+    if (document.getElementById('ciliahub')) {
+        loadCiliaHubData();
+    }
 });
