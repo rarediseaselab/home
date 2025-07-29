@@ -20013,10 +20013,10 @@
   "gene": "KIAA0319",
   "ensembl_id": "ENSG00000137261",
   "description": "HGNC:21580",
-  "synonym": NA",
+  "synonym": "NA",
   "omim_id": "610832",
   "functional_summary": "KIAA0319, involved in neuronal migration and ciliary signaling pathways [Source:HGNC Symbol;Acc:HGNC:21275]",
-  "localization": ""ciliary associated gene",
+  "localization": "ciliary associated gene",
   "reference": "35031635"
 } 
 ]
