@@ -1171,7 +1171,77 @@ footer {
         max-width: none;
     }
 }
+/* CiliaHub Statistics Section */
+#ciliahub-stats {
+    max-width: 900px;
+    margin: 0 auto 30px;
+    padding: 15px;
+    background: #f5faff;
+    border: 1px solid #cce0f5;
+    border-radius: 5px;
+}
 
+#ciliahub-stats h3 {
+    color: #203c78;
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 1.5em;
+}
+
+#ciliahub-stats p {
+    margin: 5px 0;
+    font-size: 1em;
+    color: #333;
+}
+
+#ciliahub-stats ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 10px 0;
+}
+
+#ciliahub-stats ul li {
+    margin-bottom: 5px;
+    font-size: 0.9em;
+}
+
+#localization-chart {
+    max-width: 100%;
+    height: 300px;
+    margin-top: 20px;
+}
+
+/* Night Mode for Statistics */
+.night-mode #ciliahub-stats {
+    background: #3d3d3d;
+    border: 1px solid #b3d9ff;
+}
+
+.night-mode #ciliahub-stats h3,
+.night-mode #ciliahub-stats p,
+.night-mode #ciliahub-stats ul li {
+    color: #d9d9d9;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    #ciliahub-stats {
+        max-width: 95%;
+        padding: 10px;
+    }
+    #localization-chart {
+        height: 250px;
+    }
+}
+
+@media (max-width: 480px) {
+    #ciliahub-stats {
+        max-width: 100%;
+    }
+    #localization-chart {
+        height: 200px;
+    }
+}
 @media (max-width: 480px) {
     .navbar {
         height: 60px;
