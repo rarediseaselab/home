@@ -228,51 +228,114 @@
                     <br><br>
                     This user-friendly platform allows researchers to:
                     <ul style="margin-top: 10px; margin-bottom: 10px;">
-                        <li>✔️ Explore curated gene entries with descriptions and known synonyms</li>
-                        <li>✔️ Access references linked to each gene</li>
-                        <li>✔️ Navigate to external databases via direct hyperlinks</li>
-                        <li>✔️ Download the full gene list for further analysis</li>
+                        <li> Explore curated gene entries with descriptions and known synonyms</li>
+                        <li> Access references linked to each gene</li>
+                        <li> Navigate to external databases via direct hyperlinks</li>
+                        <li> Download the full gene list for further analysis</li>
                     </ul>
                     <strong>CiliaHub</strong> empowers both basic and clinical researchers in the fields of cell biology and genetics to explore the molecular basis of cilia-related functions and ciliopathies.
                 </p>
 
+                <!-- NEW FEATURE 1: Interactive Statistics Dashboard -->
+                <div id="statistics-dashboard" class="stats-dashboard mb-5">
+                    <h3 style="color: #203c78; text-align: center; margin-bottom: 20px;">📊 Database Statistics & Analysis</h3>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number" id="total-genes">0</div>
+                            <div class="stat-label">Total Genes</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="unique-localizations">0</div>
+                            <div class="stat-label">Localizations</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="with-omim">0</div>
+                            <div class="stat-label">OMIM Entries</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="with-references">0</div>
+                            <div class="stat-label">Referenced Genes</div>
+                        </div>
+                    </div>
+
+                    <div class="chart-container">
+                        <div class="chart-section">
+                            <h4>Gene Distribution by Localization</h4>
+                            <canvas id="localizationChart" width="400" height="200"></canvas>
+                        </div>
+                        <div class="chart-section">
+                            <h4>Database Growth Simulation</h4>
+                            <canvas id="growthChart" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- How to Use (collapsible box) -->
                 <details class="mb-4" style="background: #f5faff; border: 1px solid #cce0f5; padding: 15px; border-radius: 5px;">
-                    <summary style="font-weight: bold; cursor: pointer;">📘 How to Use CiliaHub</summary>
+                    <summary style="font-weight: bold; cursor: pointer;"> How to Use CiliaHub</summary>
                     <div style="margin-top: 10px;">
                         <ul>
-                            <li><strong>🔍 Search:</strong> Enter a gene name, Ensembl ID, OMIM ID, or synonym to find specific entries.</li>
-                            <li><strong>🧭 Filter:</strong> Use the dropdown menu to display genes based on ciliary localization (e.g., Basal Body).</li>
-                            <li><strong>♻️ Reset:</strong> Click <em>Reset</em> to clear search and filters, and reload all results.</li>
-                            <li><strong>⬇️ Download:</strong> Export the full gene list as a CSV file for offline analysis or custom sorting.</li>
-                            <li><strong>🔗 External Links:</strong> Gene names, Ensembl IDs, OMIM IDs, and references are hyperlinked to authoritative databases.</li>
-                            <li><strong>🗂 Batch Query:</strong> Paste multiple genes or IDs below and click "Batch Query" to retrieve all matching entries at once.</li>
+                            <li><strong> Search:</strong> Enter a gene name, Ensembl ID, OMIM ID, or synonym to find specific entries.</li>
+                            <li><strong> Filter:</strong> Use the dropdown menu to display genes based on ciliary localization (e.g., Basal Body).</li>
+                            <li><strong> Reset:</strong> Click <em>Reset</em> to clear search and filters, and reload all results.</li>
+                            <li><strong> Download:</strong> Export the full gene list as a CSV file for offline analysis or custom sorting.</li>
+                            <li><strong> External Links:</strong> Gene names, Ensembl IDs, OMIM IDs, and references are hyperlinked to authoritative databases.</li>
+                            <li><strong> Batch Query:</strong> Paste multiple genes or IDs below and click "Batch Query" to retrieve all matching entries at once.</li>
                         </ul>
                     </div>
                 </details>
 
-                <!-- Controls -->
+                <!-- NEW FEATURE 2: Enhanced Search with Auto-suggestions -->
                 <div class="ciliahub-controls mb-4 text-center">
-                    <input type="text" id="ciliahub-search" placeholder="Search by Gene, Ensembl ID, or Synonym..." aria-label="Search CiliaHub database">
-                    <select id="ciliahub-filter" aria-label="Filter by ciliary localization">
-                        <option value="">All Localizations</option>
-                        <option value="basal-body">Basal Body</option>
-                        <option value="transition-zone">Transition Zone</option>
-                        <option value="cilia">Cilia</option>
-                        <option value="basal-body-cilia">Basal Body, Cilia</option>
-                        <option value="cilia-basal-body">Cilia, Basal Body</option>
-                        <option value="flagella-cilia">Flagella, Cilia</option>
-                        <option value="cilia-basal-body-transition-zone">Cilia, Basal Body, Transition Zone</option>
-                        <option value="flagella-cilia-basal-body">Flagella, Cilia, Basal Body</option>
-                        <option value="ciliary-associated-gene">Ciliary Associated Gene</option>
-                    </select>
-                    <button id="ciliahub-reset" aria-label="Reset search and filters">Reset</button>
-                    <button id="download-ciliahub" aria-label="Download CiliaHub data as CSV">Download Data</button>
+                    <div class="search-container">
+                        <input type="text" id="ciliahub-search" placeholder="Search by Gene, Ensembl ID, or Synonym..." aria-label="Search CiliaHub database" autocomplete="off">
+                        <div id="search-suggestions" class="search-suggestions"></div>
+                    </div>
+                    
+                    <!-- NEW FEATURE 3: Advanced Filtering System -->
+                    <div class="advanced-filters">
+                        <select id="ciliahub-filter" aria-label="Filter by ciliary localization">
+                            <option value="">All Localizations</option>
+                            <option value="basal-body">Basal Body</option>
+                            <option value="transition-zone">Transition Zone</option>
+                            <option value="cilia">Cilia</option>
+                            <option value="basal-body-cilia">Basal Body, Cilia</option>
+                            <option value="cilia-basal-body">Cilia, Basal Body</option>
+                            <option value="flagella-cilia">Flagella, Cilia</option>
+                            <option value="cilia-basal-body-transition-zone">Cilia, Basal Body, Transition Zone</option>
+                            <option value="flagella-cilia-basal-body">Flagella, Cilia, Basal Body</option>
+                            <option value="ciliary-associated-gene">Ciliary Associated Gene</option>
+                        </select>
+
+                        <select id="omim-filter" aria-label="Filter by OMIM availability">
+                            <option value="">All OMIM Status</option>
+                            <option value="has-omim">Has OMIM ID</option>
+                            <option value="no-omim">No OMIM ID</option>
+                        </select>
+
+                        <select id="reference-filter" aria-label="Filter by reference availability">
+                            <option value="">All Reference Status</option>
+                            <option value="has-reference">Has References</option>
+                            <option value="no-reference">No References</option>
+                        </select>
+
+                        <input type="text" id="synonym-filter" placeholder="Filter by synonym..." aria-label="Filter by synonym">
+                    </div>
+
+                    <div class="control-buttons">
+                        <button id="ciliahub-reset" aria-label="Reset search and filters">Reset All</button>
+                        <button id="download-ciliahub" aria-label="Download CiliaHub data as CSV">Download Data</button>
+                        <button id="export-filtered" aria-label="Export filtered results as CSV">Export Filtered</button>
+                    </div>
                 </div>
+
+                <!-- Results counter -->
+                <div id="results-counter" class="results-counter mb-3"></div>
 
                 <!-- Popular Genes Widget -->
                 <div id="popularGenesWidget" style="max-width: 600px; margin: 20px auto; padding: 15px; border: 1px solid #cce0f5; background: #f0f8ff; border-radius: 6px; color: #203c78;">
-                    <h3 style="text-align:center; margin-top:0;">🔥 Popular Genes This Session</h3>
+                    <h3 style="text-align:center; margin-top:0;"> Popular Genes This Session</h3>
                     <ul id="popularGenesList" style="list-style: none; padding-left: 10px;"></ul>
                 </div>
 
@@ -563,7 +626,7 @@
                 </div>
                 <div class="research-item">
                     <img src="elegans.png" alt="Research Icon" class="fit-image">
-                    <p>Cevik S, Kaplan OI. <strong>Subcellular localization of the voltage-gated K+ channel EGL-36, a member of the KV3 subfamily, in the ciliated sensory neurons in C. elegans.</strong> MicroPubl Biol. 2021;2021:10.17912/micropub.biology.000367. doi: <a href="https://doi.org/10.17912/micropub.biology.000367">10.17912/micropub.biology.000367</a></p>
+                    <p>Cevik S, Kaplan OI. <strong>Subcellular localization of the voltage-gated K+ channel EGL-36, a member of the KV3 subfamily, in the ciliated sensory neurons in C. elegans.</strong> MicroPubl Biol. 2021;2021:10.17912/micropub.biology.000367. doi: <a href="https://doi.org/10.17912/micropub.biology.000367">10.1017912/micropub.biology.000367</a></p>
                 </div>
                 <div class="research-item">
                     <img src="elegans.png" alt="Research Icon" class="fit-image">
