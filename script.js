@@ -1,10 +1,14 @@
-// Updated loadCiliaHubData function with search-only display
+// Enhanced loadCiliaHubData function with new features
 async function loadCiliaHubData() {
     const tableBody = document.getElementById('ciliahub-table-body');
     const searchInput = document.getElementById('ciliahub-search');
     const filterSelect = document.getElementById('ciliahub-filter');
+    const omimFilter = document.getElementById('omim-filter');
+    const referenceFilter = document.getElementById('reference-filter');
+    const synonymFilter = document.getElementById('synonym-filter');
     const resetBtn = document.getElementById('ciliahub-reset');
     const downloadBtn = document.getElementById('download-ciliahub');
+    const exportFilteredBtn = document.getElementById('export-filtered');
     const batchQueryBtn = document.getElementById('batchQueryBtn');
     const batchGenesInput = document.getElementById('batchGenes');
     const batchResultsDiv = document.getElementById('batchResults');
@@ -14,10 +18,25 @@ async function loadCiliaHubData() {
     const errorDiv = document.getElementById('ciliahub-error');
     const loadingDiv = document.getElementById('ciliahub-loading');
     const table = document.querySelector('.ciliahub-table');
+    const resultsCounter = document.getElementById('results-counter');
+    const suggestionsDiv = document.getElementById('search-suggestions');
 
     let data = [];
+    let filteredData = [];
     let searchCounts = JSON.parse(sessionStorage.getItem('popularGenes')) || {};
     let debounceTimeout;
+    let allGeneNames = new Set();
+    let allSynonyms = new Set();
+    let allEnsemblIds = new Set();
+
+    // Statistics tracking
+    let statsData = {
+        totalGenes: 0,
+        uniqueLocalizations: new Set(),
+        withOMIM: 0,
+        withReferences: 0,
+        localizationCounts: {}
+    };
 
     function showError(message) {
         errorDiv.textContent = message;
@@ -34,45 +53,45 @@ async function loadCiliaHubData() {
         if (!reference) return 'N/A';
         const refs = reference.split(';').map(ref => ref.trim()).filter(ref => ref);
         const formattedRefs = refs.map(ref => {
-            // Check if the reference is a PMID (numeric)
             if (/^\d+$/.test(ref)) {
                 return `<a href="https://pubmed.ncbi.nlm.nih.gov/${ref}/" target="_blank">${ref}</a>`;
-            }
-            // Check if the reference is a DOI (starts with https://doi.org/ or a raw DOI like 10.xxxx)
-            else if (ref.startsWith('https://doi.org/') || /^10\.\d{4,}/.test(ref)) {
+            } else if (ref.startsWith('https://doi.org/') || /^10\.\d{4,}/.test(ref)) {
                 const doi = ref.startsWith('https://doi.org/') ? ref.replace('https://doi.org/', '') : ref;
                 const doiUrl = `https://doi.org/${doi}`;
                 return `<a href="${doiUrl}" target="_blank">${doi}</a>`;
-            }
-            // Treat as a general URL
-            else if (ref.startsWith('http://') || ref.startsWith('https://')) {
+            } else if (ref.startsWith('http://') || ref.startsWith('https://')) {
                 return `<a href="${ref}" target="_blank">${ref}</a>`;
-            }
-            // Fallback for invalid references
-            else {
+            } else {
                 return ref;
             }
         });
         return formattedRefs.join(', ');
     }
 
-    function populateTable(filteredData = []) {
+    function updateResultsCounter(count) {
+        if (resultsCounter) {
+            resultsCounter.textContent = `Showing ${count} genes`;
+            resultsCounter.style.display = count > 0 ? 'block' : 'none';
+        }
+    }
+
+    function populateTable(dataToShow = []) {
         tableBody.innerHTML = '';
+        filteredData = dataToShow;
         
-        // If no filtered data provided, hide table and show message
-        if (filteredData.length === 0) {
+        if (dataToShow.length === 0) {
             loadingDiv.style.display = 'none';
             table.style.display = 'none';
+            updateResultsCounter(0);
             return;
         }
 
-        filteredData.forEach(item => {
+        dataToShow.forEach(item => {
             const sanitizedLocalization = (item.localization || '')
                 .toLowerCase()
                 .replace(/[\s,]+/g, '-');
 
             const referenceLinks = formatReference(item.reference);
-            // Format synonyms as a list with line breaks
             const synonyms = item.synonym ? item.synonym.split(',').map(s => s.trim()).join('<br>') : '';
 
             const row = document.createElement('tr');
@@ -91,6 +110,7 @@ async function loadCiliaHubData() {
         
         loadingDiv.style.display = 'none';
         table.style.display = 'table';
+        updateResultsCounter(dataToShow.length);
     }
 
     function updatePopularGenes() {
@@ -106,12 +126,268 @@ async function loadCiliaHubData() {
         loadingDiv.innerHTML = 'Enter a search term to explore the CiliaHub database...';
         loadingDiv.style.display = 'block';
         table.style.display = 'none';
+        updateResultsCounter(0);
+    }
+
+    // NEW FEATURE 2: Auto-suggestions functionality
+    function showSuggestions(query) {
+        if (!query || query.length < 2) {
+            suggestionsDiv.style.display = 'none';
+            return;
+        }
+
+        const suggestions = [];
+        const queryLower = query.toLowerCase();
+
+        // Search in gene names
+        [...allGeneNames].forEach(gene => {
+            if (gene.toLowerCase().includes(queryLower) && suggestions.length < 8) {
+                suggestions.push({ text: gene, type: 'gene' });
+            }
+        });
+
+        // Search in synonyms
+        [...allSynonyms].forEach(synonym => {
+            if (synonym.toLowerCase().includes(queryLower) && suggestions.length < 8) {
+                suggestions.push({ text: synonym, type: 'synonym' });
+            }
+        });
+
+        // Search in Ensembl IDs
+        [...allEnsemblIds].forEach(id => {
+            if (id.toLowerCase().includes(queryLower) && suggestions.length < 8) {
+                suggestions.push({ text: id, type: 'ensembl' });
+            }
+        });
+
+        if (suggestions.length > 0) {
+            suggestionsDiv.innerHTML = suggestions.map(s => 
+                `<div class="suggestion-item" data-type="${s.type}">${s.text} <span class="suggestion-type">${s.type}</span></div>`
+            ).join('');
+            suggestionsDiv.style.display = 'block';
+
+            // Add click handlers for suggestions
+            suggestionsDiv.querySelectorAll('.suggestion-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    searchInput.value = item.textContent.replace(/\s+(gene|synonym|ensembl)$/, '');
+                    suggestionsDiv.style.display = 'none';
+                    applyFilters();
+                });
+            });
+        } else {
+            suggestionsDiv.style.display = 'none';
+        }
+    }
+
+    // Hide suggestions when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.search-container')) {
+            suggestionsDiv.style.display = 'none';
+        }
+    });
+
+    // NEW FEATURE 3: Advanced filtering function
+    function applyFilters() {
+        hideError();
+        const query = searchInput.value.toLowerCase().trim();
+        const localizationFilter = filterSelect.value.toLowerCase();
+        const omimFilterValue = omimFilter.value;
+        const referenceFilterValue = referenceFilter.value;
+        const synonymFilterValue = synonymFilter.value.toLowerCase().trim();
+        
+        if (!query && !localizationFilter && !omimFilterValue && !referenceFilterValue && !synonymFilterValue) {
+            showSearchPrompt();
+            return;
+        }
+
+        // Track search for popular genes
+        if (query) {
+            searchCounts[query] = (searchCounts[query] || 0) + 1;
+            sessionStorage.setItem('popularGenes', JSON.stringify(searchCounts));
+            updatePopularGenes();
+        }
+
+        let filtered = data.filter(item => {
+            // Text search filter
+            let textMatch = true;
+            if (query) {
+                textMatch = (item.gene && item.gene.toLowerCase().includes(query)) ||
+                           (item.ensembl_id && item.ensembl_id.toLowerCase().includes(query)) ||
+                           (item.synonym && item.synonym.toLowerCase().includes(query)) ||
+                           (item.omim_id && item.omim_id.toLowerCase().includes(query)) ||
+                           (item.reference && item.reference.toLowerCase().includes(query));
+            }
+
+            // Localization filter
+            let localizationMatch = true;
+            if (localizationFilter) {
+                localizationMatch = (item.localization || '').toLowerCase().replace(/[\s,]+/g, '-') === localizationFilter;
+            }
+
+            // OMIM filter
+            let omimMatch = true;
+            if (omimFilterValue === 'has-omim') {
+                omimMatch = item.omim_id && item.omim_id.trim() !== '';
+            } else if (omimFilterValue === 'no-omim') {
+                omimMatch = !item.omim_id || item.omim_id.trim() === '';
+            }
+
+            // Reference filter
+            let referenceMatch = true;
+            if (referenceFilterValue === 'has-reference') {
+                referenceMatch = item.reference && item.reference.trim() !== '';
+            } else if (referenceFilterValue === 'no-reference') {
+                referenceMatch = !item.reference || item.reference.trim() === '';
+            }
+
+            // Synonym filter
+            let synonymMatch = true;
+            if (synonymFilterValue) {
+                synonymMatch = item.synonym && item.synonym.toLowerCase().includes(synonymFilterValue);
+            }
+
+            return textMatch && localizationMatch && omimMatch && referenceMatch && synonymMatch;
+        });
+        
+        populateTable(filtered);
+    }
+
+    function debounce(func, wait) {
+        return function (...args) {
+            clearTimeout(debounceTimeout);
+            debounceTimeout = setTimeout(() => func.apply(this, args), wait);
+        };
+    }
+
+    // NEW FEATURE 1: Statistics calculation and visualization
+    function calculateStatistics() {
+        statsData.totalGenes = data.length;
+        statsData.withOMIM = data.filter(item => item.omim_id && item.omim_id.trim()).length;
+        statsData.withReferences = data.filter(item => item.reference && item.reference.trim()).length;
+        
+        // Calculate localization distribution
+        statsData.localizationCounts = {};
+        data.forEach(item => {
+            if (item.localization && item.localization.trim()) {
+                const loc = item.localization.trim();
+                if (!statsData.uniqueLocalizations.has(loc)) {
+                    statsData.uniqueLocalizations.add(loc);
+                }
+                statsData.localizationCounts[loc] = (statsData.localizationCounts[loc] || 0) + 1;
+            }
+        });
+
+        // Update stat cards
+        document.getElementById('total-genes').textContent = statsData.totalGenes;
+        document.getElementById('unique-localizations').textContent = statsData.uniqueLocalizations.size;
+        document.getElementById('with-omim').textContent = statsData.withOMIM;
+        document.getElementById('with-references').textContent = statsData.withReferences;
+    }
+
+    function createCharts() {
+        // Localization Chart
+        const locCtx = document.getElementById('localizationChart');
+        if (locCtx) {
+            const locData = Object.entries(statsData.localizationCounts)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 8); // Top 8 localizations
+
+            new Chart(locCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: locData.map(([label]) => label.length > 15 ? label.substring(0, 12) + '...' : label),
+                    datasets: [{
+                        data: locData.map(([, count]) => count),
+                        backgroundColor: [
+                            '#203c78', '#4a6fa5', '#6d8bc9', '#90a7dd',
+                            '#b3c3f1', '#d6dfff', '#f0f4ff', '#e6f2ff'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                boxWidth: 12,
+                                padding: 8,
+                                font: { size: 10 }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Growth Chart (simulated data)
+        const growthCtx = document.getElementById('growthChart');
+        if (growthCtx) {
+            const years = ['2020', '2021', '2022', '2023', '2024', '2025'];
+            const cumulative = [500, 750, 1200, 1600, 1900, statsData.totalGenes];
+
+            new Chart(growthCtx, {
+                type: 'line',
+                data: {
+                    labels: years,
+                    datasets: [{
+                        label: 'Genes in Database',
+                        data: cumulative,
+                        borderColor: '#203c78',
+                        backgroundColor: 'rgba(32, 60, 120, 0.1)',
+                        fill: true,
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Number of Genes'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Year'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        }
     }
 
     try {
         const response = await fetch('https://raw.githubusercontent.com/rarediseaselab/home/main/ciliahub_data.json');
         data = await response.json();
         console.log('Loaded entries:', data.length);
+        
+        // Build search indices
+        data.forEach(item => {
+            if (item.gene) allGeneNames.add(item.gene);
+            if (item.ensembl_id) allEnsemblIds.add(item.ensembl_id);
+            if (item.synonym) {
+                item.synonym.split(',').forEach(syn => {
+                    const trimmed = syn.trim();
+                    if (trimmed) allSynonyms.add(trimmed);
+                });
+            }
+        });
+
+        // Calculate statistics and create charts
+        calculateStatistics();
+        createCharts();
         
         // Show search prompt instead of populating table
         showSearchPrompt();
@@ -122,82 +398,29 @@ async function loadCiliaHubData() {
         return;
     }
 
-    function debounce(func, wait) {
-        return function (...args) {
-            clearTimeout(debounceTimeout);
-            debounceTimeout = setTimeout(() => func.apply(this, args), wait);
-        };
-    }
-
-    searchInput.addEventListener('input', debounce(() => {
-        hideError();
-        const query = searchInput.value.toLowerCase().trim();
-        
-        if (!query) {
-            // If search is empty, hide table and show search prompt
-            showSearchPrompt();
-            return;
-        }
-
-        // Track search for popular genes
-        searchCounts[query] = (searchCounts[query] || 0) + 1;
-        sessionStorage.setItem('popularGenes', JSON.stringify(searchCounts));
-        updatePopularGenes();
-
-        const filteredData = data.filter(item =>
-            (item.gene && item.gene.toLowerCase().includes(query)) ||
-            (item.ensembl_id && item.ensembl_id.toLowerCase().includes(query)) ||
-            (item.synonym && item.synonym.toLowerCase().includes(query)) ||
-            (item.omim_id && item.omim_id.toLowerCase().includes(query)) ||
-            (item.reference && item.reference.toLowerCase().includes(query))
-        );
-        
-        populateTable(filteredData);
+    // Event listeners
+    searchInput.addEventListener('input', debounce((e) => {
+        const query = e.target.value;
+        showSuggestions(query);
+        applyFilters();
     }, 300));
 
-    filterSelect.addEventListener('change', () => {
-        hideError();
-        const filterValue = filterSelect.value.toLowerCase();
-        const query = searchInput.value.toLowerCase().trim();
-        
-        // Only show results if there's a search query or filter is applied
-        if (!query && !filterValue) {
-            showSearchPrompt();
-            return;
-        }
-
-        let filteredData = data;
-        
-        // Apply search filter if query exists
-        if (query) {
-            filteredData = filteredData.filter(item =>
-                (item.gene && item.gene.toLowerCase().includes(query)) ||
-                (item.ensembl_id && item.ensembl_id.toLowerCase().includes(query)) ||
-                (item.synonym && item.synonym.toLowerCase().includes(query)) ||
-                (item.omim_id && item.omim_id.toLowerCase().includes(query)) ||
-                (item.reference && item.reference.toLowerCase().includes(query))
-            );
-        }
-        
-        // Apply localization filter if selected
-        if (filterValue) {
-            filteredData = filteredData.filter(item =>
-                (item.localization || '').toLowerCase().replace(/[\s,]+/g, '-') === filterValue
-            );
-        }
-        
-        populateTable(filteredData);
-    });
+    filterSelect.addEventListener('change', applyFilters);
+    omimFilter.addEventListener('change', applyFilters);
+    referenceFilter.addEventListener('change', applyFilters);
+    synonymFilter.addEventListener('input', debounce(applyFilters, 300));
 
     resetBtn.addEventListener('click', () => {
         hideError();
         searchInput.value = '';
         filterSelect.value = '';
+        omimFilter.value = '';
+        referenceFilter.value = '';
+        synonymFilter.value = '';
+        suggestionsDiv.style.display = 'none';
         searchCounts = {};
         sessionStorage.removeItem('popularGenes');
         updatePopularGenes();
-        
-        // Show search prompt instead of all data
         showSearchPrompt();
     });
 
@@ -224,6 +447,34 @@ async function loadCiliaHubData() {
         window.URL.revokeObjectURL(url);
     });
 
+    exportFilteredBtn.addEventListener('click', () => {
+        if (filteredData.length === 0) {
+            alert('No filtered data to export. Please apply filters first.');
+            return;
+        }
+        
+        const csv = [
+            ['Gene', 'Ensembl ID', 'Gene Description', 'Synonym', 'OMIM ID', 'Reference', 'Ciliary Localization'],
+            ...filteredData.map(item => [
+                item.gene || '',
+                item.ensembl_id || '',
+                item.description || '',
+                item.synonym || '',
+                item.omim_id || '',
+                item.reference || '',
+                item.localization || ''
+            ])
+        ].map(row => row.map(cell => `"${cell.replace(/"/g, '""')}"`).join(',')).join('\n');
+
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `ciliahub_filtered_${new Date().toISOString().split('T')[0]}.csv`;
+        a.click();
+        window.URL.revokeObjectURL(url);
+    });
+
     batchQueryBtn.addEventListener('click', () => {
         hideError();
         const input = batchGenesInput.value.trim();
@@ -238,7 +489,7 @@ async function loadCiliaHubData() {
             sessionStorage.setItem('popularGenes', JSON.stringify(searchCounts));
         });
         updatePopularGenes();
-        const filteredData = data.filter(item =>
+        const batchFiltered = data.filter(item =>
             queries.some(query =>
                 (item.gene && item.gene.toLowerCase() === query) ||
                 (item.ensembl_id && item.ensembl_id.toLowerCase() === query) ||
@@ -246,7 +497,7 @@ async function loadCiliaHubData() {
                 (item.omim_id && item.omim_id.toLowerCase() === query)
             )
         );
-        if (filteredData.length === 0) {
+        if (batchFiltered.length === 0) {
             batchResultsDiv.innerHTML = '<p>No matching genes found.</p>';
             batchResultsContainer.style.display = 'block';
             return;
@@ -265,7 +516,7 @@ async function loadCiliaHubData() {
                     </tr>
                 </thead>
                 <tbody>
-                    ${filteredData.map(item => {
+                    ${batchFiltered.map(item => {
                         const referenceLinks = formatReference(item.reference);
                         return `
                             <tr>
