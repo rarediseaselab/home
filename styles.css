@@ -734,43 +734,197 @@ footer {
     opacity: 0.8;
 }
 
-/* CiliaHub Section */
-.ciliahub-controls {
+/* NEW FEATURE 1: Statistics Dashboard Styles */
+.stats-dashboard {
+    background: #f0f8ff;
+    border: 2px solid #cce0f5;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+}
+
+.stat-number {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #203c78;
+    margin-bottom: 10px;
+}
+
+.stat-label {
+    font-size: 1.1em;
+    color: #666;
+    font-weight: 500;
+}
+
+.chart-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.chart-section {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.chart-section h4 {
+    color: #203c78;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.chart-section canvas {
+    max-height: 300px;
+}
+
+/* NEW FEATURE 2: Enhanced Search with Auto-suggestions */
+.search-container {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+}
+
+.search-suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #cce0f5;
+    border-top: none;
+    border-radius: 0 0 5px 5px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.suggestion-item {
+    padding: 10px 15px;
+    cursor: pointer;
+    border-bottom: 1px solid #f0f0f0;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-    gap: 10px;
-    background-color: #e6f2ff;
-    padding: 15px;
-    border-radius: 4px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-#ciliahub-search, #ciliahub-filter, #ciliahub-reset, #download-ciliahub {
-    padding: 8px 12px;
+.suggestion-item:hover {
+    background-color: #f0f8ff;
+}
+
+.suggestion-type {
+    font-size: 0.8em;
+    color: #666;
+    background: #e6f2ff;
+    padding: 2px 6px;
+    border-radius: 3px;
+    text-transform: uppercase;
+}
+
+/* NEW FEATURE 3: Advanced Filtering System */
+.advanced-filters {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.control-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.results-counter {
+    text-align: center;
+    font-weight: bold;
+    color: #203c78;
+    padding: 10px;
+    background: #f0f8ff;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    display: none;
+}
+
+/* CiliaHub Section */
+.ciliahub-controls {
+    background-color: #e6f2ff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+#ciliahub-search, #ciliahub-filter, #omim-filter, #reference-filter, #synonym-filter,
+#ciliahub-reset, #download-ciliahub, #export-filtered {
+    padding: 10px 12px;
     border: 2px solid #004080;
-    border-radius: 4px;
+    border-radius: 5px;
     font-size: 1em;
     background-color: white;
     color: #333;
-    max-width: 400px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+#ciliahub-search {
     width: 100%;
+    max-width: 400px;
 }
 
-#ciliahub-filter {
+#ciliahub-filter, #omim-filter, #reference-filter {
     cursor: pointer;
 }
 
-#ciliahub-reset {
-    background-color: #f9f9f9;
-    color: #004080;
-    cursor: pointer;
+#synonym-filter {
+    width: 100%;
+    max-width: 200px;
 }
 
-#ciliahub-reset:hover {
-    background-color: #d9e6ff;
+#ciliahub-reset, #download-ciliahub, #export-filtered {
+    background-color: #203c78;
+    color: white;
+    cursor: pointer;
+    border: none;
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+#ciliahub-reset:hover, #download-ciliahub:hover, #export-filtered:hover {
+    background-color: #1a2f5f;
+    transform: translateY(-1px);
+}
+
+#ciliahub-search:focus, #ciliahub-filter:focus, #omim-filter:focus, 
+#reference-filter:focus, #synonym-filter:focus {
+    outline: none;
+    border-color: #203c78;
+    box-shadow: 0 0 0 3px rgba(32, 60, 120, 0.1);
 }
 
 .ciliahub-legend {
@@ -962,18 +1116,60 @@ footer {
 }
 
 /* Night Mode for CiliaHub */
+.night-mode .stats-dashboard {
+    background: #2e2e2e;
+    border-color: #555;
+}
+
+.night-mode .stat-card {
+    background: #3d3d3d;
+    color: #d9d9d9;
+}
+
+.night-mode .stat-number {
+    color: #b3d9ff;
+}
+
+.night-mode .chart-section {
+    background: #3d3d3d;
+}
+
+.night-mode .search-suggestions {
+    background: #2e2e2e;
+    border-color: #555;
+}
+
+.night-mode .suggestion-item:hover {
+    background-color: #4a4a4a;
+}
+
+.night-mode .suggestion-type {
+    background: #4a4a4a;
+    color: #b3d9ff;
+}
+
+.night-mode .results-counter {
+    background: #2e2e2e;
+    color: #b3d9ff;
+}
+
 .night-mode .ciliahub-controls {
     background-color: #3d3d3d;
 }
 
-.night-mode #ciliahub-search, .night-mode #ciliahub-filter, .night-mode #ciliahub-reset, .night-mode #download-ciliahub {
+.night-mode #ciliahub-search, .night-mode #ciliahub-filter, .night-mode #omim-filter,
+.night-mode #reference-filter, .night-mode #synonym-filter {
     background-color: #2e2e2e;
     border: 2px solid #b3d9ff;
     color: #d9d9d9;
 }
 
-.night-mode #ciliahub-reset:hover {
-    background-color: #4a4a4a;
+.night-mode #ciliahub-reset, .night-mode #download-ciliahub, .night-mode #export-filtered {
+    background-color: #0066cc;
+}
+
+.night-mode #ciliahub-reset:hover, .night-mode #download-ciliahub:hover, .night-mode #export-filtered:hover {
+    background-color: #004d99;
 }
 
 .night-mode .ciliahub-legend {
@@ -1136,6 +1332,22 @@ footer {
     .fit-image {
         width: 120px;
     }
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+    .chart-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    .advanced-filters {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    .control-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
     .ciliahub-table {
         font-size: 0.8em;
         max-width: 100%; /* Fit within container on smaller screens */
@@ -1158,17 +1370,6 @@ footer {
         min-width: 100px; /* Adjusted for Synonym visibility */
         white-space: normal;
         overflow: visible;
-    }
-    .ciliahub-controls {
-        flex-direction: column;
-        align-items: center;
-    }
-    #ciliahub-search,
-    #ciliahub-filter,
-    #ciliahub-reset,
-    #download-ciliahub {
-        width: 100%;
-        max-width: none;
     }
 }
 
@@ -1201,6 +1402,15 @@ footer {
     }
     .fit-image {
         width: 100px;
+    }
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    .stat-number {
+        font-size: 2em;
+    }
+    .search-container {
+        max-width: 100%;
     }
     .ciliahub-table {
         font-size: 0.75em;
