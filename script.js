@@ -307,6 +307,12 @@ async function loadCiliaHubData() {
                 })
                 .sort((a, b) => b[1] - a[1]);
 
+            // Update the chart title in the HTML if it exists
+            const chartTitleElement = document.querySelector('#localizationChart').closest('.chart-container')?.querySelector('h3, .chart-title');
+            if (chartTitleElement) {
+                chartTitleElement.textContent = 'Gene Distribution by Localization and Cilia Association';
+            }
+
             new Chart(locCtx, {
                 type: 'doughnut',
                 data: {
@@ -330,10 +336,6 @@ async function loadCiliaHubData() {
                                 padding: 8,
                                 font: { size: 10 }
                             }
-                        },
-                        title: {
-                            display: true,
-                            text: 'Gene Distribution by Localization and Cilia Association'
                         }
                     }
                 }
