@@ -285,19 +285,34 @@ async function loadCiliaHubData() {
     }
 
     function createCharts() {
-        // Localization Chart
+        // Localization Chart - Filter for specific cilia-related localizations
         const locCtx = document.getElementById('localizationChart');
         if (locCtx) {
-            const locData = Object.entries(statsData.localizationCounts)
-                .sort((a, b) => b[1] - a[1])
-                .slice(0, 8); // Top 8 localizations
+            // Define the specific localizations to include
+            const ciliaRelatedLocalizations = [
+                'cilia',
+                'transition zone', 
+                'basal body',
+                'flagella',
+                'cilia associated'
+            ];
+            
+            // Filter localization counts to only include cilia-related ones
+            const filteredLocData = Object.entries(statsData.localizationCounts)
+                .filter(([localization]) => {
+                    const locLower = localization.toLowerCase();
+                    return ciliaRelatedLocalizations.some(target => 
+                        locLower.includes(target.toLowerCase())
+                    );
+                })
+                .sort((a, b) => b[1] - a[1]);
 
             new Chart(locCtx, {
                 type: 'doughnut',
                 data: {
-                    labels: locData.map(([label]) => label.length > 15 ? label.substring(0, 12) + '...' : label),
+                    labels: filteredLocData.map(([label]) => label.length > 15 ? label.substring(0, 12) + '...' : label),
                     datasets: [{
-                        data: locData.map(([, count]) => count),
+                        data: filteredLocData.map(([, count]) => count),
                         backgroundColor: [
                             '#203c78', '#4a6fa5', '#6d8bc9', '#90a7dd',
                             '#b3c3f1', '#d6dfff', '#f0f4ff', '#e6f2ff'
@@ -315,6 +330,10 @@ async function loadCiliaHubData() {
                                 padding: 8,
                                 font: { size: 10 }
                             }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Gene Distribution by Localization and Cilia Association'
                         }
                     }
                 }
