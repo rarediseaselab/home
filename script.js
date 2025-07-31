@@ -625,7 +625,145 @@ async function loadCiliaHubData() {
         batchGenesInput.value = '';
     });
 }
+// Gene categories data
+const geneCategories = {
+    cytoskeletal: {
+        name: "Cytoskeletal and Motor Proteins",
+        genes: [
+            "KIF1A", "KIF1B", "KIF1C", "KIF2A", "KIF2B", "KIF2C", "KIF3A", "KIF3B", "KIF3C", "KIF4A", "KIF4B", "KIF5A", "KIF5B", "KIF6", "KIF7", "KIF9", "KIF11", "KIF12", "KIF13A", "KIF13B", "KIF14", "KIF17", "KIF18B", "KIF19", "KIF20B", "KIF23", "KIF24", "KIF26A", "KIF26B", "KIF27", "KIF28P", "KIFC1", "KIFC3",
+            "DNAH1", "DNAH2", "DNAH3", "DNAH5", "DNAH6", "DNAH7", "DNAH8", "DNAH9", "DNAH10", "DNAH11", "DNAH12", "DNAH14", "DNAH17", "DNAI1", "DNAI2", "DNAI3", "DNAI4", "DNAL1", "DNAL4", "DYNLL1", "DYNLL2", "DYNLT1", "DYNLT2B", "DYNC1H1", "DYNC1I1", "DYNC1I2", "DYNC1LI1", "DYNC1LI2", "DYNC2H1", "DYNC2I1", "DYNC2I2", "DYNC2LI1",
+            "TUBA1A", "TUBA1B", "TUBA1C", "TUBA3C", "TUBA3D", "TUBA3E", "TUBA4A", "TUBB", "TUBB1", "TUBB2A", "TUBB2B", "TUBB3", "TUBB4A", "TUBB4B", "TUBB6", "TUBB8", "TUBB8B", "TUBG1", "TUBG2",
+            "ACTN1", "ACTN2", "ACTN3", "ACTN4", "MYO1C", "MYO1D", "MYO3B", "MYO5A", "MYO7A", "MYO15A", "MYH9", "MYH10", "MYH13",
+            "CFAP43", "CFAP44", "CFAP47", "CFAP53", "CFAP57", "CFAP58", "CFAP65", "CFAP69", "CFAP70", "CFAP74", "CFAP97", "CFAP100", "CFAP119", "CFAP144", "CFAP157", "CFAP206", "CFAP221", "CFAP251", "CFAP263", "CFAP276", "CFAP298", "CFAP300", "CFAP410", "CFAP418", "CFAP52", "CFAP54", "CFAP61", "CFAP96", "CFAP97D1", "CFAP144P1",
+            "CEP41", "CEP43", "CEP44", "CEP55", "CEP63", "CEP68", "CEP70", "CEP72", "CEP76", "CEP78", "CEP83", "CEP85", "CEP85L", "CEP89", "CEP95", "CEP97", "CEP104", "CEP112", "CEP120", "CEP126", "CEP128", "CEP131", "CEP135", "CEP152", "CEP162", "CEP164", "CEP170", "CEP192", "CEP250", "CEP290", "CEP350",
+            "SPAG1", "SPAG6", "SPAG8", "SPAG16", "SPAG17"
+        ]
+    },
+    kinases: {
+        name: "Kinases and Phosphatases",
+        genes: [
+            "AURKA", "CDK1", "CDK2", "CDK5RAP2", "CDK6", "CDK7", "CDK10", "CDK20", "CDKL1", "CDKL2", "CDKL3", "CDKL4", "CDKL5", "CAMK1D", "CAMK1G", "CAMK2A", "CAMK2B", "CAMK2D", "CAMK2G", "CSNK1D", "CSNK1E", "CSNK2B", "DYRK1A", "DYRK2", "HIPK1", "MAPK1", "MAPK3", "MAPK6", "MAPK14", "MAPK15", "MAPKAPK2", "NEK1", "NEK2", "NEK3", "NEK4", "NEK5", "NEK7", "NEK8", "NEK9", "NEK10", "PLK1", "PLK4", "PRKAA1", "PRKAA2", "PRKAB1", "PRKACB", "PRKAG1", "PRKAR1B", "PRKAR2A", "PRKAR2B", "PRKCI", "PRKCZ", "PRKD1", "PRKD3", "STK11", "STK33", "STK36", "STK38L", "TTK", "TTBK2",
+            "PTPN11", "PTPN13", "PTPN23", "PTPRK", "PTPRM", "PPP1CA", "PPP1R2", "PPP1R3D", "PPP1R35", "PPP1R42", "PPP2R3A", "PPP2R3B", "PPP2R3C", "PPP2R5E", "PPP4R1", "PPP4R4", "PPP5C", "PPM1B"
+        ]
+    },
+    signaling: {
+        name: "Signaling Pathways",
+        genes: [
+            "WNT1", "WNT3", "WNT3A", "WNT5A", "WNT5B", "WNT8A", "WNT11", "FZD2", "FZD3", "FZD4", "FZD6", "FZD8", "LRP6", "DVL1", "DVL2", "DVL3", "AXIN1", "AXIN2", "APC", "APC2",
+            "SHH", "PTCH1", "PTCH2", "SMO", "GLI1", "GLI2", "GLI3", "SUFU",
+            "TGFB1", "TGFBR1", "TGFBR2", "BMP2", "BMP4", "BMPR2", "SMAD2", "SMAD3", "SMAD4", "SMAD6", "SMAD7",
+            "ADGRV1", "ADRB2", "ADRB3", "CNR1", "CRHR2", "DRD1", "DRD2", "DRD5", "FFAR4", "GPR19", "GPR20", "GPR22", "GPR63", "GPR83", "GPR88", "GPR161", "GPR173", "GPBAR1", "KISS1R", "LPAR1", "LPAR3", "MAS1", "MC4R", "MCHR1", "NMUR1", "NPFFR1", "NPY2R", "NPY5R", "OPNRL1", "PTH1R", "PTGER4", "RXFP2", "SSTR3", "VIPR2",
+            "MAPK1", "MAPK3", "MAPK6", "MAPK14", "MAPK15", "MAP2K1", "MAP2K2", "MAP2K5", "MAPKAPK2"
+        ]
+    },
+    cilia: {
+        name: "Cilia and Centrosome-Associated Genes",
+        genes: [
+            "ARL13A", "ARL13B", "ARL3", "ARL6", "BBS1", "BBS2", "BBS4", "BBS5", "BBS7", "BBS9", "BBS10", "BBS12", "CEP290", "IFT27", "IFT43", "IFT46", "IFT52", "IFT56", "IFT57", "IFT74", "IFT80", "IFT81", "IFT88", "IFT122", "IFT140", "IFT172", "IFTAP", "NPHP1", "NPHP3", "NPHP4", "RPGR", "RPGRIP1", "RPGRIP1L", "TTC21B", "TTC8",
+            "CEP41", "CEP43", "CEP44", "CEP55", "CEP63", "CEP68", "CEP70", "CEP72", "CEP76", "CEP78", "CEP83", "CEP85", "CEP85L", "CEP89", "CEP95", "CEP97", "CEP104", "CEP112", "CEP120", "CEP126", "CEP128", "CEP131", "CEP135", "CEP152", "CEP162", "CEP164", "CEP170", "CEP192", "CEP250", "CEP290", "CEP350", "PCNT", "PCM1", "PLK4", "SAS6", "STIL"
+        ]
+    },
+    ion: {
+        name: "Ion Channels and Transporters",
+        genes: [
+            "CATSPER1", "CATSPER2", "CATSPER3", "CATSPER4", "CATSPERB", "CATSPERD", "CATSPERE", "CATSPERG", "CATSPERZ", "TRPV4", "TRPV5", "TRPV6", "TRPM3", "TRPM4", "TRPM5", "PKD1", "PKD2", "PKD2L1", "PKD1L1", "PIEZO1",
+            "AQP1", "AQP2", "AQP3", "AQP5", "AQP6", "AQP9",
+            "ATP1A4", "ATP2B1", "ATP2B4", "ATP4A", "ATP7B", "ATP8A2"
+        ]
+    },
+    transcription: {
+        name: "Transcription Factors",
+        genes: [
+            "FOXJ1", "FOXA1", "FOXA2", "FOXC2", "FOXF1", "FOXG1", "FOXI1", "FOXN4", "GLI1", "GLI2", "GLI3", "HIF1A", "HIF1AN", "LEF1", "MYB", "MYCBPAP", "NANOG", "NANOGP8", "NOTCH1", "NOTCH3", "PAX2", "PAX6", "PAX7", "RUNX1", "RUNX2", "SMAD2", "SMAD3", "SMAD4", "SOX2", "SOX5", "STAT1", "STAT3", "STAT4", "STAT6", "TP53", "TP63", "TP73", "YAP1", "ZIC1", "ZIC2"
+        ]
+    },
+    ubiquitin: {
+        name: "Ubiquitin-Proteasome System",
+        genes: [
+            "UBE2A", "UBE2B", "UBE2E1", "UBE2L3", "UBE2L5", "UBR4", "UBR5", "USP4", "USP8", "USP9X", "USP11", "USP14", "USP21", "USP33", "USP35", "USP38", "USP48", "STUB1", "TRIM32", "TRIM46", "WWP1"
+        ]
+    },
+    cellcycle: {
+        name: "Cell Cycle and DNA Repair",
+        genes: [
+            "ATM", "ATR", "BRCA1", "BRCA2", "BUB1", "BUB1B", "CDC14A", "CDC20", "CDC20B", "CDK1", "CDK2", "CDK6", "CDK7", "CDK10", "CDK20", "CHEK1", "CHEK2", "MCM2", "MCM7", "PLK1", "PLK4", "TP53", "TP63", "TP73"
+        ]
+    },
+    extracellular: {
+        name: "Extracellular Matrix and Adhesion",
+        genes: [
+            "CD44", "CDH23", "CLDN2", "COL4A1", "FN1", "ITGB1", "ITGB6", "MMP1", "MMP7", "MMP13", "MMP14", "MMP21", "TIMP3", "VCAN"
+        ]
+    },
+    neuro: {
+        name: "Neurodevelopmental and Synaptic Genes",
+        genes: [
+            "BDNF", "CNTNAP2", "DISC1", "DLG1", "DLG5", "GRIN2A", "GRIN2B", "HTT", "NTRK2", "NRAS", "SHANK3", "SNAP25", "SYNE1", "SYNE2"
+        ]
+    },
+    metabolic: {
+        name: "Metabolic Enzymes",
+        genes: [
+            "ALDOB", "CPS1", "DHCR7", "G6PC1", "HSD17B4", "HSD3B1", "HSD3B2", "IDO1", "MTHFR", "MTR", "PGM1", "PKM", "POR"
+        ]
+    },
+    immune: {
+        name: "Immune and Inflammatory Genes",
+        genes: [
+            "IL1B", "IL6", "IL10RA", "IL13", "IL17A", "TLR4", "TNF", "CXCL12", "CX3CL1"
+        ]
+    },
+    rna: {
+        name: "RNA Processing and Splicing",
+        genes: [
+            "PRPF8", "PRPF31", "PRPF6", "SNRNP200", "SRSF1", "SRSF2"
+        ]
+    },
+    misc: {
+        name: "Miscellaneous",
+        genes: [
+            "HSPA1A", "HSPA1B", "HSPA1L", "HSPA2", "HSPA5", "HSPA8", "HSP90AA1", "HSPD1",
+            "H3-3A", "H3-3B", "H3-4", "H3-5", "H3-7", "H3C1", "H3C2", "H3C3", "H3C4", "H3C6", "H3C7", "H3C8", "H3C10", "H3C11", "H3C12", "H3C13", "H3C14", "H3C15",
+            "RAC1", "RHOA", "RAB1A", "RAB3IP", "RAB6A", "RAB6B", "RAB6C", "RAB6D", "RAB7A", "RAB8A", "RAB10", "RAB11A", "RAB11B", "RAB17", "RAB19", "RAB23", "RAB28", "RAB29", "RAB34", "RABL2A", "RABL2B", "RABL3", "RABL6"
+        ]
+    }
+};
 
+// Initialize gene category functionality
+document.addEventListener('DOMContentLoaded', () => {
+    const geneCategorySelect = document.getElementById('geneCategorySelect');
+    const geneCategoryList = document.getElementById('geneCategoryList');
+    const addToBatchQuery = document.getElementById('addToBatchQuery');
+    const batchQueryInput = document.getElementById('batchQueryInput');
+
+    if (geneCategorySelect && geneCategoryList && addToBatchQuery && batchQueryInput) {
+        geneCategorySelect.addEventListener('change', () => {
+            const category = geneCategorySelect.value;
+            if (category && geneCategories[category]) {
+                geneCategoryList.innerHTML = `<p><strong>${geneCategories[category].name}</strong>: ${geneCategories[category].genes.join(', ')}</p>`;
+                geneCategoryList.classList.remove('hidden');
+                addToBatchQuery.disabled = false;
+            } else {
+                geneCategoryList.innerHTML = '';
+                geneCategoryList.classList.add('hidden');
+                addToBatchQuery.disabled = true;
+            }
+        });
+
+        addToBatchQuery.addEventListener('click', () => {
+            const category = geneCategorySelect.value;
+            if (category && geneCategories[category]) {
+                const currentInput = batchQueryInput.value.trim();
+                const newGenes = geneCategories[category].genes.join(', ');
+                batchQueryInput.value = currentInput ? `${currentInput}, ${newGenes}` : newGenes;
+                // Trigger batch query processing if needed
+                if (batchQueryInput.value) {
+                    processBatchQuery();
+                }
+            }
+        });
+    }
+});
 // Call the function when the DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     if (document.getElementById('ciliahub')) {
