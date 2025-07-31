@@ -357,12 +357,11 @@
                     <button id="clearBatchResults" style="margin-top:10px; padding: 6px 12px; background:#888; color:#fff; border:none; border-radius:4px; cursor:pointer;" aria-label="Clear batch query results">Clear Results</button>
                 </div>
              <!-- Within <section id="ciliahub">, after Batch Query -->
-<div class="mb-6">
-    <h3 class="text-lg font-semibold mb-2 text-cilia-blue">Functional Gene Groups</h3>
-    <p class="text-sm mb-4">Functional Gene Groups (FGGs) are a collection of genes belonging to a common pathway or molecular function. Usually, FGGs are associated with a Gene Ontology term.</p>
-    <div id="functionalGeneGroupsContainer" class="space-y-2" aria-live="polite">
-        <!-- Categories and subcategories will be populated dynamically -->
-    </div>
+                <!-- Functional Gene Groups -->
+<div class="functional-gene-groups" aria-label="Functional Gene Groups section">
+    <h3>Functional Gene Groups</h3>
+    <p>Explore collections of genes grouped by common pathways or molecular functions, based on Gene Ontology and KEGG terms. Expand each category to view associated genes.</p>
+    <div id="functionalGeneGroupsContainer"></div>
 </div>
                 <!-- Table wrapper -->
                 <div class="table-wrapper mb-5">
