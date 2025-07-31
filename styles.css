@@ -1466,3 +1466,53 @@ footer {
 .night-mode #night-mode-toggle:hover {
     background-color: #004d99;
 }
+/* Gene Category Section */
+#geneCategorySelect {
+    background-color: #fff;
+    border-color: #cce0f5;
+}
+
+#geneCategoryList {
+    border-color: #cce0f5;
+    max-height: 10rem;
+    overflow-y: auto;
+}
+
+#addToBatchQuery {
+    background-color: #203c78;
+}
+
+#addToBatchQuery:hover:not(:disabled) {
+    background-color: #004080;
+}
+
+#geneCategoryList p {
+    margin: 0;
+    line-height: 1.5;
+}
+
+.night-mode #geneCategorySelect {
+    background-color: #2d3748;
+    color: #e2e8f0;
+    border-color: #4a5568;
+}
+
+.night-mode #geneCategoryList {
+    background-color: #2d3748;
+    border-color: #4a5568;
+    color: #e2e8f0;
+}
+
+.night-mode #addToBatchQuery {
+    background-color: #4a5568;
+}
+
+.night-mode #addToBatchQuery:hover:not(:disabled) {
+    background-color: #718096;
+}
+
+@media (max-width: 768px) {
+    #geneCategoryList {
+        max-height: 8rem;
+    }
+}
