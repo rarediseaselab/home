@@ -1,4 +1,4 @@
-// Enhanced loadCiliaHubData function with new features
+// Enhanced loadCiliaHubData function with corrected statistics and filtering
 async function loadCiliaHubData() {
     const tableBody = document.getElementById('ciliahub-table-body');
     const searchInput = document.getElementById('ciliahub-search');
@@ -29,14 +29,38 @@ async function loadCiliaHubData() {
     let allSynonyms = new Set();
     let allEnsemblIds = new Set();
 
-    // Statistics tracking
+    // Statistics tracking - corrected to focus on cilia-related localizations
     let statsData = {
-        totalGenes: 0,
-        uniqueLocalizations: new Set(),
-        withOMIM: 0,
-        withReferences: 0,
-        localizationCounts: {}
+        totalCiliaGenes: 0,
+        ciliaLocalizations: new Set(),
+        ciliaWithOMIM: 0,
+        ciliaWithReferences: 0,
+        ciliaLocalizationCounts: {}
     };
+
+    // Define cilia-related localization categories
+    const ciliaRelatedCategories = {
+        'cilia': ['cilia', 'cilium', 'ciliary'],
+        'transition zone': ['transition zone', 'transition-zone'],
+        'basal body': ['basal body', 'basal-body', 'centriole'],
+        'flagella': ['flagella', 'flagellum'],
+        'cilia associated': ['cilia associated', 'ciliary associated', 'cilia-associated', 'ciliary-associated']
+    };
+
+    function isCiliaRelated(localization) {
+        if (!localization) return false;
+        const locLower = localization.toLowerCase().trim();
+        
+        // Check each category
+        for (const [category, keywords] of Object.entries(ciliaRelatedCategories)) {
+            for (const keyword of keywords) {
+                if (locLower.includes(keyword)) {
+                    return category;
+                }
+            }
+        }
+        return null;
+    }
 
     function showError(message) {
         errorDiv.textContent = message;
@@ -78,7 +102,7 @@ async function loadCiliaHubData() {
     function populateTable(dataToShow = []) {
         tableBody.innerHTML = '';
         filteredData = dataToShow;
-        
+       
         if (dataToShow.length === 0) {
             loadingDiv.style.display = 'none';
             table.style.display = 'none';
@@ -107,7 +131,7 @@ async function loadCiliaHubData() {
             if (sanitizedLocalization) row.classList.add(sanitizedLocalization);
             tableBody.appendChild(row);
         });
-        
+       
         loadingDiv.style.display = 'none';
         table.style.display = 'table';
         updateResultsCounter(dataToShow.length);
@@ -129,7 +153,7 @@ async function loadCiliaHubData() {
         updateResultsCounter(0);
     }
 
-    // NEW FEATURE 2: Auto-suggestions functionality
+    // Auto-suggestions functionality
     function showSuggestions(query) {
         if (!query || query.length < 2) {
             suggestionsDiv.style.display = 'none';
@@ -161,7 +185,7 @@ async function loadCiliaHubData() {
         });
 
         if (suggestions.length > 0) {
-            suggestionsDiv.innerHTML = suggestions.map(s => 
+            suggestionsDiv.innerHTML = suggestions.map(s =>
                 `<div class="suggestion-item" data-type="${s.type}">${s.text} <span class="suggestion-type">${s.type}</span></div>`
             ).join('');
             suggestionsDiv.style.display = 'block';
@@ -186,7 +210,7 @@ async function loadCiliaHubData() {
         }
     });
 
-    // NEW FEATURE 3: Advanced filtering function
+    // Advanced filtering function
     function applyFilters() {
         hideError();
         const query = searchInput.value.toLowerCase().trim();
@@ -194,7 +218,7 @@ async function loadCiliaHubData() {
         const omimFilterValue = omimFilter.value;
         const referenceFilterValue = referenceFilter.value;
         const synonymFilterValue = synonymFilter.value.toLowerCase().trim();
-        
+       
         if (!query && !localizationFilter && !omimFilterValue && !referenceFilterValue && !synonymFilterValue) {
             showSearchPrompt();
             return;
@@ -248,7 +272,7 @@ async function loadCiliaHubData() {
 
             return textMatch && localizationMatch && omimMatch && referenceMatch && synonymMatch;
         });
-        
+       
         populateTable(filtered);
     }
 
@@ -259,64 +283,66 @@ async function loadCiliaHubData() {
         };
     }
 
-    // NEW FEATURE 1: Statistics calculation and visualization
+    // CORRECTED: Statistics calculation focusing only on cilia-related genes
     function calculateStatistics() {
-        statsData.totalGenes = data.length;
-        statsData.withOMIM = data.filter(item => item.omim_id && item.omim_id.trim()).length;
-        statsData.withReferences = data.filter(item => item.reference && item.reference.trim()).length;
-        
-        // Calculate localization distribution
-        statsData.localizationCounts = {};
-        data.forEach(item => {
+        // Filter data to only include cilia-related genes
+        const ciliaRelatedGenes = data.filter(item => {
+            return isCiliaRelated(item.localization);
+        });
+
+        statsData.totalCiliaGenes = ciliaRelatedGenes.length;
+        statsData.ciliaWithOMIM = ciliaRelatedGenes.filter(item => item.omim_id && item.omim_id.trim()).length;
+        statsData.ciliaWithReferences = ciliaRelatedGenes.filter(item => item.reference && item.reference.trim()).length;
+       
+        // Calculate cilia-related localization distribution
+        statsData.ciliaLocalizationCounts = {};
+        ciliaRelatedGenes.forEach(item => {
             if (item.localization && item.localization.trim()) {
-                const loc = item.localization.trim();
-                if (!statsData.uniqueLocalizations.has(loc)) {
-                    statsData.uniqueLocalizations.add(loc);
+                const category = isCiliaRelated(item.localization);
+                if (category) {
+                    if (!statsData.ciliaLocalizations.has(category)) {
+                        statsData.ciliaLocalizations.add(category);
+                    }
+                    statsData.ciliaLocalizationCounts[category] = (statsData.ciliaLocalizationCounts[category] || 0) + 1;
                 }
-                statsData.localizationCounts[loc] = (statsData.localizationCounts[loc] || 0) + 1;
             }
         });
 
-        // Update stat cards
-        document.getElementById('total-genes').textContent = statsData.totalGenes;
-        document.getElementById('unique-localizations').textContent = statsData.uniqueLocalizations.size;
-        document.getElementById('with-omim').textContent = statsData.withOMIM;
-        document.getElementById('with-references').textContent = statsData.withReferences;
+        // Update stat cards with cilia-specific data
+        document.getElementById('total-genes').textContent = statsData.totalCiliaGenes;
+        document.getElementById('unique-localizations').textContent = statsData.ciliaLocalizations.size;
+        document.getElementById('with-omim').textContent = statsData.ciliaWithOMIM;
+        document.getElementById('with-references').textContent = statsData.ciliaWithReferences;
     }
 
     function createCharts() {
-        // Localization Chart - Filter for specific cilia-related localizations
+        // Localization Chart - Only cilia-related localizations
         const locCtx = document.getElementById('localizationChart');
         if (locCtx) {
-            // Define the specific localizations to include
-            const ciliaRelatedLocalizations = [
-                'cilia',
-                'transition zone', 
-                'basal body',
-                'flagella',
-                'cilia associated'
-            ];
-            
-            // Filter localization counts to only include cilia-related ones
-            const filteredLocData = Object.entries(statsData.localizationCounts)
-                .filter(([localization]) => {
-                    const locLower = localization.toLowerCase();
-                    return ciliaRelatedLocalizations.some(target => 
-                        locLower.includes(target.toLowerCase())
-                    );
-                })
+            // Use the calculated cilia localization counts
+            const ciliaLocData = Object.entries(statsData.ciliaLocalizationCounts)
                 .sort((a, b) => b[1] - a[1]);
 
             new Chart(locCtx, {
-                type: 'doughnut',
+                type: 'pie',
                 data: {
-                    labels: filteredLocData.map(([label]) => label.length > 15 ? label.substring(0, 12) + '...' : label),
+                    labels: ciliaLocData.map(([label]) => {
+                        // Capitalize first letter of each word
+                        return label.split(' ').map(word => 
+                            word.charAt(0).toUpperCase() + word.slice(1)
+                        ).join(' ');
+                    }),
                     datasets: [{
-                        data: filteredLocData.map(([, count]) => count),
+                        data: ciliaLocData.map(([, count]) => count),
                         backgroundColor: [
-                            '#203c78', '#4a6fa5', '#6d8bc9', '#90a7dd',
-                            '#b3c3f1', '#d6dfff', '#f0f4ff', '#e6f2ff'
-                        ]
+                            '#203c78', // Dark blue
+                            '#4a6fa5', // Medium blue
+                            '#6d8bc9', // Light blue
+                            '#90a7dd', // Lighter blue
+                            '#b3c3f1'  // Very light blue
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#fff'
                     }]
                 },
                 options: {
@@ -326,37 +352,55 @@ async function loadCiliaHubData() {
                         legend: {
                             position: 'bottom',
                             labels: {
-                                boxWidth: 12,
-                                padding: 8,
-                                font: { size: 10 }
+                                boxWidth: 15,
+                                padding: 10,
+                                font: { size: 11 },
+                                usePointStyle: true
                             }
                         },
                         title: {
                             display: true,
-                            text: 'Gene Distribution by Localization and Cilia Association'
+                            text: 'Cilia-Related Gene Distribution by Localization',
+                            font: { size: 14, weight: 'bold' },
+                            color: '#203c78'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.parsed;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = ((value / total) * 100).toFixed(1);
+                                    return `${label}: ${value} genes (${percentage}%)`;
+                                }
+                            }
                         }
                     }
                 }
             });
         }
 
-        // Growth Chart (simulated data)
+        // Growth Chart (simulated data showing cilia gene discovery over time)
         const growthCtx = document.getElementById('growthChart');
         if (growthCtx) {
             const years = ['2020', '2021', '2022', '2023', '2024', '2025'];
-            const cumulative = [500, 750, 1200, 1600, 1900, statsData.totalGenes];
+            const ciliaGeneCounts = [300, 450, 700, 950, 1200, statsData.totalCiliaGenes];
 
             new Chart(growthCtx, {
                 type: 'line',
                 data: {
                     labels: years,
                     datasets: [{
-                        label: 'Genes in Database',
-                        data: cumulative,
+                        label: 'Cilia-Related Genes',
+                        data: ciliaGeneCounts,
                         borderColor: '#203c78',
                         backgroundColor: 'rgba(32, 60, 120, 0.1)',
                         fill: true,
-                        tension: 0.3
+                        tension: 0.3,
+                        pointBackgroundColor: '#203c78',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 5
                     }]
                 },
                 options: {
@@ -367,19 +411,39 @@ async function loadCiliaHubData() {
                             beginAtZero: true,
                             title: {
                                 display: true,
-                                text: 'Number of Genes'
+                                text: 'Number of Cilia-Related Genes',
+                                font: { size: 12, weight: 'bold' },
+                                color: '#203c78'
+                            },
+                            grid: {
+                                color: 'rgba(32, 60, 120, 0.1)'
                             }
                         },
                         x: {
                             title: {
                                 display: true,
-                                text: 'Year'
+                                text: 'Year',
+                                font: { size: 12, weight: 'bold' },
+                                color: '#203c78'
+                            },
+                            grid: {
+                                color: 'rgba(32, 60, 120, 0.1)'
                             }
                         }
                     },
                     plugins: {
                         legend: {
-                            display: false
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                font: { size: 11 }
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'CiliaHub Database Growth Over Time',
+                            font: { size: 14, weight: 'bold' },
+                            color: '#203c78'
                         }
                     }
                 }
@@ -391,7 +455,7 @@ async function loadCiliaHubData() {
         const response = await fetch('https://raw.githubusercontent.com/rarediseaselab/home/main/ciliahub_data.json');
         data = await response.json();
         console.log('Loaded entries:', data.length);
-        
+       
         // Build search indices
         data.forEach(item => {
             if (item.gene) allGeneNames.add(item.gene);
@@ -407,7 +471,7 @@ async function loadCiliaHubData() {
         // Calculate statistics and create charts
         calculateStatistics();
         createCharts();
-        
+       
         // Show search prompt instead of populating table
         showSearchPrompt();
         updatePopularGenes();
@@ -471,7 +535,7 @@ async function loadCiliaHubData() {
             alert('No filtered data to export. Please apply filters first.');
             return;
         }
-        
+       
         const csv = [
             ['Gene', 'Ensembl ID', 'Gene Description', 'Synonym', 'OMIM ID', 'Reference', 'Ciliary Localization'],
             ...filteredData.map(item => [
