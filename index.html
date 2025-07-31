@@ -356,7 +356,30 @@
                     <div id="batchResults"></div>
                     <button id="clearBatchResults" style="margin-top:10px; padding: 6px 12px; background:#888; color:#fff; border:none; border-radius:4px; cursor:pointer;" aria-label="Clear batch query results">Clear Results</button>
                 </div>
-
+                <!-- Within <section id="ciliahub">, under Batch Query -->
+<div class="mb-4">
+    <h3 class="text-lg font-semibold mb-2 text-cilia-blue">Gene Categories</h3>
+    <p class="text-sm mb-2">Select a gene category to populate the batch query with predefined genes associated with specific pathways or functions.</p>
+    <select id="geneCategorySelect" class="w-full p-2 border rounded text-sm focus:outline-none focus:ring-2 focus:ring-cilia-blue" aria-label="Select gene category">
+        <option value="">Select a category</option>
+        <option value="cytoskeletal">Cytoskeletal and Motor Proteins</option>
+        <option value="kinases">Kinases and Phosphatases</option>
+        <option value="signaling">Signaling Pathways</option>
+        <option value="cilia">Cilia and Centrosome-Associated Genes</option>
+        <option value="ion">Ion Channels and Transporters</option>
+        <option value="transcription">Transcription Factors</option>
+        <option value="ubiquitin">Ubiquitin-Proteasome System</option>
+        <option value="cellcycle">Cell Cycle and DNA Repair</option>
+        <option value="extracellular">Extracellular Matrix and Adhesion</option>
+        <option value="neuro">Neurodevelopmental and Synaptic Genes</option>
+        <option value="metabolic">Metabolic Enzymes</option>
+        <option value="immune">Immune and Inflammatory Genes</option>
+        <option value="rna">RNA Processing and Splicing</option>
+        <option value="misc">Miscellaneous</option>
+    </select>
+    <div id="geneCategoryList" class="mt-2 p-2 border rounded bg-gray-50 max-h-40 overflow-y-auto text-sm hidden" aria-live="polite"></div>
+    <button id="addToBatchQuery" class="mt-2 px-4 py-2 bg-cilia-blue text-white rounded hover:bg-blue-800 transition-colors disabled:opacity-50" disabled>Add to Batch Query</button>
+</div>
                 <!-- Table wrapper -->
                 <div class="table-wrapper mb-5">
                     <div id="ciliahub-loading" style="text-align: center; padding: 20px;">Loading data...</div>
