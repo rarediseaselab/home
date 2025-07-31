@@ -1466,53 +1466,99 @@ footer {
 .night-mode #night-mode-toggle:hover {
     background-color: #004d99;
 }
-/* Gene Category Section */
-#geneCategorySelect {
+
+/* Functional Gene Groups */
+.functional-gene-groups {
+    max-width: 600px;
+    margin: 20px auto;
+    text-align: left;
+}
+
+.functional-gene-groups h3 {
+    color: #203c78;
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.functional-gene-groups p {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.group-item {
+    border: 1px solid #cce0f5;
+    border-radius: 5px;
+    margin-bottom: 8px;
+}
+
+.group-item summary {
+    padding: 10px 15px;
+    background-color: #f0f8ff;
+    color: #203c78;
+    font-weight: bold;
+    cursor: pointer;
+    outline: none;
+}
+
+.group-item summary:hover {
+    background-color: #e6f2ff;
+}
+
+.group-item details[open] .group-content {
+    padding: 10px 15px;
     background-color: #fff;
-    border-color: #cce0f5;
 }
 
-#geneCategoryList {
-    border-color: #cce0f5;
-    max-height: 10rem;
-    overflow-y: auto;
+.group-content {
+    font-size: 0.85rem;
+    color: #333;
 }
 
-#addToBatchQuery {
-    background-color: #203c78;
+/* Night Mode for Functional Gene Groups */
+.night-mode .functional-gene-groups h3 {
+    color: #b3d9ff;
 }
 
-#addToBatchQuery:hover:not(:disabled) {
-    background-color: #004080;
+.night-mode .functional-gene-groups p {
+    color: #d9d9d9;
 }
 
-#geneCategoryList p {
-    margin: 0;
-    line-height: 1.5;
+.night-mode .group-item {
+    border-color: #555;
 }
 
-.night-mode #geneCategorySelect {
-    background-color: #2d3748;
-    color: #e2e8f0;
-    border-color: #4a5568;
+.night-mode .group-item summary {
+    background-color: #3d3d3d;
+    color: #b3d9ff;
 }
 
-.night-mode #geneCategoryList {
-    background-color: #2d3748;
-    border-color: #4a5568;
-    color: #e2e8f0;
+.night-mode .group-item summary:hover {
+    background-color: #4a4a4a;
 }
 
-.night-mode #addToBatchQuery {
-    background-color: #4a5568;
+.night-mode .group-item details[open] .group-content {
+    background-color: #2e2e2e;
+    color: #d9d9d9;
 }
 
-.night-mode #addToBatchQuery:hover:not(:disabled) {
-    background-color: #718096;
-}
-
+/* Responsive Adjustments for Functional Gene Groups */
 @media (max-width: 768px) {
-    #geneCategoryList {
-        max-height: 8rem;
+    .functional-gene-groups {
+        max-width: 95%;
+        padding: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .functional-gene-groups h3 {
+        font-size: 1.1rem;
+    }
+    .functional-gene-groups p {
+        font-size: 0.85rem;
+    }
+    .group-content {
+        font-size: 0.8rem;
     }
 }
