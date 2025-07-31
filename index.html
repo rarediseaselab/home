@@ -237,39 +237,43 @@
                 </p>
 
                 <!-- NEW FEATURE 1: Interactive Statistics Dashboard -->
-                <div id="statistics-dashboard" class="stats-dashboard mb-5">
-                    <h3 style="color: #203c78; text-align: center; margin-bottom: 20px;">📊 Database Statistics & Analysis</h3>
-                    
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-number" id="total-genes">0</div>
-                            <div class="stat-label">Total Genes</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-number" id="unique-localizations">0</div>
-                            <div class="stat-label">Localizations</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-number" id="with-omim">0</div>
-                            <div class="stat-label">OMIM Entries</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-number" id="with-references">0</div>
-                            <div class="stat-label">Referenced Genes</div>
-                        </div>
-                    </div>
+<div id="statistics-dashboard" class="stats-dashboard mb-5">
+    <h3 style="color: #203c78; text-align: center; margin-bottom: 20px;">📊 Cilia-Related Gene Statistics & Analysis</h3>
+   
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-number" id="total-genes">0</div>
+            <div class="stat-label">Cilia-Related Genes</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="unique-localizations">0</div>
+            <div class="stat-label">Cilia Localizations</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="with-omim">0</div>
+            <div class="stat-label">With OMIM Entries</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="with-references">0</div>
+            <div class="stat-label">With References</div>
+        </div>
+    </div>
 
-                    <div class="chart-container">
-                        <div class="chart-section">
-                            <h4>Gene Distribution by Localization</h4>
-                            <canvas id="localizationChart" width="400" height="200"></canvas>
-                        </div>
-                        <div class="chart-section">
-                            <h4>Database Growth Simulation</h4>
-                            <canvas id="growthChart" width="400" height="200"></canvas>
-                        </div>
-                    </div>
-                </div>
+    <div class="chart-container">
+        <div class="chart-section">
+            <h4>Cilia-Related Gene Distribution by Localization</h4>
+            <canvas id="localizationChart" width="400" height="200"></canvas>
+        </div>
+        <div class="chart-section">
+            <h4>Database Growth Over Time</h4>
+            <canvas id="growthChart" width="400" height="200"></canvas>
+        </div>
+    </div>
+    
+    <div style="margin-top: 15px; padding: 10px; background: #f0f8ff; border-radius: 5px; font-size: 0.9em; color: #666;">
+        <strong>Note:</strong> Statistics above reflect only genes with cilia-related localizations (cilia, transition zone, basal body, flagella, and cilia-associated genes). The total database contains additional genes that may have ciliary functions but different subcellular localizations.
+    </div>
+</div>
 
                 <!-- How to Use (collapsible box) -->
                 <details class="mb-4" style="background: #f5faff; border: 1px solid #cce0f5; padding: 15px; border-radius: 5px;">
