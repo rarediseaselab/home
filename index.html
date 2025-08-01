@@ -55,12 +55,17 @@
         }
     </script>
     <style>
-        /* Updated CSS for Functional Gene Groups to minimize length and apply dark blue background */
+        /* Updated CSS for Functional Gene Groups to display 3 per row and minimize length */
         .functional-gene-groups-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(3, 1fr); /* Exactly 3 columns */
             gap: 10px;
             margin-bottom: 10px;
+        }
+        @media (max-width: 900px) {
+            .functional-gene-groups-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive for smaller screens */
+            }
         }
         .group-item {
             background: #1e3a8a; /* Dark blue background */
@@ -651,7 +656,7 @@
                 </div>
                 <div class="research-item">
                     <img src="elegans.png" alt="Research Icon" class="fit-image">
-                    <p>Cevik S, Kaplan OI. <strong>Subcellular localization of the voltage-gated K+ channel EGL-36, a member of the KV3 subfamily, in the ciliated sensory neurons in C. elegans.</strong> MicroPubl Biol. 2021;2021:10.17912/micropub.biology.000367. doi: <a href="https://doi.org/10.17912/micropub.biology.000367">10.1017912/micropub.biology.000367</a></p>
+                    <p>Cevik S, Kaplan OI. <strong>Subcellular localization of the voltage-gated K+ channel EGL-36, a member of the KV3 subfamily, in the ciliated sensory neurons in C. elegans.</strong> MicroPubl Biol. 2021;2021:10.17912/micropub.biology.000367. doi: <a href="https://doi.org/10.17912/micropub.biology.000367">10.17912/micropub.biology.000367</a></p>
                 </div>
                 <div class="research-item">
                     <img src="elegans.png" alt="Research Icon" class="fit-image">
@@ -922,15 +927,4 @@
                     nextButton.addEventListener('click', () => {
                         if (currentPage < totalPages) {
                             currentPage++;
-                            renderGeneGroups(currentPage);
-                        }
-                    });
-                    paginationContainer.appendChild(nextButton);
-                }
-            }
-            renderGeneGroups(currentPage);
-        });
-    </script>
-    <button id="night-mode-toggle" title="Toggle Night Mode" aria-label="Toggle night mode"></button>
-</body>
-</html>
+                            renderGeneGroups
