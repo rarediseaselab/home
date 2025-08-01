@@ -56,6 +56,40 @@
             breadcrumbs.innerHTML = path.join(' > ');
         }
     </script>
+    <style>
+        /* Added CSS for Functional Gene Groups grid layout */
+        .functional-gene-groups-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .group-item {
+            background: #f0f8ff;
+            border: 1px solid #cce0f5;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+        .group-item summary {
+            font-weight: bold;
+            cursor: pointer;
+            padding: 10px;
+            background: #e6f2ff;
+            border-radius: 5px;
+        }
+        .group-content {
+            margin-top: 10px;
+            padding: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .group-content p {
+            margin: 0;
+            font-size: 0.9em;
+            color: #333;
+        }
+    </style>
 </head>
 <body onload="showSection('home')">
     <!-- Navbar -->
@@ -237,43 +271,42 @@
                 </p>
 
                 <!-- NEW FEATURE 1: Interactive Statistics Dashboard -->
-<div id="statistics-dashboard" class="stats-dashboard mb-5">
-    <h3 style="color: #203c78; text-align: center; margin-bottom: 20px;">📊 Cilia-Related Gene Statistics & Analysis</h3>
-   
-    <div class="stats-grid">
-        <div class="stat-card">
-            <div class="stat-number" id="total-genes">0</div>
-            <div class="stat-label">Cilia-Related Genes</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-number" id="unique-localizations">0</div>
-            <div class="stat-label">Cilia Localizations</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-number" id="with-omim">0</div>
-            <div class="stat-label">With OMIM Entries</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-number" id="with-references">0</div>
-            <div class="stat-label">With References</div>
-        </div>
-    </div>
+                <div id="statistics-dashboard" class="stats-dashboard mb-5">
+                    <h3 style="color: #203c78; text-align: center; margin-bottom: 20px;">📊 Cilia-Related Gene Statistics & Analysis</h3>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number" id="total-genes">0</div>
+                            <div class="stat-label">Cilia-Related Genes</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="unique-localizations">0</div>
+                            <div class="stat-label">Cilia Localizations</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="with-omim">0</div>
+                            <div class="stat-label">With OMIM Entries</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="with-references">0</div>
+                            <div class="stat-label">With References</div>
+                        </div>
+                    </div>
 
-    <div class="chart-container">
-        <div class="chart-section">
-            <h4>Cilia-Related Gene Distribution by Localization</h4>
-            <canvas id="localizationChart" width="400" height="200"></canvas>
-        </div>
-        <div class="chart-section">
-            <h4>Database Growth Over Time</h4>
-            <canvas id="growthChart" width="400" height="200"></canvas>
-        </div>
-    </div>
-    
-    <div style="margin-top: 15px; padding: 10px; background: #f0f8ff; border-radius: 5px; font-size: 0.9em; color: #666;">
-        <strong>Note:</strong> Statistics above reflect only genes with cilia-related localizations (cilia, transition zone, basal body, flagella, and cilia-associated genes). The total database contains additional genes that may have ciliary functions but different subcellular localizations.
-    </div>
-</div>
+                    <div class="chart-container">
+                        <div class="chart-section">
+                            <h4>Cilia-Related Gene Distribution by Localization</h4>
+                            <canvas id="localizationChart" width="400" height="200"></canvas>
+                        </div>
+                        <div class="chart-section">
+                            <h4>Database Growth Over Time</h4>
+                            <canvas id="growthChart" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 15px; padding: 10px; background: #f0f8ff; border-radius: 5px; font-size: 0.9em; color: #666;">
+                        <strong>Note:</strong> Statistics above reflect only genes with cilia-related localizations (cilia, transition zone, basal body, flagella, and cilia-associated genes). The total database contains additional genes that may have ciliary functions but different subcellular localizations.
+                    </div>
+                </div>
 
                 <!-- How to Use (collapsible box) -->
                 <details class="mb-4" style="background: #f5faff; border: 1px solid #cce0f5; padding: 15px; border-radius: 5px;">
@@ -356,14 +389,8 @@
                     <div id="batchResults"></div>
                     <button id="clearBatchResults" style="margin-top:10px; padding: 6px 12px; background:#888; color:#fff; border:none; border-radius:4px; cursor:pointer;" aria-label="Clear batch query results">Clear Results</button>
                 </div>
-             <!-- Within <section id="ciliahub">, after Batch Query -->
-                <!-- Functional Gene Groups -->
-<div class="functional-gene-groups" aria-label="Functional Gene Groups section">
-    <h3>Functional Gene Groups</h3>
-    <p>Explore collections of genes grouped by common pathways or molecular functions, based on Gene Ontology and KEGG terms. Expand each category to view associated genes.</p>
-    <div id="functionalGeneGroupsContainer"></div>
-</div>
-                <!-- Table wrapper -->
+
+                <!-- Table wrapper (Search results for Gene search) -->
                 <div class="table-wrapper mb-5">
                     <div id="ciliahub-loading" style="text-align: center; padding: 20px;">Loading data...</div>
                     <table class="ciliahub-table" style="display: none;">
@@ -380,6 +407,13 @@
                         </thead>
                         <tbody id="ciliahub-table-body"></tbody>
                     </table>
+                </div>
+
+                <!-- Functional Gene Groups -->
+                <div class="functional-gene-groups" aria-label="Functional Gene Groups section">
+                    <h3>Functional Gene Groups</h3>
+                    <p>Explore collections of genes grouped by common pathways or molecular functions, based on Gene Ontology and KEGG terms. Expand each category to view associated genes.</p>
+                    <div class="functional-gene-groups-grid" id="functionalGeneGroupsContainer"></div>
                 </div>
 
                 <!-- Citation -->
