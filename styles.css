@@ -100,7 +100,7 @@ body {
     border-radius: 8px;
 }
 
-/* New style container for the four sections */
+/* Compact Section Container */
 .compact-section > .container {
     max-width: 900px;
     margin: 50px auto 20px;
@@ -128,6 +128,7 @@ body {
     object-fit: contain;
     border-radius: 50%;
 }
+
 .figure-image {
     width: 100%;
     max-width: none;
@@ -137,6 +138,7 @@ body {
     margin: 0 auto 20px;
     border-radius: 4px;
 }
+
 .overview-image {
     width: 100%;
     max-width: 860px;
@@ -165,7 +167,7 @@ body {
     border-radius: 4px;
 }
 
-/* Home Section Text Alignment with Full Width */
+/* Home Section */
 #home {
     max-width: 100%;
     padding: 20px;
@@ -202,7 +204,7 @@ body {
     justify-content: center;
 }
 
-/* Full Width for Publications, News, and Resources on Homepage */
+/* Full Width Sections */
 #publications,
 #news,
 #resources {
@@ -222,7 +224,7 @@ body {
     justify-content: center;
 }
 
-/* Research Updates (Home Page) */
+/* Research Updates */
 .research-updates {
     margin-top: 20px;
 }
@@ -343,7 +345,7 @@ body {
     text-decoration: none;
 }
 
-/* Team Section Styling */
+/* Team Section */
 .team-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -638,7 +640,7 @@ body.night-mode {
     background-color: #004d99;
 }
 
-/* Make all bold text steelblue */
+/* Bold Text Styling */
 strong, b, [style*="font-weight: bold"] {
     color: #004080;
 }
@@ -735,7 +737,7 @@ footer {
     opacity: 0.8;
 }
 
-/* NEW FEATURE 1: Statistics Dashboard Styles */
+/* Statistics Dashboard */
 .stats-dashboard {
     background: #f0f8ff;
     border: 2px solid #cce0f5;
@@ -801,7 +803,7 @@ footer {
     max-height: 300px;
 }
 
-/* NEW FEATURE 2: Enhanced Search with Auto-suggestions */
+/* Enhanced Search with Auto-suggestions */
 .search-container {
     position: relative;
     width: 100%;
@@ -846,7 +848,7 @@ footer {
     text-transform: uppercase;
 }
 
-/* NEW FEATURE 3: Advanced Filtering System */
+/* Advanced Filtering */
 .advanced-filters {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -921,57 +923,11 @@ footer {
     transform: translateY(-1px);
 }
 
-#ciliahub-search:focus, #ciliahub-filter:focus, #omim-filter:focus, 
+#ciliahub-search:focus, #ciliahub-filter:focus, #omim-filter:focus,
 #reference-filter:focus, #synonym-filter:focus {
     outline: none;
     border-color: #203c78;
     box-shadow: 0 0 0 3px rgba(32, 60, 120, 0.1);
-}
-
-.ciliahub-legend {
-    margin-bottom: 15px;
-    padding: 10px;
-    background-color: #f9f9f9;
-    border-radius: 4px;
-    font-size: 0.9em;
-    color: #333;
-}
-
-.ciliahub-legend span {
-    margin-right: 15px;
-}
-
-.ciliahub-legend .legend-axoneme::before {
-    content: '';
-    display: inline-block;
-    width: 12px;
-    height: 12px;
-    background-color: #f0faff;
-    border: 1px solid #004080;
-    margin-right: 5px;
-    vertical-align: middle;
-}
-
-.ciliahub-legend .legend-basal-body::before {
-    content: '';
-    display: inline-block;
-    width: 12px;
-    height: 12px;
-    background-color: #e6f2ff;
-    border: 1px solid #004080;
-    margin-right: 5px;
-    vertical-align: middle;
-}
-
-.ciliahub-legend .legend-transition-zone::before {
-    content: '';
-    display: inline-block;
-    width: 12px;
-    height: 12px;
-    background-color: #f5f5f5;
-    border: 1px solid #004080;
-    margin-right: 5px;
-    vertical-align: middle;
 }
 
 .ciliahub-table {
@@ -1002,7 +958,6 @@ footer {
     border-bottom: 2px solid #004080;
 }
 
-/* Ensure Ensembl ID column is fully visible and clickable */
 .ciliahub-table th:nth-child(2),
 .ciliahub-table td:nth-child(2) {
     width: 30%;
@@ -1011,7 +966,6 @@ footer {
     word-break: break-all;
 }
 
-/* Style for Ensembl ID links */
 .ciliahub-table td:nth-child(2) a {
     color: #004080;
     text-decoration: underline;
@@ -1020,7 +974,6 @@ footer {
     width: 100%;
 }
 
-/* Ensure Synonym column is clear and properly formatted */
 .ciliahub-table th:nth-child(4),
 .ciliahub-table td:nth-child(4) {
     width: 25%;
@@ -1029,7 +982,6 @@ footer {
     line-height: 1.5;
 }
 
-/* Style for other columns to fit within table */
 .ciliahub-table th:nth-child(1),
 .ciliahub-table td:nth-child(1) {
     width: 10%;
@@ -1082,7 +1034,6 @@ footer {
     background-color: #d9e6ff;
 }
 
-/* Specific styling for links in the Reference column */
 .ciliahub-table td a {
     color: #004080;
     text-decoration: underline;
@@ -1094,7 +1045,6 @@ footer {
     white-space: nowrap;
 }
 
-/* Tooltip for Reference column */
 .ciliahub-table td.reference {
     position: relative;
     cursor: help;
@@ -1114,6 +1064,150 @@ footer {
     white-space: nowrap;
     z-index: 1002;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Functional Gene Groups */
+.functional-gene-groups {
+    margin: 20px 0;
+    text-align: left;
+}
+
+.functional-gene-groups h3 {
+    color: #203c78;
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.functional-gene-groups p {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.functional-gene-groups-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Exactly 3 columns */
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.group-item {
+    background: #1e3a8a; /* Dark blue background */
+    border: 1px solid #1e40af;
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 5px;
+    color: #f3f4f6; /* Light text for contrast */
+}
+
+.group-item summary {
+    font-weight: bold;
+    cursor: pointer;
+    padding: 8px;
+    background: #1e40af; /* Slightly lighter dark blue for summary */
+    border-radius: 4px;
+    font-size: 0.9em;
+    color: #f3f4f6;
+}
+
+.group-item summary:hover {
+    background-color: #3b82f6;
+}
+
+.group-content {
+    margin-top: 5px;
+    padding: 8px;
+    max-height: 150px;
+    overflow-y: auto;
+    font-size: 0.85em;
+    color: #e5e7eb;
+}
+
+.group-content p {
+    margin: 0;
+    line-height: 1.4;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.pagination button {
+    background: #1e3a8a;
+    color: #f3f4f6;
+    border: 1px solid #1e40af;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+.pagination button:hover {
+    background: #1e40af;
+}
+
+.pagination button.active {
+    background: #3b82f6;
+    font-weight: bold;
+}
+
+.pagination button:disabled {
+    background: #4b5563;
+    cursor: not-allowed;
+}
+
+/* Night Mode for Functional Gene Groups */
+.night-mode .functional-gene-groups h3 {
+    color: #b3d9ff;
+}
+
+.night-mode .functional-gene-groups p {
+    color: #d9d9d9;
+}
+
+.night-mode .functional-gene-groups-grid {
+    border-color: #555;
+}
+
+.night-mode .group-item {
+    background: #1e3a8a;
+    border-color: #1e40af;
+}
+
+.night-mode .group-item summary {
+    background-color: #1e40af;
+    color: #f3f4f6;
+}
+
+.night-mode .group-item summary:hover {
+    background-color: #3b82f6;
+}
+
+.night-mode .group-content {
+    background-color: transparent;
+    color: #e5e7eb;
+}
+
+.night-mode .pagination button {
+    background: #1e3a8a;
+    color: #f3f4f6;
+    border-color: #1e40af;
+}
+
+.night-mode .pagination button:hover {
+    background: #1e40af;
+}
+
+.night-mode .pagination button.active {
+    background: #3b82f6;
+}
+
+.night-mode .pagination button:disabled {
+    background: #4b5563;
 }
 
 /* Night Mode for CiliaHub */
@@ -1171,26 +1265,6 @@ footer {
 
 .night-mode #ciliahub-reset:hover, .night-mode #download-ciliahub:hover, .night-mode #export-filtered:hover {
     background-color: #004d99;
-}
-
-.night-mode .ciliahub-legend {
-    background-color: #2e2e2e;
-    color: #d9d9d9;
-}
-
-.night-mode .ciliahub-legend .legend-axoneme::before {
-    background-color: #4a4a4a;
-    border: 1px solid #b3d9ff;
-}
-
-.night-mode .ciliahub-legend .legend-basal-body::before {
-    background-color: #3d3d3d;
-    border: 1px solid #b3d9ff;
-}
-
-.night-mode .ciliahub-legend .legend-transition-zone::before {
-    background-color: #2e2e2e;
-    border: 1px solid #b3d9ff;
 }
 
 .night-mode .ciliahub-table {
@@ -1281,177 +1355,103 @@ footer {
     background-color: #2e2e2e;
 }
 
-/* Functional Gene Groups */
-.functional-gene-groups {
-    margin: 20px 0;
-    text-align: left;
-}
-
-.functional-gene-groups h3 {
-    color: #203c78;
-    font-size: 1.25rem;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-.functional-gene-groups p {
-    font-size: 0.9rem;
-    color: #666;
-    margin-bottom: 15px;
-}
-
-.functional-gene-groups-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-    gap: 20px;
-    margin-bottom: 20px;
-}
-
-.group-item {
-    background: #f0f8ff;
-    border: 1px solid #cce0f5;
-    border-radius: 5px;
-    padding: 15px;
-    margin-bottom: 10px;
-}
-
-.group-item summary {
-    font-weight: bold;
-    cursor: pointer;
-    padding: 10px;
-    background: #e6f2ff;
-    border-radius: 5px;
-    color: #203c78;
-}
-
-.group-item summary:hover {
-    background-color: #d9e6ff;
-}
-
-.group-content {
-    margin-top: 10px;
-    padding: 10px;
-    max-height: 200px;
-    overflow-y: auto;
-    background-color: #fff;
-}
-
-.group-content p {
-    margin: 0;
-    font-size: 0.9em;
-    color: #333;
-}
-
-/* Night Mode for Functional Gene Groups */
-.night-mode .functional-gene-groups h3 {
-    color: #b3d9ff;
-}
-
-.night-mode .functional-gene-groups p {
-    color: #d9d9d9;
-}
-
-.night-mode .functional-gene-groups-grid {
-    border-color: #555;
-}
-
-.night-mode .group-item {
-    background: #3d3d3d;
-    border-color: #555;
-}
-
-.night-mode .group-item summary {
-    background-color: #4a4a4a;
-    color: #b3d9ff;
-}
-
-.night-mode .group-item summary:hover {
-    background-color: #5a5a5a;
-}
-
-.night-mode .group-content {
-    background-color: #2e2e2e;
-    color: #d9d9d9;
-}
-
 /* Responsive Adjustments */
 @media (max-width: 768px) {
     .container {
         max-width: 95%;
         padding: 15px;
     }
+
     .navbar {
         height: 60px;
         justify-content: space-around;
         gap: 5px;
         padding: 10px 5px;
     }
+
     .navbar a, .dropbtn {
         padding: 8px 10px;
         font-size: 0.9em;
     }
+
     .research-item {
         flex-direction: row;
         align-items: center;
     }
+
     .research-item img {
         width: 120px;
         margin-right: 10px;
     }
+
     .team-grid {
         grid-template-columns: repeat(2, 1fr);
     }
+
     .team-member {
         flex-direction: column;
         text-align: center;
     }
+
     .team-photo {
         margin-right: 0;
         margin-bottom: 15px;
     }
+
     .gallery-item {
         flex-direction: column;
         align-items: center;
     }
+
     .gallery-media {
         max-width: 100%;
     }
+
     .figure-image, .overview-image, .crispr-image {
         max-width: 90%;
     }
+
     .team-image {
         width: 120px;
         height: 120px;
     }
+
     .fit-image {
         width: 120px;
     }
+
     .stats-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 15px;
     }
+
     .chart-container {
         grid-template-columns: 1fr;
         gap: 20px;
     }
+
     .advanced-filters {
         grid-template-columns: 1fr;
         gap: 10px;
     }
+
     .control-buttons {
         flex-direction: column;
         align-items: center;
     }
+
     .ciliahub-table {
         font-size: 0.8em;
         max-width: 100%;
         overflow-x: auto;
     }
+
     .ciliahub-table th,
     .ciliahub-table td {
         padding: 8px;
         min-width: 80px;
     }
+
     .ciliahub-table th:nth-child(2),
     .ciliahub-table td:nth-child(2) {
         min-width: 100px;
@@ -1459,14 +1459,16 @@ footer {
         overflow: visible;
         word-break: break-all;
     }
+
     .ciliahub-table th:nth-child(4),
     .ciliahub-table td:nth-child(4) {
         min-width: 100px;
         white-space: normal;
         overflow: visible;
     }
+
     .functional-gene-groups-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     }
 }
 
@@ -1476,48 +1478,60 @@ footer {
         flex-wrap: wrap;
         justify-content: center;
     }
+
     .navbar a, .dropbtn {
         padding: 5px 8px;
         font-size: 0.85em;
     }
+
     .research-item {
         flex-direction: column;
         align-items: center;
         text-align: center;
     }
+
     .research-item img {
         width: 100px;
         margin-right: 0;
         margin-bottom: 10px;
     }
+
     .team-grid {
         grid-template-columns: 1fr;
     }
+
     .team-image {
         width: 100px;
         height: 100px;
     }
+
     .fit-image {
         width: 100px;
     }
+
     .stats-grid {
         grid-template-columns: 1fr;
     }
+
     .stat-number {
         font-size: 2em;
     }
+
     .search-container {
         max-width: 100%;
     }
+
     .ciliahub-table {
         font-size: 0.75em;
         max-width: 100%;
     }
+
     .ciliahub-table th,
     .ciliahub-table td {
         padding: 6px;
         min-width: 60px;
     }
+
     .ciliahub-table th:nth-child(2),
     .ciliahub-table td:nth-child(2) {
         min-width: 80px;
@@ -1525,18 +1539,22 @@ footer {
         overflow: visible;
         word-break: break-all;
     }
+
     .ciliahub-table th:nth-child(4),
     .ciliahub-table td:nth-child(4) {
         min-width: 80px;
         white-space: normal;
         overflow: visible;
     }
+
     .functional-gene-groups h3 {
         font-size: 1.1rem;
     }
+
     .functional-gene-groups p {
         font-size: 0.85rem;
     }
+
     .group-content {
         font-size: 0.8rem;
     }
