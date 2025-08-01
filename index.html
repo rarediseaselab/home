@@ -54,75 +54,6 @@
             breadcrumbs.innerHTML = path.join(' > ');
         }
     </script>
-    <style>
-        /* Updated CSS for Functional Gene Groups to display 3 per row and minimize length */
-        .functional-gene-groups-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr); /* Exactly 3 columns */
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-        @media (max-width: 900px) {
-            .functional-gene-groups-grid {
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive for smaller screens */
-            }
-        }
-        .group-item {
-            background: #1e3a8a; /* Dark blue background */
-            border: 1px solid #1e40af;
-            border-radius: 4px;
-            padding: 10px;
-            margin-bottom: 5px;
-            color: #f3f4f6; /* Light text for contrast */
-        }
-        .group-item summary {
-            font-weight: bold;
-            cursor: pointer;
-            padding: 8px;
-            background: #1e40af; /* Slightly lighter dark blue for summary */
-            border-radius: 4px;
-            font-size: 0.9em;
-            color: #f3f4f6;
-        }
-        .group-content {
-            margin-top: 5px;
-            padding: 8px;
-            max-height: 150px;
-            overflow-y: auto;
-            font-size: 0.85em;
-            color: #e5e7eb;
-        }
-        .group-content p {
-            margin: 0;
-            line-height: 1.4;
-        }
-        .pagination {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 10px;
-        }
-        .pagination button {
-            background: #1e3a8a;
-            color: #f3f4f6;
-            border: 1px solid #1e40af;
-            padding: 6px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.9em;
-        }
-        .pagination button:hover {
-            background: #1e40af;
-        }
-        .pagination button.active {
-            background: #3b82f6;
-            font-weight: bold;
-        }
-        .pagination button:disabled {
-            background: #4b5563;
-            cursor: not-allowed;
-        }
-    </style>
 </head>
 <body onload="showSection('home')">
     <!-- Navbar -->
@@ -272,20 +203,20 @@
                 </div>
             </div>
         </section>
-        <section id="ciliahub" class="section">
+        <section id="ciliahub" class="section" style="display: none;">
             <div class="container">
                 <div id="ciliahub-error" style="display: none; color: red; text-align: center; margin-bottom: 20px;"></div>
                 <img src="CiliaHub_Logo.png" alt="CiliaHub Logo" class="w-full mx-auto mb-4" style="max-width: 100%; height: auto;">
                 <h1 style="color: #203c78; text-align: justify; text-align-last: center;">CiliaHub: Ciliary Gene Database</h1>
                 <p class="mb-4" style="text-align: justify;">
-                    <strong>CiliaHub</strong> is an updated and curated database of all experimentally confirmed ciliary genes — an evolution of the ciliary "Gold Standard" gene list. Through a combination of R-based text mining of the scientific literature and manual expert review, the database now includes over 2,002 genes, including <strong> 1300+ newly associated ciliary genes</strong>.
+                    <strong>CiliaHub</strong> is an updated and curated database of all experimentally confirmed ciliary genes — an evolution of the ciliary "Gold Standard" gene list. Through a combination of R-based text mining of the scientific literature and manual expert review, the database now includes over 2,002 genes, including <strong>1300+ newly associated ciliary genes</strong>.
                     <br><br>
                     This user-friendly platform allows researchers to:
                     <ul style="margin-top: 10px; margin-bottom: 10px;">
-                        <li> Explore curated gene entries with descriptions and known synonyms</li>
-                        <li> Access references linked to each gene</li>
-                        <li> Navigate to external databases via direct hyperlinks</li>
-                        <li> Download the full gene list for further analysis</li>
+                        <li>Explore curated gene entries with descriptions and known synonyms</li>
+                        <li>Access references linked to each gene</li>
+                        <li>Navigate to external databases via direct hyperlinks</li>
+                        <li>Download the full gene list for further analysis</li>
                     </ul>
                     <strong>CiliaHub</strong> empowers both basic and clinical researchers in the fields of cell biology and genetics to explore the molecular basis of cilia-related functions and ciliopathies.
                 </p>
@@ -327,12 +258,12 @@
                     <summary style="font-weight: bold; cursor: pointer;"> How to Use CiliaHub</summary>
                     <div style="margin-top: 10px;">
                         <ul>
-                            <li><strong> Search:</strong> Enter a gene name, Ensembl ID, OMIM ID, or synonym to find specific entries.</li>
-                            <li><strong> Filter:</strong> Use the dropdown menu to display genes based on ciliary localization (e.g., Basal Body).</li>
-                            <li><strong> Reset:</strong> Click <em>Reset</em> to clear search and filters, and reload all results.</li>
-                            <li><strong> Download:</strong> Export the full gene list as a CSV file for offline analysis or custom sorting.</li>
-                            <li><strong> External Links:</strong> Gene names, Ensembl IDs, OMIM IDs, and references are hyperlinked to authoritative databases.</li>
-                            <li><strong> Batch Query:</strong> Paste multiple genes or IDs below and click "Batch Query" to retrieve all matching entries at once.</li>
+                            <li><strong>Search:</strong> Enter a gene name, Ensembl ID, OMIM ID, or synonym to find specific entries.</li>
+                            <li><strong>Filter:</strong> Use the dropdown menu to display genes based on ciliary localization (e.g., Basal Body).</li>
+                            <li><strong>Reset:</strong> Click <em>Reset</em> to clear search and filters, and reload all results.</li>
+                            <li><strong>Download:</strong> Export the full gene list as a CSV file for offline analysis or custom sorting.</li>
+                            <li><strong>External Links:</strong> Gene names, Ensembl IDs, OMIM IDs, and references are hyperlinked to authoritative databases.</li>
+                            <li><strong>Batch Query:</strong> Paste multiple genes or IDs below and click "Batch Query" to retrieve all matching entries at once.</li>
                         </ul>
                     </div>
                 </details>
@@ -374,7 +305,7 @@
                 </div>
                 <div id="results-counter" class="results-counter mb-3"></div>
                 <div id="popularGenesWidget" style="max-width: 600px; margin: 20px auto; padding: 15px; border: 1px solid #cce0f5; background: #f0f8ff; border-radius: 6px; color: #203c78;">
-                    <h3 style="text-align:center; margin-top:0;"> Popular Genes This Session</h3>
+                    <h3 style="text-align:center; margin-top:0;">Popular Genes This Session</h3>
                     <ul id="popularGenesList" style="list-style: none; padding-left: 10px;"></ul>
                 </div>
                 <div class="batch-query mb-5" style="max-width:600px; margin: 0 auto 30px; text-align: left;">
@@ -810,121 +741,5 @@
         </div>
     </footer>
     <script src="script.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const searchInput = document.getElementById('pub-search');
-            const pubList = document.getElementById('publications-list');
-            const pubs = pubList.querySelectorAll('.research-item');
-            if (searchInput && pubList) {
-                searchInput.addEventListener('input', function() {
-                    const query = this.value.toLowerCase().trim();
-                    pubs.forEach(pub => {
-                        const text = pub.textContent.toLowerCase();
-                        pub.style.display = text.includes(query) ? 'flex' : 'none';
-                    });
-                });
-            }
-            const lightbox = document.getElementById('lightbox');
-            const lightboxImage = document.getElementById('lightbox-image');
-            const lightboxLinks = document.querySelectorAll('.lightbox-link');
-            const closeBtn = document.querySelector('.lightbox-close');
-            lightboxLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    lightboxImage.src = this.href;
-                    lightbox.style.display = 'flex';
-                });
-            });
-            closeBtn.addEventListener('click', function() {
-                lightbox.style.display = 'none';
-            });
-            lightbox.addEventListener('click', function(e) {
-                if (e.target === lightbox) {
-                    lightbox.style.display = 'none';
-                }
-            });
-            const backToTopBtn = document.getElementById('back-to-top');
-            window.addEventListener('scroll', function() {
-                if (window.scrollY > 300) {
-                    backToTopBtn.style.display = 'block';
-                } else {
-                    backToTopBtn.style.display = 'none';
-                }
-            });
-            backToTopBtn.addEventListener('click', function() {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            });
-            const nightModeToggle = document.getElementById('night-mode-toggle');
-            if (localStorage.getItem('nightMode') === 'enabled') {
-                document.body.classList.add('night-mode');
-            }
-            nightModeToggle.addEventListener('click', function() {
-                document.body.classList.toggle('night-mode');
-                localStorage.setItem('nightMode', document.body.classList.contains('night-mode') ? 'enabled' : 'disabled');
-            });
-            // Pagination for Functional Gene Groups
-            const geneGroups = [
-                { name: "Intraflagellar Transport", genes: "IFT88, IFT20, IFT140" },
-                { name: "BBSome Complex", genes: "BBS1, BBS2, BBS4" },
-                { name: "Ciliary Motility", genes: "DNAH5, DNAI1, CCDC39" },
-                { name: "Transition Zone", genes: "NPHP1, NPHP4, CEP290" },
-                { name: "Cilia Biogenesis", genes: "CC2D2A, ARL13B, DYNC2H1" },
-                { name: "Hedgehog Signaling", genes: "SMO, GLI2, SUFU" },
-                { name: "Wnt Signaling", genes: "DVL2, WNT5A, FZD3" },
-                { name: "Ciliary Trafficking", genes: "RAB8, RAB23, TULP3" },
-                { name: "Basal Body Assembly", genes: "CEP164, ODF2, CENPJ" },
-                { name: "Ciliopathy-Associated", genes: "TMEM67, RPGRIP1L, MKS1" },
-                { name: "Motor Proteins", genes: "KIF3A, KIF17, DYNC1H1" },
-                { name: "Ciliary Membrane", genes: "ARL6, INPP5E, PDE6D" },
-                { name: "Microtubule Dynamics", genes: "TUBB3, MAPRE1, TUBA1A" },
-                { name: "Cilia Disassembly", genes: "AURKA, PLK1, NEK2" },
-                { name: "Ciliary Signaling", genes: "PKD1, PKD2, PKHD1" },
-                { name: "Cilia Length Control", genes: "IFT46, IFT52, IFT57" },
-                { name: "Centriolar Satellites", genes: "PCM1, BBS4, CEP131" },
-                { name: "Cilia-Associated Kinases", genes: "CILK1, NEK8, TTBK2" },
-                { name: "Ciliary Adhesion", genes: "CDH23, PCDH15, USH2A" },
-                { name: "Cilia-Mitochondria Interaction", genes: "MTCH2, VDAC1, TOMM20" }
-            ];
-            const itemsPerPage = 9;
-            let currentPage = 1;
-            const container = document.getElementById('functionalGeneGroupsContainer');
-            const paginationContainer = document.getElementById('geneGroupsPagination');
-            function renderGeneGroups(page) {
-                container.innerHTML = '';
-                const start = (page - 1) * itemsPerPage;
-                const end = start + itemsPerPage;
-                const paginatedGroups = geneGroups.slice(start, end);
-                paginatedGroups.forEach(group => {
-                    const groupItem = document.createElement('details');
-                    groupItem.className = 'group-item';
-                    groupItem.innerHTML = `
-                        <summary>${group.name}</summary>
-                        <div class="group-content">
-                            <p>Associated Genes: ${group.genes}</p>
-                        </div>
-                    `;
-                    container.appendChild(groupItem);
-                });
-                renderPagination();
-            }
-            function renderPagination() {
-                paginationContainer.innerHTML = '';
-                const totalPages = Math.ceil(geneGroups.length / itemsPerPage);
-                for (let i = 1; i <= Math.min(4, totalPages); i++) {
-                    const button = document.createElement('button');
-                    button.textContent = i;
-                    button.className = i === currentPage ? 'active' : '';
-                    button.addEventListener('click', () => {
-                        currentPage = i;
-                        renderGeneGroups(currentPage);
-                    });
-                    paginationContainer.appendChild(button);
-                }
-                if (totalPages > 4) {
-                    const nextButton = document.createElement('button');
-                    nextButton.textContent = 'Next';
-                    nextButton.disabled = currentPage === totalPages;
-                    nextButton.addEventListener('click', () => {
-                        if (currentPage < totalPages) {
-                            currentPage++;
-                            renderGeneGroups
+</body>
+</html>
