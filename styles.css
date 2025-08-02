@@ -1,4 +1,3 @@
-```css
 /* General Reset */
 * {
     margin: 0;
@@ -128,6 +127,7 @@ body {
     object-fit: contain;
     border-radius: 50%;
 }
+
 .figure-image {
     width: 100%;
     max-width: none;
@@ -137,6 +137,7 @@ body {
     margin: 0 auto 20px;
     border-radius: 4px;
 }
+
 .overview-image {
     width: 100%;
     max-width: 860px;
@@ -820,8 +821,12 @@ footer {
     max-height: 200px;
     overflow-y: auto;
     z-index: 1000;
-    display: none;
+    display: none; /* Hidden by default */
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.search-suggestions.active {
+    display: block; /* Show when active */
 }
 
 .suggestion-item {
@@ -921,7 +926,7 @@ footer {
     transform: translateY(-1px);
 }
 
-#ciliahub-search:focus, #ciliahub-filter:focus, #omim-filter:focus, 
+#ciliahub-search:focus, #ciliahub-filter:focus, #omim-filter:focus,
 #reference-filter:focus, #synonym-filter:focus {
     outline: none;
     border-color: #203c78;
@@ -1302,14 +1307,15 @@ footer {
 
 .functional-gene-groups-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    grid-template-columns: repeat(3, 1fr); /* Updated to 3 columns */
     gap: 20px;
     margin-bottom: 20px;
 }
 
 .group-item {
-    background: #f0f8ff;
-    border: 1px solid #cce0f5;
+    background: #1e3a8a; /* Dark blue background */
+    color: #f3f4f6; /* Light text for contrast */
+    border: 1px solid #1e40af;
     border-radius: 5px;
     padding: 15px;
     margin-bottom: 10px;
@@ -1319,13 +1325,13 @@ footer {
     font-weight: bold;
     cursor: pointer;
     padding: 10px;
-    background: #e6f2ff;
+    background: #2b4ea1; /* Slightly lighter blue */
     border-radius: 5px;
-    color: #203c78;
+    color: #f3f4f6;
 }
 
 .group-item summary:hover {
-    background-color: #d9e6ff;
+    background-color: #375ca8;
 }
 
 .group-content {
@@ -1333,13 +1339,34 @@ footer {
     padding: 10px;
     max-height: 200px;
     overflow-y: auto;
-    background-color: #fff;
+    background-color: #f3f4f6;
+    color: #333;
 }
 
-.group-content p {
-    margin: 0;
-    font-size: 0.9em;
-    color: #333;
+/* Pagination Controls */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.pagination button {
+    padding: 10px 20px;
+    background-color: #203c78;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.pagination button:hover {
+    background-color: #1a2f5f;
+}
+
+.pagination button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
 }
 
 /* Night Mode for Functional Gene Groups */
@@ -1356,114 +1383,35 @@ footer {
 }
 
 .night-mode .group-item {
-    background: #3d3d3d;
-    border-color: #555;
+    background: #1e3a8a;
+    border-color: #1e40af;
 }
 
 .night-mode .group-item summary {
-    background-color: #4a4a4a;
-    color: #b3d9ff;
+    background-color: #2b4ea1;
+    color: #f3f4f6;
 }
 
 .night-mode .group-item summary:hover {
-    background-color: #5a5a5a;
+    background-color: #375ca8;
 }
 
 .night-mode .group-content {
-    background-color: #2e2e2e;
+    background-color: #3d3d3d;
     color: #d9d9d9;
 }
 
 /* Responsive Adjustments */
+@media (max-width: 900px) {
+    .functional-gene-groups-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+}
+
 @media (max-width: 768px) {
     .container {
         max-width: 95%;
         padding: 15px;
-    }
-    .navbar {
-        height: 60px;
-        justify-content: space-around;
-        gap: 5px;
-        padding: 10px 5px;
-    }
-    .navbar a, .dropbtn {
-        padding: 8px 10px;
-        font-size: 0.9em;
-    }
-    .research-item {
-        flex-direction: row;
-        align-items: center;
-    }
-    .research-item img {
-        width: 120px;
-        margin-right: 10px;
-    }
-    .team-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    .team-member {
-        flex-direction: column;
-        text-align: center;
-    }
-    .team-photo {
-        margin-right: 0;
-        margin-bottom: 15px;
-    }
-    .gallery-item {
-        flex-direction: column;
-        align-items: center;
-    }
-    .gallery-media {
-        max-width: 100%;
-    }
-    .figure-image, .overview-image, .crispr-image {
-        max-width: 90%;
-    }
-    .team-image {
-        width: 120px;
-        height: 120px;
-    }
-    .fit-image {
-        width: 120px;
-    }
-    .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 15px;
-    }
-    .chart-container {
-        grid-template-columns: 1fr;
-        gap: 20px;
-    }
-    .advanced-filters {
-        grid-template-columns: 1fr;
-        gap: 10px;
-    }
-    .control-buttons {
-        flex-direction: column;
-        align-items: center;
-    }
-    .ciliahub-table {
-        font-size: 0.8em;
-        max-width: 100%;
-        overflow-x: auto;
-    }
-    .ciliahub-table th,
-    .ciliahub-table td {
-        padding: 8px;
-        min-width: 80px;
-    }
-    .ciliahub-table th:nth-child(2),
-    .ciliahub-table td:nth-child(2) {
-        min-width: 100px;
-        white-space: normal;
-        overflow: visible;
-        word-break: break-all;
-    }
-    .ciliahub-table th:nth-child(4),
-    .ciliahub-table td:nth-child(4) {
-        min-width: 100px;
-        white-space: normal;
-        overflow: visible;
     }
     .functional-gene-groups-grid {
         grid-template-columns: 1fr;
@@ -1572,4 +1520,3 @@ footer {
 .night-mode #night-mode-toggle:hover {
     background-color: #004d99;
 }
-```
