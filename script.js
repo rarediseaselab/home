@@ -1,7 +1,15 @@
-// Enhanced loadCiliaHubData function with corrected statistics and filtering
-async function loadCiliaHubData() {
-    const tableBody = document.getElementById('ciliahub-table-body');
+document.addEventListener('DOMContentLoaded', () => {
+    // Elements
     const searchInput = document.getElementById('ciliahub-search');
+    const suggestions = document.getElementById('search-suggestions');
+    const batchQueryInput = document.getElementById('batchGenes');
+    const batchQueryBtn = document.getElementById('batchQueryBtn');
+    const batchResults = document.getElementById('batchResults');
+    const batchResultsContainer = document.getElementById('batchResultsContainer');
+    const clearBatchResults = document.getElementById('clearBatchResults');
+    const table = document.getElementById('ciliahub-table');
+    const tableBody = document.getElementById('ciliahub-table-body');
+    const loading = document.getElementById('ciliahub-loading');
     const filterSelect = document.getElementById('ciliahub-filter');
     const omimFilter = document.getElementById('omim-filter');
     const referenceFilter = document.getElementById('reference-filter');
@@ -9,28 +17,30 @@ async function loadCiliaHubData() {
     const resetBtn = document.getElementById('ciliahub-reset');
     const downloadBtn = document.getElementById('download-ciliahub');
     const exportFilteredBtn = document.getElementById('export-filtered');
-    const batchQueryBtn = document.getElementById('batchQueryBtn');
-    const batchGenesInput = document.getElementById('batchGenes');
-    const batchResultsDiv = document.getElementById('batchResults');
-    const batchResultsContainer = document.getElementById('batchResultsContainer');
-    const clearBatchResultsBtn = document.getElementById('clearBatchResults');
-    const popularGenesList = document.getElementById('popularGenesList');
-    const errorDiv = document.getElementById('ciliahub-error');
-    const loadingDiv = document.getElementById('ciliahub-loading');
-    const table = document.querySelector('.ciliahub-table');
     const resultsCounter = document.getElementById('results-counter');
-    const suggestionsDiv = document.getElementById('search-suggestions');
+    const popularGenesList = document.getElementById('popularGenesList');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-image');
+    const lightboxClose = document.querySelector('.lightbox-close');
+    const pubSearch = document.getElementById('pub-search');
+    const backToTopBtn = document.getElementById('back-to-top');
     const functionalGroupsContainer = document.getElementById('functionalGeneGroupsContainer');
+    const prevPageBtn = document.getElementById('prevPage');
+    const nextPageBtn = document.getElementById('nextPage');
+    const errorDiv = document.getElementById('ciliahub-error');
 
+    // Data and state
     let data = [];
     let filteredData = [];
     let searchCounts = JSON.parse(sessionStorage.getItem('popularGenes')) || {};
-    let debounceTimeout;
     let allGeneNames = new Set();
     let allSynonyms = new Set();
     let allEnsemblIds = new Set();
+    let currentPage = 1;
+    const groupsPerPage = 6;
+    let debounceTimeout;
 
-    // Statistics tracking - corrected to focus on cilia-related localizations
+    // Statistics tracking
     let statsData = {
         totalCiliaGenes: 0,
         ciliaLocalizations: new Set(),
@@ -39,7 +49,7 @@ async function loadCiliaHubData() {
         ciliaLocalizationCounts: {}
     };
 
-    // Define cilia-related localization categories
+    // Cilia-related localization categories
     const ciliaRelatedCategories = {
         'cilia': ['cilia', 'cilium', 'ciliary'],
         'transition zone': ['transition zone', 'transition-zone'],
@@ -51,8 +61,6 @@ async function loadCiliaHubData() {
     function isCiliaRelated(localization) {
         if (!localization) return false;
         const locLower = localization.toLowerCase().trim();
-        
-        // Check each category
         for (const [category, keywords] of Object.entries(ciliaRelatedCategories)) {
             for (const keyword of keywords) {
                 if (locLower.includes(keyword)) {
@@ -66,7 +74,7 @@ async function loadCiliaHubData() {
     function showError(message) {
         errorDiv.textContent = message;
         errorDiv.style.display = 'block';
-        loadingDiv.style.display = 'none';
+        loading.style.display = 'none';
         table.style.display = 'none';
     }
 
@@ -94,28 +102,23 @@ async function loadCiliaHubData() {
     }
 
     function updateResultsCounter(count) {
-        if (resultsCounter) {
-            resultsCounter.textContent = `Showing ${count} genes`;
-            resultsCounter.style.display = count > 0 ? 'block' : 'none';
-        }
+        resultsCounter.textContent = `Showing ${count} genes`;
+        resultsCounter.style.display = count > 0 ? 'block' : 'none';
     }
 
     function populateTable(dataToShow = []) {
         tableBody.innerHTML = '';
         filteredData = dataToShow;
-       
         if (dataToShow.length === 0) {
-            loadingDiv.style.display = 'none';
+            loading.innerHTML = 'Enter a search term to explore the CiliaHub database...';
+            loading.style.display = 'block';
             table.style.display = 'none';
             updateResultsCounter(0);
             return;
         }
 
         dataToShow.forEach(item => {
-            const sanitizedLocalization = (item.localization || '')
-                .toLowerCase()
-                .replace(/[\s,]+/g, '-');
-
+            const sanitizedLocalization = (item.localization || '').toLowerCase().replace(/[\s,]+/g, '-');
             const referenceLinks = formatReference(item.reference);
             const synonyms = item.synonym ? item.synonym.split(',').map(s => s.trim()).join('<br>') : '';
 
@@ -125,93 +128,74 @@ async function loadCiliaHubData() {
                 <td><a href="https://www.ensembl.org/Homo_sapiens/Gene/Summary?g=${item.ensembl_id}" target="_blank">${item.ensembl_id}</a></td>
                 <td class="description" data-full-text="${item.description || ''}">${item.description || ''}</td>
                 <td>${synonyms}</td>
-                <td><a href="https://www.omim.org/entry/${item.omim_id}" target="_blank">${item.omim_id}</a></td>
+                <td>${item.omim_id ? `<a href="https://www.omim.org/entry/${item.omim_id}" target="_blank">${item.omim_id}</a>` : 'N/A'}</td>
                 <td class="reference" data-tooltip="${item.reference || ''}">${referenceLinks}</td>
                 <td>${item.localization || ''}</td>
             `;
             if (sanitizedLocalization) row.classList.add(sanitizedLocalization);
             tableBody.appendChild(row);
         });
-       
-        loadingDiv.style.display = 'none';
+
+        loading.style.display = 'none';
         table.style.display = 'table';
         updateResultsCounter(dataToShow.length);
     }
 
     function updatePopularGenes() {
-        const sortedGenes = Object.entries(searchCounts)
-            .sort((a, b) => b[1] - a[1])
-            .slice(0, 5);
+        const sortedGenes = Object.entries(searchCounts).sort((a, b) => b[1] - a[1]).slice(0, 5);
         popularGenesList.innerHTML = sortedGenes.length
             ? sortedGenes.map(([gene, count]) => `<li>${gene} (${count} searches)</li>`).join('')
             : '<li>No searches yet.</li>';
     }
 
-    function showSearchPrompt() {
-        loadingDiv.innerHTML = 'Enter a search term to explore the CiliaHub database...';
-        loadingDiv.style.display = 'block';
-        table.style.display = 'none';
-        updateResultsCounter(0);
-    }
-
-    // Auto-suggestions functionality
     function showSuggestions(query) {
         if (!query || query.length < 2) {
-            suggestionsDiv.style.display = 'none';
+            suggestions.style.display = 'none';
             return;
         }
 
-        const suggestions = [];
+        const suggestionsList = [];
         const queryLower = query.toLowerCase();
 
-        // Search in gene names
         [...allGeneNames].forEach(gene => {
-            if (gene.toLowerCase().includes(queryLower) && suggestions.length < 8) {
-                suggestions.push({ text: gene, type: 'gene' });
+            if (gene.toLowerCase().includes(queryLower) && suggestionsList.length < 8) {
+                suggestionsList.push({ text: gene, type: 'gene' });
             }
         });
 
-        // Search in synonyms
         [...allSynonyms].forEach(synonym => {
-            if (synonym.toLowerCase().includes(queryLower) && suggestions.length < 8) {
-                suggestions.push({ text: synonym, type: 'synonym' });
+            if (synonym.toLowerCase().includes(queryLower) && suggestionsList.length < 8) {
+                suggestionsList.push({ text: synonym, type: 'synonym' });
             }
         });
 
-        // Search in Ensembl IDs
         [...allEnsemblIds].forEach(id => {
-            if (id.toLowerCase().includes(queryLower) && suggestions.length < 8) {
-                suggestions.push({ text: id, type: 'ensembl' });
+            if (id.toLowerCase().includes(queryLower) && suggestionsList.length < 8) {
+                suggestionsList.push({ text: id, type: 'ensembl' });
             }
         });
 
-        if (suggestions.length > 0) {
-            suggestionsDiv.innerHTML = suggestions.map(s =>
+        if (suggestionsList.length > 0) {
+            suggestions.innerHTML = suggestionsList.map(s =>
                 `<div class="suggestion-item" data-type="${s.type}">${s.text} <span class="suggestion-type">${s.type}</span></div>`
             ).join('');
-            suggestionsDiv.style.display = 'block';
+            suggestions.style.display = 'block';
 
-            // Add click handlers for suggestions
-            suggestionsDiv.querySelectorAll('.suggestion-item').forEach(item => {
+            suggestions.querySelectorAll('.suggestion-item').forEach(item => {
                 item.addEventListener('click', () => {
                     searchInput.value = item.textContent.replace(/\s+(gene|synonym|ensembl)$/, '');
-                    suggestionsDiv.style.display = 'none';
+                    suggestions.style.display = 'none';
+                    searchCounts[searchInput.value] = (searchCounts[searchInput.value] || 0) + 1;
+                    sessionStorage.setItem('popularGenes', JSON.stringify(searchCounts));
+                    updatePopularGenes();
                     applyFilters();
                 });
             });
         } else {
-            suggestionsDiv.style.display = 'none';
+            suggestions.style.display = 'none';
         }
     }
 
-    // Hide suggestions when clicking outside
-    document.addEventListener('click', (e) => {
-        if (!e.target.closest('.search-container')) {
-            suggestionsDiv.style.display = 'none';
-        }
-    });
-
-    // Advanced filtering function
     function applyFilters() {
         hideError();
         const query = searchInput.value.toLowerCase().trim();
@@ -219,21 +203,16 @@ async function loadCiliaHubData() {
         const omimFilterValue = omimFilter.value;
         const referenceFilterValue = referenceFilter.value;
         const synonymFilterValue = synonymFilter.value.toLowerCase().trim();
-       
+
         if (!query && !localizationFilter && !omimFilterValue && !referenceFilterValue && !synonymFilterValue) {
-            showSearchPrompt();
+            loading.innerHTML = 'Enter a search term to explore the CiliaHub database...';
+            loading.style.display = 'block';
+            table.style.display = 'none';
+            updateResultsCounter(0);
             return;
         }
 
-        // Track search for popular genes
-        if (query) {
-            searchCounts[query] = (searchCounts[query] || 0) + 1;
-            sessionStorage.setItem('popularGenes', JSON.stringify(searchCounts));
-            updatePopularGenes();
-        }
-
-        let filtered = data.filter(item => {
-            // Text search filter
+        filteredData = data.filter(item => {
             let textMatch = true;
             if (query) {
                 textMatch = (item.gene && item.gene.toLowerCase().includes(query)) ||
@@ -243,13 +222,11 @@ async function loadCiliaHubData() {
                            (item.reference && item.reference.toLowerCase().includes(query));
             }
 
-            // Localization filter
             let localizationMatch = true;
             if (localizationFilter) {
                 localizationMatch = (item.localization || '').toLowerCase().replace(/[\s,]+/g, '-') === localizationFilter;
             }
 
-            // OMIM filter
             let omimMatch = true;
             if (omimFilterValue === 'has-omim') {
                 omimMatch = item.omim_id && item.omim_id.trim() !== '';
@@ -257,7 +234,6 @@ async function loadCiliaHubData() {
                 omimMatch = !item.omim_id || item.omim_id.trim() === '';
             }
 
-            // Reference filter
             let referenceMatch = true;
             if (referenceFilterValue === 'has-reference') {
                 referenceMatch = item.reference && item.reference.trim() !== '';
@@ -265,7 +241,6 @@ async function loadCiliaHubData() {
                 referenceMatch = !item.reference || item.reference.trim() === '';
             }
 
-            // Synonym filter
             let synonymMatch = true;
             if (synonymFilterValue) {
                 synonymMatch = item.synonym && item.synonym.toLowerCase().includes(synonymFilterValue);
@@ -273,8 +248,8 @@ async function loadCiliaHubData() {
 
             return textMatch && localizationMatch && omimMatch && referenceMatch && synonymMatch;
         });
-       
-        populateTable(filtered);
+
+        populateTable(filteredData);
     }
 
     function debounce(func, wait) {
@@ -284,32 +259,23 @@ async function loadCiliaHubData() {
         };
     }
 
-    // CORRECTED: Statistics calculation focusing only on cilia-related genes
     function calculateStatistics() {
-        // Filter data to only include cilia-related genes
-        const ciliaRelatedGenes = data.filter(item => {
-            return isCiliaRelated(item.localization);
-        });
-
+        const ciliaRelatedGenes = data.filter(item => isCiliaRelated(item.localization));
         statsData.totalCiliaGenes = ciliaRelatedGenes.length;
         statsData.ciliaWithOMIM = ciliaRelatedGenes.filter(item => item.omim_id && item.omim_id.trim()).length;
         statsData.ciliaWithReferences = ciliaRelatedGenes.filter(item => item.reference && item.reference.trim()).length;
-       
-        // Calculate cilia-related localization distribution
+
         statsData.ciliaLocalizationCounts = {};
         ciliaRelatedGenes.forEach(item => {
             if (item.localization && item.localization.trim()) {
                 const category = isCiliaRelated(item.localization);
                 if (category) {
-                    if (!statsData.ciliaLocalizations.has(category)) {
-                        statsData.ciliaLocalizations.add(category);
-                    }
+                    statsData.ciliaLocalizations.add(category);
                     statsData.ciliaLocalizationCounts[category] = (statsData.ciliaLocalizationCounts[category] || 0) + 1;
                 }
             }
         });
 
-        // Update stat cards with cilia-specific data
         document.getElementById('total-genes').textContent = statsData.totalCiliaGenes;
         document.getElementById('unique-localizations').textContent = statsData.ciliaLocalizations.size;
         document.getElementById('with-omim').textContent = statsData.ciliaWithOMIM;
@@ -317,31 +283,16 @@ async function loadCiliaHubData() {
     }
 
     function createCharts() {
-        // Localization Chart - Only cilia-related localizations
         const locCtx = document.getElementById('localizationChart');
         if (locCtx) {
-            // Use the calculated cilia localization counts
-            const ciliaLocData = Object.entries(statsData.ciliaLocalizationCounts)
-                .sort((a, b) => b[1] - a[1]);
-
+            const ciliaLocData = Object.entries(statsData.ciliaLocalizationCounts).sort((a, b) => b[1] - a[1]);
             new Chart(locCtx, {
                 type: 'pie',
                 data: {
-                    labels: ciliaLocData.map(([label]) => {
-                        // Capitalize first letter of each word
-                        return label.split(' ').map(word => 
-                            word.charAt(0).toUpperCase() + word.slice(1)
-                        ).join(' ');
-                    }),
+                    labels: ciliaLocData.map(([label]) => label.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')),
                     datasets: [{
                         data: ciliaLocData.map(([, count]) => count),
-                        backgroundColor: [
-                            '#203c78', // Dark blue
-                            '#4a6fa5', // Medium blue
-                            '#6d8bc9', // Light blue
-                            '#90a7dd', // Lighter blue
-                            '#b3c3f1'  // Very light blue
-                        ],
+                        backgroundColor: ['#203c78', '#4a6fa5', '#6d8bc9', '#90a7dd', '#b3c3f1'],
                         borderWidth: 2,
                         borderColor: '#fff'
                     }]
@@ -350,21 +301,8 @@ async function loadCiliaHubData() {
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
-                        legend: {
-                            position: 'bottom',
-                            labels: {
-                                boxWidth: 15,
-                                padding: 10,
-                                font: { size: 11 },
-                                usePointStyle: true
-                            }
-                        },
-                        title: {
-                            display: true,
-                            text: 'Cilia-Related Gene Distribution by Localization',
-                            font: { size: 14, weight: 'bold' },
-                            color: '#203c78'
-                        },
+                        legend: { position: 'bottom', labels: { boxWidth: 15, padding: 10, font: { size: 11 }, usePointStyle: true } },
+                        title: { display: true, text: 'Cilia-Related Gene Distribution by Localization', font: { size: 14, weight: 'bold' }, color: '#203c78' },
                         tooltip: {
                             callbacks: {
                                 label: function(context) {
@@ -381,12 +319,10 @@ async function loadCiliaHubData() {
             });
         }
 
-        // Growth Chart (simulated data showing cilia gene discovery over time)
         const growthCtx = document.getElementById('growthChart');
         if (growthCtx) {
             const years = ['2020', '2021', '2022', '2023', '2024', '2025'];
             const ciliaGeneCounts = [300, 450, 700, 950, 1200, statsData.totalCiliaGenes];
-
             new Chart(growthCtx, {
                 type: 'line',
                 data: {
@@ -408,51 +344,19 @@ async function loadCiliaHubData() {
                     responsive: true,
                     maintainAspectRatio: false,
                     scales: {
-                        y: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'Number of Cilia-Related Genes',
-                                font: { size: 12, weight: 'bold' },
-                                color: '#203c78'
-                            },
-                            grid: {
-                                color: 'rgba(32, 60, 120, 0.1)'
-                            }
-                        },
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'Year',
-                                font: { size: 12, weight: 'bold' },
-                                color: '#203c78'
-                            },
-                            grid: {
-                                color: 'rgba(32, 60, 120, 0.1)'
-                            }
-                        }
+                        y: { beginAtZero: true, title: { display: true, text: 'Number of Cilia-Related Genes', font: { size: 12, weight: 'bold' }, color: '#203c78' }, grid: { color: 'rgba(32, 60, 120, 0.1)' } },
+                        x: { title: { display: true, text: 'Year', font: { size: 12, weight: 'bold' }, color: '#203c78' }, grid: { color: 'rgba(32, 60, 120, 0.1)' } }
                     },
                     plugins: {
-                        legend: {
-                            display: true,
-                            position: 'top',
-                            labels: {
-                                font: { size: 11 }
-                            }
-                        },
-                        title: {
-                            display: true,
-                            text: 'CiliaHub Database Growth Over Time',
-                            font: { size: 14, weight: 'bold' },
-                            color: '#203c78'
-                        }
+                        legend: { display: true, position: 'top', labels: { font: { size: 11 } } },
+                        title: { display: true, text: 'CiliaHub Database Growth Over Time', font: { size: 14, weight: 'bold' }, color: '#203c78' }
                     }
                 }
             });
         }
     }
 
-    function populateFunctionalGroups(data) {
+    function populateFunctionalGroups() {
         if (!functionalGroupsContainer) return;
         functionalGroupsContainer.innerHTML = '';
         const categoryMap = {};
@@ -470,7 +374,11 @@ async function loadCiliaHubData() {
             }
         });
 
-        Object.keys(categoryMap).sort().forEach(category => {
+        const sortedCategories = Object.keys(categoryMap).sort();
+        const start = (currentPage - 1) * groupsPerPage;
+        const end = start + groupsPerPage;
+
+        sortedCategories.slice(start, end).forEach(category => {
             const groupItem = document.createElement('details');
             groupItem.className = 'group-item';
             groupItem.innerHTML = `
@@ -481,43 +389,65 @@ async function loadCiliaHubData() {
             `;
             functionalGroupsContainer.appendChild(groupItem);
         });
+
+        prevPageBtn.disabled = currentPage === 1;
+        nextPageBtn.disabled = end >= sortedCategories.length;
     }
 
-    try {
-        const response = await fetch('https://raw.githubusercontent.com/rarediseaselab/home/main/ciliahub_data_with_functions.json');
-        data = await response.json();
-        console.log('Loaded entries:', data.length);
-       
-        // Build search indices
-        data.forEach(item => {
-            if (item.gene) allGeneNames.add(item.gene);
-            if (item.ensembl_id) allEnsemblIds.add(item.ensembl_id);
-            if (item.synonym) {
-                item.synonym.split(',').forEach(syn => {
-                    const trimmed = syn.trim();
-                    if (trimmed) allSynonyms.add(trimmed);
-                });
+    prevPageBtn.addEventListener('click', () => {
+        if (currentPage > 1) {
+            currentPage--;
+            populateFunctionalGroups();
+        }
+    });
+
+    nextPageBtn.addEventListener('click', () => {
+        if (currentPage * groupsPerPage < Object.keys(data.reduce((map, row) => {
+            if (row.functional_category && row.functional_category !== 'Unknown') {
+                row.functional_category.split('; ').filter(cat => cat).forEach(cat => map[cat] = true);
             }
-        });
+            return map;
+        }, {})).length) {
+            currentPage++;
+            populateFunctionalGroups();
+        }
+    });
 
-        // Calculate statistics, create charts, and populate functional groups
-        calculateStatistics();
-        createCharts();
-        populateFunctionalGroups(data);
-       
-        // Show search prompt instead of populating table
-        showSearchPrompt();
-        updatePopularGenes();
-    } catch (error) {
-        console.error('Error loading CiliaHub data:', error);
-        showError('Failed to load CiliaHub data. Please check your network or contact support.');
-        return;
+    async function fetchData() {
+        try {
+            loading.style.display = 'block';
+            table.style.display = 'none';
+            const response = await fetch('https://raw.githubusercontent.com/rarediseaselab/home/main/ciliahub_data_with_functions.json');
+            if (!response.ok) throw new Error('Failed to fetch data');
+            data = await response.json();
+            console.log('Loaded entries:', data.length);
+
+            data.forEach(item => {
+                if (item.gene) allGeneNames.add(item.gene);
+                if (item.ensembl_id) allEnsemblIds.add(item.ensembl_id);
+                if (item.synonym) {
+                    item.synonym.split(',').forEach(syn => {
+                        const trimmed = syn.trim();
+                        if (trimmed) allSynonyms.add(trimmed);
+                    });
+                }
+            });
+
+            calculateStatistics();
+            createCharts();
+            populateFunctionalGroups();
+            loading.innerHTML = 'Enter a search term to explore the CiliaHub database...';
+            loading.style.display = 'block';
+            table.style.display = 'none';
+            updatePopularGenes();
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            showError('Failed to load CiliaHub data. Please check your network or contact support.');
+        }
     }
 
-    // Event listeners
     searchInput.addEventListener('input', debounce((e) => {
-        const query = e.target.value;
-        showSuggestions(query);
+        showSuggestions(e.target.value);
         applyFilters();
     }, 300));
 
@@ -533,11 +463,14 @@ async function loadCiliaHubData() {
         omimFilter.value = '';
         referenceFilter.value = '';
         synonymFilter.value = '';
-        suggestionsDiv.style.display = 'none';
+        suggestions.style.display = 'none';
         searchCounts = {};
         sessionStorage.removeItem('popularGenes');
         updatePopularGenes();
-        showSearchPrompt();
+        loading.innerHTML = 'Enter a search term to explore the CiliaHub database...';
+        loading.style.display = 'block';
+        table.style.display = 'none';
+        updateResultsCounter(0);
     });
 
     downloadBtn.addEventListener('click', () => {
@@ -568,7 +501,7 @@ async function loadCiliaHubData() {
             alert('No filtered data to export. Please apply filters first.');
             return;
         }
-       
+
         const csv = [
             ['Gene', 'Ensembl ID', 'Gene Description', 'Synonym', 'OMIM ID', 'Reference', 'Ciliary Localization'],
             ...filteredData.map(item => [
@@ -593,9 +526,9 @@ async function loadCiliaHubData() {
 
     batchQueryBtn.addEventListener('click', () => {
         hideError();
-        const input = batchGenesInput.value.trim();
+        const input = batchQueryInput.value.trim();
         if (!input) {
-            batchResultsDiv.innerHTML = '<p style="color: red;">Please enter at least one gene name or ID.</p>';
+            batchResults.innerHTML = '<p style="color: red;">Please enter at least one gene name or ID.</p>';
             batchResultsContainer.style.display = 'block';
             return;
         }
@@ -614,21 +547,21 @@ async function loadCiliaHubData() {
             )
         );
         if (batchFiltered.length === 0) {
-            batchResultsDiv.innerHTML = '<p>No matching genes found.</p>';
+            batchResults.innerHTML = '<p>No matching genes found.</p>';
             batchResultsContainer.style.display = 'block';
             return;
         }
-        batchResultsDiv.innerHTML = `
-            <table style="width: 100%; border-collapse: collapse;">
+        batchResults.innerHTML = `
+            <table class="ciliahub-table">
                 <thead>
-                    <tr style="background-color: #003366; color: white;">
-                        <th style="padding: 10px; width: 10%;">Gene</th>
-                        <th style="padding: 10px; width: 10%;">Ensembl ID</th>
-                        <th style="padding: 10px; width: 25%;">Description</th>
-                        <th style="padding: 10px; width: 10%;">Synonym</th>
-                        <th style="padding: 10px; width: 10%;">OMIM ID</th>
-                        <th style="padding: 10px; width: 20%;">Reference</th>
-                        <th style="padding: 10px; width: 15%;">Localization</th>
+                    <tr>
+                        <th>Gene</th>
+                        <th>Ensembl ID</th>
+                        <th>Description</th>
+                        <th>Synonym</th>
+                        <th>OMIM ID</th>
+                        <th>Reference</th>
+                        <th>Localization</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -636,13 +569,13 @@ async function loadCiliaHubData() {
                         const referenceLinks = formatReference(item.reference);
                         return `
                             <tr>
-                                <td style="padding: 10px; border-bottom: 1px solid #ddd;"><a href="https://www.ncbi.nlm.nih.gov/gene/?term=${item.gene}" target="_blank">${item.gene}</a></td>
-                                <td style="padding: 10px; border-bottom: 1px solid #ddd;"><a href="https://www.ensembl.org/Homo_sapiens/Gene/Summary?g=${item.ensembl_id}" target="_blank">${item.ensembl_id}</a></td>
-                                <td style="padding: 10px; border-bottom: 1px solid #ddd;">${item.description || ''}</td>
-                                <td style="padding: 10px; border-bottom: 1px solid #ddd;">${item.synonym || ''}</td>
-                                <td style="padding: 10px; border-bottom: 1px solid #ddd;"><a href="https://www.omim.org/entry/${item.omim_id}" target="_blank">${item.omim_id}</a></td>
-                                <td style="padding: 10px; border-bottom: 1px solid #ddd;">${referenceLinks}</td>
-                                <td style="padding: 10px; border-bottom: 1px solid #ddd;">${item.localization || ''}</td>
+                                <td><a href="https://www.ncbi.nlm.nih.gov/gene/?term=${item.gene}" target="_blank">${item.gene}</a></td>
+                                <td><a href="https://www.ensembl.org/Homo_sapiens/Gene/Summary?g=${item.ensembl_id}" target="_blank">${item.ensembl_id}</a></td>
+                                <td>${item.description || ''}</td>
+                                <td>${item.synonym || ''}</td>
+                                <td>${item.omim_id ? `<a href="https://www.omim.org/entry/${item.omim_id}" target="_blank">${item.omim_id}</a>` : 'N/A'}</td>
+                                <td>${referenceLinks}</td>
+                                <td>${item.localization || ''}</td>
                             </tr>
                         `;
                     }).join('')}
@@ -650,18 +583,20 @@ async function loadCiliaHubData() {
             </table>
         `;
         batchResultsContainer.style.display = 'block';
+        populateTable(batchFiltered);
     });
 
-    clearBatchResultsBtn.addEventListener('click', () => {
-        batchResultsDiv.innerHTML = '';
+    clearBatchResults.addEventListener('click', () => {
+        batchResults.innerHTML = '';
         batchResultsContainer.style.display = 'none';
-        batchGenesInput.value = '';
+        batchQueryInput.value = '';
+        applyFilters();
     });
-}
 
-// Call the function when the DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    if (document.getElementById('ciliahub')) {
-        loadCiliaHubData();
-    }
-});
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.search-container')) {
+            suggestions.style.display = 'none';
+        }
+    });
+
+    document.querySelectorAll('.navbar a, .dropdown-content a').forEach(link =>
