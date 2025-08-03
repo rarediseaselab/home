@@ -10,13 +10,13 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" type="image/png" href="elegans2.png">
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-EKT3SLJ516"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
         gtag('config', 'G-EKT3SLJ516');
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         function showSection(sectionId) {
             console.log("Showing section: " + sectionId);
@@ -31,6 +31,7 @@
                 console.error("Section not found: " + sectionId);
             }
         }
+
         function updateActiveNav(sectionId) {
             document.querySelectorAll('.navbar a, .dropdown-content a').forEach(link => {
                 link.classList.remove('active');
@@ -39,6 +40,7 @@
                 }
             });
         }
+
         function updateBreadcrumbs(sectionId) {
             const breadcrumbs = document.getElementById('breadcrumbs');
             let path = ['<a href="#home" onclick="showSection(\'home\')">Home</a>'];
@@ -84,8 +86,10 @@
         <a href="#gallery" onclick="showSection('gallery')">Gallery</a>
         <a href="#ciliahub" onclick="showSection('ciliahub')">CiliaHub</a>
     </nav>
+
     <!-- Breadcrumbs -->
     <div id="breadcrumbs"></div>
+
     <div class="container">
         <section id="home" class="section">
             <h1>Welcome to Kaplan's Lab</h1>
@@ -128,6 +132,7 @@
                 </div>
             </div>
         </section>
+
         <section id="research-overview" class="section" style="display: none;">
             <h1>Research Overview</h1>
             <p>Our lab is dedicated to uncovering the genetic and molecular mechanisms driving rare diseases, with a particular focus on ciliopathies. By integrating comparative genomics, functional assays, and cutting-edge gene editing technologies, we aim to bridge the gap between genotype and phenotype, advancing our understanding of disease mechanisms and identifying potential therapeutic targets.</p>
@@ -164,23 +169,27 @@
                 </div>
             </div>
         </section>
+
         <section id="cilia-ciliopathies" class="section" style="display: none;">
             <h1>Cilia and Ciliopathies</h1>
             <img src="cilia_res1.jpg" alt="Cilia Research Image" class="overview-image">
             <p>Cilia are microtubule-based organelles that mediate numerous cellular processes, such as motility, signaling, and development. Ciliopathies are a group of rare genetic diseases caused by structural or functional defects in cilia and lead to syndromes such as Joubert syndrome, Bardet-Biedl syndrome, Meckel syndrome, and cranioectodermal dysplasia. Though outstanding advances have been achieved, the genetic etiology of ciliopathies is still not fully understood.</p>
             <p>Our group has newly identified CILK1 as a causative gene of cranioectodermal dysplasia. Our goal is to identify and functionally annotate ciliopathy-associated genes comprehensively with genetic models, high-resolution microscopy, and biochemical assays. By integrating patient-derived data with experimental data, we will develop improved diagnostic reagents and therapeutic approaches to these rare diseases.</p>
         </section>
+
         <section id="disease-modeling" class="section" style="display: none;">
             <h1>Disease Modeling</h1>
             <img src="research3.jpeg" alt="Disease Modeling Image" class="overview-image">
             <p>Genetic variant analysis of rare diseases attempts to identify mutations responsible for such often poorly described conditions. With the help of advanced genomic technologies like whole exome sequencing and CRISPR/Cas9-based functional screening in <em>C. elegans</em>, our lab is able to distinguish disease-causing variants and comprehend their mechanisms better (Cevik et al., 2023). This work provides insight into the genetic architecture of rare diseases, eventually culminating in the design of tailored treatments and propelling precision medicine for such individuals.</p>
         </section>
+
         <section id="cilia-cilia-joining" class="section" style="display: none;">
             <h1>Cilia-Cilia Joining</h1>
             <img src="research2.jpg" alt="Cilia-Cilia Joining Image" class="overview-image">
             <p>Our study aims to make sense of the molecular machinery in cilia-cilia elongation. We isolate the key proteins and signaling cascades involved. We are further conducting FIB-SEM analysis in a bid to deliver quantitative ultrastructural detail.</p>
             <p>We are further contributing to understanding cilia-cilia communication, as demonstrated by Turan et al. (2025) in iScience. We shall expand on such findings by studying the molecular machinery regulating cilia-cilia interaction, including elongation and communication, and the implications for uncommon diseases.</p>
         </section>
+
         <section id="bioinformatics" class="section" style="display: none;">
             <h1>Bioinformatics</h1>
             <img src="convart.jpeg" alt="Bioinformatics Image" class="overview-image">
@@ -203,75 +212,92 @@
                 </div>
             </div>
         </section>
+
         <section id="ciliahub" class="section">
-            <div class="ciliahub-container">
-                <div id="ciliahub-error" class="error-message"></div>
-                <img src="CiliaHub_Logo.png" alt="CiliaHub Logo" class="overview-image">
-                <h2 style="text-align: center; color: #203c78;">CiliaHub: Ciliary Gene Database</h2>
-                <p>
-                    <strong>CiliaHub</strong> is an updated and curated database of all experimentally confirmed ciliary genes — an evolution of the ciliary "Gold Standard" gene list. Through a combination of R-based text mining of the scientific literature and manual expert review, the database now includes over 2,002 genes, including <strong>1300+ newly associated ciliary genes</strong>.
+            <div class="container">
+                <!-- Error Message -->
+                <div id="ciliahub-error" style="display: none; color: red; text-align: center; margin-bottom: 20px;"></div>
+
+                <!-- Logo above title -->
+                <img src="CiliaHub_Logo.png" alt="CiliaHub Logo" class="w-full mx-auto mb-4" style="max-width: 100%; height: auto;">
+
+                <!-- Title -->
+                <h1 style="color: #203c78; text-align: justify; text-align-last: center;">CiliaHub: Ciliary Gene Database</h1>
+                <p class="mb-4" style="text-align: justify;">
+                    <strong>CiliaHub</strong> is an updated and curated database of all experimentally confirmed ciliary genes — an evolution of the ciliary "Gold Standard" gene list. Through a combination of R-based text mining of the scientific literature and manual expert review, the database now includes over 2,002 genes, including <strong> 1300+ newly associated ciliary genes</strong>.
                     <br><br>
                     This user-friendly platform allows researchers to:
-                    <ul>
-                        <li>✔️ Explore curated gene entries with descriptions and known synonyms</li>
-                        <li>✔️ Access references linked to each gene</li>
-                        <li>✔️ Navigate to external databases via direct hyperlinks</li>
-                        <li>✔️ Download the full gene list for further analysis</li>
+                    <ul style="margin-top: 10px; margin-bottom: 10px;">
+                        <li> Explore curated gene entries with descriptions and known synonyms</li>
+                        <li> Access references linked to each gene</li>
+                        <li> Navigate to external databases via direct hyperlinks</li>
+                        <li> Download the full gene list for further analysis</li>
                     </ul>
                     <strong>CiliaHub</strong> empowers both basic and clinical researchers in the fields of cell biology and genetics to explore the molecular basis of cilia-related functions and ciliopathies.
                 </p>
-                <div id="statistics-dashboard" class="stats-container">
-                    <h3>📊 Cilia-Related Gene Statistics & Analysis</h3>
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-number" id="total-genes">0</div>
-                            <div class="stat-label">Cilia-Related Genes</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-number" id="unique-localizations">0</div>
-                            <div class="stat-label">Cilia Localizations</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-number" id="with-omim">0</div>
-                            <div class="stat-label">With OMIM Entries</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-number" id="with-references">0</div>
-                            <div class="stat-label">With References</div>
-                        </div>
-                    </div>
-                    <div class="chart-container">
-                        <div class="chart-section">
-                            <h4>Cilia-Related Gene Distribution by Localization</h4>
-                            <canvas id="localizationChart" width="400" height="200"></canvas>
-                        </div>
-                        <div class="chart-section">
-                            <h4>Database Growth Over Time</h4>
-                            <canvas id="growthChart" width="400" height="200"></canvas>
-                        </div>
-                    </div>
-                    <div class="note-box">
-                        <strong>Note:</strong> Statistics above reflect only genes with cilia-related localizations (cilia, transition zone, basal body, flagella, and cilia-associated genes). The total database contains additional genes that may have ciliary functions but different subcellular localizations.
-                    </div>
-                </div>
-                <details class="how-to-use">
-                    <summary>How to Use CiliaHub</summary>
-                    <div>
+
+                <!-- NEW FEATURE 1: Interactive Statistics Dashboard -->
+<div id="statistics-dashboard" class="stats-dashboard mb-5">
+    <h3 style="color: #203c78; text-align: center; margin-bottom: 20px;">📊 Cilia-Related Gene Statistics & Analysis</h3>
+   
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-number" id="total-genes">0</div>
+            <div class="stat-label">Cilia-Related Genes</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="unique-localizations">0</div>
+            <div class="stat-label">Cilia Localizations</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="with-omim">0</div>
+            <div class="stat-label">With OMIM Entries</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="with-references">0</div>
+            <div class="stat-label">With References</div>
+        </div>
+    </div>
+
+    <div class="chart-container">
+        <div class="chart-section">
+            <h4>Cilia-Related Gene Distribution by Localization</h4>
+            <canvas id="localizationChart" width="400" height="200"></canvas>
+        </div>
+        <div class="chart-section">
+            <h4>Database Growth Over Time</h4>
+            <canvas id="growthChart" width="400" height="200"></canvas>
+        </div>
+    </div>
+    
+    <div style="margin-top: 15px; padding: 10px; background: #f0f8ff; border-radius: 5px; font-size: 0.9em; color: #666;">
+        <strong>Note:</strong> Statistics above reflect only genes with cilia-related localizations (cilia, transition zone, basal body, flagella, and cilia-associated genes). The total database contains additional genes that may have ciliary functions but different subcellular localizations.
+    </div>
+</div>
+
+                <!-- How to Use (collapsible box) -->
+                <details class="mb-4" style="background: #f5faff; border: 1px solid #cce0f5; padding: 15px; border-radius: 5px;">
+                    <summary style="font-weight: bold; cursor: pointer;"> How to Use CiliaHub</summary>
+                    <div style="margin-top: 10px;">
                         <ul>
-                            <li><strong>🔍 Search:</strong> Enter a gene name, Ensembl ID, OMIM ID, or synonym to find specific entries.</li>
-                            <li><strong>🧭 Filter:</strong> Use the dropdown menu to display genes based on ciliary localization (e.g., Basal Body).</li>
-                            <li><strong>♻️ Reset:</strong> Click <em>Reset</em> to clear search and filters, and reload all results.</li>
-                            <li><strong>⬇️ Download:</strong> Export the full gene list as a CSV file for offline analysis or custom sorting.</li>
-                            <li><strong>🔗 External Links:</strong> Gene names, Ensembl IDs, OMIM IDs, and references are hyperlinked to authoritative databases.</li>
-                            <li><strong>🗂 Batch Query:</strong> Paste multiple genes or IDs below and click "Batch Query" to retrieve all matching entries at once.</li>
+                            <li><strong> Search:</strong> Enter a gene name, Ensembl ID, OMIM ID, or synonym to find specific entries.</li>
+                            <li><strong> Filter:</strong> Use the dropdown menu to display genes based on ciliary localization (e.g., Basal Body).</li>
+                            <li><strong> Reset:</strong> Click <em>Reset</em> to clear search and filters, and reload all results.</li>
+                            <li><strong> Download:</strong> Export the full gene list as a CSV file for offline analysis or custom sorting.</li>
+                            <li><strong> External Links:</strong> Gene names, Ensembl IDs, OMIM IDs, and references are hyperlinked to authoritative databases.</li>
+                            <li><strong> Batch Query:</strong> Paste multiple genes or IDs below and click "Batch Query" to retrieve all matching entries at once.</li>
                         </ul>
                     </div>
                 </details>
-                <div class="ciliahub-controls">
+
+                <!-- NEW FEATURE 2: Enhanced Search with Auto-suggestions -->
+                <div class="ciliahub-controls mb-4 text-center">
                     <div class="search-container">
                         <input type="text" id="ciliahub-search" placeholder="Search by Gene, Ensembl ID, or Synonym..." aria-label="Search CiliaHub database" autocomplete="off">
                         <div id="search-suggestions" class="search-suggestions"></div>
                     </div>
+                    
+                    <!-- NEW FEATURE 3: Advanced Filtering System -->
                     <div class="advanced-filters">
                         <select id="ciliahub-filter" aria-label="Filter by ciliary localization">
                             <option value="">All Localizations</option>
@@ -285,73 +311,93 @@
                             <option value="flagella-cilia-basal-body">Flagella, Cilia, Basal Body</option>
                             <option value="ciliary-associated-gene">Ciliary Associated Gene</option>
                         </select>
+
                         <select id="omim-filter" aria-label="Filter by OMIM availability">
                             <option value="">All OMIM Status</option>
                             <option value="has-omim">Has OMIM ID</option>
                             <option value="no-omim">No OMIM ID</option>
                         </select>
+
                         <select id="reference-filter" aria-label="Filter by reference availability">
                             <option value="">All Reference Status</option>
                             <option value="has-reference">Has References</option>
                             <option value="no-reference">No References</option>
                         </select>
+
                         <input type="text" id="synonym-filter" placeholder="Filter by synonym..." aria-label="Filter by synonym">
                     </div>
+
                     <div class="control-buttons">
                         <button id="ciliahub-reset" aria-label="Reset search and filters">Reset All</button>
                         <button id="download-ciliahub" aria-label="Download CiliaHub data as CSV">Download Data</button>
                         <button id="export-filtered" aria-label="Export filtered results as CSV">Export Filtered</button>
                     </div>
                 </div>
-                <div id="results-counter" class="results-counter"></div>
-                <div id="popularGenesWidget" class="popular-genes">
-                    <h3>Popular Genes This Session</h3>
-                    <ul id="popularGenesList"></ul>
+
+                <!-- Results counter -->
+                <div id="results-counter" class="results-counter mb-3"></div>
+
+                <!-- Popular Genes Widget -->
+                <div id="popularGenesWidget" style="max-width: 600px; margin: 20px auto; padding: 15px; border: 1px solid #cce0f5; background: #f0f8ff; border-radius: 6px; color: #203c78;">
+                    <h3 style="text-align:center; margin-top:0;"> Popular Genes This Session</h3>
+                    <ul id="popularGenesList" style="list-style: none; padding-left: 10px;"></ul>
                 </div>
-                <div class="batch-query">
-                    <label for="batchGenes">Batch Query: Enter gene names or IDs (comma, space, or newline separated):</label>
-                    <textarea id="batchGenes" rows="4" placeholder="e.g. IFT88, BBS1, NPHP1" aria-label="Enter multiple gene names or IDs for batch query"></textarea>
-                    <button id="batchQueryBtn" aria-label="Submit batch query">Batch Query</button>
+
+                <!-- Batch Query UI -->
+                <div class="batch-query mb-5" style="max-width:600px; margin: 0 auto 30px; text-align: left;">
+                    <label for="batchGenes" style="font-weight:bold;">Batch Query: Enter gene names or IDs (comma, space, or newline separated):</label><br>
+                    <textarea id="batchGenes" rows="4" style="width: 100%; font-family: monospace;" placeholder="e.g. IFT88, BBS1, NPHP1" aria-label="Enter multiple gene names or IDs for batch query"></textarea><br>
+                    <button id="batchQueryBtn" style="margin-top: 8px; padding: 8px 16px; background-color:#203c78; color:white; border:none; border-radius:5px; cursor:pointer;" aria-label="Submit batch query">Batch Query</button>
                 </div>
-                <div id="batchResultsContainer" style="display: none;">
-                    <h3>Batch Query Results</h3>
+
+                <!-- Batch Query Results -->
+                <div id="batchResultsContainer" class="mb-5" style="max-width:900px; margin: 0 auto; display:none;">
+                    <h3 style="color: #203c78; text-align: center;">Batch Query Results</h3>
                     <div id="batchResults"></div>
-                    <button id="clearBatchResults" aria-label="Clear batch query results">Clear Results</button>
+                    <button id="clearBatchResults" style="margin-top:10px; padding: 6px 12px; background:#888; color:#fff; border:none; border-radius:4px; cursor:pointer;" aria-label="Clear batch query results">Clear Results</button>
                 </div>
-                <div class="table-wrapper">
-                    <div id="ciliahub-loading">Loading data...</div>
-                    <table id="ciliahub-table" class="ciliahub-table" style="display: none;">
+             <!-- Within <section id="ciliahub">, after Batch Query -->
+                <!-- Functional Gene Groups -->
+<div class="functional-gene-groups" aria-label="Functional Gene Groups section">
+    <h3>Functional Gene Groups</h3>
+    <p>Explore collections of genes grouped by common pathways or molecular functions, based on Gene Ontology and KEGG terms. Expand each category to view associated genes.</p>
+    <div id="functionalGeneGroupsContainer"></div>
+</div>
+                <!-- Table wrapper -->
+                <div class="table-wrapper mb-5">
+                    <div id="ciliahub-loading" style="text-align: center; padding: 20px;">Loading data...</div>
+                    <table class="ciliahub-table" style="display: none;">
                         <thead>
                             <tr>
-                                <th>Gene</th>
-                                <th>Ensembl ID</th>
-                                <th>Gene Description</th>
-                                <th>Synonym</th>
-                                <th>OMIM ID</th>
-                                <th>Reference</th>
-                                <th>Ciliary Localization</th>
+                                <th style="width: 10%;">Gene</th>
+                                <th style="width: 15%;">Ensembl ID</th>
+                                <th style="width: 20%;">Gene Description</th>
+                                <th style="width: 10%;">Synonym</th>
+                                <th style="width: 10%;">OMIM ID</th>
+                                <th style="width: 20%;">Reference</th>
+                                <th style="width: 15%;">Ciliary Localization</th>
                             </tr>
                         </thead>
                         <tbody id="ciliahub-table-body"></tbody>
                     </table>
                 </div>
-                <div class="functional-gene-groups">
-                    <h2 style="text-align: center;">🧬 Functional Gene Groups</h2>
-                    <p>Explore collections of genes grouped by common pathways or molecular functions, based on Gene Ontology and KEGG terms. Expand each category to view associated genes.</p>
-                    <div id="functionalGeneGroupsContainer" class="functional-gene-groups-grid"></div>
-                    <div id="geneGroupsPagination" class="pagination">
-                        <button id="prevPage">Previous</button>
-                        <button id="nextPage">Next</button>
-                    </div>
+
+                <!-- Citation -->
+                <div class="citation-box mt-5 mb-4 p-3 rounded" style="background-color: #e6f2ff; border-left: 4px solid #004080;">
+                    <strong>Suggested citation:</strong> Yenisert F, Kaplan OI. <em>Expanded Catalog of Ciliary Genes: Integration of Novel Ciliary Genes into the Ciliome</em>. 2025. Available at:
+                    <a href="https://rarediseaselab.github.io/home/#ciliahub" target="_blank">CiliaHub</a>
                 </div>
-                <div class="citation-box">
-                    <strong>Suggested citation:</strong> Yenisert F, Kaplan OI. <em>Expanded Catalog of Ciliary Genes: Integration of Novel Ciliary Genes into the Ciliome</em>. 2025. Available at: <a href="https://rarediseaselab.github.io/home/#ciliahub" target="_blank">CiliaHub</a>
-                </div>
-                <p class="feedback-link">
-                    <a href="mailto:oktay.kaplan@agu.edu.tr?subject=CiliaHub Feedback" class="read-more-btn" aria-label="Submit feedback for CiliaHub">Submit Feedback</a>
+
+                <!-- Feedback Button -->
+                <p class="mt-4 text-center">
+                    <a href="mailto:oktay.kaplan@agu.edu.tr?subject=CiliaHub Feedback" class="read-more-btn"
+                       style="background-color: #203c78; color: white; padding: 8px 16px; border-radius: 5px; text-decoration: none;" aria-label="Submit feedback for CiliaHub">
+                        Submit Feedback
+                    </a>
                 </p>
             </div>
         </section>
+
         <section id="current-members" class="section" style="display: none;">
             <h1>Current Members</h1>
             <div class="team-grid">
@@ -433,6 +479,7 @@
                 </div>
             </div>
         </section>
+
         <section id="former-members" class="section" style="display: none;">
             <h1>Former Members</h1>
             <div class="team-grid">
@@ -508,6 +555,7 @@
                 </div>
             </div>
         </section>
+
         <section id="group-photos" class="section" style="display: none;">
             <h1>Group Photos</h1>
             <p>See our lab team in action.</p>
@@ -522,12 +570,14 @@
                 </div>
             </div>
         </section>
+
         <section id="open-positions" class="section" style="display: none;">
             <h1>Open Positions</h1>
             <p>We are always looking for talented undergraduate students, graduate students, and postdoctoral researchers to join our team. If you are passionate about rare diseases, ciliopathies, and innovative research, we encourage you to contact the Principal Investigator (PI) for more information.</p>
             <p>For postdoctoral positions, we offer the opportunity to apply for prestigious fellowships such as the <a href="https://www.embo.org/funding/fellowships-grants-and-awards/postdoctoral-fellowships">EMBO Postdoctoral Fellowship</a>, <a href="https://marie-sklodowska-curie-actions.ec.europa.eu/actions/postdoctoral-fellowships">Marie Curie Fellowship</a>, and <a href="https://www.tubitak.gov.tr/en/scholarship/postdoctoral/international-programs/content-2219-international-postdoctoral-research-fellowship-programme">TÜBİTAK Fellowship</a>.</p>
             <p><strong>Contact:</strong> Oktaykaplan(at)gmail.com</p>
         </section>
+
         <section id="publications" class="section" style="display: none;">
             <h1>Publications</h1>
             <input type="text" id="pub-search" placeholder="Search publications..." class="pub-search" aria-label="Search publications">
@@ -586,7 +636,7 @@
                 </div>
                 <div class="research-item">
                     <img src="elegans.png" alt="Research Icon" class="fit-image">
-                    <p>Cevik S, Kaplan OI. <strong>Subcellular localization of the voltage-gated K+ channel EGL-36, a member of the KV3 subfamily, in the ciliated sensory neurons in C. elegans.</strong> MicroPubl Biol. 2021;2021:10.17912/micropub.biology.000367. doi: <a href="https://doi.org/10.17912/micropub.biology.000367">10.17912/micropub.biology.000367</a></p>
+                    <p>Cevik S, Kaplan OI. <strong>Subcellular localization of the voltage-gated K+ channel EGL-36, a member of the KV3 subfamily, in the ciliated sensory neurons in C. elegans.</strong> MicroPubl Biol. 2021;2021:10.17912/micropub.biology.000367. doi: <a href="https://doi.org/10.17912/micropub.biology.000367">10.1017912/micropub.biology.000367</a></p>
                 </div>
                 <div class="research-item">
                     <img src="elegans.png" alt="Research Icon" class="fit-image">
@@ -622,6 +672,7 @@
                 </div>
             </div>
         </section>
+
         <section id="news" class="section" style="display: none;">
             <h1>News</h1>
             <div class="research-grid">
@@ -651,6 +702,7 @@
                 </div>
             </div>
         </section>
+
         <section id="resources" class="section" style="display: none;">
             <h1>Resources</h1>
             <p>Our lab is committed to open science, and we openly share our protocols and bioinformatics pipelines to contribute to the broader scientific community.</p>
@@ -680,6 +732,7 @@
                 </div>
             </div>
         </section>
+
         <section id="gallery" class="section gallery-section" style="display: none;">
             <div class="gallery-layout">
                 <div class="gallery-quote">
@@ -730,7 +783,10 @@
             </div>
         </section>
     </div>
+
+    <!-- Back to Top Button -->
     <button id="back-to-top" title="Back to Top" aria-label="Scroll back to top">↑</button>
+
     <footer>
         <p>© 2025 Kaplan's Lab</p>
         <div class="social-links">
@@ -739,6 +795,73 @@
             <a href="https://www.linkedin.com/in/oktay-i-kaplan-74b16856/" target="_blank"><img src="linkedin-logo.png" alt="LinkedIn" class="social-icon"></a>
         </div>
     </footer>
+
+    <!-- JavaScript -->
     <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('pub-search');
+            const pubList = document.getElementById('publications-list');
+            const pubs = pubList.querySelectorAll('.research-item');
+
+            if (searchInput && pubList) {
+                searchInput.addEventListener('input', function() {
+                    const query = this.value.toLowerCase().trim();
+                    pubs.forEach(pub => {
+                        const text = pub.textContent.toLowerCase();
+                        pub.style.display = text.includes(query) ? 'flex' : 'none';
+                    });
+                });
+            }
+
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImage = document.getElementById('lightbox-image');
+            const lightboxLinks = document.querySelectorAll('.lightbox-link');
+            const closeBtn = document.querySelector('.lightbox-close');
+
+            lightboxLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    lightboxImage.src = this.href;
+                    lightbox.style.display = 'flex';
+                });
+            });
+
+            closeBtn.addEventListener('click', function() {
+                lightbox.style.display = 'none';
+            });
+
+            lightbox.addEventListener('click', function(e) {
+                if (e.target === lightbox) {
+                    lightbox.style.display = 'none';
+                }
+            });
+
+            const backToTopBtn = document.getElementById('back-to-top');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 300) {
+                    backToTopBtn.style.display = 'block';
+                } else {
+                    backToTopBtn.style.display = 'none';
+                }
+            });
+
+            backToTopBtn.addEventListener('click', function() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            const nightModeToggle = document.getElementById('night-mode-toggle');
+            if (localStorage.getItem('nightMode') === 'enabled') {
+                document.body.classList.add('night-mode');
+            }
+            nightModeToggle.addEventListener('click', function() {
+                document.body.classList.toggle('night-mode');
+                localStorage.setItem('nightMode', document.body.classList.contains('night-mode') ? 'enabled' : 'disabled');
+            });
+        });
+    </script>
+
+    <!-- Night Mode Toggle -->
+    <button id="night-mode-toggle" title="Toggle Night Mode" aria-label="Toggle night mode"></button>
 </body>
 </html>
