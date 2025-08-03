@@ -127,17 +127,15 @@ body {
     object-fit: contain;
     border-radius: 50%;
 }
-
 .figure-image {
-    width: 100%;
-    max-width: none;
+    width: 100%;            /* This is OK if the parent is constrained */
+    max-width: none;        /* Remove any overriding max */
     height: auto;
     object-fit: contain;
     display: block;
     margin: 0 auto 20px;
     border-radius: 4px;
 }
-
 .overview-image {
     width: 100%;
     max-width: 860px;
@@ -177,13 +175,13 @@ body {
 }
 
 #home .text-content {
-    width: 100%;
+    width: 100%; /* Matches the full width of the section */
     margin: 0 auto;
     padding: 0 20px;
 }
 
 #home h1 {
-    color: #004080;
+    color: #004080; /* Dark blue for "Welcome to Kaplan's Lab" */
     margin-bottom: 20px;
     text-align: center;
 }
@@ -191,12 +189,12 @@ body {
 #home p,
 #home .mission-statement,
 #home .research-updates {
-    width: 100%;
+    width: 100%; /* Ensures full width alignment */
     margin: 0 auto 15px;
 }
 
 #home .research-grid {
-    width: 100%;
+    width: 100%; /* Matches the full width */
     margin: 0 auto;
     display: flex;
     flex-wrap: wrap;
@@ -208,7 +206,7 @@ body {
 #news,
 #resources {
     width: 100%;
-    max-width: 100%;
+    max-width: 100%; /* Spans full width */
     padding: 20px;
     margin: 0 auto;
 }
@@ -821,12 +819,8 @@ footer {
     max-height: 200px;
     overflow-y: auto;
     z-index: 1000;
-    display: none; /* Hidden by default */
+    display: none;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-}
-
-.search-suggestions.active {
-    display: block; /* Show when active */
 }
 
 .suggestion-item {
@@ -926,7 +920,7 @@ footer {
     transform: translateY(-1px);
 }
 
-#ciliahub-search:focus, #ciliahub-filter:focus, #omim-filter:focus,
+#ciliahub-search:focus, #ciliahub-filter:focus, #omim-filter:focus, 
 #reference-filter:focus, #synonym-filter:focus {
     outline: none;
     border-color: #203c78;
@@ -981,7 +975,7 @@ footer {
 
 .ciliahub-table {
     width: 100%;
-    max-width: 100%;
+    max-width: 100%; /* Matches approximate width of provided text */
     margin: 0 auto;
     table-layout: fixed;
     border-collapse: collapse;
@@ -1010,10 +1004,10 @@ footer {
 /* Ensure Ensembl ID column is fully visible and clickable */
 .ciliahub-table th:nth-child(2),
 .ciliahub-table td:nth-child(2) {
-    width: 30%;
-    white-space: normal;
-    overflow: visible;
-    word-break: break-all;
+    width: 30%; /* Increased width for Ensembl ID (~210px) */
+    white-space: normal; /* Allow wrapping */
+    overflow: visible; /* Ensure no content is hidden */
+    word-break: break-all; /* Break long IDs for readability */
 }
 
 /* Style for Ensembl ID links */
@@ -1028,36 +1022,36 @@ footer {
 /* Ensure Synonym column is clear and properly formatted */
 .ciliahub-table th:nth-child(4),
 .ciliahub-table td:nth-child(4) {
-    width: 25%;
-    white-space: normal;
-    overflow: visible;
-    line-height: 1.5;
+    width: 25%; /* Increased width for Synonym (~175px) */
+    white-space: normal; /* Allow wrapping */
+    overflow: visible; /* Ensure no content is hidden */
+    line-height: 1.5; /* Improve readability */
 }
 
 /* Style for other columns to fit within table */
 .ciliahub-table th:nth-child(1),
 .ciliahub-table td:nth-child(1) {
-    width: 10%;
+    width: 10%; /* Gene (~70px) */
 }
 
 .ciliahub-table th:nth-child(3),
 .ciliahub-table td:nth-child(3) {
-    width: 20%;
+    width: 20%; /* Gene Description (~140px) */
 }
 
 .ciliahub-table th:nth-child(5),
 .ciliahub-table td:nth-child(5) {
-    width: 10%;
+    width: 10%; /* OMIM ID (~70px) */
 }
 
 .ciliahub-table th:nth-child(6),
 .ciliahub-table td:nth-child(6) {
-    width: 10%;
+    width: 10%; /* Reference (~70px) */
 }
 
 .ciliahub-table th:nth-child(7),
 .ciliahub-table td:nth-child(7) {
-    width: 15%;
+    width: 15%; /* Ciliary Localization (~105px) */
 }
 
 .ciliahub-table td:nth-child(2) a:hover,
@@ -1286,135 +1280,96 @@ footer {
     background-color: #2e2e2e;
 }
 
-/* Functional Gene Groups */
-.functional-gene-groups {
-    margin: 20px 0;
-    text-align: left;
-}
-
-.functional-gene-groups h3 {
-    color: #203c78;
-    font-size: 1.25rem;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-.functional-gene-groups p {
-    font-size: 0.9rem;
-    color: #666;
-    margin-bottom: 15px;
-}
-
-.functional-gene-groups-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* Updated to 3 columns */
-    gap: 20px;
-    margin-bottom: 20px;
-}
-
-.group-item {
-    background: #1e3a8a; /* Dark blue background */
-    color: #f3f4f6; /* Light text for contrast */
-    border: 1px solid #1e40af;
-    border-radius: 5px;
-    padding: 15px;
-    margin-bottom: 10px;
-}
-
-.group-item summary {
-    font-weight: bold;
-    cursor: pointer;
-    padding: 10px;
-    background: #2b4ea1; /* Slightly lighter blue */
-    border-radius: 5px;
-    color: #f3f4f6;
-}
-
-.group-item summary:hover {
-    background-color: #375ca8;
-}
-
-.group-content {
-    margin-top: 10px;
-    padding: 10px;
-    max-height: 200px;
-    overflow-y: auto;
-    background-color: #f3f4f6;
-    color: #333;
-}
-
-/* Pagination Controls */
-.pagination {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 20px;
-}
-
-.pagination button {
-    padding: 10px 20px;
-    background-color: #203c78;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.pagination button:hover {
-    background-color: #1a2f5f;
-}
-
-.pagination button:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
-}
-
-/* Night Mode for Functional Gene Groups */
-.night-mode .functional-gene-groups h3 {
-    color: #b3d9ff;
-}
-
-.night-mode .functional-gene-groups p {
-    color: #d9d9d9;
-}
-
-.night-mode .functional-gene-groups-grid {
-    border-color: #555;
-}
-
-.night-mode .group-item {
-    background: #1e3a8a;
-    border-color: #1e40af;
-}
-
-.night-mode .group-item summary {
-    background-color: #2b4ea1;
-    color: #f3f4f6;
-}
-
-.night-mode .group-item summary:hover {
-    background-color: #375ca8;
-}
-
-.night-mode .group-content {
-    background-color: #3d3d3d;
-    color: #d9d9d9;
-}
-
 /* Responsive Adjustments */
-@media (max-width: 900px) {
-    .functional-gene-groups-grid {
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    }
-}
-
 @media (max-width: 768px) {
     .container {
         max-width: 95%;
         padding: 15px;
     }
-    .functional-gene-groups-grid {
+    .navbar {
+        height: 60px;
+        justify-content: space-around;
+        gap: 5px;
+        padding: 10px 5px;
+    }
+    .navbar a, .dropbtn {
+        padding: 8px 10px;
+        font-size: 0.9em;
+    }
+    .research-item {
+        flex-direction: row;
+        align-items: center;
+    }
+    .research-item img {
+        width: 120px;
+        margin-right: 10px;
+    }
+    .team-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .team-member {
+        flex-direction: column;
+        text-align: center;
+    }
+    .team-photo {
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
+    .gallery-item {
+        flex-direction: column;
+        align-items: center;
+    }
+    .gallery-media {
+        max-width: 100%;
+    }
+    .figure-image, .overview-image, .crispr-image {
+        max-width: 90%;
+    }
+    .team-image {
+        width: 120px;
+        height: 120px;
+    }
+    .fit-image {
+        width: 120px;
+    }
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+    .chart-container {
         grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    .advanced-filters {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    .control-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    .ciliahub-table {
+        font-size: 0.8em;
+        max-width: 100%; /* Fit within container on smaller screens */
+        overflow-x: auto; /* Enable horizontal scrolling */
+    }
+    .ciliahub-table th,
+    .ciliahub-table td {
+        padding: 8px;
+        min-width: 80px; /* Ensure columns are wide enough */
+    }
+    .ciliahub-table th:nth-child(2),
+    .ciliahub-table td:nth-child(2) {
+        min-width: 100px; /* Adjusted for Ensembl ID visibility */
+        white-space: normal;
+        overflow: visible;
+        word-break: break-all;
+    }
+    .ciliahub-table th:nth-child(4),
+    .ciliahub-table td:nth-child(4) {
+        min-width: 100px; /* Adjusted for Synonym visibility */
+        white-space: normal;
+        overflow: visible;
     }
 }
 
@@ -1459,34 +1414,25 @@ footer {
     }
     .ciliahub-table {
         font-size: 0.75em;
-        max-width: 100%;
+        max-width: 100%; /* Fit within container */
     }
     .ciliahub-table th,
     .ciliahub-table td {
         padding: 6px;
-        min-width: 60px;
+        min-width: 60px; /* Adjusted for smaller screens */
     }
     .ciliahub-table th:nth-child(2),
     .ciliahub-table td:nth-child(2) {
-        min-width: 80px;
+        min-width: 80px; /* Ensure Ensembl ID remains visible */
         white-space: normal;
         overflow: visible;
         word-break: break-all;
     }
     .ciliahub-table th:nth-child(4),
     .ciliahub-table td:nth-child(4) {
-        min-width: 80px;
+        min-width: 80px; /* Ensure Synonym remains visible */
         white-space: normal;
         overflow: visible;
-    }
-    .functional-gene-groups h3 {
-        font-size: 1.1rem;
-    }
-    .functional-gene-groups p {
-        font-size: 0.85rem;
-    }
-    .group-content {
-        font-size: 0.8rem;
     }
 }
 
@@ -1519,4 +1465,100 @@ footer {
 
 .night-mode #night-mode-toggle:hover {
     background-color: #004d99;
+}
+
+/* Functional Gene Groups */
+.functional-gene-groups {
+    max-width: 600px;
+    margin: 20px auto;
+    text-align: left;
+}
+
+.functional-gene-groups h3 {
+    color: #203c78;
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.functional-gene-groups p {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.group-item {
+    border: 1px solid #cce0f5;
+    border-radius: 5px;
+    margin-bottom: 8px;
+}
+
+.group-item summary {
+    padding: 10px 15px;
+    background-color: #f0f8ff;
+    color: #203c78;
+    font-weight: bold;
+    cursor: pointer;
+    outline: none;
+}
+
+.group-item summary:hover {
+    background-color: #e6f2ff;
+}
+
+.group-item details[open] .group-content {
+    padding: 10px 15px;
+    background-color: #fff;
+}
+
+.group-content {
+    font-size: 0.85rem;
+    color: #333;
+}
+
+/* Night Mode for Functional Gene Groups */
+.night-mode .functional-gene-groups h3 {
+    color: #b3d9ff;
+}
+
+.night-mode .functional-gene-groups p {
+    color: #d9d9d9;
+}
+
+.night-mode .group-item {
+    border-color: #555;
+}
+
+.night-mode .group-item summary {
+    background-color: #3d3d3d;
+    color: #b3d9ff;
+}
+
+.night-mode .group-item summary:hover {
+    background-color: #4a4a4a;
+}
+
+.night-mode .group-item details[open] .group-content {
+    background-color: #2e2e2e;
+    color: #d9d9d9;
+}
+
+/* Responsive Adjustments for Functional Gene Groups */
+@media (max-width: 768px) {
+    .functional-gene-groups {
+        max-width: 95%;
+        padding: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .functional-gene-groups h3 {
+        font-size: 1.1rem;
+    }
+    .functional-gene-groups p {
+        font-size: 0.85rem;
+    }
+    .group-content {
+        font-size: 0.8rem;
+    }
 }
