@@ -203,11 +203,11 @@
                 </div>
             </div>
         </section>
-        <section id="ciliahub" class="section" style="display: none;">
-            <div class="container">
-                <div id="ciliahub-error" style="display: none; color: red; text-align: center; margin-bottom: 20px;"></div>
+        <section id="ciliahub" class="section">
+            <div class="ciliahub-container">
+                <div id="ciliahub-error" class="error-message"></div>
                 <img src="CiliaHub_Logo.png" alt="CiliaHub Logo" class="overview-image">
-                <h1>CiliaHub: Ciliary Gene Database</h1>
+                <h2 style="text-align: center; color: #203c78;">CiliaHub: Ciliary Gene Database</h2>
                 <p>
                     <strong>CiliaHub</strong> is an updated and curated database of all experimentally confirmed ciliary genes — an evolution of the ciliary "Gold Standard" gene list. Through a combination of R-based text mining of the scientific literature and manual expert review, the database now includes over 2,002 genes, including <strong>1300+ newly associated ciliary genes</strong>.
                     <br><br>
@@ -220,7 +220,7 @@
                     </ul>
                     <strong>CiliaHub</strong> empowers both basic and clinical researchers in the fields of cell biology and genetics to explore the molecular basis of cilia-related functions and ciliopathies.
                 </p>
-                <div id="statistics-dashboard" class="stats-dashboard">
+                <div id="statistics-dashboard" class="stats-container">
                     <h3>📊 Cilia-Related Gene Statistics & Analysis</h3>
                     <div class="stats-grid">
                         <div class="stat-card">
@@ -336,7 +336,7 @@
                     </table>
                 </div>
                 <div class="functional-gene-groups">
-                    <h3>🧬 Functional Gene Groups</h3>
+                    <h2 style="text-align: center;">🧬 Functional Gene Groups</h2>
                     <p>Explore collections of genes grouped by common pathways or molecular functions, based on Gene Ontology and KEGG terms. Expand each category to view associated genes.</p>
                     <div id="functionalGeneGroupsContainer" class="functional-gene-groups-grid"></div>
                     <div id="geneGroupsPagination" class="pagination">
