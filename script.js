@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let allSynonyms = new Set();
     let allEnsemblIds = new Set();
     let currentPage = 1;
-    const groupsPerPage = 6;
+    const groupsPerPage = 9; // Display 9 groups per page
     let debounceTimeout;
 
     // Statistics tracking
@@ -55,7 +55,13 @@ document.addEventListener('DOMContentLoaded', () => {
         'transition zone': ['transition zone', 'transition-zone'],
         'basal body': ['basal body', 'basal-body', 'centriole'],
         'flagella': ['flagella', 'flagellum'],
-        'cilia associated': ['cilia associated', 'ciliary associated', 'cilia-associated', 'ciliary-associated']
+        'cilia associated': ['cilia associated', 'ciliary associated', 'cilia-associated', 'ciliary-associated'],
+        'basal-body-cilia': ['basal body, cilia', 'basal-body-cilia'],
+        'cilia-basal-body': ['cilia, basal body', 'cilia-basal-body'],
+        'flagella-cilia': ['flagella, cilia', 'flagella-cilia'],
+        'cilia-basal-body-transition-zone': ['cilia, basal body, transition zone', 'cilia-basal-body-transition-zone'],
+        'flagella-cilia-basal-body': ['flagella, cilia, basal body', 'flagella-cilia-basal-body'],
+        'ciliary-associated-gene': ['ciliary associated gene', 'ciliary-associated-gene']
     };
 
     function isCiliaRelated(localization) {
@@ -599,4 +605,60 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    document.querySelectorAll('.navbar a, .dropdown-content a').forEach(link =>
+    function showSection(sectionId) {
+        document.querySelectorAll('.section').forEach(section => {
+            section.classList.remove('active');
+            section.style.display = 'none';
+        });
+        const targetSection = document.getElementById(sectionId);
+        if (targetSection) {
+            targetSection.classList.add('active');
+            targetSection.style.display = 'block';
+        }
+    }
+
+    document.querySelectorAll('.navbar a, .dropdown-content a').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const sectionId = link.getAttribute('href').substring(1);
+            showSection(sectionId);
+        });
+    });
+
+    window.addEventListener('scroll', () => {
+        backToTopBtn.style.display = window.scrollY > 300 ? 'block' : 'none';
+    });
+
+    backToTopBtn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    document.querySelectorAll('.lightbox-link').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            lightboxImg.src = link.href;
+            lightbox.style.display = 'flex';
+        });
+    });
+
+    lightboxClose.addEventListener('click', () => {
+        lightbox.style.display = 'none';
+    });
+
+    lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) {
+            lightbox.style.display = 'none';
+        }
+    });
+
+    pubSearch.addEventListener('input', function() {
+        const query = this.value.toLowerCase();
+        const items = document.querySelectorAll('#publications-list .research-item');
+        items.forEach(item => {
+            const text = item.textContent.toLowerCase();
+            item.style.display = text.includes(query) ? 'flex' : 'none';
+        });
+    });
+
+    fetchData();
+});
