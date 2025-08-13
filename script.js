@@ -503,7 +503,6 @@ async function loadCiliaHubData() {
         // Calculate statistics, create charts, and populate functional groups
         calculateStatistics();
         createCharts();
-        populateFunctionalGroups(data);
        
         // Show search prompt instead of populating table
         showSearchPrompt();
