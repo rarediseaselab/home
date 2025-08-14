@@ -484,7 +484,7 @@ async function loadCiliaHubData() {
     }
 
     try {
-        const response = await fetch('https://raw.githubusercontent.com/rarediseaselab/home/main/ciliahub_data_with_functions.json');
+        const response = await fetch('https://raw.githubusercontent.com/rarediseaselab/home/main/ciliahub_data.json');
         data = await response.json();
         console.log('Loaded entries:', data.length);
        
