@@ -483,38 +483,36 @@ async function loadCiliaHubData() {
         });
     }
 
-    try {
-    const response = await fetch('https://raw.githubusercontent.com/rarediseaselab/home/main/ciliahub_data.json');
-    if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status} (${response.statusText})`);
-    }
-    data = await response.json();
-    if (!Array.isArray(data) || data.length === 0) {
-        throw new Error('Invalid or empty JSON data');
-    }
-    console.log('Loaded entries:', data.length);
-    // Build search indices
-    data.forEach(item => {
-        if (item.gene) allGeneNames.add(item.gene);
-        if (item.ensembl_id) allEnsemblIds.add(item.ensembl_id);
-        if (item.synonym) {
-            item.synonym.split(',').forEach(syn => {
-                const trimmed = syn.trim();
-                if (trimmed) allSynonyms.add(trimmed);
-            });
-        }
-    });
-    // Calculate statistics, create charts, and populate functional groups
-    calculateStatistics();
-    createCharts();
-    showSearchPrompt();
-    updatePopularGenes();
-} catch (error) {
-    console.error('Error loading CiliaHub data:', error);
-    showError(`Failed to load CiliaHub data: ${error.message}. Please check your network or contact support.`);
+try {
+        const response = await fetch('https://raw.githubusercontent.com/rarediseaselab/home/main/ciliahub_data.json');
+        data = await response.json();
+        console.log('Loaded entries:', data.length);
+       
+        // Build search indices
+        data.forEach(item => {
+            if (item.gene) allGeneNames.add(item.gene);
+            if (item.ensembl_id) allEnsemblIds.add(item.ensembl_id);
+            if (item.synonym) {
+                item.synonym.split(',').forEach(syn => {
+                    const trimmed = syn.trim();
+                    if (trimmed) allSynonyms.add(trimmed);
+                });
+            }
+        });
+
+        // Calculate statistics, create charts, and populate functional groups
+        calculateStatistics();
+        createCharts();
+       
+        // Show search prompt instead of populating table
+        showSearchPrompt();
+        updatePopularGenes();
+    } catch (error) {
+        console.error('Error loading CiliaHub data:', error);
+        showError('Failed to load CiliaHub data. Please check your network or contact support.');
         return;
     }
-
+    
     // Event listeners
     searchInput.addEventListener('input', debounce((e) => {
         const query = e.target.value;
