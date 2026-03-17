@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CiliaAtlas — Multidimensional Ciliary Atlas: curated classification of 359 human cell types by ciliation status with PubMed evidence. A resource from Kaplan's Lab.">
+    <meta name="keywords" content="CiliaAtlas, cilia, ciliopathy, cell types, primary cilia, motile cilia, ciliation status, Kaplan Lab, MCA">
+    <meta name="author" content="Kaplan's Lab">
+    <title>CiliaAtlas — Kaplan's Lab</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/png" href="elegans2.png">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EKT3SLJ516"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-EKT3SLJ516');
+    </script>
+</head>
+<body>
+
+    <!-- Navbar — identical to index.html, external links for cross-page nav -->
+    <nav class="navbar">
+        <a href="index.html">Home</a>
+        <div class="dropdown">
+            <span class="dropbtn">Research ▼</span>
+            <div class="dropdown-content">
+                <a href="index.html#research-overview">Research Overview</a>
+                <a href="index.html#cilia-ciliopathies">Cilia and Ciliopathies</a>
+                <a href="index.html#disease-modeling">Disease Modeling</a>
+                <a href="index.html#cilia-cilia-joining">Cilia-Cilia Joining</a>
+                <a href="index.html#bioinformatics">Bioinformatics</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <span class="dropbtn">Team ▼</span>
+            <div class="dropdown-content">
+                <a href="index.html#current-members">Current Members</a>
+                <a href="index.html#former-members">Former Members</a>
+                <a href="index.html#group-photos">Group Photos</a>
+                <a href="index.html#open-positions">Open Positions</a>
+            </div>
+        </div>
+        <a href="index.html#publications">Publications</a>
+        <a href="index.html#news">News</a>
+        <a href="index.html#resources">Resources</a>
+        <a href="index.html#gallery">Gallery</a>
+        <a href="index.html#ciliahub">CiliaHub</a>
+        <a href="ciliaatlas.html" class="active">CiliaAtlas</a>
+    </nav>
+
+    <!-- Breadcrumbs — same pattern as index.html -->
+    <div id="breadcrumbs">
+        <a href="index.html">Home</a> &gt; CiliaAtlas
+    </div>
+
+    <div class="container">
+        <section id="ciliaatlas" class="section">
+            <div class="container">
+
+                <!-- Logo -->
+                <img src="ciliopathy_logo.png" alt="CiliaAtlas Logo"
+                     class="w-full mx-auto mb-4"
+                     style="max-width:260px; display:block; margin:0 auto 8px; height:auto;"
+                     onerror="this.style.display='none'">
+
+                <!-- Title — same style as CiliaHub h1 -->
+                <h1 style="color:#203c78; text-align:justify; text-align-last:center;">
+                    CiliaAtlas: Cell Ciliation Database
+                </h1>
+
+                <!-- Description — same structure as CiliaHub -->
+                <p class="mb-4" style="text-align:justify;">
+                    <strong>CiliaAtlas</strong> is a curated atlas classifying 359 human cell types across
+                    13 organ systems and 83 organs by ciliation status. Each entry documents whether a cell
+                    type bears motile, primary, nodal, modified, or no cilia, with axonemal structure,
+                    cilia function, confidence level, and PubMed-linked evidence.
+                    <strong>CiliaAtlas</strong> is part of the
+                    <strong>Multidimensional Ciliary Atlas (MCA)</strong> project.
+                    <br><br>
+                    This resource allows researchers to:
+                    <ul style="margin-top:10px; margin-bottom:10px;">
+                        <li>Browse 359 human cell types classified by ciliation status across 13 organ systems</li>
+                        <li>Filter by organ system, ciliation status, cilia type, and confidence level</li>
+                        <li>Access PubMed evidence directly via linked PMIDs</li>
+                        <li>Download the full atlas or any filtered subset as a CSV file</li>
+                    </ul>
+                    <strong>CiliaAtlas</strong> supports both basic and clinical researchers investigating
+                    ciliary biology, ciliopathies, and the cellular basis of rare diseases.
+                </p>
+
+                <!-- Statistics dashboard — same class/structure as CiliaHub -->
+                <div id="ciliaatlas-stats-dashboard" class="stats-dashboard mb-5">
+                    <h3 style="color:#203c78; text-align:center; margin-bottom:20px;">
+                        📊 CiliaAtlas Statistics
+                    </h3>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number" id="ca-total">359</div>
+                            <div class="stat-label">Cell Types</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="ca-ciliated" style="color:#1a7a42;">88</div>
+                            <div class="stat-label">Ciliated</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="ca-nonciliated" style="color:#7f8c8d;">83</div>
+                            <div class="stat-label">Non-Ciliated</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="ca-context" style="color:#b07a00;">65</div>
+                            <div class="stat-label">Context-Dependent</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">13</div>
+                            <div class="stat-label">Organ Systems</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">83</div>
+                            <div class="stat-label">Organs</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" style="color:#203c78;">292</div>
+                            <div class="stat-label">With PubMed Refs</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" style="color:#8a1515;">123</div>
+                            <div class="stat-label">Under Review</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- How to Use — same collapsible pattern as CiliaHub -->
+                <details class="mb-4" style="background:#f5faff; border:1px solid #cce0f5; padding:15px; border-radius:5px;">
+                    <summary style="font-weight:bold; cursor:pointer;">📖 How to Use CiliaAtlas</summary>
+                    <div style="margin-top:10px;">
+                        <ul>
+                            <li><strong>Search:</strong> Enter any cell type name, organ, or organ system — results update instantly.</li>
+                            <li><strong>Filter:</strong> Use the dropdowns to narrow by organ system, ciliation status, cilia type, or confidence level.</li>
+                            <li><strong>Reset:</strong> Click <em>Reset All</em> to clear all filters and reload the full atlas.</li>
+                            <li><strong>PubMed links:</strong> Each PMID in the last column is a direct link to the PubMed record.</li>
+                            <li><strong>Download:</strong> Export the full atlas or your current filtered view as a CSV file.</li>
+                            <li><strong>Ciliation statuses:</strong>
+                                <ul style="margin-top:8px;">
+                                    <li><strong>Ciliated – Primary:</strong> Single non-motile 9+0 axoneme; sensory and signalling roles</li>
+                                    <li><strong>Ciliated – Motile:</strong> Multiple motile 9+2 cilia; fluid movement and mucociliary clearance</li>
+                                    <li><strong>Ciliated – Nodal:</strong> Transient motile cilia; left-right embryonic axis determination</li>
+                                    <li><strong>Ciliated – Modified:</strong> Highly specialised cilia derivatives (e.g. photoreceptor outer segment)</li>
+                                    <li><strong>Context-Dependent:</strong> Ciliation varies by developmental stage, activation state, or culture condition</li>
+                                    <li><strong>Non-Ciliated:</strong> No cilia reported in current literature</li>
+                                    <li><strong>Unclassified – Review Needed:</strong> Insufficient or conflicting evidence; manual curation required</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </details>
+
+                <!-- Controls — same class structure as CiliaHub -->
+                <div class="ciliahub-controls mb-4 text-center">
+                    <div class="search-container">
+                        <input type="text" id="ca-search"
+                            placeholder="Search by cell type, organ, or organ system..."
+                            aria-label="Search CiliaAtlas database"
+                            autocomplete="off"
+                            oninput="caRender()">
+                    </div>
+
+                    <div class="advanced-filters">
+                        <select id="ca-filter-system" aria-label="Filter by organ system" onchange="caRender()">
+                            <option value="">All Organ Systems</option>
+                            <option>Cardiovascular System</option>
+                            <option>Digestive System</option>
+                            <option>Embryonic/Transitional</option>
+                            <option>Endocrine System</option>
+                            <option>Integumentary System</option>
+                            <option>Lymphatic/Immune System</option>
+                            <option>Musculoskeletal System</option>
+                            <option>Nervous System</option>
+                            <option>Reproductive System (Female)</option>
+                            <option>Reproductive System (Male)</option>
+                            <option>Respiratory System</option>
+                            <option>Sense Organs</option>
+                            <option>Urinary System</option>
+                        </select>
+                        <select id="ca-filter-status" aria-label="Filter by ciliation status" onchange="caRender()">
+                            <option value="">All Ciliation Statuses</option>
+                            <option>Ciliated &#x2013; Primary</option>
+                            <option>Ciliated &#x2013; Motile</option>
+                            <option>Ciliated &#x2013; Nodal</option>
+                            <option>Ciliated &#x2013; Modified</option>
+                            <option>Context-Dependent</option>
+                            <option>Non-Ciliated</option>
+                            <option>Unclassified &#x2013; Review Needed</option>
+                        </select>
+                        <select id="ca-filter-type" aria-label="Filter by cilia type" onchange="caRender()">
+                            <option value="">All Cilia Types</option>
+                            <option>Primary (9+0)</option>
+                            <option>Primary (9+0) &#x2013; conditional</option>
+                            <option>Motile (9+2)</option>
+                            <option>Motile &#x2013; Flagellum (9+2)</option>
+                            <option>Nodal (9+0 motile)</option>
+                            <option>Modified/Specialised</option>
+                            <option>Unknown</option>
+                        </select>
+                        <select id="ca-filter-confidence" aria-label="Filter by confidence" onchange="caRender()">
+                            <option value="">All Confidence Levels</option>
+                            <option>High</option>
+                            <option>Medium</option>
+                            <option>Low</option>
+                            <option>No data</option>
+                        </select>
+                    </div>
+
+                    <div class="control-buttons">
+                        <button id="ca-reset" onclick="caReset()" aria-label="Reset all filters">Reset All</button>
+                        <button id="ca-download" onclick="caExport()" aria-label="Download full atlas as CSV">Download Data</button>
+                        <button id="ca-export-filtered" onclick="caExportFiltered()" aria-label="Export filtered results as CSV">Export Filtered</button>
+                    </div>
+                </div>
+
+                <!-- Results counter — same class as CiliaHub -->
+                <div id="ca-counter" class="results-counter mb-3"></div>
+
+                <!-- Table — same classes as CiliaHub -->
+                <div class="table-wrapper mb-5">
+                    <div id="ca-loading" style="text-align:center; padding:20px;">Loading data...</div>
+                    <table class="ciliahub-table" id="ca-table" style="display:none;">
+                        <thead>
+                            <tr>
+                                <th style="width:15%;">Organ System</th>
+                                <th style="width:12%;">Organ</th>
+                                <th style="width:18%;">Cell Type</th>
+                                <th style="width:16%;">Ciliation Status</th>
+                                <th style="width:13%;">Cilia Type</th>
+                                <th style="width:8%;">Confidence</th>
+                                <th style="width:18%;">PubMed IDs</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ca-tbody"></tbody>
+                    </table>
+                </div>
+
+                <!-- Citation — same style as CiliaHub -->
+                <div class="citation-box mt-5 mb-4 p-3 rounded"
+                     style="background-color:#e6f2ff; border-left:4px solid #004080;">
+                    <strong>Suggested citation:</strong> Kaplan Lab.
+                    <em>CiliaAtlas: Multidimensional Ciliary Atlas — curated classification of human
+                    cell types by ciliation status.</em> 2025. Available at:
+                    <a href="https://rarediseaselab.github.io/home/ciliaatlas.html" target="_blank">
+                        rarediseaselab.github.io/home/ciliaatlas.html
+                    </a>
+                </div>
+
+                <!-- Feedback — same style as CiliaHub -->
+                <p class="mt-4 text-center">
+                    <a href="mailto:oktay.kaplan@agu.edu.tr?subject=CiliaAtlas Feedback"
+                       class="read-more-btn"
+                       style="background-color:#203c78; color:white; padding:8px 16px; border-radius:5px; text-decoration:none;"
+                       aria-label="Submit feedback for CiliaAtlas">
+                        Submit Feedback
+                    </a>
+                </p>
+
+            </div>
+        </section>
+    </div><!-- /container -->
+
+    <!-- Footer — identical to index.html -->
+    <footer style="background:#203c78; color:rgba(255,255,255,0.8); text-align:center; padding:18px 20px; font-size:13px; margin-top:32px;">
+        © 2025 Kaplan's Lab ·
+        <a href="https://github.com/thekaplanlab" style="color:rgba(255,255,255,0.9);">
+            <img src="github-logo.png" alt="GitHub" style="height:18px; vertical-align:middle;">
+        </a>
+        <a href="https://www.instagram.com/kaplanlab/?hl=en" style="color:rgba(255,255,255,0.9); margin-left:8px;">
+            <img src="instagram-logo.png" alt="Instagram" style="height:18px; vertical-align:middle;">
+        </a>
+        <a href="https://www.linkedin.com/in/oktay-i-kaplan-74b16856/" style="color:rgba(255,255,255,0.9); margin-left:8px;">
+            <img src="linkedin-logo.png" alt="LinkedIn" style="height:18px; vertical-align:middle;">
+        </a>
+    </footer>
+
+    <!-- CiliaAtlas data and logic -->
+    <script>
+    const CA_STATUS_STYLE = {
+        'Ciliated \u2013 Primary':           'background:#d4e8f7;color:#0f4a7a;',
+        'Ciliated \u2013 Motile':            'background:#d4f0e4;color:#145e32;',
+        'Ciliated \u2013 Nodal':             'background:#ebe0f7;color:#5e2a8e;',
+        'Ciliated \u2013 Modified':          'background:#fde8d0;color:#7a3800;',
+        'Context-Dependent':                 'background:#fdf0d0;color:#8a5c00;',
+        'Non-Ciliated':                      'background:#ebebeb;color:#555;',
+        'Unclassified \u2013 Review Needed': 'background:#fde4e4;color:#8a1515;'
+    };
+    const CA_CONF_STYLE = {
+        'High':    'color:#1a7a42;font-weight:700;',
+        'Medium':  'color:#8a5c00;font-weight:700;',
+        'Low':     'color:#8a1515;font-weight:700;',
+        'No data': 'color:#aaa;'
+    };
+
+    let CA_DATA     = [];
+    let caFiltered  = [];
+
+    fetch('mca_data.json')
+        .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+        .then(data => {
+            CA_DATA    = data;
+            caFiltered = data;
+            document.getElementById('ca-loading').style.display = 'none';
+            document.getElementById('ca-table').style.display   = 'table';
+            caRender();
+        })
+        .catch(e => {
+            document.getElementById('ca-loading').textContent =
+                'Error loading data (' + e.message + '). Ensure mca_data.json is in the repository root.';
+        });
+
+    function caRender() {
+        const search = (document.getElementById('ca-search').value || '').toLowerCase().trim();
+        const sys    = document.getElementById('ca-filter-system').value;
+        const status = document.getElementById('ca-filter-status').value;
+        const type   = document.getElementById('ca-filter-type').value;
+        const conf   = document.getElementById('ca-filter-confidence').value;
+
+        caFiltered = CA_DATA.filter(r => {
+            if (sys    && r.organ_system     !== sys)    return false;
+            if (status && r.ciliation_status !== status) return false;
+            if (type   && r.cilia_type       !== type)   return false;
+            if (conf   && r.confidence       !== conf)   return false;
+            if (search) {
+                const hay = (r.organ_system + ' ' + r.organ + ' ' + r.cell_type +
+                             ' ' + r.ciliation_status + ' ' + r.cilia_type).toLowerCase();
+                if (!hay.includes(search)) return false;
+            }
+            return true;
+        });
+
+        document.getElementById('ca-counter').textContent =
+            'Showing ' + caFiltered.length + ' of ' + CA_DATA.length + ' cell types';
+
+        const display = caFiltered.slice(0, 500);
+        document.getElementById('ca-tbody').innerHTML = display.map(r => {
+            const sStyle   = CA_STATUS_STYLE[r.ciliation_status] || 'background:#f0f0f0;color:#555;';
+            const cStyle   = CA_CONF_STYLE[r.confidence] || '';
+            const ctDisplay = r.cilia_type || '\u2014';
+            let pmidHtml   = '';
+            if (r.pmid_references) {
+                pmidHtml = r.pmid_references.split(';')
+                    .map(p => p.trim()).filter(Boolean)
+                    .map(id =>
+                        '<a href="https://pubmed.ncbi.nlm.nih.gov/' + id + '/" target="_blank" ' +
+                        'style="font-size:11px;color:#203c78;margin-right:3px;' +
+                        'font-family:\'Courier New\',monospace;white-space:nowrap;">' +
+                        caEsc(id) + '</a>'
+                    ).join(' ');
+            }
+            return '<tr>' +
+                '<td style="font-size:13px;">'                                + caEsc(r.organ_system)      + '</td>' +
+                '<td style="font-size:13px;">'                                + caEsc(r.organ)             + '</td>' +
+                '<td style="font-size:13px;font-weight:600;color:#203c78;">'  + caEsc(r.cell_type)         + '</td>' +
+                '<td><span style="display:inline-block;font-size:11px;font-weight:700;padding:2px 9px;' +
+                    'border-radius:100px;white-space:nowrap;' + sStyle + '">' + caEsc(r.ciliation_status)  + '</span></td>' +
+                '<td style="font-size:12px;color:#444;font-family:\'Courier New\',monospace;">'
+                                                                              + caEsc(ctDisplay)           + '</td>' +
+                '<td style="font-size:12px;' + cStyle + '">'                 + caEsc(r.confidence)         + '</td>' +
+                '<td style="line-height:1.9;">' +
+                    (pmidHtml || '<span style="color:#ccc;font-size:12px;">\u2014</span>') +
+                '</td>' +
+                '</tr>';
+        }).join('');
+
+        if (caFiltered.length > 500) {
+            document.getElementById('ca-tbody').innerHTML +=
+                '<tr><td colspan="7" style="text-align:center;font-size:12px;color:#aaa;padding:12px;">' +
+                'Showing first 500 results \u2014 refine your search to see more.</td></tr>';
+        }
+    }
+
+    function caReset() {
+        ['ca-search','ca-filter-system','ca-filter-status',
+         'ca-filter-type','ca-filter-confidence'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.value = '';
+        });
+        caRender();
+    }
+
+    function caExport()         { caDownload(CA_DATA,    'ciliaatlas_full.csv'); }
+    function caExportFiltered() { caDownload(caFiltered, 'ciliaatlas_filtered.csv'); }
+
+    function caDownload(data, filename) {
+        const hdr  = ['Organ System','Organ','Cell Type','Ciliation Status','Cilia Type',
+                       'Number of Cilia','Cilia Function','Confidence','PMID References'];
+        const rows = data.map(r =>
+            [r.organ_system, r.organ, r.cell_type, r.ciliation_status, r.cilia_type,
+             r.number_of_cilia, r.cilia_function, r.confidence, r.pmid_references]
+            .map(v => '"' + String(v || '').replace(/"/g, '""') + '"').join(',')
+        );
+        const a   = document.createElement('a');
+        a.href    = URL.createObjectURL(
+            new Blob([[hdr.join(','), ...rows].join('\n')], {type: 'text/csv'})
+        );
+        a.download = filename;
+        a.click();
+    }
+
+    function caEsc(s) {
+        return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+    </script>
+
+    <!-- Site-wide script (handles navbar dropdowns etc.) -->
+    <script src="script.js"></script>
+
+</body>
+</html>
