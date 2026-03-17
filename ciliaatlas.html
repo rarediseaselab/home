@@ -56,7 +56,7 @@
     </div>
 
     <div class="container">
-        <section id="ciliaatlas" class="section">
+        <section id="ciliaatlas" class="section" style="display:block;">
             <div class="container">
 
                 <!-- Logo -->
@@ -409,8 +409,19 @@
     }
     </script>
 
-    <!-- Site-wide script (handles navbar dropdowns etc.) -->
-    <script src="script.js"></script>
 
+    <!-- Navbar dropdown behaviour (inline — script.js not loaded on standalone pages) -->
+    <script>
+    document.querySelectorAll('.dropdown').forEach(function(dd) {
+        dd.addEventListener('mouseenter', function() {
+            var content = dd.querySelector('.dropdown-content');
+            if (content) content.style.display = 'block';
+        });
+        dd.addEventListener('mouseleave', function() {
+            var content = dd.querySelector('.dropdown-content');
+            if (content) content.style.display = '';
+        });
+    });
+    </script>
 </body>
 </html>
