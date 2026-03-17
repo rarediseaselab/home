@@ -31,7 +31,7 @@
                 console.error("Section not found: " + sectionId);
             }
         }
- 
+
         function updateActiveNav(sectionId) {
             document.querySelectorAll('.navbar a, .dropdown-content a').forEach(link => {
                 link.classList.remove('active');
@@ -40,7 +40,7 @@
                 }
             });
         }
- 
+
         function updateBreadcrumbs(sectionId) {
             const breadcrumbs = document.getElementById('breadcrumbs');
             let path = ['<a href="#home" onclick="showSection(\'home\')">Home</a>'];
@@ -58,7 +58,7 @@
             breadcrumbs.innerHTML = path.join(' > ');
         }
     </script>
- 
+
     <style>
         /* ── Cilia Cell Atlas – scoped styles ──────────────────────────────── */
         .atlas-intro {
@@ -226,10 +226,10 @@
         <a href="#gallery" onclick="showSection('gallery')">Gallery</a>
         <a href="#ciliahub" onclick="showSection('ciliahub')">CiliaHub</a>
     </nav>
- 
+
     <!-- Breadcrumbs -->
     <div id="breadcrumbs"></div>
- 
+
     <div class="container">
         <section id="home" class="section">
             <h1>Welcome to Kaplan's Lab</h1>
@@ -272,7 +272,7 @@
                 </div>
             </div>
         </section>
- 
+
         <section id="research-overview" class="section" style="display: none;">
             <h1>Research Overview</h1>
             <p>Our lab is dedicated to uncovering the genetic and molecular mechanisms driving rare diseases, with a particular focus on ciliopathies. By integrating comparative genomics, functional assays, and cutting-edge gene editing technologies, we aim to bridge the gap between genotype and phenotype, advancing our understanding of disease mechanisms and identifying potential therapeutic targets.</p>
@@ -309,27 +309,27 @@
                 </div>
             </div>
         </section>
- 
+
         <section id="cilia-ciliopathies" class="section" style="display: none;">
             <h1>Cilia and Ciliopathies</h1>
             <img src="cilia_res1.jpg" alt="Cilia Research Image" class="overview-image">
             <p>Cilia are microtubule-based organelles that mediate numerous cellular processes, such as motility, signaling, and development. Ciliopathies are a group of rare genetic diseases caused by structural or functional defects in cilia and lead to syndromes such as Joubert syndrome, Bardet-Biedl syndrome, Meckel syndrome, and cranioectodermal dysplasia. Though outstanding advances have been achieved, the genetic etiology of ciliopathies is still not fully understood.</p>
             <p>Our group has newly identified CILK1 as a causative gene of cranioectodermal dysplasia. Our goal is to identify and functionally annotate ciliopathy-associated genes comprehensively with genetic models, high-resolution microscopy, and biochemical assays. By integrating patient-derived data with experimental data, we will develop improved diagnostic reagents and therapeutic approaches to these rare diseases.</p>
         </section>
- 
+
         <section id="disease-modeling" class="section" style="display: none;">
             <h1>Disease Modeling</h1>
             <img src="research3.jpeg" alt="Disease Modeling Image" class="overview-image">
             <p>Genetic variant analysis of rare diseases attempts to identify mutations responsible for such often poorly described conditions. With the help of advanced genomic technologies like whole exome sequencing and CRISPR/Cas9-based functional screening in <em>C. elegans</em>, our lab is able to distinguish disease-causing variants and comprehend their mechanisms better (Cevik et al., 2023). This work provides insight into the genetic architecture of rare diseases, eventually culminating in the design of tailored treatments and propelling precision medicine for such individuals.</p>
         </section>
- 
+
         <section id="cilia-cilia-joining" class="section" style="display: none;">
             <h1>Cilia-Cilia Joining</h1>
             <img src="research2.jpg" alt="Cilia-Cilia Joining Image" class="overview-image">
             <p>Our study aims to make sense of the molecular machinery in cilia-cilia elongation. We isolate the key proteins and signaling cascades involved. We are further conducting FIB-SEM analysis in a bid to deliver quantitative ultrastructural detail.</p>
             <p>We are further contributing to understanding cilia-cilia communication, as demonstrated by Turan et al. (2025) in iScience. We shall expand on such findings by studying the molecular machinery regulating cilia-cilia interaction, including elongation and communication, and the implications for uncommon diseases.</p>
         </section>
- 
+
         <section id="bioinformatics" class="section" style="display: none;">
             <h1>Bioinformatics</h1>
             <img src="convart.jpeg" alt="Bioinformatics Image" class="overview-image">
@@ -352,7 +352,7 @@
                 </div>
             </div>
         </section>
- 
+
         <section id="ciliahub" class="section">
             <div class="container">
                 <div id="ciliahub-error" style="display: none; color: red; text-align: center; margin-bottom: 20px;"></div>
@@ -479,131 +479,123 @@
                 </p>
             </div>
         </section>
- 
+
         <!-- ═══════════════════════════════════════════════════════════════════
              CILIA CELL ATLAS — new section
         ════════════════════════════════════════════════════════════════════ -->
         <section id="cilia-cell-atlas" class="section" style="display: none;">
             <h1>Cilia Cell Atlas</h1>
- 
-            <div class="atlas-intro">
-                <strong>Cilia Cell Atlas</strong> classifies human cell types by ciliation status using a curated knowledge base.
-                Paste a list of cell type names and instantly receive a table with cilia type, key marker genes,
-                functional annotation, and confidence scores — ready for use in manuscripts and supplementary tables.
-            </div>
- 
-            <!-- Tabs -->
-            <div class="atlas-tabs">
-                <button class="atlas-tab-btn active" onclick="atlasTab('classify')">Classify cells</button>
-                <button class="atlas-tab-btn" id="atlas-results-tab-btn" onclick="atlasTab('results')">Results</button>
-                <button class="atlas-tab-btn" onclick="atlasTab('knowledge')">Knowledge base</button>
-            </div>
- 
-            <!-- ── CLASSIFY ────────────────────────────────────────────── -->
-            <div id="atlas-classify" class="atlas-panel active">
- 
-                <div class="atlas-field">
-                    <label class="atlas-field-label">Cell types — one per line</label>
-                    <textarea class="atlas-textarea" id="atlas-cell-input"
-                        placeholder="Multi-Ciliated Airway Epithelial Cells&#10;Hepatocytes&#10;B Cells&#10;Podocytes&#10;Ependymal Cells&#10;Chondrocytes&#10;Macrophages"></textarea>
-                </div>
- 
-                <div class="atlas-form-row">
-                    <div>
-                        <label class="atlas-field-label">Tissue context (optional)</label>
-                        <input type="text" class="atlas-text-input" id="atlas-tissue-input"
-                            placeholder="e.g. kidney cortex, lung epithelium, CNS">
-                    </div>
-                    <div style="display:flex; align-items:flex-end;">
-                        <button class="atlas-btn atlas-btn-primary" id="atlas-run-btn" onclick="atlasRun()" style="width:100%;">
-                            Classify cells →
-                        </button>
-                    </div>
-                </div>
- 
-                <div class="atlas-btn-row" style="margin-top:0;">
-                    <button class="atlas-btn atlas-btn-secondary" onclick="atlasClear()">Clear</button>
-                    <button class="atlas-btn atlas-btn-secondary" onclick="atlasExportCSV()" id="atlas-export-btn" style="display:none;">Export CSV</button>
-                    <span id="atlas-source-counts" style="font-size:12px; color:#aaa; margin-left:4px;"></span>
-                </div>
- 
-                <div id="atlas-progress-section" style="display:none; margin-top:12px;">
-                    <div class="atlas-progress-wrap"><div class="atlas-progress-fill" id="atlas-progress-fill" style="width:0%"></div></div>
-                    <p class="atlas-progress-label" id="atlas-progress-label"></p>
-                </div>
- 
-                <hr style="margin: 22px 0; border: none; border-top: 1px solid #e8f0f8;">
- 
-                <div>
-                    <p class="atlas-samples-label">Quick samples</p>
-                    <div class="atlas-samples-row">
-                        <button class="atlas-btn atlas-btn-secondary" onclick="atlasLoadSample('airway')">Airway</button>
-                        <button class="atlas-btn atlas-btn-secondary" onclick="atlasLoadSample('kidney')">Kidney</button>
-                        <button class="atlas-btn atlas-btn-secondary" onclick="atlasLoadSample('immune')">Immune</button>
-                        <button class="atlas-btn atlas-btn-secondary" onclick="atlasLoadSample('neural')">Neural</button>
-                        <button class="atlas-btn atlas-btn-secondary" onclick="atlasLoadSample('mixed')">Mixed panel</button>
-                    </div>
+
+            <p style="text-align:justify; margin-bottom:20px;">
+                The <strong>Cilia Cell Atlas</strong> is a curated reference dataset classifying 359 human cell types
+                across 13 organ systems and 83 organs by ciliation status, supported by 292 rows with PubMed references.
+                Each entry records cilia type, axonemal structure, function, and confidence level.
+                Use the controls below to search and filter the atlas.
+            </p>
+
+            <!-- Stats dashboard -->
+            <div class="stats-dashboard mb-5" style="margin-bottom:28px;">
+                <div class="stats-grid">
+                    <div class="stat-card"><div class="stat-number" style="color:#203c78;">359</div><div class="stat-label">Cell Types</div></div>
+                    <div class="stat-card"><div class="stat-number" style="color:#1a7a42;">88</div><div class="stat-label">Ciliated</div></div>
+                    <div class="stat-card"><div class="stat-number" style="color:#7f8c8d;">83</div><div class="stat-label">Non-Ciliated</div></div>
+                    <div class="stat-card"><div class="stat-number" style="color:#b07a00;">65</div><div class="stat-label">Context-Dependent</div></div>
                 </div>
             </div>
- 
-            <!-- ── RESULTS ────────────────────────────────────────────── -->
-            <div id="atlas-results" class="atlas-panel">
-                <div id="atlas-results-empty" class="atlas-empty">
-                    <div class="atlas-empty-icon">◎</div>
-                    <p>No results yet — classify a panel of cell types first.</p>
+
+            <!-- Controls -->
+            <div class="ciliahub-controls mb-4 text-center" style="margin-bottom:20px;">
+                <div class="search-container">
+                    <input type="text" id="mca-search"
+                        placeholder="Search by cell type, organ, or organ system..."
+                        aria-label="Search Cilia Cell Atlas"
+                        autocomplete="off"
+                        oninput="mcaRender()">
                 </div>
-                <div id="atlas-results-content" style="display:none;">
-                    <div class="atlas-stats-grid" id="atlas-stats-grid"></div>
-                    <div class="atlas-filter-bar">
-                        <button class="atlas-chip active" onclick="atlasSetFilter('all',this)">All</button>
-                        <button class="atlas-chip" onclick="atlasSetFilter('ciliated',this)">Ciliated</button>
-                        <button class="atlas-chip" onclick="atlasSetFilter('non-ciliated',this)">Non-ciliated</button>
-                        <button class="atlas-chip" onclick="atlasSetFilter('motile',this)">Motile</button>
-                        <button class="atlas-chip" onclick="atlasSetFilter('primary',this)">Primary</button>
-                        <button class="atlas-chip" onclick="atlasSetFilter('unknown',this)">Unknown</button>
-                        <input type="text" class="atlas-text-input atlas-search-small"
-                            id="atlas-search-input" placeholder="Search..." oninput="atlasRenderTable()">
-                    </div>
-                    <div class="atlas-table-wrap">
-                        <table class="atlas-table">
-                            <thead>
-                                <tr>
-                                    <th>Cell type</th>
-                                    <th>Cilia</th>
-                                    <th>Type</th>
-                                    <th>Function</th>
-                                    <th>Key markers</th>
-                                    <th>Confidence</th>
-                                </tr>
-                            </thead>
-                            <tbody id="atlas-results-tbody"></tbody>
-                        </table>
-                    </div>
-                    <div class="atlas-btn-row" style="margin-top:14px;">
-                        <button class="atlas-btn atlas-btn-secondary" onclick="atlasExportCSV()">Export CSV</button>
-                    </div>
+                <div class="advanced-filters" style="margin-top:10px;">
+                    <select id="mca-filter-system" aria-label="Filter by organ system" onchange="mcaRender()">
+                        <option value="">All Organ Systems</option>
+                        <option>Cardiovascular System</option>
+                        <option>Digestive System</option>
+                        <option>Embryonic/Transitional</option>
+                        <option>Endocrine System</option>
+                        <option>Integumentary System</option>
+                        <option>Lymphatic/Immune System</option>
+                        <option>Musculoskeletal System</option>
+                        <option>Nervous System</option>
+                        <option>Reproductive System (Female)</option>
+                        <option>Reproductive System (Male)</option>
+                        <option>Respiratory System</option>
+                        <option>Sense Organs</option>
+                        <option>Urinary System</option>
+                    </select>
+                    <select id="mca-filter-status" aria-label="Filter by ciliation status" onchange="mcaRender()">
+                        <option value="">All Ciliation Statuses</option>
+                        <option>Ciliated – Primary</option>
+                        <option>Ciliated – Motile</option>
+                        <option>Ciliated – Nodal</option>
+                        <option>Ciliated – Modified</option>
+                        <option>Context-Dependent</option>
+                        <option>Non-Ciliated</option>
+                        <option>Unclassified – Review Needed</option>
+                    </select>
+                    <select id="mca-filter-type" aria-label="Filter by cilia type" onchange="mcaRender()">
+                        <option value="">All Cilia Types</option>
+                        <option>Primary (9+0)</option>
+                        <option>Primary (9+0) – conditional</option>
+                        <option>Motile (9+2)</option>
+                        <option>Motile – Flagellum (9+2)</option>
+                        <option>Nodal (9+0 motile)</option>
+                        <option>Modified/Specialised</option>
+                        <option>Unknown</option>
+                    </select>
+                    <select id="mca-filter-confidence" aria-label="Filter by confidence" onchange="mcaRender()">
+                        <option value="">All Confidence Levels</option>
+                        <option>High</option>
+                        <option>Medium</option>
+                        <option>Low</option>
+                        <option>No data</option>
+                    </select>
+                </div>
+                <div class="control-buttons" style="margin-top:10px;">
+                    <button onclick="mcaReset()">Reset All</button>
+                    <button onclick="mcaExport()">Download CSV</button>
+                    <button onclick="mcaExportFiltered()">Export Filtered</button>
                 </div>
             </div>
- 
-            <!-- ── KNOWLEDGE BASE ──────────────────────────────────────── -->
-            <div id="atlas-knowledge" class="atlas-panel">
-                <p style="font-size:14px; color:#555; margin-bottom:20px; line-height:1.7;">
-                    All classifications are resolved instantly from this curated knowledge base — no external API or internet connection required.
-                    Cell types not matched to the database are flagged as <em>Unknown</em> for manual review.
-                </p>
-                <div class="atlas-kb-grid" id="atlas-kb-grid"></div>
+
+            <!-- Results counter -->
+            <div id="mca-counter" style="margin-bottom:10px; font-size:13px; color:#555;"></div>
+
+            <!-- Table -->
+            <div class="table-wrapper mb-5">
+                <div id="mca-loading" style="text-align:center; padding:20px;">Loading data...</div>
+                <table class="ciliahub-table" id="mca-table" style="display:none;">
+                    <thead>
+                        <tr>
+                            <th style="width:15%;">Organ System</th>
+                            <th style="width:12%;">Organ</th>
+                            <th style="width:18%;">Cell Type</th>
+                            <th style="width:16%;">Ciliation Status</th>
+                            <th style="width:14%;">Cilia Type</th>
+                            <th style="width:8%;">Confidence</th>
+                            <th style="width:17%;">PubMed IDs</th>
+                        </tr>
+                    </thead>
+                    <tbody id="mca-tbody"></tbody>
+                </table>
             </div>
- 
+
             <!-- Citation -->
-            <div class="atlas-citation">
+            <div class="citation-box mt-5 mb-4 p-3 rounded" style="background-color:#e6f2ff; border-left:4px solid #004080;">
                 <strong>Suggested citation:</strong> Kaplan Lab.
-                <em>Cilia Cell Atlas: Curated classification of human cell types by ciliation status.</em>
+                <em>Multidimensional Ciliary Atlas (MCA): Curated classification of human cell types by ciliation status.</em>
                 2025. Available at:
                 <a href="https://rarediseaselab.github.io/home/#cilia-cell-atlas">rarediseaselab.github.io/home/#cilia-cell-atlas</a>
             </div>
         </section>
         <!-- ═══════════════════════════════════════════════════════════════ -->
- 
+
         <section id="current-members" class="section" style="display: none;">
             <h1>Current Members</h1>
             <div class="team-grid">
@@ -655,7 +647,7 @@
                 </div>
             </div>
         </section>
- 
+
         <section id="former-members" class="section" style="display: none;">
             <h1>Former Members</h1>
             <div class="team-grid">
@@ -695,7 +687,7 @@
                 </div>
             </div>
         </section>
- 
+
         <section id="group-photos" class="section" style="display: none;">
             <h1>Group Photos</h1>
             <p>See our lab team in action.</p>
@@ -706,14 +698,14 @@
                 </div>
             </div>
         </section>
- 
+
         <section id="open-positions" class="section" style="display: none;">
             <h1>Open Positions</h1>
             <p>We are always looking for talented undergraduate students, graduate students, and postdoctoral researchers to join our team. If you are passionate about rare diseases, ciliopathies, and innovative research, we encourage you to contact the Principal Investigator (PI) for more information.</p>
             <p>For postdoctoral positions, we offer the opportunity to apply for prestigious fellowships such as the <a href="https://www.embo.org/funding/fellowships-grants-and-awards/postdoctoral-fellowships">EMBO Postdoctoral Fellowship</a>, <a href="https://marie-sklodowska-curie-actions.ec.europa.eu/actions/postdoctoral-fellowships">Marie Curie Fellowship</a>, and <a href="https://www.tubitak.gov.tr/en/scholarship/postdoctoral/international-programs/content-2219-international-postdoctoral-research-fellowship-programme">TÜBİTAK Fellowship</a>.</p>
             <p><strong>Contact:</strong> Oktaykaplan(at)gmail.com</p>
         </section>
- 
+
         <section id="publications" class="section" style="display: none;">
             <h1>Publications</h1>
             <input type="text" id="pub-search" placeholder="Search publications..." class="pub-search" aria-label="Search publications">
@@ -742,7 +734,7 @@
                 <div class="research-item"><img src="elegans.png" alt="Research Icon" class="fit-image"><p>Blacque OE, Cevik S, Kaplan OI. <strong>Intraflagellar transport: from molecular characterisation to mechanism.</strong> Front Biosci. 2008;13:2633-52. doi: <a href="https://doi.org/10.2741/2871">10.2741/2871</a></p></div>
             </div>
         </section>
- 
+
         <section id="news" class="section" style="display: none;">
             <h1>News</h1>
             <div class="research-grid">
@@ -754,7 +746,7 @@
                 <div class="research-item"><img src="elegans.png" alt="News Icon" class="fit-image"><p><strong>January 2025:</strong> Kaplan Lab receives grant for ciliopathy research.</p></div>
             </div>
         </section>
- 
+
         <section id="resources" class="section" style="display: none;">
             <h1>Resources</h1>
             <p>Our lab is committed to open science, and we openly share our protocols and bioinformatics pipelines to contribute to the broader scientific community.</p>
@@ -789,7 +781,7 @@
             </div>
             <img src="CRISPR_figure.png" alt="CRISPR/Cas9 Protocol Schematic" style="max-width:100%; margin-top:20px;">
         </section>
- 
+
         <section id="gallery" class="section" style="display: none;">
             <h1>Gallery</h1>
             <p><em>Antonie van Leeuwenhoek (1632–1723), the first to peer into the unseen, was enchanted by the delicate beauty hidden within a single drop of life. With each glance through his handcrafted lens, he unveiled a universe within—a silent, intricate world of cells. Ever since, we have walked in his shadow, chasing that same wonder, striving to illuminate the unseen poetry woven into the fabric of life.</em></p>
@@ -805,9 +797,9 @@
             <h3>Cilia Research</h3>
             <p>A high-resolution image from our studies on ciliary biology, used to investigate ciliopathies such as Joubert syndrome and cranioectodermal dysplasia.</p>
         </section>
- 
+
     </div><!-- /container -->
- 
+
     <!-- ── Footer (unchanged) ─────────────────────────────────────────────── -->
     <footer style="background:#203c78; color:rgba(255,255,255,0.8); text-align:center; padding:18px 20px; font-size:13px; margin-top:32px;">
         © 2025 Kaplan's Lab ·
@@ -821,212 +813,128 @@
             <img src="linkedin-logo.png" alt="LinkedIn" style="height:18px; vertical-align:middle;">
         </a>
     </footer>
- 
-    <!-- ── Cilia Cell Atlas JavaScript ───────────────────────────────────── -->
+
+    <!-- ── Cilia Cell Atlas (MCA) JavaScript ────────────────────────────────────── -->
     <script>
-    const ATLAS_KB = {
-        motile: {
-            label: 'Motile cilia', color: '#1a7a42',
-            fn: 'Mucociliary clearance / fluid propulsion',
-            num: 'Multiple (9+2)',
-            markers: ['FOXJ1','DNAH5','DNAH9','DNAI1','DNAI2','CCDC39','CCDC40','ARMC4'],
-            diseases: ['Primary Ciliary Dyskinesia (PCD)','Kartagener syndrome','Bronchiectasis'],
-            cells: ['Multi-Ciliated Airway Epithelial Cells','Multi-Ciliated Epithelial Cells',
-                    'Ciliated Tubal Epithelial Cells','Ependymal Cells','Spermatozoa',
-                    'Respiratory Epithelial Cells','Oviductal Epithelial Cells',
-                    'Choroid Plexus Epithelial Cells','Tracheal Epithelial Cells',
-                    'Bronchial Epithelial Cells','Fallopian Tube Epithelial Cells',
-                    'Ciliated Pseudostratified Epithelial Cells']
-        },
-        primary: {
-            label: 'Primary cilia', color: '#0f4a7a',
-            fn: 'Sensory signalling / Hedgehog pathway / mechanosensation',
-            num: 'Single (9+0)',
-            markers: ['ARL13B','IFT88','IFT20','KIF3A','NPHP1','PKD1','PKD2','BBS4','RPGRIP1L'],
-            diseases: ['Polycystic kidney disease','Nephronophthisis','Bardet-Biedl syndrome','Joubert syndrome'],
-            cells: ['Endothelial Cells','Fibroblasts','Vascular Smooth Muscle Cells',
-                    'Hepatocytes','Cholangiocytes','Chondrocytes','Osteocytes','Osteoblasts',
-                    'Astrocytes','Neurons','Podocytes','Proximal Tubule Epithelial Cells',
-                    'Distal Tubule Epithelial Cells','Collecting Duct Cells','Granulosa Cells',
-                    'Pancreatic Beta Cells','Mesenchymal Stem Cells','Adipocytes','Melanocytes',
-                    'Cardiomyocytes','Schwann Cells','Oligodendrocytes',
-                    'Retinal Pigment Epithelial Cells','Corneal Endothelial Cells',
-                    'Thyroid Follicular Cells','Pancreatic Ductal Cells',
-                    'Intestinal Epithelial Cells','Bile Duct Epithelial Cells',
-                    'Renal Tubular Cells','Mesangial Cells']
-        },
-        nodal: {
-            label: 'Nodal cilia', color: '#5e2a8e',
-            fn: 'Left-right body axis determination',
-            num: 'Single (transient)',
-            markers: ['FOXJ1','DNAH11','CFAP53','DAND5','CERL2'],
-            diseases: ['Situs inversus','Heterotaxy','Congenital heart defects'],
-            cells: ['Nodal Cells','Node Cells','Embryonic Node Cells']
-        },
-        none: {
-            label: 'Non-ciliated', color: '#666',
-            fn: 'N/A — no cilia',
-            num: '0',
-            markers: [],
-            diseases: [],
-            cells: ['Red Blood Cells','Erythrocytes','Platelets','Megakaryocytes',
-                    'B Cells','T Cells','Natural Killer Cells','NK Cells','Monocytes',
-                    'Macrophages','Dendritic Cells','Neutrophils','Eosinophils',
-                    'Basophils','Mast Cells','Plasma Cells','Microglia',
-                    'CD4+ T Cells','CD8+ T Cells','Regulatory T Cells','Lymphocytes']
-        }
+    const MCA_STATUS_STYLE = {
+        'Ciliated – Primary':           'background:#d4e8f7;color:#0f4a7a;',
+        'Ciliated – Motile':            'background:#d4f0e4;color:#145e32;',
+        'Ciliated – Nodal':             'background:#ebe0f7;color:#5e2a8e;',
+        'Ciliated – Modified':          'background:#fde8d0;color:#7a3800;',
+        'Context-Dependent':                 'background:#fdf0d0;color:#8a5c00;',
+        'Non-Ciliated':                      'background:#ebebeb;color:#555;',
+        'Unclassified – Review Needed': 'background:#fde4e4;color:#8a1515;'
     };
- 
-    // Render KB grid on page load
-    (function() {
-        const grid = document.getElementById('atlas-kb-grid');
-        if (!grid) return;
-        grid.innerHTML = Object.entries(ATLAS_KB).map(([, d]) => `
-            <div class="atlas-kb-card" style="border-left-color:${d.color}">
-                <div class="atlas-kb-title">${d.label}
-                    <span style="font-size:11px;font-weight:400;color:#aaa;margin-left:6px;">${d.cells.length} cell types</span>
-                </div>
-                <div class="atlas-kb-fn">${d.fn}</div>
-                ${d.markers.length ? `<div class="atlas-kb-markers">${d.markers.join(' · ')}</div>` : ''}
-                ${d.diseases.length ? `<div class="atlas-kb-disease">${d.diseases.map(x=>`↳ ${x}`).join('<br>')}</div>` : ''}
-                <div class="atlas-kb-cells">${d.cells.join(' · ')}</div>
-            </div>`).join('');
-    })();
- 
-    function atlasKbLookup(name) {
-        const lower = name.toLowerCase();
-        for (const [cat, data] of Object.entries(ATLAS_KB)) {
-            for (const c of data.cells) {
-                if (c.toLowerCase() === lower || lower.includes(c.toLowerCase()) || c.toLowerCase().includes(lower)) {
-                    return {
-                        cilia:      cat !== 'none' ? 'Yes' : 'No',
-                        cilia_type: {motile:'Motile',primary:'Primary',nodal:'Nodal',none:'None'}[cat],
-                        cilia_num:  data.num,
-                        fn:         data.fn.split(' / ')[0],
-                        markers:    data.markers.join(', '),
-                        confidence: 'High',
-                        note:       `Matched to '${c}'`
-                    };
-                }
-            }
-        }
-        return {
-            cilia: 'Unknown', cilia_type: 'Unknown', cilia_num: 'Unknown',
-            fn: '—', markers: '—', confidence: 'Low',
-            note: 'Not in knowledge base — manual review recommended'
-        };
-    }
- 
-    const ATLAS_SAMPLES = {
-        airway: 'Multi-Ciliated Airway Epithelial Cells\nClub Cells\nGoblet Cells\nBasal Cells\nAlveolar Type I Cells\nAlveolar Type II Cells',
-        kidney: 'Podocytes\nProximal Tubule Epithelial Cells\nDistal Tubule Epithelial Cells\nMesangial Cells\nCollecting Duct Cells\nParietal Epithelial Cells',
-        immune: 'B Cells\nT Cells\nNatural Killer Cells\nMacrophages\nNeutrophils\nDendritic Cells\nMast Cells',
-        neural: 'Neurons\nAstrocytes\nOligodendrocytes\nEpendymal Cells\nMicroglia\nSchwann Cells',
-        mixed:  'Hepatocytes\nCholangiocytes\nChondrocytes\nOsteoblasts\nCardiomyocytes\nMelanocytes\nRetinal Pigment Epithelial Cells\nGranulosa Cells'
+    const MCA_CONF_STYLE = {
+        'High':    'color:#1a7a42;font-weight:700;',
+        'Medium':  'color:#8a5c00;font-weight:700;',
+        'Low':     'color:#8a1515;font-weight:700;',
+        'No data': 'color:#aaa;'
     };
- 
-    function atlasLoadSample(k) { document.getElementById('atlas-cell-input').value = ATLAS_SAMPLES[k]; }
-    function atlasClear() { document.getElementById('atlas-cell-input').value = ''; document.getElementById('atlas-tissue-input').value = ''; }
- 
-    function atlasTab(name) {
-        document.querySelectorAll('.atlas-tab-btn').forEach(b => b.classList.remove('active'));
-        document.querySelectorAll('.atlas-panel').forEach(p => p.classList.remove('active'));
-        document.querySelector('[onclick="atlasTab(\'' + name + '\')"]').classList.add('active');
-        document.getElementById('atlas-' + name).classList.add('active');
-    }
- 
-    let atlasResults = [];
-    let atlasFilter = 'all';
- 
-    function atlasRun() {
-        const raw = document.getElementById('atlas-cell-input').value.trim();
-        if (!raw) return;
-        const cells = [...new Set(raw.split('\n').map(s => s.trim()).filter(Boolean))];
- 
-        // Classify entirely from KB
-        atlasResults = cells.map(c => ({ cell: c, ...atlasKbLookup(c) }));
- 
-        atlasRenderResults();
-        atlasTab('results');
-        document.getElementById('atlas-results-tab-btn').textContent = 'Results (' + atlasResults.length + ')';
-        document.getElementById('atlas-export-btn').style.display = 'inline-flex';
- 
-        const fromKB = atlasResults.filter(r => r.confidence === 'High').length;
-        const unk    = atlasResults.filter(r => r.cilia === 'Unknown').length;
-        document.getElementById('atlas-source-counts').textContent =
-            fromKB + ' matched · ' + unk + ' unknown';
-    }
- 
-    const ATLAS_TYPE_BADGE = {Motile:'b-motile',Primary:'b-primary',Nodal:'b-nodal',None:'b-none',Unknown:'b-unknown'};
-    const ATLAS_CONF_BADGE = {High:'b-high',Medium:'b-medium',Low:'b-low'};
- 
-    function atlasSetFilter(f, el) {
-        atlasFilter = f;
-        document.querySelectorAll('.atlas-chip').forEach(c => c.classList.remove('active'));
-        el.classList.add('active');
-        atlasRenderTable();
-    }
- 
-    function atlasRenderResults() {
-        document.getElementById('atlas-results-empty').style.display = 'none';
-        document.getElementById('atlas-results-content').style.display = 'block';
- 
-        const yes = atlasResults.filter(r => r.cilia === 'Yes').length;
-        const no  = atlasResults.filter(r => r.cilia === 'No').length;
-        const unk = atlasResults.filter(r => r.cilia === 'Unknown').length;
- 
-        document.getElementById('atlas-stats-grid').innerHTML =
-            '<div class="atlas-stat-card"><div class="atlas-stat-num">' + atlasResults.length + '</div><div class="atlas-stat-lbl">Total</div></div>' +
-            '<div class="atlas-stat-card"><div class="atlas-stat-num c-yes">' + yes + '</div><div class="atlas-stat-lbl">Ciliated</div></div>' +
-            '<div class="atlas-stat-card"><div class="atlas-stat-num c-no">'  + no  + '</div><div class="atlas-stat-lbl">Non-ciliated</div></div>' +
-            '<div class="atlas-stat-card"><div class="atlas-stat-num c-unk">' + unk + '</div><div class="atlas-stat-lbl">Unknown</div></div>';
- 
-        atlasRenderTable();
-    }
- 
-    function atlasRenderTable() {
-        const search = (document.getElementById('atlas-search-input') ? document.getElementById('atlas-search-input').value : '').toLowerCase();
-        const filtered = atlasResults.filter(r => {
-            const mt = atlasFilter === 'all'
-                || (atlasFilter === 'ciliated'     && r.cilia === 'Yes')
-                || (atlasFilter === 'non-ciliated' && r.cilia === 'No')
-                || (atlasFilter === 'motile'       && r.cilia_type === 'Motile')
-                || (atlasFilter === 'primary'      && r.cilia_type === 'Primary')
-                || (atlasFilter === 'unknown'      && r.cilia === 'Unknown');
-            return mt && (!search || r.cell.toLowerCase().includes(search));
+
+    let MCA_DATA = [];
+    let mcaFiltered = [];
+
+    fetch('mca_data.json')
+        .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+        .then(data => {
+            MCA_DATA = data;
+            mcaFiltered = data;
+            document.getElementById('mca-loading').style.display = 'none';
+            document.getElementById('mca-table').style.display = 'table';
+            mcaRender();
+        })
+        .catch(e => {
+            document.getElementById('mca-loading').textContent =
+                'Error loading data (' + e.message + '). Ensure mca_data.json is in the repository root.';
         });
- 
-        document.getElementById('atlas-results-tbody').innerHTML = filtered.map(r =>
-            '<tr>' +
-            '<td><div class="atlas-cell-name">' + r.cell + '</div>' +
-            (r.note ? '<div class="atlas-cell-note">' + r.note + '</div>' : '') + '</td>' +
-            '<td><span class="atlas-badge ' + (r.cilia==='Yes'?'b-yes':r.cilia==='No'?'b-no':'b-unknown') + '">' + r.cilia + '</span></td>' +
-            '<td><span class="atlas-badge ' + (ATLAS_TYPE_BADGE[r.cilia_type]||'b-none') + '">' + (r.cilia_type||'—') + '</span></td>' +
-            '<td style="font-size:12px;color:#666;max-width:145px;">' + (r.fn||'—') +
-            (r.cilia_num && r.cilia_num !== '0' && r.cilia_num !== 'Unknown' ? '<div style="font-size:10px;color:#bbb;font-family:\'Courier New\',monospace;margin-top:2px;">' + r.cilia_num + '</div>' : '') + '</td>' +
-            '<td><div class="atlas-mono">' + (r.markers||'—') + '</div></td>' +
-            '<td><span class="atlas-badge ' + (ATLAS_CONF_BADGE[r.confidence]||'b-low') + '">' + (r.confidence||'Low') + '</span></td>' +
-            '</tr>'
-        ).join('');
+
+    function mcaRender() {
+        const search = (document.getElementById('mca-search').value || '').toLowerCase().trim();
+        const sys    = document.getElementById('mca-filter-system').value;
+        const status = document.getElementById('mca-filter-status').value;
+        const type   = document.getElementById('mca-filter-type').value;
+        const conf   = document.getElementById('mca-filter-confidence').value;
+
+        mcaFiltered = MCA_DATA.filter(r => {
+            if (sys    && r.organ_system     !== sys)    return false;
+            if (status && r.ciliation_status !== status) return false;
+            if (type   && r.cilia_type       !== type)   return false;
+            if (conf   && r.confidence       !== conf)   return false;
+            if (search) {
+                const hay = (r.organ_system + ' ' + r.organ + ' ' + r.cell_type).toLowerCase();
+                if (!hay.includes(search)) return false;
+            }
+            return true;
+        });
+
+        document.getElementById('mca-counter').textContent =
+            'Showing ' + mcaFiltered.length + ' of ' + MCA_DATA.length + ' cell types';
+
+        const rows = mcaFiltered.slice(0, 500);
+        document.getElementById('mca-tbody').innerHTML = rows.map(r => {
+            const sStyle = MCA_STATUS_STYLE[r.ciliation_status] || 'background:#f0f0f0;color:#555;';
+            const cStyle = MCA_CONF_STYLE[r.confidence] || '';
+            let pmidHtml = '';
+            if (r.pmid_references) {
+                const ids = r.pmid_references.split(';').map(p => p.trim()).filter(Boolean);
+                pmidHtml = ids.map(id =>
+                    '<a href="https://pubmed.ncbi.nlm.nih.gov/' + id + '/" target="_blank" ' +
+                    'style="font-size:11px;color:#203c78;margin-right:3px;font-family:\'Courier New\',monospace;">' +
+                    id + '</a>'
+                ).join();
+            }
+            const ctDisplay = r.cilia_type || '—';
+            return '<tr>' +
+                '<td style="font-size:13px;">' + esc(r.organ_system) + '</td>' +
+                '<td style="font-size:13px;">' + esc(r.organ) + '</td>' +
+                '<td style="font-size:13px;font-weight:600;color:#203c78;">' + esc(r.cell_type) + '</td>' +
+                '<td><span style="display:inline-block;font-size:11px;font-weight:700;padding:2px 9px;border-radius:100px;white-space:nowrap;' + sStyle + '">' + esc(r.ciliation_status) + '</span></td>' +
+                '<td style="font-size:12px;color:#444;font-family:\'Courier New\',monospace;">' + esc(ctDisplay) + '</td>' +
+                '<td style="font-size:12px;' + cStyle + '">' + esc(r.confidence) + '</td>' +
+                '<td style="line-height:1.9;">' + (pmidHtml || '<span style="color:#ccc;font-size:12px;">—</span>') + '</td>' +
+                '</tr>';
+        }).join('');
+
+        if (mcaFiltered.length > 500) {
+            document.getElementById('mca-tbody').innerHTML +=
+                '<tr><td colspan="7" style="text-align:center;font-size:12px;color:#aaa;padding:12px;">' +
+                'Showing first 500 results — refine your search to see more.</td></tr>';
+        }
     }
- 
-    function atlasExportCSV() {
-        if (!atlasResults.length) return;
-        const hdr = ['Cell type','Cilia status','Cilia type','Cilia number','Function','Markers','Confidence','Note'];
-        const rows = atlasResults.map(r =>
-            [r.cell, r.cilia, r.cilia_type, r.cilia_num, r.fn, r.markers, r.confidence, r.note]
-                .map(v => '"' + String(v||'').replace(/"/g,'""') + '"').join(',')
+
+    function mcaReset() {
+        document.getElementById('mca-search').value = '';
+        document.getElementById('mca-filter-system').value = '';
+        document.getElementById('mca-filter-status').value = '';
+        document.getElementById('mca-filter-type').value = '';
+        document.getElementById('mca-filter-confidence').value = '';
+        mcaRender();
+    }
+
+    function mcaExport()         { mcaDownload(MCA_DATA,    'mca_full.csv'); }
+    function mcaExportFiltered() { mcaDownload(mcaFiltered, 'mca_filtered.csv'); }
+
+    function mcaDownload(data, filename) {
+        const hdr  = ['Organ System','Organ','Cell Type','Ciliation Status','Cilia Type','Number of Cilia','Cilia Function','Confidence','PMID References'];
+        const rows = data.map(r =>
+            [r.organ_system, r.organ, r.cell_type, r.ciliation_status, r.cilia_type,
+             r.number_of_cilia, r.cilia_function, r.confidence, r.pmid_references]
+            .map(v => '"' + String(v||'').replace(/"/g,'""') + '"').join(',')
         );
         const a = document.createElement('a');
         a.href = URL.createObjectURL(new Blob([[hdr.join(','), ...rows].join('\n')], {type:'text/csv'}));
-        a.download = 'cilia_cell_atlas.csv';
+        a.download = filename;
         a.click();
     }
+
+    function esc(s) {
+        return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
     </script>
- 
+
     <!-- Original site script -->
     <script src="script.js"></script>
- 
+
 </body>
 </html>
- 
