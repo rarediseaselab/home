@@ -7,7 +7,20 @@
     <meta name="keywords" content="CiliaAtlas, cilia, ciliopathy, cell types, primary cilia, motile cilia, ciliation status, Kaplan Lab, MCA">
     <meta name="author" content="Kaplan's Lab">
     <title>CiliaAtlas — Kaplan's Lab</title>
-    <link rel="stylesheet" href="styles.css">
+    <!-- Primary SEO -->
+    <link rel="canonical" href="https://rarediseaselab.github.io/home/ciliaatlas.html">
+    <meta property="og:type"        content="website">
+    <meta property="og:url"         content="https://rarediseaselab.github.io/home/ciliaatlas.html">
+    <meta property="og:title"       content="CiliaAtlas | Cell Ciliation Database | Kaplan Lab">
+    <meta property="og:description" content="CiliaAtlas classifies 359 human cell types across 13 organ systems by ciliation status, with PubMed evidence. Part of the Multidimensional Ciliary Atlas (MCA).">
+    <meta property="og:image"       content="https://rarediseaselab.github.io/home/cilia_res1.jpg">
+    <meta name="twitter:card"        content="summary_large_image">
+    <meta name="twitter:site"        content="@KaplanOLab">
+    <meta name="twitter:title"       content="CiliaAtlas | Cell Ciliation Database | Kaplan Lab">
+    <meta name="twitter:description" content="359 human cell types classified by ciliation status, with PubMed-linked evidence.">
+    <meta name="twitter:image"       content="https://rarediseaselab.github.io/home/cilia_res1.jpg">
+
+        <link rel="stylesheet" href="styles.css">
     <link rel="icon" type="image/png" href="elegans2.png">
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-EKT3SLJ516"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -44,10 +57,16 @@
         </div>
         <a href="index.html#publications">Publications</a>
         <a href="index.html#news">News</a>
-        <a href="index.html#resources">Resources</a>
+        <div class="dropdown">
+            <span class="dropbtn">Tools ▼</span>
+            <div class="dropdown-content">
+                <a href="index.html#ciliahub">CiliaHub</a>
+                <a href="ciliaatlas.html" class="active">CiliaAtlas</a>
+                <a href="index.html#resources">All Resources</a>
+            </div>
+        </div>
         <a href="index.html#gallery">Gallery</a>
-        <a href="index.html#ciliahub">CiliaHub</a>
-        <a href="ciliaatlas.html" class="active">CiliaAtlas</a>
+        <a href="index.html#contact">Contact</a>
     </nav>
 
     <!-- Breadcrumbs — same pattern as index.html -->
@@ -267,17 +286,36 @@
     </div><!-- /container -->
 
     <!-- Footer — identical to index.html -->
-    <footer style="background:#203c78; color:rgba(255,255,255,0.8); text-align:center; padding:18px 20px; font-size:13px; margin-top:32px;">
-        © 2025 Kaplan's Lab ·
-        <a href="https://github.com/thekaplanlab" style="color:rgba(255,255,255,0.9);">
-            <img src="github-logo.png" alt="GitHub" style="height:18px; vertical-align:middle;">
-        </a>
-        <a href="https://www.instagram.com/kaplanlab/?hl=en" style="color:rgba(255,255,255,0.9); margin-left:8px;">
-            <img src="instagram-logo.png" alt="Instagram" style="height:18px; vertical-align:middle;">
-        </a>
-        <a href="https://www.linkedin.com/in/oktay-i-kaplan-74b16856/" style="color:rgba(255,255,255,0.9); margin-left:8px;">
-            <img src="linkedin-logo.png" alt="LinkedIn" style="height:18px; vertical-align:middle;">
-        </a>
+    <footer class="site-footer" style="background:#1a2f5e;color:rgba(255,255,255,0.75);padding:32px 24px 20px;margin-top:40px;font-size:13px;">
+        <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:24px;max-width:960px;margin:0 auto 20px;">
+            <div>
+                <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:rgba(255,255,255,0.5);margin-bottom:10px;">Kaplan Lab</div>
+                <p style="line-height:1.8;color:rgba(255,255,255,0.75);">We study ciliopathies and rare genetic diseases using <em>C. elegans</em>, CRISPR/Cas9, and bioinformatics.<br><br>Abdullah Gül University · Kayseri, Türkiye</p>
+            </div>
+            <div>
+                <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:rgba(255,255,255,0.5);margin-bottom:10px;">Tools &amp; Databases</div>
+                <a href="index.html#ciliahub" style="color:rgba(255,255,255,0.85);text-decoration:none;display:block;margin-bottom:5px;">CiliaHub</a>
+                <a href="ciliaatlas.html"     style="color:rgba(255,255,255,0.85);text-decoration:none;display:block;margin-bottom:5px;">CiliaAtlas</a>
+                <a href="https://ciliogenics.com/?page=Home" target="_blank" style="color:rgba(255,255,255,0.85);text-decoration:none;display:block;margin-bottom:5px;">CilioGenics</a>
+                <a href="https://github.com/thekaplanlab" target="_blank" style="color:rgba(255,255,255,0.85);text-decoration:none;display:block;">GitHub</a>
+            </div>
+            <div>
+                <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:rgba(255,255,255,0.5);margin-bottom:10px;">Quick Links</div>
+                <a href="index.html#research-overview" style="color:rgba(255,255,255,0.85);text-decoration:none;display:block;margin-bottom:5px;">Research</a>
+                <a href="index.html#publications"      style="color:rgba(255,255,255,0.85);text-decoration:none;display:block;margin-bottom:5px;">Publications</a>
+                <a href="index.html#current-members"   style="color:rgba(255,255,255,0.85);text-decoration:none;display:block;margin-bottom:5px;">Team</a>
+                <a href="index.html#contact"           style="color:rgba(255,255,255,0.85);text-decoration:none;display:block;">Contact</a>
+            </div>
+        </div>
+        <div style="border-top:1px solid rgba(255,255,255,0.1);padding-top:14px;text-align:center;max-width:960px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+            <span>© 2025 Kaplan Lab · Abdullah Gül University · Kayseri, Türkiye</span>
+            <div style="display:flex;gap:12px;align-items:center;">
+                <a href="https://github.com/thekaplanlab" target="_blank"><img src="github-logo.png" alt="GitHub" style="height:18px;vertical-align:middle;opacity:0.75;"></a>
+                <a href="https://www.instagram.com/kaplanlab/?hl=en" target="_blank"><img src="instagram-logo.png" alt="Instagram" style="height:18px;vertical-align:middle;opacity:0.75;"></a>
+                <a href="https://www.linkedin.com/in/oktay-i-kaplan-74b16856/" target="_blank"><img src="linkedin-logo.png" alt="LinkedIn" style="height:18px;vertical-align:middle;opacity:0.75;"></a>
+                <a href="https://x.com/KaplanOLab" target="_blank" style="color:rgba(255,255,255,0.75);font-size:13px;text-decoration:none;">𝕏 @KaplanOLab</a>
+            </div>
+        </div>
     </footer>
 
     <!-- CiliaAtlas data and logic -->
