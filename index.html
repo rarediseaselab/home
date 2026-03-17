@@ -115,31 +115,40 @@
 <!-- ══════════════════════════════ HOME ══════════════════════════════ -->
 <section id="home" class="section">
 
-    <!-- Full-width hero image — like LeRoux -->
-    <img src="cilia_res1.jpg" alt="Cilia research" class="page-hero" style="margin: -56px -32px 0; width: calc(100% + 64px); max-width: none;">
-
-    <!-- Hero text -->
-    <div class="home-hero">
-        <p class="eyebrow">Abdullah Gül University · Kayseri, Türkiye</p>
-        <h1>Welcome to the Kaplan Lab</h1>
-        <p class="tagline">
-            We study the molecular basis of ciliopathies and rare genetic diseases —
-            using <em>C. elegans</em> models, CRISPR/Cas9, and open bioinformatics tools
-            to connect genotype to phenotype.
-        </p>
-        <div class="hero-tags">
-            <span class="hero-tag">Joubert Syndrome</span>
-            <span class="hero-tag">Bardet-Biedl Syndrome</span>
-            <span class="hero-tag">Cranioectodermal Dysplasia</span>
-            <span class="hero-tag">Primary Cilia</span>
-            <span class="hero-tag"><em>C. elegans</em></span>
+    <!-- HCA-style hero: full viewport, lablogo centered over figure3.png -->
+    <div class="hero-banner">
+        <img src="figure3.png" alt="Kaplan Lab" class="hero-banner-bg">
+        <div class="hero-banner-overlay"></div>
+        <div class="hero-banner-content">
+            <img src="lablogo.png" alt="Kaplan Lab Logo" class="hero-banner-logo"
+                 onerror="this.style.display='none'">
+            <h1 class="hero-banner-title">Kaplan Lab</h1>
+            <p class="hero-banner-sub">
+                Uncovering the molecular basis of ciliopathies and rare genetic diseases
+                using <em>C. elegans</em>, CRISPR/Cas9, and open bioinformatics tools.
+            </p>
+            <p class="hero-banner-affil">Abdullah Gül University · Kayseri, Türkiye</p>
+            <div class="hero-banner-ctas">
+                <a href="#research-overview" onclick="showSection('research-overview')" class="btn btn-primary">Our Research</a>
+                <a href="#ciliahub"          onclick="showSection('ciliahub')"          class="btn btn-outline" style="border-color:rgba(255,255,255,0.6);color:#fff;">CiliaHub</a>
+                <a href="ciliaatlas.html"                                               class="btn btn-ghost"   style="border-color:rgba(255,255,255,0.4);color:rgba(255,255,255,0.85);">CiliaAtlas</a>
+            </div>
+            <div class="hero-tags" style="justify-content:center;">
+                <span class="hero-tag" style="background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.3);color:#fff;">Joubert Syndrome</span>
+                <span class="hero-tag" style="background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.3);color:#fff;">Bardet-Biedl Syndrome</span>
+                <span class="hero-tag" style="background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.3);color:#fff;">Cranioectodermal Dysplasia</span>
+                <span class="hero-tag" style="background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.3);color:#fff;">Primary Cilia</span>
+                <span class="hero-tag" style="background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.3);color:#fff;"><em>C. elegans</em></span>
+            </div>
         </div>
-        <div class="hero-ctas">
-            <a href="#research-overview" onclick="showSection('research-overview')" class="btn btn-primary">Our Research</a>
-            <a href="#ciliahub"          onclick="showSection('ciliahub')"          class="btn btn-outline">CiliaHub Database</a>
-            <a href="ciliaatlas.html"                                               class="btn btn-ghost">CiliaAtlas</a>
+        <div class="hero-banner-scroll" onclick="document.getElementById('home-below').scrollIntoView({behavior:'smooth'})">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+            <span>Scroll</span>
         </div>
     </div>
+
+    <!-- Page content below hero -->
+    <div id="home-below" style="padding-top:48px;">
 
     <!-- Stats bar -->
     <div class="stats-bar" style="margin-bottom:56px;">
@@ -216,11 +225,12 @@
         </a>
     </div>
 
+    </div><!-- /home-below -->
 </section>
 
 <!-- ═══════════════════════ RESEARCH OVERVIEW ═════════════════════════ -->
 <section id="research-overview" class="section" style="display:none;">
-    <img src="cilia_res1.jpg" alt="Research" class="page-hero" style="margin:-56px -32px 0;width:calc(100% + 64px);max-width:none;">
+    <img src="cilia_res1.jpg" alt="Research" class="page-hero">
     <div style="padding-top:48px;">
         <p class="eyebrow">Research</p>
         <h1>Research Overview</h1>
@@ -260,7 +270,7 @@
 
 <!-- ════════════════════ CILIA & CILIOPATHIES ═════════════════════════ -->
 <section id="cilia-ciliopathies" class="section" style="display:none;">
-    <img src="cilia_res1.jpg" alt="Cilia Research" class="page-hero" style="margin:-56px -32px 0;width:calc(100% + 64px);max-width:none;">
+    <img src="cilia_res1.jpg" alt="Cilia Research" class="page-hero">
     <div style="padding-top:48px;">
         <p class="eyebrow">Research</p>
         <h1>Cilia &amp; Ciliopathies</h1>
@@ -271,7 +281,7 @@
 
 <!-- ════════════════════ DISEASE MODELING ════════════════════════════ -->
 <section id="disease-modeling" class="section" style="display:none;">
-    <img src="research3.jpeg" alt="Disease Modeling" class="page-hero" style="margin:-56px -32px 0;width:calc(100% + 64px);max-width:none;">
+    <img src="research3.jpeg" alt="Disease Modeling" class="page-hero">
     <div style="padding-top:48px;">
         <p class="eyebrow">Research</p>
         <h1>Disease Modeling</h1>
@@ -281,7 +291,7 @@
 
 <!-- ════════════════════ CILIA-CILIA JOINING ════════════════════════ -->
 <section id="cilia-cilia-joining" class="section" style="display:none;">
-    <img src="research2.jpg" alt="Cilia-Cilia Joining" class="page-hero" style="margin:-56px -32px 0;width:calc(100% + 64px);max-width:none;">
+    <img src="research2.jpg" alt="Cilia-Cilia Joining" class="page-hero">
     <div style="padding-top:48px;">
         <p class="eyebrow">Research</p>
         <h1>Cilia-Cilia Joining</h1>
@@ -292,7 +302,7 @@
 
 <!-- ════════════════════ BIOINFORMATICS ══════════════════════════════ -->
 <section id="bioinformatics" class="section" style="display:none;">
-    <img src="convart.jpeg" alt="Bioinformatics" class="page-hero" style="margin:-56px -32px 0;width:calc(100% + 64px);max-width:none;">
+    <img src="convart.jpeg" alt="Bioinformatics" class="page-hero">
     <div style="padding-top:48px;">
         <p class="eyebrow">Research</p>
         <h1>Bioinformatics</h1>
@@ -442,7 +452,7 @@
 
 <!-- ════════════════════ CURRENT MEMBERS ════════════════════════════ -->
 <section id="current-members" class="section" style="display:none;">
-    <img src="figure3.png" alt="Kaplan Lab" class="page-hero" style="margin:-56px -32px 0;width:calc(100% + 64px);max-width:none;">
+    <img src="figure3.png" alt="Kaplan Lab" class="page-hero">
     <div style="padding-top:48px;">
         <p class="eyebrow">Team</p>
         <h1>Current Members</h1>
