@@ -18,7 +18,6 @@
   <meta name="twitter:description" content="359 human cell types classified by ciliation status, with PubMed-linked evidence.">
   <meta name="twitter:image"      content="https://rarediseaselab.github.io/home/cilia_res1.jpg">
 
-  <!-- Same stylesheet as index.html -->
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" type="image/png" href="elegans2.png">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-EKT3SLJ516"></script>
@@ -234,6 +233,47 @@
       color: #444;
     }
 
+    /* ── NEW: sort indicators ─────────────────────────────────── */
+    .ca-sortable { cursor: pointer; user-select: none; }
+    .ca-sortable:hover { color: #1f3c88; }
+    .ca-sort-icon { margin-left: 4px; font-size: 10px; color: #bbb; }
+    .ca-sort-icon.asc::after  { content: '▲'; color: #1f3c88; }
+    .ca-sort-icon.desc::after { content: '▼'; color: #1f3c88; }
+    .ca-sort-icon:not(.asc):not(.desc)::after { content: '⇅'; }
+
+    /* ── NEW: cilia function tag ──────────────────────────────── */
+    .ca-func-tag {
+      display: inline-block;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 100px;
+      background: #eef2ff;
+      color: #1f3c88;
+      white-space: nowrap;
+      max-width: 170px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      vertical-align: middle;
+    }
+    .ca-func-none  { background: #f5f5f5; color: #aaa; }
+    .ca-func-empty { color: #ccc; background: transparent; }
+
+    /* ── NEW: per-row cite button ─────────────────────────────── */
+    .ca-cite-btn {
+      background: none;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      color: #999;
+      cursor: pointer;
+      font-size: 11px;
+      padding: 2px 7px;
+      font-family: inherit;
+      transition: background .12s, color .12s, border-color .12s;
+      white-space: nowrap;
+    }
+    .ca-cite-btn:hover  { background: #1f3c88; color: #fff; border-color: #1f3c88; }
+    .ca-cite-btn.copied { background: #1a7a42; color: #fff; border-color: #1a7a42; }
+
     @media (max-width: 640px) {
       .ca-stats { grid-template-columns: repeat(2, 1fr); }
       .ca-filters select { min-width: 140px; }
@@ -242,7 +282,7 @@
 </head>
 
 <body>
-<!-- ══════════ NAVBAR — matches index.html exactly ══════════════════════════ -->
+<!-- ══════════ NAVBAR ══════════════════════════════════════════════════════ -->
 <nav class="navbar">
   <a class="nav-brand" href="index.html">Kaplan Lab</a>
   <button class="nav-toggle" id="ca-nav-toggle" onclick="caToggleNav()" aria-label="Open menu" aria-expanded="false">
@@ -285,10 +325,9 @@
 </nav>
 <div id="ca-nav-overlay" class="nav-overlay"></div>
 
-<!-- Breadcrumb -->
 <div id="breadcrumbs"><a href="index.html">Home</a> › CiliaAtlas</div>
 
-<!-- ══════════ HEADER ════════════════════════════════════════════════════════ -->
+<!-- ══════════ HEADER ═════════════════════════════════════════════════════ -->
 <div class="ca-header">
   <p class="eyebrow">Tools &amp; Databases</p>
   <h1>CiliaAtlas: Cell Type Ciliation Database</h1>
@@ -300,7 +339,7 @@
   </p>
 </div>
 
-<!-- ══════════ STATS ROW ════════════════════════════════════════════════════ -->
+<!-- ══════════ STATS ROW ══════════════════════════════════════════════════ -->
 <div class="ca-stats">
   <div class="ca-stat"><div class="ca-stat-num">359</div><div class="ca-stat-lbl">Cell Types</div></div>
   <div class="ca-stat"><div class="ca-stat-num green">88</div><div class="ca-stat-lbl">Ciliated</div></div>
@@ -318,7 +357,9 @@
     <summary>How to Use CiliaAtlas</summary>
     <ul>
       <li><strong>Search:</strong> Enter any cell type name, organ, or organ system — results update instantly.</li>
-      <li><strong>Filter:</strong> Use the dropdowns to narrow by organ system, ciliation status, cilia type, or confidence level.</li>
+      <li><strong>Filter:</strong> Use the dropdowns to narrow by organ system, ciliation status, cilia type, confidence level, or cilia function.</li>
+      <li><strong>Sort:</strong> Click any column header to sort ascending; click again to reverse.</li>
+      <li><strong>Cite:</strong> Click the 📋 button on any row to copy a formatted citation for that entry to your clipboard.</li>
       <li><strong>Reset:</strong> Click <em>Reset All</em> to clear all filters and reload the full atlas.</li>
       <li><strong>PubMed links:</strong> Each PMID in the last column is a direct link to the PubMed record.</li>
       <li><strong>Download:</strong> Export the full atlas or your current filtered view as a CSV file.</li>
@@ -376,6 +417,19 @@
       <option>Low</option>
       <option>No data</option>
     </select>
+    <select id="ca-filter-function" onchange="caRender()">
+      <option value="">All Cilia Functions</option>
+      <option>General Signalling</option>
+      <option>General Signalling / Fluid Response</option>
+      <option>General Signalling / Mechanosensing</option>
+      <option>Sensory Signalling</option>
+      <option>Fluid Movement</option>
+      <option>Fluid Movement / Sperm Transport</option>
+      <option>Flow Sensing / Lymphatic Patterning</option>
+      <option>Regenerative Signalling</option>
+      <option>Developmental Signalling</option>
+      <option>None</option>
+    </select>
   </div>
   <div class="ca-btn-row">
     <button class="ca-btn" onclick="caReset()">Reset All</button>
@@ -392,13 +446,15 @@
     <table id="ca-table" style="display:none;">
       <thead>
         <tr>
-          <th style="width:15%">Organ System</th>
-          <th style="width:12%">Organ</th>
-          <th style="width:18%">Cell Type</th>
-          <th style="width:16%">Ciliation Status</th>
-          <th style="width:13%">Cilia Type</th>
-          <th style="width:8%">Confidence</th>
-          <th style="width:18%">PubMed IDs</th>
+          <th class="ca-sortable" onclick="caSort('organ_system')" style="width:14%">Organ System <span class="ca-sort-icon" id="sort-organ_system"></span></th>
+          <th class="ca-sortable" onclick="caSort('organ')" style="width:11%">Organ <span class="ca-sort-icon" id="sort-organ"></span></th>
+          <th class="ca-sortable" onclick="caSort('cell_type')" style="width:16%">Cell Type <span class="ca-sort-icon" id="sort-cell_type"></span></th>
+          <th class="ca-sortable" onclick="caSort('ciliation_status')" style="width:14%">Ciliation Status <span class="ca-sort-icon" id="sort-ciliation_status"></span></th>
+          <th class="ca-sortable" onclick="caSort('cilia_type')" style="width:11%">Cilia Type <span class="ca-sort-icon" id="sort-cilia_type"></span></th>
+          <th class="ca-sortable" onclick="caSort('cilia_function')" style="width:14%">Cilia Function <span class="ca-sort-icon" id="sort-cilia_function"></span></th>
+          <th class="ca-sortable" onclick="caSort('confidence')" style="width:7%">Confidence <span class="ca-sort-icon" id="sort-confidence"></span></th>
+          <th style="width:16%">PubMed IDs</th>
+          <th style="width:3%"></th>
         </tr>
       </thead>
       <tbody id="ca-tbody"></tbody>
@@ -419,7 +475,7 @@
   </p>
 </div>
 
-<!-- ══════════ FOOTER — matches index.html ═══════════════════════════════ -->
+<!-- ══════════ FOOTER ════════════════════════════════════════════════════ -->
 <footer class="site-footer">
   <div class="footer-inner">
     <div class="footer-cols">
@@ -475,6 +531,7 @@ const CA_CONF_STYLE = {
 };
 
 let CA_DATA = [], caFiltered = [];
+let sortCol = null, sortDir = 1;
 
 fetch('mca_data.json')
   .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
@@ -489,24 +546,46 @@ fetch('mca_data.json')
       'Error loading data (' + e.message + '). Ensure mca_data.json is in the repository root.';
   });
 
+/* ── Sort ───────────────────────────────────────────────────────────────── */
+function caSort(col) {
+  if (sortCol === col) { sortDir *= -1; }
+  else { sortCol = col; sortDir = 1; }
+  document.querySelectorAll('.ca-sort-icon').forEach(el => el.className = 'ca-sort-icon');
+  const icon = document.getElementById('sort-' + col);
+  if (icon) icon.className = 'ca-sort-icon ' + (sortDir === 1 ? 'asc' : 'desc');
+  caRender();
+}
+
+/* ── Render ─────────────────────────────────────────────────────────────── */
 function caRender() {
   const search = (document.getElementById('ca-search').value || '').toLowerCase().trim();
   const sys    = document.getElementById('ca-filter-system').value;
   const status = document.getElementById('ca-filter-status').value;
   const type   = document.getElementById('ca-filter-type').value;
   const conf   = document.getElementById('ca-filter-confidence').value;
+  const func   = document.getElementById('ca-filter-function').value;
 
   caFiltered = CA_DATA.filter(r => {
     if (sys    && r.organ_system     !== sys)    return false;
     if (status && r.ciliation_status !== status) return false;
     if (type   && r.cilia_type       !== type)   return false;
     if (conf   && r.confidence       !== conf)   return false;
+    if (func   && (r.cilia_function || '').trim() !== func) return false;
     if (search) {
-      const hay = (r.organ_system+' '+r.organ+' '+r.cell_type+' '+r.ciliation_status+' '+r.cilia_type).toLowerCase();
+      const hay = (r.organ_system+' '+r.organ+' '+r.cell_type+' '+r.ciliation_status+' '+
+                   r.cilia_type+' '+(r.cilia_function||'')).toLowerCase();
       if (!hay.includes(search)) return false;
     }
     return true;
   });
+
+  if (sortCol) {
+    caFiltered = [...caFiltered].sort((a, b) => {
+      const av = (a[sortCol] || '').toLowerCase();
+      const bv = (b[sortCol] || '').toLowerCase();
+      return av < bv ? -sortDir : av > bv ? sortDir : 0;
+    });
+  }
 
   document.getElementById('ca-counter').textContent =
     'Showing ' + caFiltered.length + ' of ' + CA_DATA.length + ' cell types';
@@ -515,35 +594,77 @@ function caRender() {
   document.getElementById('ca-tbody').innerHTML = display.map(r => {
     const sStyle = CA_STATUS_STYLE[r.ciliation_status] || 'background:#f0f0f0;color:#555;';
     const cStyle = CA_CONF_STYLE[r.confidence] || '';
+
     let pmidHtml = '';
     if (r.pmid_references) {
       pmidHtml = r.pmid_references.split(';').map(p => p.trim()).filter(Boolean)
         .map(id => '<a href="https://pubmed.ncbi.nlm.nih.gov/'+id+'/" target="_blank">'+caEsc(id)+'</a>')
         .join(' ');
     }
+
+    const fn = (r.cilia_function || '').trim();
+    let funcHtml;
+    if (!fn)           funcHtml = '<span style="color:#ccc;">\u2014</span>';
+    else if (fn==='None') funcHtml = '<span class="ca-func-tag ca-func-none">None</span>';
+    else               funcHtml = '<span class="ca-func-tag" title="'+caEsc(fn)+'">'+caEsc(fn)+'</span>';
+
+    const cite = caEsc(JSON.stringify({
+      cell:r.cell_type, organ:r.organ, system:r.organ_system,
+      status:r.ciliation_status, pmids:r.pmid_references||''
+    }));
+
     return '<tr>'+
       '<td style="font-size:13px;">'+caEsc(r.organ_system)+'</td>'+
       '<td style="font-size:13px;">'+caEsc(r.organ)+'</td>'+
       '<td class="ca-cell-name">'+caEsc(r.cell_type)+'</td>'+
       '<td><span class="ca-badge" style="'+sStyle+'">'+caEsc(r.ciliation_status)+'</span></td>'+
       '<td class="ca-mono">'+caEsc(r.cilia_type||'\u2014')+'</td>'+
+      '<td>'+funcHtml+'</td>'+
       '<td style="font-size:12px;'+cStyle+'">'+caEsc(r.confidence)+'</td>'+
       '<td class="ca-pmid">'+(pmidHtml||'<span style="color:#ccc;">\u2014</span>')+'</td>'+
+      '<td><button class="ca-cite-btn" data-cite="'+cite+'" onclick="caCite(this)" title="Copy citation">\uD83D\uDCCB</button></td>'+
       '</tr>';
   }).join('');
 
   if (caFiltered.length > 500) {
     document.getElementById('ca-tbody').innerHTML +=
-      '<tr><td colspan="7" style="text-align:center;font-size:12px;color:#aaa;padding:12px;">'+
+      '<tr><td colspan="9" style="text-align:center;font-size:12px;color:#aaa;padding:12px;">'+
       'Showing first 500 results \u2014 refine your search to see more.</td></tr>';
   }
 }
 
+/* ── Per-row citation copy ──────────────────────────────────────────────── */
+function caCite(btn) {
+  let d; try { d = JSON.parse(btn.getAttribute('data-cite')); } catch(e) { return; }
+  const pmids = d.pmids ? d.pmids.split(';').map(p=>p.trim()).filter(Boolean) : [];
+  const text =
+    d.cell+' ('+d.organ+', '+d.system+'). Ciliation status: '+d.status+'.'+
+    (pmids.length ? ' PMID: '+pmids.join(', ')+'.' : '')+
+    ' Source: CiliaAtlas v1.0, Kaplan Lab. https://rarediseaselab.github.io/home/ciliaatlas.html';
+  const done = () => {
+    btn.textContent = '\u2713 Copied'; btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '\uD83D\uDCCB'; btn.classList.remove('copied'); }, 2000);
+  };
+  if (navigator.clipboard) { navigator.clipboard.writeText(text).then(done).catch(fallback); }
+  else fallback();
+  function fallback() {
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.style.cssText = 'position:fixed;opacity:0';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta); done();
+  }
+}
+
+/* ── Reset ──────────────────────────────────────────────────────────────── */
 function caReset() {
-  ['ca-search','ca-filter-system','ca-filter-status','ca-filter-type','ca-filter-confidence']
+  ['ca-search','ca-filter-system','ca-filter-status','ca-filter-type','ca-filter-confidence','ca-filter-function']
     .forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  sortCol = null; sortDir = 1;
+  document.querySelectorAll('.ca-sort-icon').forEach(el => el.className = 'ca-sort-icon');
   caRender();
 }
+
+/* ── Export ─────────────────────────────────────────────────────────────── */
 function caExport()         { caDownload(CA_DATA,    'ciliaatlas_full.csv'); }
 function caExportFiltered() { caDownload(caFiltered, 'ciliaatlas_filtered.csv'); }
 function caDownload(data, filename) {
@@ -558,11 +679,12 @@ function caDownload(data, filename) {
   a.href = URL.createObjectURL(new Blob([[hdr.join(','),...rows].join('\n')],{type:'text/csv'}));
   a.download = filename; a.click();
 }
+
 function caEsc(s) {
-  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-/* ── Mobile nav ─────────────────────────────────────────────── */
+/* ── Mobile nav ─────────────────────────────────────────────────────────── */
 function caOpenNav() {
   document.querySelector('.nav-links').classList.add('open');
   document.getElementById('ca-nav-toggle').classList.add('open');
@@ -597,11 +719,7 @@ document.addEventListener('DOMContentLoaded', () => {
     a.addEventListener('click', () => { if (window.innerWidth <= 768) caCloseNav(); });
   });
   document.addEventListener('keydown', e => { if (e.key === 'Escape') caCloseNav(); });
-  window.addEventListener('resize', () => {
-    if (window.innerWidth > 768) {
-      caCloseNav();
-    }
-  });
+  window.addEventListener('resize', () => { if (window.innerWidth > 768) caCloseNav(); });
   document.querySelectorAll('.nav-drop-btn').forEach(btn => {
     btn.textContent = btn.textContent.replace(/\s*▾\s*$/, '').trim();
     btn.setAttribute('aria-expanded', 'false');
