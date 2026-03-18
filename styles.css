@@ -76,6 +76,9 @@ li { font-size: 16px; line-height: 1.6; color: var(--ink-2); margin-bottom: 4px;
   display: flex;
   align-items: center;
   padding: 0 32px;
+  /* needed so the absolute mobile menu anchors to the navbar */
+  position: relative;
+  position: sticky;   /* sticky wins in cascade — both needed for older browsers */
 }
 
 /* Lab name — far left */
@@ -170,15 +173,19 @@ li { font-size: 16px; line-height: 1.6; color: var(--ink-2); margin-bottom: 4px;
   text-decoration: none;
 }
 
-/* Mobile hamburger (hidden on desktop) */
+/* Mobile hamburger — hidden on desktop */
 .nav-toggle {
   display: none;
   flex-direction: column;
+  justify-content: center;
   gap: 5px;
   cursor: pointer;
-  padding: 4px;
+  padding: 6px 4px;
   background: none;
   border: none;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
 }
 .nav-toggle span {
   display: block;
@@ -186,7 +193,13 @@ li { font-size: 16px; line-height: 1.6; color: var(--ink-2); margin-bottom: 4px;
   height: 2px;
   background: var(--ink);
   border-radius: 1px;
+  transition: transform .22s ease, opacity .22s ease;
+  transform-origin: center;
 }
+/* Animate hamburger → ✕ when nav is open */
+.nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-toggle.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
 /* ── Breadcrumbs ─────────────────────────────────────────────── */
 #breadcrumbs {
@@ -819,46 +832,101 @@ button.db-btn:hover { background: var(--accent); color: #fff; border-color: var(
   :root { --nav-h: 56px; --gap: 32px; }
 
   .wrap, .section-body, .home-title-bar, .home-hero-below,
-  .home-tiles, .stats-bar, .footer-inner { padding-left: 18px; padding-right: 18px; }
+  .home-tiles, .footer-inner { padding-left: 18px; padding-right: 18px; }
 
   .navbar { padding: 0 18px; }
 
-  /* Mobile nav */
-  .nav-links {
+  /* ── Mobile overlay behind open menu ──────────────────────── */
+  .nav-overlay {
     display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.35);
+    z-index: 99;
+  }
+  .nav-overlay.open { display: block; }
+
+  /* ── Mobile nav drawer ───────────────────────────────────── */
+  .nav-links {
+    display: flex;              /* always flex, height controls visibility */
+    flex-direction: column;
     position: absolute;
     top: var(--nav-h);
     left: 0; right: 0;
     background: var(--white);
-    border-bottom: 1px solid var(--border);
-    flex-direction: column;
-    padding: 8px 0;
+    border-bottom: 2px solid var(--accent);
+    padding: 6px 0 12px;
     z-index: 100;
     gap: 0;
+    max-height: 0;
+    overflow: hidden;
+    visibility: hidden;
+    transition: max-height .28s ease, visibility 0s linear .28s;
+    box-shadow: 0 8px 24px rgba(0,0,0,.1);
   }
-  .nav-links.open { display: flex; }
+  .nav-links.open {
+    max-height: 80vh;
+    visibility: visible;
+    transition: max-height .28s ease, visibility 0s linear 0s;
+    overflow-y: auto;
+  }
+
+  /* Nav items in mobile */
   .nav-links > li > a,
   .nav-links > li > .nav-drop-btn {
     height: auto;
-    padding: 12px 18px;
-    border-bottom: none;
+    padding: 13px 20px;
+    border-bottom: 1px solid var(--off);
     width: 100%;
-    justify-content: flex-start;
+    justify-content: space-between;
+    font-size: 16px;
+    color: var(--ink);
   }
+  .nav-links > li:last-child > a { border-bottom: none; }
+  .nav-links > li > a:hover,
+  .nav-links > li > .nav-drop-btn:hover {
+    background: var(--off);
+    border-bottom-color: var(--off);
+  }
+
+  /* Dropdown in mobile — indented sub-items */
   .nav-drop-menu {
     position: static;
     box-shadow: none;
     border: none;
-    border-top: 1px solid var(--border);
+    border-top: none;
     border-radius: 0;
+    min-width: 0;
     display: none;
+    background: var(--off);
   }
   .nav-drop.open .nav-drop-menu { display: block; }
-  .nav-drop-menu li a { padding-left: 32px; }
+  .nav-drop-menu li a {
+    padding: 11px 20px 11px 36px;
+    font-size: 15px;
+    border-bottom: 1px solid var(--border);
+    color: var(--ink-2);
+  }
+  .nav-drop-menu li:last-child a { border-bottom: none; }
+  .nav-drop-menu li a:hover { background: var(--pale); }
+
+  /* Chevron rotation on open dropdown */
+  .nav-drop-btn::after {
+    content: '▾';
+    font-size: 11px;
+    transition: transform .2s;
+    margin-left: auto;
+    padding-left: 8px;
+    color: var(--ink-3);
+  }
+  /* Remove original ▾ from button text via JS — CSS can't remove text */
+  .nav-drop.open > .nav-drop-btn::after { transform: rotate(180deg); }
+
+  /* Show hamburger */
   .nav-toggle { display: flex; margin-left: auto; }
 
+  /* Layout stacks */
   .home-tiles { grid-template-columns: 1fr; }
-  .stats-bar  { grid-template-columns: repeat(2,1fr); }
   .research-grid { grid-template-columns: 1fr; }
   .team-grid { grid-template-columns: repeat(2, 1fr); }
   .alumni-row { grid-template-columns: 1fr; gap: 2px; padding: 10px 0; }
@@ -867,10 +935,13 @@ button.db-btn:hover { background: var(--accent); color: #fff; border-color: var(
   .footer-cols { grid-template-columns: 1fr; gap: 24px; }
   .chart-container { grid-template-columns: 1fr; }
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .ca-stats { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 480px) {
   .team-grid { grid-template-columns: 1fr 1fr; }
   h1 { font-size: 24px; }
   h2 { font-size: 20px; }
+  .ca-filters { flex-direction: column; }
+  .ca-filters select { min-width: 100%; }
 }
