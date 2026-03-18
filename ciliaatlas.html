@@ -245,13 +245,13 @@
 <!-- ══════════ NAVBAR — matches index.html exactly ══════════════════════════ -->
 <nav class="navbar">
   <a class="nav-brand" href="index.html">Kaplan Lab</a>
-  <button class="nav-toggle" onclick="this.closest('nav').querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">
+  <button class="nav-toggle" id="ca-nav-toggle" onclick="caToggleNav()" aria-label="Open menu" aria-expanded="false">
     <span></span><span></span><span></span>
   </button>
   <ul class="nav-links">
     <li><a href="index.html">Home</a></li>
     <li class="nav-drop">
-      <button class="nav-drop-btn" onclick="this.closest('.nav-drop').classList.toggle('open')">Research ▾</button>
+      <button class="nav-drop-btn" onclick="caToggleDrop(this)" aria-haspopup="true" aria-expanded="false">Research ▾</button>
       <ul class="nav-drop-menu">
         <li><a href="index.html">Research Overview</a></li>
         <li><a href="index.html">Cilia &amp; Ciliopathies</a></li>
@@ -261,7 +261,7 @@
       </ul>
     </li>
     <li class="nav-drop">
-      <button class="nav-drop-btn" onclick="this.closest('.nav-drop').classList.toggle('open')">Team ▾</button>
+      <button class="nav-drop-btn" onclick="caToggleDrop(this)" aria-haspopup="true" aria-expanded="false">Team ▾</button>
       <ul class="nav-drop-menu">
         <li><a href="index.html">Current Members</a></li>
         <li><a href="index.html">Former Members</a></li>
@@ -272,7 +272,7 @@
     <li><a href="index.html">Publications</a></li>
     <li><a href="index.html">News</a></li>
     <li class="nav-drop">
-      <button class="nav-drop-btn" onclick="this.closest('.nav-drop').classList.toggle('open')">Tools ▾</button>
+      <button class="nav-drop-btn" onclick="caToggleDrop(this)" aria-haspopup="true" aria-expanded="false">Tools ▾</button>
       <ul class="nav-drop-menu">
         <li><a href="index.html">CiliaHub</a></li>
         <li><a href="ciliaatlas.html" class="active">CiliaAtlas</a></li>
@@ -283,6 +283,7 @@
     <li><a href="index.html">Contact</a></li>
   </ul>
 </nav>
+<div id="ca-nav-overlay" class="nav-overlay"></div>
 
 <!-- Breadcrumb -->
 <div id="breadcrumbs"><a href="index.html">Home</a> › CiliaAtlas</div>
@@ -560,6 +561,52 @@ function caDownload(data, filename) {
 function caEsc(s) {
   return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
+
+/* ── Mobile nav ─────────────────────────────────────────────── */
+function caOpenNav() {
+  document.querySelector('.nav-links').classList.add('open');
+  document.getElementById('ca-nav-toggle').classList.add('open');
+  document.getElementById('ca-nav-toggle').setAttribute('aria-expanded','true');
+  const ov = document.getElementById('ca-nav-overlay');
+  if (ov) ov.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function caCloseNav() {
+  document.querySelector('.nav-links').classList.remove('open');
+  document.getElementById('ca-nav-toggle').classList.remove('open');
+  document.getElementById('ca-nav-toggle').setAttribute('aria-expanded','false');
+  const ov = document.getElementById('ca-nav-overlay');
+  if (ov) ov.classList.remove('open');
+  document.body.style.overflow = '';
+  document.querySelectorAll('.nav-drop.open').forEach(d => d.classList.remove('open'));
+}
+function caToggleNav() {
+  document.querySelector('.nav-links').classList.contains('open') ? caCloseNav() : caOpenNav();
+}
+function caToggleDrop(btn) {
+  const drop = btn.closest('.nav-drop');
+  const isOpen = drop.classList.contains('open');
+  document.querySelectorAll('.nav-drop.open').forEach(d => d.classList.remove('open'));
+  if (!isOpen) drop.classList.add('open');
+  btn.setAttribute('aria-expanded', !isOpen);
+}
+document.addEventListener('DOMContentLoaded', () => {
+  const ov = document.getElementById('ca-nav-overlay');
+  if (ov) ov.addEventListener('click', caCloseNav);
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    a.addEventListener('click', () => { if (window.innerWidth <= 768) caCloseNav(); });
+  });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') caCloseNav(); });
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 768) {
+      caCloseNav();
+    }
+  });
+  document.querySelectorAll('.nav-drop-btn').forEach(btn => {
+    btn.textContent = btn.textContent.replace(/\s*▾\s*$/, '').trim();
+    btn.setAttribute('aria-expanded', 'false');
+  });
+});
 </script>
 </body>
 </html>
