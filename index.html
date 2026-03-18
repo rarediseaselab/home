@@ -53,8 +53,73 @@
     }
     document.querySelectorAll('.nav-links a[data-sec]').forEach(a => a.classList.toggle('active', a.dataset.sec === id));
   }
-  function toggleNav() { document.querySelector('.nav-links').classList.toggle('open'); }
-  function toggleDrop(el) { el.closest('.nav-drop').classList.toggle('open'); }
+  /* ── Mobile nav ──────────────────────────────────────────────────── */
+  const navLinks  = document.querySelector('.nav-links');
+  const navToggle = document.querySelector('.nav-toggle');
+  const navOverlay = document.getElementById('nav-overlay');
+
+  function openNav() {
+    navLinks.classList.add('open');
+    navToggle.classList.add('open');
+    navToggle.setAttribute('aria-expanded', 'true');
+    if (navOverlay) navOverlay.classList.add('open');
+    document.body.style.overflow = 'hidden';   /* prevent page scroll behind overlay */
+  }
+  function closeNav() {
+    navLinks.classList.remove('open');
+    navToggle.classList.remove('open');
+    navToggle.setAttribute('aria-expanded', 'false');
+    if (navOverlay) navOverlay.classList.remove('open');
+    document.body.style.overflow = '';
+    /* also close any open dropdowns */
+    document.querySelectorAll('.nav-drop.open').forEach(d => d.classList.remove('open'));
+  }
+  function toggleNav() {
+    navLinks.classList.contains('open') ? closeNav() : openNav();
+  }
+  function toggleDrop(btn) {
+    const drop = btn.closest('.nav-drop');
+    const isOpen = drop.classList.contains('open');
+    /* close all other open drops first */
+    document.querySelectorAll('.nav-drop.open').forEach(d => d.classList.remove('open'));
+    if (!isOpen) drop.classList.add('open');
+    btn.setAttribute('aria-expanded', !isOpen);
+  }
+
+  /* Close on overlay click */
+  document.addEventListener('DOMContentLoaded', () => {
+    const ov = document.getElementById('nav-overlay');
+    if (ov) ov.addEventListener('click', closeNav);
+
+    /* Close on any nav link tap (mobile) */
+    document.querySelectorAll('.nav-links a').forEach(a => {
+      a.addEventListener('click', () => {
+        if (window.innerWidth <= 768) closeNav();
+      });
+    });
+
+    /* Close on Escape */
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') { closeNav(); closeLb(); }
+    });
+
+    /* On desktop resize, reset mobile state */
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 768) {
+        navLinks.classList.remove('open');
+        navToggle.classList.remove('open');
+        navToggle.setAttribute('aria-expanded', 'false');
+        if (navOverlay) navOverlay.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+    });
+
+    /* Strip trailing ▾ from drop-btn text (CSS adds it back via ::after) */
+    document.querySelectorAll('.nav-drop-btn').forEach(btn => {
+      btn.textContent = btn.textContent.replace(/\s*▾\s*$/, '').trim();
+      btn.setAttribute('aria-expanded', 'false');
+    });
+  });
   window.addEventListener('DOMContentLoaded', () => show('home'));
   </script>
 </head>
@@ -62,11 +127,11 @@
 
 <nav class="navbar">
   <a class="nav-brand" href="#" onclick="show('home');return false">Kaplan Lab</a>
-  <button class="nav-toggle" onclick="toggleNav()" aria-label="Menu"><span></span><span></span><span></span></button>
+  <button class="nav-toggle" onclick="toggleNav()" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
   <ul class="nav-links">
     <li><a href="#" data-sec="home" onclick="show('home');return false">Home</a></li>
     <li class="nav-drop">
-      <button class="nav-drop-btn" onclick="toggleDrop(this)">Research ▾</button>
+      <button class="nav-drop-btn" onclick="toggleDrop(this)" aria-haspopup="true" aria-expanded="false">Research ▾</button>
       <ul class="nav-drop-menu">
         <li><a href="#" onclick="show('research-overview');return false">Research Overview</a></li>
         <li><a href="#" onclick="show('cilia-ciliopathies');return false">Cilia &amp; Ciliopathies</a></li>
@@ -76,7 +141,7 @@
       </ul>
     </li>
     <li class="nav-drop">
-      <button class="nav-drop-btn" onclick="toggleDrop(this)">Team ▾</button>
+      <button class="nav-drop-btn" onclick="toggleDrop(this)" aria-haspopup="true" aria-expanded="false">Team ▾</button>
       <ul class="nav-drop-menu">
         <li><a href="#" onclick="show('current-members');return false">Current Members</a></li>
         <li><a href="#" onclick="show('former-members');return false">Former Members</a></li>
@@ -87,7 +152,7 @@
     <li><a href="#" data-sec="publications" onclick="show('publications');return false">Publications</a></li>
     <li><a href="#" data-sec="news" onclick="show('news');return false">News</a></li>
     <li class="nav-drop">
-      <button class="nav-drop-btn" onclick="toggleDrop(this)">Tools ▾</button>
+      <button class="nav-drop-btn" onclick="toggleDrop(this)" aria-haspopup="true" aria-expanded="false">Tools ▾</button>
       <ul class="nav-drop-menu">
         <li><a href="#" onclick="show('ciliahub');return false">CiliaHub</a></li>
         <li><a href="ciliaatlas.html">CiliaAtlas</a></li>
@@ -98,6 +163,7 @@
     <li><a href="#" data-sec="contact" onclick="show('contact');return false">Contact</a></li>
   </ul>
 </nav>
+<div id="nav-overlay" class="nav-overlay"></div>
 <div id="breadcrumbs"></div>
 
 
