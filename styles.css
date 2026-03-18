@@ -5,7 +5,7 @@
    Palette: near-black #1a1a1a, white, deep teal #0a4f6e (accent)
 ═══════════════════════════════════════════════════════════════ */
 
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Source+Serif+4:ital,wght@0,300;0,400;1,300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Source+Serif+4:ital,wght@0,300;0,400;1,300&display=swap');
 
 /* ── Reset & tokens ──────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -14,9 +14,9 @@
   --ink:        #1a1a1a;
   --ink-light:  #555;
   --ink-faint:  #999;
-  --accent:     #0a4f6e;
-  --accent-mid: #1a7fa8;
-  --accent-pale:#e8f4f9;
+  --accent:     #1f3c88;
+  --accent-mid: #2a6fdb;
+  --accent-pale:#eef2fc;
   --white:      #ffffff;
   --off-white:  #f7f7f5;
   --border:     #e4e4e0;
@@ -24,7 +24,7 @@
   --nav-h:      64px;
   --max-w:      1060px;
   --r:          6px;
-  --font-sans:  'DM Sans', sans-serif;
+  --font-sans:  'Inter', 'DM Sans', sans-serif;
   --font-serif: 'Source Serif 4', Georgia, serif;
 }
 
@@ -33,7 +33,7 @@ html { scroll-behavior: smooth; }
 body {
   font-family: var(--font-sans);
   font-size: 16px;
-  line-height: 1.7;
+  line-height: 1.6;
   color: var(--ink);
   background: var(--white);
   -webkit-font-smoothing: antialiased;
@@ -44,19 +44,19 @@ body {
 ::-webkit-scrollbar-track { background: var(--off-white); }
 ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
 
-/* ── Typography ──────────────────────────────────────────────── */
-h1 { font-size: 2rem; font-weight: 600; line-height: 1.2; letter-spacing: -0.02em; color: var(--ink); margin-bottom: 1rem; }
-h2 { font-size: 1.35rem; font-weight: 600; line-height: 1.3; color: var(--ink); margin-bottom: .6rem; }
-h3 { font-size: 1.1rem; font-weight: 600; color: var(--ink); margin-bottom: .4rem; }
-h4 { font-size: .95rem; font-weight: 600; color: var(--ink); margin-bottom: .3rem; }
-p  { margin-bottom: 1rem; color: var(--ink); }
+/* ── Global typography — one consistent scale everywhere ─────── */
+h1 { font-size: 28px; font-weight: 600; line-height: 1.2; letter-spacing: -0.02em; color: var(--ink); margin-bottom: 1rem; }
+h2 { font-size: 22px; font-weight: 600; line-height: 1.25; color: var(--ink); margin-bottom: .6rem; }
+h3 { font-size: 18px; font-weight: 600; color: var(--ink); margin-bottom: .4rem; }
+h4 { font-size: 16px; font-weight: 600; color: var(--ink); margin-bottom: .3rem; }
+p  { margin-bottom: 1rem; color: var(--ink); font-size: 16px; }
 p:last-child { margin-bottom: 0; }
-a  { color: var(--accent); text-decoration: none; }
+a  { color: var(--accent-mid); text-decoration: none; }
 a:hover { text-decoration: underline; }
 em { font-style: italic; }
 strong { font-weight: 600; }
 ul, ol { padding-left: 1.4rem; margin-bottom: 1rem; }
-li { margin-bottom: .35rem; }
+li { margin-bottom: .35rem; font-size: 16px; }
 
 /* ── Navbar ──────────────────────────────────────────────────── */
 .navbar {
@@ -85,10 +85,10 @@ li { margin-bottom: .35rem; }
   white-space: nowrap;
 }
 
-/* All nav items — uniform 13px, right-aligned */
+/* All nav items — uniform 16px, right-aligned */
 .navbar a,
 .navbar .dropbtn {
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 500;
   color: var(--ink-light);
   text-decoration: none;
@@ -123,9 +123,9 @@ li { margin-bottom: .35rem; }
 }
 .dropdown:hover .dropdown-content { display: block; }
 .dropdown-content a {
-  font-size: 13px;
+  font-size: 16px !important;
   color: var(--ink);
-  padding: 11px 18px;
+  padding: 12px 18px;
   display: block;
   height: auto;
   border-bottom: 1px solid var(--off-white);
@@ -160,69 +160,65 @@ li { margin-bottom: .35rem; }
 }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 
-/* ── Home hero — LeRoux style: full-width image, text below ──── */
+/* ── Home hero — LeRoux exact pattern ───────────────────────────
+   Structure:
+   1. Title text  ("Welcome to the Kaplan Lab!") — above image
+   2. figure3.png — full width, natural height, zero crop
+   3. Caption + subtitle — immediately below image
+   4. CTAs
+──────────────────────────────────────────────────────────────── */
 .hero-banner {
   width: calc(100% + 64px);
   margin: -56px -32px 0;
-  display: block;           /* not flex — image flows naturally */
-  position: relative;
-}
-.hero-banner-bg {
-  width: 100%;
-  height: auto;             /* full image, never cropped */
   display: block;
-  object-fit: fill;         /* show every pixel — no cropping at all */
 }
-/* No overlay — image shown as-is, like LeRoux */
-.hero-banner-overlay { display: none; }
-
-/* Text block below the image, not on top of it */
-.hero-banner-content {
-  background: var(--white);
-  padding: 36px 32px 40px;
-  text-align: left;
-}
-.hero-banner-logo { display: none; }  /* removed per request */
-
+/* ① Title ABOVE the image */
 .hero-banner-title {
-  font-size: 2.2rem;
+  font-size: 28px;
   font-weight: 700;
   color: var(--ink);
-  letter-spacing: -0.02em;
-  line-height: 1.15;
-  margin-bottom: 12px;
+  line-height: 1.2;
+  padding: 32px 32px 20px;
+  margin: 0;
+  background: var(--white);
+}
+/* ② Image — full width, zero crop, natural ratio */
+.hero-banner-bg {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: unset;   /* not used when height:auto — image just renders fully */
+}
+/* no overlay */
+.hero-banner-overlay { display: none; }
+
+/* ③ Content block BELOW the image */
+.hero-banner-content {
+  background: var(--white);
+  padding: 20px 32px 32px;
 }
 .hero-banner-sub {
-  font-family: var(--font-serif);
-  font-size: 1.05rem;
-  font-weight: 300;
-  font-style: italic;
-  color: var(--ink-light);
-  line-height: 1.65;
-  max-width: 640px;
-  margin-bottom: 8px;
-}
-.hero-banner-affil {
-  font-size: 13px;
-  color: var(--ink-faint);
-  letter-spacing: .01em;
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--ink);
+  line-height: 1.5;
   margin-bottom: 6px;
 }
 .hero-banner-caption {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--ink-faint);
-  margin-bottom: 28px;
   font-style: italic;
+  margin-bottom: 20px;
 }
+.hero-banner-affil { display: none; }  /* merged into sub */
 .hero-banner-ctas {
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
   margin-bottom: 0;
 }
-/* Scroll indicator hidden — not needed when text is below */
+.hero-banner-logo  { display: none; }
 .hero-banner-scroll { display: none; }
-/* Disease tags hidden from hero — shown in stats area */
 .hero-banner .hero-tags { display: none; }
 
 /* ── Section header image (sub-pages) — full width, uncropped ─── */
@@ -231,12 +227,9 @@ li { margin-bottom: .35rem; }
   width: calc(100% + 64px);
   margin-left: -32px;
   margin-right: -32px;
-  height: auto;              /* never crop — show full image */
-  max-height: 420px;
-  object-fit: cover;
-  object-position: center top;
-  display: block;
   margin-top: -56px;
+  height: auto;              /* never crop — show full natural image */
+  display: block;
   margin-bottom: 0;
 }
 
@@ -342,10 +335,7 @@ li { margin-bottom: .35rem; }
 .research-overview-item:hover { box-shadow: 0 6px 24px rgba(0,0,0,.07); transform: translateY(-3px); }
 .overview-image {
   width: 100%;
-  height: auto;              /* natural ratio — zero cropping */
-  max-height: 260px;
-  object-fit: scale-down;   /* shrink if needed, never crop */
-  object-position: center;
+  height: auto;              /* natural ratio — zero cropping ever */
   display: block;
   background: var(--off-white);
 }
@@ -452,24 +442,21 @@ li { margin-bottom: .35rem; }
 .news-grid { display: flex; flex-direction: column; gap: 0; margin-top: 8px; }
 .news-entry {
   display: grid;
-  grid-template-columns: 100px 1fr;  /* fixed date column — text always same indent */
-  gap: 0 24px;
-  padding: 16px 0;
+  grid-template-columns: 110px 1fr;  /* locked date column */
+  gap: 0 20px;
+  padding: 14px 0;
   border-bottom: 1px solid var(--border);
-  font-size: 14px;
-  line-height: 1.65;
-  align-items: baseline;
+  font-size: 16px;
+  line-height: 1.6;
+  align-items: start;
 }
 .news-entry:last-child { border-bottom: none; }
 .news-entry-date {
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: .06em;
+  font-size: 13px;
+  font-weight: 600;
   color: var(--ink-faint);
   white-space: nowrap;
-  padding-top: 0;
-  min-width: 0;     /* grid handles width — no min-width needed */
+  padding-top: 2px;
 }
 .fit-image.news-icon { display: none; }
 
