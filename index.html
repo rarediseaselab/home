@@ -115,18 +115,18 @@
 <!-- ══════════════════════════════ HOME ══════════════════════════════ -->
 <section id="home" class="section">
 
-    <!-- LeRoux-style hero: full-width image at natural ratio, text block below -->
+    <!-- Hero: title ABOVE image, full-width uncropped image, text BELOW -->
     <div class="hero-banner">
+        <!-- ① Title sits above the image -->
+        <h1 class="hero-banner-title">Welcome to the Kaplan Lab!</h1>
+
+        <!-- ② Full-width image — zero crop, natural dimensions -->
         <img src="figure3.png" alt="Cilia types in C. elegans" class="hero-banner-bg">
+
+        <!-- ③ Subtitle + caption + CTAs below the image -->
         <div class="hero-banner-content">
-            <h1 class="hero-banner-title">Welcome to the Kaplan Lab!</h1>
             <p class="hero-banner-sub">We are in the <strong>Faculty of Life and Natural Sciences</strong> at <strong>Abdullah Gül University</strong></p>
             <p class="hero-banner-caption">Cover image depicts cilia types in <em>C. elegans</em>.</p>
-            <p style="max-width:620px;color:var(--ink-light);font-size:15px;line-height:1.75;margin-bottom:28px;">
-                We study the molecular basis of ciliopathies and rare genetic diseases —
-                using <em>C. elegans</em> models, CRISPR/Cas9, and open bioinformatics tools
-                to connect genotype to phenotype and accelerate diagnosis.
-            </p>
             <div class="hero-banner-ctas">
                 <a href="#research-overview" onclick="showSection('research-overview')" class="btn btn-primary">Our Research</a>
                 <a href="#ciliahub"          onclick="showSection('ciliahub')"          class="btn btn-outline">CiliaHub</a>
@@ -136,7 +136,7 @@
     </div>
 
     <!-- Page content below hero -->
-    <div id="home-below" style="padding-top:48px;">
+    <div id="home-below" style="padding-top:40px;">
 
     <!-- Stats bar -->
     <div class="stats-bar" style="margin-bottom:56px;">
