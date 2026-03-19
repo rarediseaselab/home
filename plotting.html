@@ -251,9 +251,17 @@ ift-88&#9;0.91&#9;1.30"></textarea>
           <span class="step">2</span><h3>Columns</h3><span class="chevron">▾</span>
         </div>
         <div class="pt-card-body">
-          <div class="fc"><label>X-axis / Group column</label><select id="x-sel"></select></div>
-          <div class="fc"><label>Y-axis columns <span style="font-weight:400;text-transform:none;letter-spacing:0">(all checked by default)</span></label>
+          <div style="font-size:11px;color:var(--ink-2);margin-bottom:10px;line-height:1.6;background:var(--pale);padding:8px 10px;border-radius:5px;border:1px solid #c8d3ee">
+            Each column = one box plot. All columns are selected by default.
+            Uncheck any you want to exclude.
+          </div>
+          <div class="fc">
+            <label>Select columns to plot</label>
             <div class="col-list" id="y-list"></div>
+          </div>
+          <div class="fc-2" style="margin-top:10px">
+            <div class="fc"><label>X-axis label</label><input type="text" id="inline-xlabel" placeholder="e.g. Genotype" oninput="document.getElementById('opt-xlabel').value=this.value"></div>
+            <div class="fc"><label>Y-axis label</label><input type="text" id="inline-ylabel" placeholder="e.g. Speed (µm/s)" oninput="document.getElementById('opt-ylabel').value=this.value"></div>
           </div>
         </div>
       </div>
@@ -508,11 +516,10 @@ function showPreview(){
   document.getElementById('prev-wrap').innerHTML=h+'</tbody></table>';
 }
 function buildColPickers(){
-  document.getElementById('x-sel').innerHTML=cols.map((c,i)=>`<option value="${c}" ${i===0?'selected':''}>${c}</option>`).join('');
-  document.getElementById('y-list').innerHTML=cols.map((c,i)=>`<label class="col-item"><input type="checkbox" value="${c}" checked onchange="buildSeriesClrs()"><span>${c}</span></label>`).join('');
+  // All columns become individual box plots — no X/Y split
+  document.getElementById('y-list').innerHTML=cols.map((c)=>`<label class="col-item"><input type="checkbox" value="${c}" checked onchange="buildSeriesClrs()"><span>${c}</span></label>`).join('');
 }
 function getYCols(){return[...document.querySelectorAll('#y-list input:checked')].map(cb=>cb.value);}
-
 /* ═════════════════════ PALETTE UI ═════════════════════════ */
 function buildPalUI(){
   const g=document.getElementById('pal-grid');
@@ -579,70 +586,64 @@ function runStats(groups){
 window.generate=function(){
   if(!data.length){alert('Load data first.');return;}
   if(chartInst){try{chartInst.destroy();}catch(e){}}
-  const xCol=document.getElementById('x-sel').value;
+
   const yCols=getYCols();
-  if(!yCols.length){alert('Select at least one Y column.');return;}
+  if(!yCols.length){alert('Select at least one column.');return;}
+
   const title=document.getElementById('opt-title').value||'';
-  const xlabel=document.getElementById('opt-xlabel').value||xCol;
-  const ylabel=document.getElementById('opt-ylabel').value||yCols[0];
+  // X label from inline inputs (preferred) or axes card
+  const ilx=document.getElementById('inline-xlabel');
+  const ily=document.getElementById('inline-ylabel');
+  if(ilx&&ilx.value) document.getElementById('opt-xlabel').value=ilx.value;
+  if(ily&&ily.value) document.getElementById('opt-ylabel').value=ily.value;
+  const xlabel=document.getElementById('opt-xlabel').value||'';
+  const ylabel=document.getElementById('opt-ylabel').value||'Value';
   const fs=+document.getElementById('opt-fs').value;
-  const showErr=document.getElementById('tog-err').classList.contains('on');
-  const showPts=document.getElementById('tog-pts').classList.contains('on');
-  const showLeg=document.getElementById('tog-leg').classList.contains('on');
-  const showGrid=document.getElementById('tog-grid').classList.contains('on');
-  const showSigPlot=document.getElementById('tog-sigplot').classList.contains('on');
-  const colors=yCols.map((_,i)=>document.getElementById('sc'+i)?.value||seriesClrs[i]||pal[i%pal.length]);
-  const labels=yCols.map((_,i)=>document.getElementById('sl'+i)?.value||yCols[i]);
+  const showPts  = document.getElementById('tog-pts').classList.contains('on');
+  const showLeg  = document.getElementById('tog-leg').classList.contains('on');
+  const showGrid = document.getElementById('tog-grid').classList.contains('on');
+  const showSig  = document.getElementById('tog-sigplot').classList.contains('on');
+  const colors   = yCols.map((_,i)=>document.getElementById('sc'+i)?.value||seriesClrs[i]||pal[i%pal.length]);
+  const labels   = yCols.map((_,i)=>document.getElementById('sl'+i)?.value||yCols[i]);
 
-  const xVals=[...new Set(data.map(r=>r[xCol]))];
-  const isCatX=data.some(r=>isNaN(r[xCol])||typeof r[xCol]==='string');
+  // Each column = one group. Values = all numeric rows for that column.
+  const groups = yCols.map((yc,i)=>({
+    label : labels[i],
+    values: data.map(r=>+r[yc]).filter(v=>!isNaN(v) && String(r[yc]).trim()!==''),
+    si    : i,
+  })).filter(g=>g.values.length>0);
 
-  // Build groups for stats
-  let groups=[];
-  if(isCatX){
-    yCols.forEach((yc,si)=>{
-      xVals.forEach(xv=>{
-        const vals=data.filter(r=>r[xCol]===xv).map(r=>+r[yc]).filter(v=>!isNaN(v));
-        if(vals.length)groups.push({label:yCols.length>1?`${xv} / ${labels[si]}`:String(xv),values:vals,si,xv});
-      });
-    });
-  } else {
-    yCols.forEach((yc,si)=>{
-      const vals=data.map(r=>+r[yc]).filter(v=>!isNaN(v));
-      if(vals.length)groups.push({label:labels[si],values:vals,si});
-    });
-  }
+  if(!groups.length){alert('No numeric data found in the selected columns.');return;}
 
-  const sr=runStats(groups);
+  const sr = runStats(groups);
 
-  // Build right panel
+  // Rebuild right panel
   const right=document.getElementById('pt-right');
   right.innerHTML='';
 
-  // Chart card
   const cc=document.createElement('div');cc.className='chart-card';
   cc.innerHTML=`<div class="chart-topbar">
     <input class="chart-title-inp" value="${title}" placeholder="Chart title (click to edit)" oninput="liveTitle(this.value)">
     <div class="dl-row" id="dl-row"></div>
   </div>
-  <div style="position:relative"><canvas id="the-chart" style="max-height:480px"></canvas></div>`;
+  <div style="position:relative"><canvas id="the-chart" style="max-height:520px"></canvas></div>`;
   right.appendChild(cc);
 
-  // Plot
-  if(plotType==='boxplot') doBoxPlot(groups,labels,colors,xVals,isCatX,ylabel,showLeg,showGrid,showPts,fs,showSigPlot,sr);
-  else doMainChart(yCols,labels,colors,xVals,xCol,isCatX,xlabel,ylabel,showErr,showPts,showLeg,showGrid,fs);
+  // Always box plot by default; respect plotType for other types
+  if(plotType==='boxplot'){
+    doBoxPlot(groups,colors,xlabel,ylabel,showLeg,showGrid,showPts,fs,showSig,sr);
+  } else {
+    doColumnChart(groups,colors,xlabel,ylabel,showLeg,showGrid,fs);
+  }
 
-  // Stats card
   if(sr){
     const sc=document.createElement('div');sc.className='stats-out';
     sc.innerHTML=buildStatsHTML(sr);
     right.appendChild(sc);
   }
 
-  // Download buttons
   buildDlButtons();
 }
-
 /* ═══════════════════════ MAIN CHART ════════════════════════ */
 function doMainChart(yCols,labels,colors,xVals,xCol,isCatX,xlabel,ylabel,showErr,showPts,showLeg,showGrid,fs){
   const stacked=plotType==='stackedbar'||plotType==='pctbar';
@@ -683,7 +684,7 @@ function doMainChart(yCols,labels,colors,xVals,xCol,isCatX,xlabel,ylabel,showErr
     const{ctx,scales:{y}}=chart;
     chart.data.datasets.forEach((ds,di)=>{
       const meta=chart.getDatasetMeta(di);
-      const yc=getYCols()[di],xc=document.getElementById('x-sel').value;
+      const yc=getYCols()[di],xc='_none_';
       const xVals2=[...new Set(data.map(r=>r[xc]))];
       xVals2.forEach((xv,ji)=>{
         const pts=data.filter(r=>r[xc]===xv).map(r=>+r[yc]).filter(v=>!isNaN(v));
@@ -704,21 +705,26 @@ function doMainChart(yCols,labels,colors,xVals,xCol,isCatX,xlabel,ylabel,showErr
 }
 
 /* ═══════════════════════ BOX PLOT ══════════════════════════ */
-function doBoxPlot(groups,labels,colors,xVals,isCatX,ylabel,showLeg,showGrid,showPts,fs,showSig,sr){
+function doBoxPlot(groups,colors,xlabel,ylabel,showLeg,showGrid,showPts,fs,showSig,sr){
   const grpLabels=groups.map(g=>g.label);
   const boxPlugin={id:'bp',afterDatasetsDraw(chart){
     const{ctx,scales:{x,y}}=chart;
     groups.forEach((g,i)=>{
-      const bw=Math.min(36,Math.max(18,chart.chartArea.width/(groups.length*2.5)));
+      const bw=Math.min(44,Math.max(16,chart.chartArea.width/(groups.length*2.2)));
       const xp=x.getPixelForValue(i);if(!xp)return;
       const v=g.values,clr=colors[g.si%colors.length];
-      const stats={min:Math.min(...v),q1:$q1(v),med:$med(v),q3:$q3(v),max:Math.max(...v),mean:$m(v),sem:$sem(v)};
-      ctx.save();ctx.strokeStyle=clr;ctx.fillStyle=clr+'2a';ctx.lineWidth=1.5;
+      const stats={
+        min:Math.min(...v),q1:$q1(v),med:$med(v),q3:$q3(v),max:Math.max(...v),
+        mean:$m(v),sem:$sem(v)
+      };
+      ctx.save();
+      // Box fill
+      ctx.fillStyle=clr+'2a';ctx.strokeStyle=clr;ctx.lineWidth=1.5;
       const yQ1=y.getPixelForValue(stats.q1),yQ3=y.getPixelForValue(stats.q3),
             yMed=y.getPixelForValue(stats.med),yMin=y.getPixelForValue(stats.min),
             yMax=y.getPixelForValue(stats.max),yMean=y.getPixelForValue(stats.mean),
-            ySemT=y.getPixelForValue(stats.mean+stats.sem),ySemB=y.getPixelForValue(stats.mean-stats.sem);
-      // Box
+            ySemT=y.getPixelForValue(stats.mean+stats.sem),
+            ySemB=y.getPixelForValue(stats.mean-stats.sem);
       ctx.fillRect(xp-bw/2,yQ3,bw,yQ1-yQ3);
       ctx.strokeRect(xp-bw/2,yQ3,bw,yQ1-yQ3);
       // Median line
@@ -731,43 +737,130 @@ function doBoxPlot(groups,labels,colors,xVals,isCatX,ylabel,showLeg,showGrid,sho
         ctx.beginPath();ctx.moveTo(xp-bw/4,b);ctx.lineTo(xp+bw/4,b);ctx.stroke();
       });
       // SEM error bar on mean
-      ctx.beginPath();ctx.moveTo(xp,ySemT);ctx.lineTo(xp,ySemB);ctx.strokeStyle=clr+'cc';ctx.lineWidth=2;ctx.stroke();
-      [ySemT,ySemB].forEach(yy=>{ctx.beginPath();ctx.moveTo(xp-4,yy);ctx.lineTo(xp+4,yy);ctx.stroke();});
+      ctx.beginPath();ctx.moveTo(xp,ySemT);ctx.lineTo(xp,ySemB);
+      ctx.strokeStyle=clr;ctx.lineWidth=2;ctx.stroke();
+      [ySemT,ySemB].forEach(yy=>{
+        ctx.beginPath();ctx.moveTo(xp-5,yy);ctx.lineTo(xp+5,yy);ctx.stroke();
+      });
       // Mean diamond
-      ctx.beginPath();ctx.moveTo(xp,yMean-5);ctx.lineTo(xp+5,yMean);ctx.lineTo(xp,yMean+5);ctx.lineTo(xp-5,yMean);ctx.closePath();
+      ctx.beginPath();ctx.moveTo(xp,yMean-5);ctx.lineTo(xp+5,yMean);
+      ctx.lineTo(xp,yMean+5);ctx.lineTo(xp-5,yMean);ctx.closePath();
       ctx.fillStyle=clr;ctx.fill();
-      // Data points
-      if(showPts){v.forEach(val=>{ctx.beginPath();ctx.arc(xp+(Math.random()-.5)*bw*0.9,y.getPixelForValue(val),2.5,0,Math.PI*2);ctx.fillStyle=clr+'99';ctx.fill();});}
+      // Individual data points
+      if(showPts){
+        v.forEach(val=>{
+          ctx.beginPath();
+          ctx.arc(xp+(Math.random()-.5)*bw*0.85,y.getPixelForValue(val),2.5,0,Math.PI*2);
+          ctx.fillStyle=clr+'99';ctx.fill();
+        });
+      }
       ctx.restore();
     });
-
-    // Significance bars on plot
+    // Significance brackets on plot
     if(showSig&&sr&&sr.type==='pairs'){
       sr.pairs.forEach((pair,pi)=>{
-        if(pair.p.stars==='ns')return;
+        if(pair.p.stars==='ns'||pair.p.stars==='')return;
         const ai=grpLabels.indexOf(pair.a),bi=grpLabels.indexOf(pair.b);
         if(ai<0||bi<0)return;
         const xa=x.getPixelForValue(ai),xb=x.getPixelForValue(bi);
         const allVals=groups.flatMap(g=>g.values);
-        const topY=y.getPixelForValue(Math.max(...allVals))-20-(pi*22);
-        ctx.save();ctx.strokeStyle='#333';ctx.lineWidth=1.2;ctx.fillStyle='#333';ctx.font=`bold 11px Inter`;ctx.textAlign='center';
-        ctx.beginPath();ctx.moveTo(xa,topY+6);ctx.lineTo(xa,topY);ctx.lineTo(xb,topY);ctx.lineTo(xb,topY+6);ctx.stroke();
+        const topY=y.getPixelForValue(Math.max(...allVals))-(pi+1)*24;
+        ctx.save();ctx.strokeStyle='#555';ctx.lineWidth=1;ctx.fillStyle='#333';
+        ctx.font='bold 11px Inter';ctx.textAlign='center';
+        ctx.beginPath();
+        ctx.moveTo(xa,topY+6);ctx.lineTo(xa,topY);
+        ctx.lineTo(xb,topY);ctx.lineTo(xb,topY+6);ctx.stroke();
         ctx.fillText(pair.p.stars,(xa+xb)/2,topY-3);
         ctx.restore();
       });
     }
   }};
 
+  // Calculate y-range including whiskers + space for sig bars
+  const allVals=groups.flatMap(g=>g.values);
+  const yMin=Math.min(...allVals),yMax=Math.max(...allVals),yRange=yMax-yMin;
+
   const ctx=document.getElementById('the-chart').getContext('2d');
-  chartInst=new Chart(ctx,{type:'bar',
-    data:{labels:grpLabels,datasets:[{data:groups.map(g=>$q3(g.values)+$sem(g.values)*0.5),backgroundColor:'transparent',borderColor:'transparent'}]},
-    options:{responsive:true,plugins:{legend:{display:false}},
+  chartInst=new Chart(ctx,{
+    type:'bar',
+    data:{
+      labels:grpLabels,
+      datasets:[{
+        data:groups.map(g=>$q3(g.values)),
+        backgroundColor:'transparent',borderColor:'transparent'
+      }]
+    },
+    options:{
+      responsive:true,
+      plugins:{legend:{display:false}},
       scales:{
-        x:{title:{display:false},grid:{display:showGrid,color:'rgba(0,0,0,.05)'},ticks:{font:{size:fs-1,family:'Inter'}}},
-        y:{title:{display:!!ylabel,text:ylabel,font:{size:fs,family:'Inter'}},grid:{display:showGrid,color:'rgba(0,0,0,.05)'},ticks:{font:{size:fs-1,family:'Inter'}},
-           min: (ctx2)=>{const all=groups.flatMap(g=>g.values);return Math.min(...all)*0.9;}},
+        x:{
+          title:{display:!!xlabel,text:xlabel,font:{size:fs,family:'Inter'}},
+          grid:{display:showGrid,color:'rgba(0,0,0,.05)'},
+          ticks:{font:{size:Math.max(fs-2,10),family:'Inter'},maxRotation:45,minRotation:0}
+        },
+        y:{
+          title:{display:!!ylabel,text:ylabel,font:{size:fs,family:'Inter'}},
+          grid:{display:showGrid,color:'rgba(0,0,0,.05)'},
+          ticks:{font:{size:fs-1,family:'Inter'}},
+          min: yMin - yRange*0.08,
+          max: yMax + yRange*(showSig?0.35:0.15),
+        },
+      },
+      animation:{duration:450}
+    },
+    plugins:[boxPlugin]
+  });
+}
+
+/* ═══════════════════════ COLUMN CHART (non-boxplot) ═══════════════ */
+function doColumnChart(groups,colors,xlabel,ylabel,showLeg,showGrid,fs){
+  // Bar: mean per column; Scatter: all raw values; Line: means connected
+  const type=plotType==='line'?'line':plotType==='scatter'?'scatter':'bar';
+  const datasets=groups.map((g,i)=>{
+    const m=$m(g.values),s=$sem(g.values);
+    return{
+      label:g.label,
+      data:type==='scatter'?g.values.map((v,j)=>({x:i+(Math.random()-.5)*0.3,y:v})):[m],
+      errors:[s],
+      backgroundColor:colors[i]+'99',
+      borderColor:colors[i],
+      borderWidth:1.5,
+      pointRadius:5,pointBackgroundColor:colors[i],
+      fill:false,tension:0.3,
+    };
+  });
+
+  const errPlugin={id:'err2',afterDatasetsDraw(chart){
+    const{ctx,scales:{x,y}}=chart;
+    chart.data.datasets.forEach((ds,di)=>{
+      if(!ds.errors)return;
+      const meta=chart.getDatasetMeta(di);
+      ds.errors.forEach((e,ji)=>{
+        if(!e||!meta.data[ji])return;
+        const xp=meta.data[ji].x,yv=+chart.data.datasets[di].data[ji];
+        const yt=y.getPixelForValue(yv+e),yb=y.getPixelForValue(yv-e);
+        ctx.save();ctx.strokeStyle=ds.borderColor;ctx.lineWidth=1.5;
+        ctx.beginPath();ctx.moveTo(xp,yt);ctx.lineTo(xp,yb);ctx.stroke();
+        [yt,yb].forEach(yy=>{ctx.beginPath();ctx.moveTo(xp-5,yy);ctx.lineTo(xp+5,yy);ctx.stroke();});
+        ctx.restore();
+      });
+    });
+  }};
+
+  const labels=groups.map(g=>g.label);
+  const ctx=document.getElementById('the-chart').getContext('2d');
+  chartInst=new Chart(ctx,{
+    type,
+    data:{labels:type==='scatter'?undefined:labels,datasets},
+    options:{
+      responsive:true,
+      plugins:{legend:{display:showLeg,labels:{font:{size:fs,family:'Inter'}}}},
+      scales:{
+        x:{title:{display:!!xlabel,text:xlabel,font:{size:fs,family:'Inter'}},grid:{display:showGrid,color:'rgba(0,0,0,.05)'},ticks:{font:{size:fs-1,family:'Inter'}}},
+        y:{title:{display:!!ylabel,text:ylabel,font:{size:fs,family:'Inter'}},grid:{display:showGrid,color:'rgba(0,0,0,.05)'},ticks:{font:{size:fs-1,family:'Inter'}}},
       },animation:{duration:450}},
-    plugins:[boxPlugin]});
+    plugins:[errPlugin]});
 }
 
 /* ═══════════════════════ STATS HTML ════════════════════════ */
