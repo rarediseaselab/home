@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grants &amp; Funding | Kaplan Lab</title>
+  <meta name="description" content="Active and past grants supporting the Kaplan Lab at Abdullah Gül University. Funded by TÜBİTAK, TÜSEB, and international fellowships.">
+  <meta name="keywords" content="Kaplan Lab grants, TÜBİTAK, TÜSEB, EMBO, Helmholtz, ciliopathy research funding, Abdullah Gül University">
+  <meta name="author" content="Oktay I. Kaplan">
+  <link rel="canonical" href="https://rarediseaselab.github.io/home/grants.html">
+  <link rel="sitemap" type="application/xml" href="https://rarediseaselab.github.io/home/sitemap.xml">
+  <meta property="og:type"        content="website">
+  <meta property="og:url"         content="https://rarediseaselab.github.io/home/grants.html">
+  <meta property="og:title"       content="Grants &amp; Funding | Kaplan Lab">
+  <meta property="og:description" content="Active and past grants supporting the Kaplan Lab at Abdullah Gül University. Funded by TÜBİTAK, TÜSEB, and international fellowships.">
+  <meta property="og:image"       content="https://rarediseaselab.github.io/home/cilia_res1.jpg">
+  <meta property="og:site_name"   content="Kaplan Lab">
+  <meta name="twitter:card"        content="summary_large_image">
+  <meta name="twitter:site"        content="@KaplanOLab">
+  <meta name="twitter:title"       content="Grants &amp; Funding | Kaplan Lab">
+  <meta name="twitter:description" content="Active and past grants supporting the Kaplan Lab at Abdullah Gül University. Funded by TÜBİTAK, TÜSEB, and international fellowships.">
+  <meta name="twitter:image"       content="https://rarediseaselab.github.io/home/cilia_res1.jpg">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/png" href="elegans2.png">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-EKT3SLJ516"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-EKT3SLJ516');</script>
+  <script>
+  /* ── Mobile nav ───────────────────────────────────────────── */
+  function openNav() {
+    document.querySelector('.nav-links').classList.add('open');
+    document.querySelector('.nav-toggle').classList.add('open');
+    document.querySelector('.nav-toggle').setAttribute('aria-expanded','true');
+    const ov = document.getElementById('nav-overlay');
+    if (ov) ov.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeNav() {
+    document.querySelector('.nav-links').classList.remove('open');
+    document.querySelector('.nav-toggle').classList.remove('open');
+    document.querySelector('.nav-toggle').setAttribute('aria-expanded','false');
+    const ov = document.getElementById('nav-overlay');
+    if (ov) ov.classList.remove('open');
+    document.body.style.overflow = '';
+    document.querySelectorAll('.nav-drop.open').forEach(d => d.classList.remove('open'));
+  }
+  function toggleNav() {
+    document.querySelector('.nav-links').classList.contains('open') ? closeNav() : openNav();
+  }
+  function toggleDrop(btn) {
+    const drop = btn.closest('.nav-drop');
+    const isOpen = drop.classList.contains('open');
+    document.querySelectorAll('.nav-drop.open').forEach(d => d.classList.remove('open'));
+    if (!isOpen) drop.classList.add('open');
+    btn.setAttribute('aria-expanded', !isOpen);
+  }
+  document.addEventListener('DOMContentLoaded', () => {
+    const ov = document.getElementById('nav-overlay');
+    if (ov) ov.addEventListener('click', closeNav);
+    document.querySelectorAll('.nav-links a').forEach(a => {
+      a.addEventListener('click', () => { if (window.innerWidth <= 768) closeNav(); });
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') { closeNav(); if(typeof closeLb==='function') closeLb(); }
+    });
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 768) {
+        document.querySelector('.nav-links').classList.remove('open');
+        document.querySelector('.nav-toggle').classList.remove('open');
+        document.querySelector('.nav-toggle').setAttribute('aria-expanded','false');
+        const ov = document.getElementById('nav-overlay');
+        if (ov) ov.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+    });
+    document.querySelectorAll('.nav-drop-btn').forEach(btn => {
+      btn.textContent = btn.textContent.replace(/\s*▾\s*$/, '').trim();
+      btn.setAttribute('aria-expanded', 'false');
+    });
+  });
+  </script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a class="nav-brand" href="index.html">Kaplan Lab</a>
+  <button class="nav-toggle" onclick="toggleNav()" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li class="nav-drop">
+      <button class="nav-drop-btn" onclick="toggleDrop(this)" aria-haspopup="true" aria-expanded="false">Research ▾</button>
+      <ul class="nav-drop-menu">
+        <li><a href="research.html">Research Overview</a></li>
+        <li><a href="cilia-ciliopathies.html">Cilia &amp; Ciliopathies</a></li>
+        <li><a href="disease-modeling.html">Disease Modeling</a></li>
+        <li><a href="cilia-cilia-joining.html">Cilia-Cilia Joining</a></li>
+        <li><a href="bioinformatics.html">Bioinformatics</a></li>
+      </ul>
+    </li>
+    <li class="nav-drop">
+      <button class="nav-drop-btn" onclick="toggleDrop(this)" aria-haspopup="true" aria-expanded="false">Team ▾</button>
+      <ul class="nav-drop-menu">
+        <li><a href="team.html">Current Members</a></li>
+        <li><a href="former-members.html">Former Members</a></li>
+        <li><a href="group-photos.html">Group Photos</a></li>
+        <li><a href="join.html">Join the Lab</a></li>
+      </ul>
+    </li>
+    <li><a href="publications.html">Publications</a></li>
+    <li><a href="news.html">News</a></li>
+    <li class="nav-drop">
+      <button class="nav-drop-btn" onclick="toggleDrop(this)" aria-haspopup="true" aria-expanded="false">Tools ▾</button>
+      <ul class="nav-drop-menu">
+        <li><a href="ciliahub.html">CiliaHub</a></li>
+        <li><a href="ciliaatlas.html">CiliaAtlas</a></li>
+        <li><a href="resources.html">All Resources</a></li>
+      </ul>
+    </li>
+    <li><a href="gallery.html">Gallery</a></li>
+    <li><a href="contact.html" class="active">Contact</a></li>
+  </ul>
+</nav>
+<div id="nav-overlay" class="nav-overlay"></div>
+<div id="breadcrumbs"><a href="index.html">Home</a> › Grants &amp; Funding</div>
+
+<main>
+<style>
+.grant-section-title {
+  font-size: 13px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .07em; color: var(--ink-3);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 8px; margin: 36px 0 20px;
+}
+.grant-section-title:first-of-type { margin-top: 0; }
+
+.grant-list { display: flex; flex-direction: column; }
+.grant-row {
+  display: grid;
+  grid-template-columns: 110px 1fr auto;
+  gap: 12px 20px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border);
+  align-items: center;
+}
+.grant-row:last-child { border-bottom: none; }
+.grant-years { font-size: 13px; font-weight: 700; color: var(--ink-3); white-space: nowrap; }
+.grant-body { min-width: 0; }
+.grant-title { font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 3px; line-height: 1.4; }
+.grant-funder { font-size: 13px; color: var(--ink-2); }
+.grant-badge {
+  font-size: 11px; font-weight: 700; padding: 3px 10px;
+  border-radius: 100px; white-space: nowrap; letter-spacing: .02em;
+}
+.badge-active { background: #e6f4ea; color: #137333; }
+.badge-past   { background: #f1f3f4; color: #5f6368; }
+.badge-fellow { background: #e8f0fe; color: #174ea6; }
+
+.grant-total-bar {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: var(--border);
+  border: 1px solid var(--border); border-radius: var(--r);
+  overflow: hidden; margin: 8px 0 36px;
+}
+.grant-total-cell { background: var(--white); padding: 16px 20px; text-align: center; }
+.grant-total-n { font-size: 24px; font-weight: 700; color: var(--accent); line-height: 1; margin-bottom: 4px; }
+.grant-total-l { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); }
+
+.funder-strip {
+  display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+  margin-top: 32px; padding: 18px 20px;
+  background: var(--off); border: 1px solid var(--border); border-radius: var(--r);
+}
+.funder-strip .label { font-size: 12px; color: var(--ink-3); font-weight: 700; text-transform: uppercase; letter-spacing: .06em; margin-right: 4px; }
+.funder-tag {
+  font-size: 12px; font-weight: 700; color: var(--accent);
+  background: var(--pale); border: 1px solid #c8d3ee;
+  border-radius: 100px; padding: 3px 12px;
+}
+@media (max-width: 640px) {
+  .grant-row { grid-template-columns: 1fr; gap: 4px; }
+  .grant-badge { justify-self: start; }
+  .grant-total-bar { grid-template-columns: 1fr; }
+}
+</style>
+
+<div class="section-body" style="padding-top:32px;">
+  <p class="eyebrow">Funding</p>
+  <h1>Grants &amp; Funding</h1>
+  <p>The Kaplan Lab gratefully acknowledges support from national and international funding agencies for research on ciliopathies, rare disease genomics, and bioinformatics.</p>
+
+  <div class="grant-total-bar">
+    <div class="grant-total-cell">
+      <div class="grant-total-n">14</div>
+      <div class="grant-total-l">Total grants</div>
+    </div>
+    <div class="grant-total-cell">
+      <div class="grant-total-n">9</div>
+      <div class="grant-total-l">Active / ongoing</div>
+    </div>
+    <div class="grant-total-cell">
+      <div class="grant-total-n">&gt;$400k</div>
+      <div class="grant-total-l">Total funding (USD)</div>
+    </div>
+  </div>
+
+  <!-- ══ ACTIVE ══════════════════════════════════════════ -->
+  <div class="grant-section-title">Active &amp; Ongoing</div>
+  <div class="grant-list">
+
+    <div class="grant-row">
+      <div class="grant-years">2026–present</div>
+      <div class="grant-body">
+        <div class="grant-title">Modeling the SGSM3 Gene-Associated Cognitive Impairment in <em>C. elegans</em></div>
+        <div class="grant-funder"><strong>TÜBİTAK</strong> · Co-investigator · Türkiye</div>
+      </div>
+      <span class="grant-badge badge-active">Active</span>
+    </div>
+
+    <div class="grant-row">
+      <div class="grant-years">2026–present</div>
+      <div class="grant-body">
+        <div class="grant-title">Modeling SEC24B in <em>Caenorhabditis elegans</em></div>
+        <div class="grant-funder"><strong>Gazi University</strong> · Co-investigator · Türkiye</div>
+      </div>
+      <span class="grant-badge badge-active">Active</span>
+    </div>
+
+    <div class="grant-row">
+      <div class="grant-years">2025–present</div>
+      <div class="grant-body">
+        <div class="grant-title">Validation of UNC5C as a Neurodevelopmental Disease Gene in <em>C. elegans</em></div>
+        <div class="grant-funder"><strong>TÜSEB</strong> (Turkish Health Institutes) · Türkiye</div>
+      </div>
+      <span class="grant-badge badge-active">Active</span>
+    </div>
+
+    <div class="grant-row">
+      <div class="grant-years">2025–present</div>
+      <div class="grant-body">
+        <div class="grant-title">Comprehensive Update of Ciliary Genes via Data Mining</div>
+        <div class="grant-funder"><strong>Gazi University</strong> · Türkiye</div>
+      </div>
+      <span class="grant-badge badge-active">Active</span>
+    </div>
+
+    <div class="grant-row">
+      <div class="grant-years">2024–present</div>
+      <div class="grant-body">
+        <div class="grant-title">Roles of GAP Proteins FLCN-1, RPI-2 and GTPases ARL-3, RAGA-1 in Cilia Biogenesis</div>
+        <div class="grant-funder"><strong>Gazi University</strong> · Co-investigator · Türkiye</div>
+      </div>
+      <span class="grant-badge badge-active">Active</span>
+    </div>
+
+    <div class="grant-row">
+      <div class="grant-years">2023–present</div>
+      <div class="grant-body">
+        <div class="grant-title">Molecular Mechanism of Excluding Non-Ciliary Proteins from Cilia (FRAP Analysis)</div>
+        <div class="grant-funder"><strong>TÜSEB</strong> (Turkish Health Institutes) · Türkiye</div>
+      </div>
+      <span class="grant-badge badge-active">Active</span>
+    </div>
+
+    <div class="grant-row">
+      <div class="grant-years">2023–present</div>
+      <div class="grant-body">
+        <div class="grant-title">Roles of FLCN and RP2 as GTPase-Activating Proteins in Cilia Biogenesis</div>
+        <div class="grant-funder"><strong>TÜSEB</strong> (Turkish Health Institutes) · Türkiye</div>
+      </div>
+      <span class="grant-badge badge-active">Active</span>
+    </div>
+
+    <div class="grant-row">
+      <div class="grant-years">2022–present</div>
+      <div class="grant-body">
+        <div class="grant-title">Functional Characterization of Patl1 as a Disease Gene in Fruit Fly and <em>C. elegans</em></div>
+        <div class="grant-funder"><strong>TÜBİTAK</strong> · Co-investigator · Türkiye</div>
+      </div>
+      <span class="grant-badge badge-active">Active</span>
+    </div>
+
+  </div>
+
+  <!-- ══ COMPLETED ═══════════════════════════════════════ -->
+  <div class="grant-section-title">Completed</div>
+  <div class="grant-list">
+
+    <div class="grant-row">
+      <div class="grant-years">2022–2023</div>
+      <div class="grant-body">
+        <div class="grant-title">Functional Characterization of Variants in Ciliopathy Patients</div>
+        <div class="grant-funder"><strong>Gazi University</strong> · Co-investigator · Türkiye</div>
+      </div>
+      <span class="grant-badge badge-past">Completed</span>
+    </div>
+
+    <div class="grant-row">
+      <div class="grant-years">2018–2022</div>
+      <div class="grant-body">
+        <div class="grant-title">Functional Characterization of Joubert Syndrome-Associated CEP-41 in Cilia Biogenesis</div>
+        <div class="grant-funder"><strong>TÜBİTAK</strong> · Türkiye</div>
+      </div>
+      <span class="grant-badge badge-past">Completed</span>
+    </div>
+
+    <div class="grant-row">
+      <div class="grant-years">2018–2020</div>
+      <div class="grant-body">
+        <div class="grant-title">Discovery and Characterization of New Ciliary Genes</div>
+        <div class="grant-funder"><strong>TÜBİTAK</strong> · Türkiye</div>
+      </div>
+      <span class="grant-badge badge-past">Completed</span>
+    </div>
+
+    <div class="grant-row">
+      <div class="grant-years">2018–2020</div>
+      <div class="grant-body">
+        <div class="grant-title">Systematic Identification of Novel Ciliary Genes</div>
+        <div class="grant-funder"><strong>Abdullah Gül University</strong> · Türkiye</div>
+      </div>
+      <span class="grant-badge badge-past">Completed</span>
+    </div>
+
+    <div class="grant-row">
+      <div class="grant-years">2013–2016</div>
+      <div class="grant-body">
+        <div class="grant-title">Mechanisms of In Vivo Direct Cell Type Conversion in <em>C. elegans</em></div>
+        <div class="grant-funder"><strong>Helmholtz Association</strong> · Max Delbrück Center, Berlin, Germany</div>
+      </div>
+      <span class="grant-badge badge-fellow">Fellowship</span>
+    </div>
+
+  </div>
+
+  <!-- ── Funders ────────────────────────────────────────── -->
+  <div class="funder-strip">
+    <span class="label">Supported by</span>
+    <span class="funder-tag">TÜBİTAK</span>
+    <span class="funder-tag">TÜSEB</span>
+    <span class="funder-tag">Gazi University</span>
+    <span class="funder-tag">Abdullah Gül University</span>
+    <span class="funder-tag">Helmholtz Association</span>
+  </div>
+
+</div>
+</main>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-cols">
+      <div class="footer-col">
+        <div class="footer-col-title">Kaplan Lab</div>
+        <p>We study ciliopathies and rare genetic diseases using <em>C. elegans</em>, CRISPR/Cas9, and bioinformatics.<br><br>Faculty of Life and Natural Sciences<br>Abdullah Gül University<br>Kayseri, Türkiye</p>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Tools &amp; Databases</div>
+        <a href="ciliahub.html">CiliaHub / CiliaAI</a>
+        <a href="ciliaatlas.html">CiliaAtlas</a>
+        <a href="https://ciliogenics.com/" target="_blank">CilioGenics</a>
+        <a href="https://kaplanlab.shinyapps.io/ciliaminer/" target="_blank">CiliaMiner</a>
+        <a href="https://convart.org/" target="_blank">ConVarT</a>
+        <a href="https://github.com/thekaplanlab" target="_blank">GitHub</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Quick Links</div>
+        <a href="research.html">Research</a>
+        <a href="publications.html">Publications</a>
+        <a href="grants.html">Grants</a>
+        <a href="team.html">Team</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Kaplan Lab · Abdullah Gül University · Kayseri, Türkiye</span>
+      <div class="footer-social">
+        <a href="https://github.com/thekaplanlab" target="_blank"><img src="github-logo.png" alt="GitHub"></a>
+        <a href="https://www.instagram.com/kaplanlab/?hl=en" target="_blank"><img src="instagram-logo.png" alt="Instagram"></a>
+        <a href="https://www.linkedin.com/in/oktay-i-kaplan-74b16856/" target="_blank"><img src="linkedin-logo.png" alt="LinkedIn"></a>
+        <a href="https://x.com/KaplanOLab" target="_blank">𝕏 @KaplanOLab</a>
+      </div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

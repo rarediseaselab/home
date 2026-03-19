@@ -22,8 +22,8 @@
   <meta name="twitter:image"       content="https://rarediseaselab.github.io/home/cilia_res1.jpg">
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" type="image/png" href="elegans2.png">
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q04XGETQBE"></script>
-  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-Q04XGETQBE');</script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-EKT3SLJ516"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-EKT3SLJ516');</script>
   <script>
   /* ── Mobile nav ───────────────────────────────────────────── */
   function openNav() {
@@ -122,43 +122,521 @@
 <div id="nav-overlay" class="nav-overlay"></div>
 <div id="breadcrumbs"><a href="index.html">Home</a> › Publications</div>
 
+<style>
+/* ── Publication rows with expandable abstract ───────────────── */
+.pub-row {
+  border-bottom: 1px solid var(--border);
+  padding: 0;
+}
+.pub-row:last-child { border-bottom: none; }
+
+.pub-row-header {
+  display: flex;
+  gap: 14px;
+  padding: 14px 0 12px;
+  align-items: flex-start;
+  cursor: pointer;
+  user-select: none;
+}
+.pub-row-header:hover .pub-title { color: var(--accent); }
+
+.pub-n {
+  flex-shrink: 0;
+  width: 26px;
+  text-align: right;
+  font-size: 13px;
+  color: var(--ink-3);
+  padding-top: 2px;
+}
+.pub-text-col { flex: 1; }
+.pub-text { font-size: 15px; line-height: 1.6; color: var(--ink-2); }
+.pub-title { font-weight: 600; color: var(--ink); }
+
+.pub-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+.pub-journal-badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 9px;
+  border-radius: 100px;
+  white-space: nowrap;
+  letter-spacing: .02em;
+}
+/* Journal colour coding */
+.badge-nature   { background:#fde8e8; color:#8a1515; }
+.badge-cell     { background:#e8f0fe; color:#174ea6; }
+.badge-nar      { background:#e6f4ea; color:#137333; }
+.badge-plos     { background:#fff3e0; color:#a05000; }
+.badge-iscience { background:#e8f5e9; color:#2e7d32; }
+.badge-lsa      { background:#f3e8fd; color:#6a0dad; }
+.badge-g3       { background:#e0f7fa; color:#006064; }
+.badge-database { background:#fff8e1; color:#827717; }
+.badge-star     { background:#fce4ec; color:#880e4f; }
+.badge-curr     { background:#ede7f6; color:#4527a0; }
+.badge-other    { background:#f1f3f4; color:#5f6368; }
+
+.pub-toggle-btn {
+  flex-shrink: 0;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--pale);
+  border: 1px solid #c8d3ee;
+  border-radius: 100px;
+  padding: 3px 10px;
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: inherit;
+  transition: background .12s;
+  margin-top: 1px;
+}
+.pub-toggle-btn:hover { background: #d8e4f8; }
+.pub-row.open .pub-toggle-btn { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+.pub-abstract {
+  display: none;
+  padding: 0 0 14px 40px;
+}
+.pub-row.open .pub-abstract { display: block; }
+.pub-abstract p {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--ink-2);
+  background: var(--off);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 var(--r) var(--r) 0;
+  padding: 12px 16px;
+  margin: 0;
+}
+.pub-abstract .pub-doi {
+  margin-top: 8px;
+  font-size: 13px;
+}
+.pub-abstract .pub-doi a { color: var(--accent); }
+</style>
+
 <main>
-<div class="section-body">
-    <p class="eyebrow">Publications</p>
-    <h1>Publications</h1>
-    <input type="text" id="pub-search" class="pub-search" placeholder="Search by title, author, or journal…">
-    <div class="pub-year-block" id="pub-2025"><div class="pub-year-label">2025</div>
-      <div class="pub-row"><span class="pub-n">1</span><span class="pub-text">Sezer A, Oner SS, Saat H, Turan MG, Gungor T, Cevik S, Erol A, Yenisert F, Catalbas K, Ozbakir DH, Kocagil S, Cilingir O, Ergun MA, Kaplan OI. <strong>A homozygous frameshift variant in the CILK1 gene causes cranioectodermal dysplasia in a consanguineous family.</strong> <em>Eur J Hum Genet.</em> 2025. doi: <a href="https://doi.org/10.1038/s41431-025-01902-0" target="_blank">10.1038/s41431-025-01902-0</a></span></div>
-      <div class="pub-row"><span class="pub-n">2</span><span class="pub-text">Turan MG, Kantarci H, Cevik S, Kaplan OI. <strong>ARL13B regulates juxtaposed cilia-cilia elongation in BBSome dependent manner in <em>Caenorhabditis elegans</em>.</strong> <em>iScience.</em> 2025;28(2):111791. doi: <a href="https://doi.org/10.1016/j.isci.2025.111791" target="_blank">10.1016/j.isci.2025.111791</a></span></div>
+<div class="section-body" style="padding-top:32px;">
+  <p class="eyebrow">Publications</p>
+  <h1>Publications</h1>
+  <p style="color:var(--ink-3);font-size:14px;margin-bottom:20px;">Click <strong>Abstract</strong> on any paper to expand a summary. Search filters by title, author, gene name, or journal.</p>
+  <input type="text" id="pub-search" class="pub-search" placeholder="Search by title, author, gene, or journal…">
+
+  <!-- ── 2025 ─────────────────────────────────────────────── -->
+  <div class="pub-year-block" id="pub-2025">
+    <div class="pub-year-label">2025</div>
+
+    <div class="pub-row" id="p1">
+      <div class="pub-row-header" onclick="toggleAbstract('p1')">
+        <span class="pub-n">1</span>
+        <div class="pub-text-col">
+          <div class="pub-text">Sezer A, Oner SS, Saat H, Turan MG, Gungor T, Cevik S, Erol A, Yenisert F, Catalbas K, Ozbakir DH, Kocagil S, Cilingir O, Ergun MA, Kaplan OI.</div>
+          <div class="pub-title">A homozygous frameshift variant in the CILK1 gene causes cranioectodermal dysplasia in a consanguineous family.</div>
+          <div class="pub-meta">
+            <span class="pub-journal-badge badge-nature"><em>Eur J Hum Genet</em> 2025</span>
+            <button class="pub-toggle-btn" onclick="event.stopPropagation();toggleAbstract('p1')">Abstract ▾</button>
+          </div>
+        </div>
+      </div>
+      <div class="pub-abstract">
+        <p>Cranioectodermal dysplasia (CED) is a rare ciliopathy characterised by skeletal and ectodermal abnormalities, renal failure, and liver fibrosis. We identified a homozygous frameshift variant in <strong>CILK1</strong> (encoding an ICK-related kinase that phosphorylates IFT-B components) as the causative mutation in a consanguineous family, expanding the genetic landscape of CED and confirming CILK1/DYF-5 as a disease gene through functional validation in <em>C. elegans</em>.</p>
+        <div class="pub-doi">doi: <a href="https://doi.org/10.1038/s41431-025-01902-0" target="_blank">10.1038/s41431-025-01902-0</a></div>
+      </div>
     </div>
-    <div class="pub-year-block" id="pub-2024"><div class="pub-year-label">2024</div>
-      <div class="pub-row"><span class="pub-n">3</span><span class="pub-text">Kim AH, Sakin I, Viviano S, et al. <strong>CC2D1A causes ciliopathy, intellectual disability, heterotaxy, renal dysplasia, and abnormal CSF flow.</strong> <em>Life Sci Alliance.</em> 2024;7(10):e202402708. doi: <a href="https://doi.org/10.26508/lsa.202402708" target="_blank">10.26508/lsa.202402708</a></span></div>
-      <div class="pub-row"><span class="pub-n">4</span><span class="pub-text">Pir MS, Begar E, Yenisert F, et al. <strong>CilioGenics: an integrated method and database for predicting novel ciliary genes.</strong> <em>Nucleic Acids Res.</em> 2024;52(14):8127-8145. doi: <a href="https://doi.org/10.1093/nar/gkae554" target="_blank">10.1093/nar/gkae554</a></span></div>
+
+    <div class="pub-row" id="p2">
+      <div class="pub-row-header" onclick="toggleAbstract('p2')">
+        <span class="pub-n">2</span>
+        <div class="pub-text-col">
+          <div class="pub-text">Turan MG, Kantarci H, Cevik S, Kaplan OI.</div>
+          <div class="pub-title">ARL13B regulates juxtaposed cilia-cilia elongation in BBSome dependent manner in <em>Caenorhabditis elegans</em>.</div>
+          <div class="pub-meta">
+            <span class="pub-journal-badge badge-iscience"><em>iScience</em> 2025</span>
+            <button class="pub-toggle-btn" onclick="event.stopPropagation();toggleAbstract('p2')">Abstract ▾</button>
+          </div>
+        </div>
+      </div>
+      <div class="pub-abstract">
+        <p>We describe a novel form of inter-ciliary communication called juxtaposed cilia-cilia elongation (JCE), in which adjacent cilia physically join tip-to-tip. Using <em>C. elegans</em> fluorescence imaging, we show that <strong>ARL13B</strong> (the Joubert syndrome GTPase) regulates JCE in a <strong>BBSome</strong>-dependent manner — loss of ARL-13 or BBS components abolishes joining, directly linking this process to ciliopathy-associated machinery.</p>
+        <div class="pub-doi">doi: <a href="https://doi.org/10.1016/j.isci.2025.111791" target="_blank">10.1016/j.isci.2025.111791</a></div>
+      </div>
     </div>
-    <div class="pub-year-block" id="pub-2023"><div class="pub-year-label">2023</div>
-      <div class="pub-row"><span class="pub-n">5</span><span class="pub-text">Cevik S, Zhao P, Zorluer A, et al. <strong>Matching variants for functional characterization of genetic variants.</strong> <em>G3 (Bethesda).</em> 2023;13(12):jkad227. doi: <a href="https://doi.org/10.1093/g3journal/jkad227" target="_blank">10.1093/g3journal/jkad227</a></span></div>
-      <div class="pub-row"><span class="pub-n">6</span><span class="pub-text">Cevik S, Peng X, Beyer T, et al. <strong>WDR31 displays functional redundancy with ELMOD and RP2 in regulating IFT complex and recruiting the BBSome to cilium.</strong> <em>Life Sci Alliance.</em> 2023;6(8):e202201844. doi: <a href="https://doi.org/10.26508/lsa.202201844" target="_blank">10.26508/lsa.202201844</a></span></div>
-      <div class="pub-row"><span class="pub-n">7</span><span class="pub-text">Turan MG, Kantarci H, Cevik S, Kaplan OI. <strong>CiliaMiner: an integrated database for ciliopathy genes and ciliopathies.</strong> <em>Database (Oxford).</em> 2023:baad047. doi: <a href="https://doi.org/10.1093/database/baad047" target="_blank">10.1093/database/baad047</a></span></div>
-      <div class="pub-row"><span class="pub-n">8</span><span class="pub-text">Kaplan OI. <strong>RPI-1 (human DCDC2) displays functional redundancy with Nephronophthisis 4 in regulating cilia biogenesis in <em>C. elegans</em>.</strong> 2023. doi: <a href="https://doi.org/10.55730/1300-0152.2642" target="_blank">10.55730/1300-0152.2642</a></span></div>
-    </div>
-    <div class="pub-year-block" id="pub-2022"><div class="pub-year-label">2022</div>
-      <div class="pub-row"><span class="pub-n">9</span><span class="pub-text">Pir MS, Cevik S, Kaplan OI. <strong>ConVarT: Search Engine for Missense Variants Between Humans and Other Organisms.</strong> <em>Curr Protoc.</em> 2022;2(11):e619. doi: <a href="https://doi.org/10.1002/cpz1.619" target="_blank">10.1002/cpz1.619</a></span></div>
-      <div class="pub-row"><span class="pub-n">10</span><span class="pub-text">Turan MG, Kantarci H, Temtek SD, et al. <strong>Protocol for determining average speed and frequency of kinesin and dynein-driven IFT in <em>C. elegans</em>.</strong> <em>STAR Protoc.</em> 2022;3(3):101498. doi: <a href="https://doi.org/10.1016/j.xpro.2022.101498" target="_blank">10.1016/j.xpro.2022.101498</a></span></div>
-      <div class="pub-row"><span class="pub-n">11</span><span class="pub-text">Pir MS, Bilgin HI, Sayici A, et al. <strong>ConVarT: a search engine for matching human genetic variants with variants from non-human species.</strong> <em>Nucleic Acids Res.</em> 2022;50(D1):D1172-D1178. doi: <a href="https://doi.org/10.1093/nar/gkab939" target="_blank">10.1093/nar/gkab939</a></span></div>
-      <div class="pub-row"><span class="pub-n">12</span><span class="pub-text">Torun FM, Bilgin HI, Kaplan OI. <strong>MSABrowser: dynamic and fast visualization of sequence alignments, variations and annotations.</strong> <em>Bioinform Adv.</em> 2021;1(1):vbab009. doi: <a href="https://doi.org/10.1093/bioadv/vbab009" target="_blank">10.1093/bioadv/vbab009</a></span></div>
-    </div>
-    <div class="pub-year-block" id="pub-earlier"><div class="pub-year-label">Earlier</div>
-      <div class="pub-row"><span class="pub-n">13</span><span class="pub-text">Kimura Y, et al. <strong>Environmental responsiveness of tubulin glutamylation in sensory cilia is regulated by the p38 MAPK pathway.</strong> <em>Sci Rep.</em> 2018;8:8392. doi: <a href="https://doi.org/10.1038/s41598-018-26694-w" target="_blank">10.1038/s41598-018-26694-w</a></span></div>
-      <div class="pub-row"><span class="pub-n">14</span><span class="pub-text">Kaplan OI, Berber B, Hekim N, Doluca O. <strong>G-quadruplex prediction in <em>E. coli</em> genome reveals a conserved putative G-quadruplex-Hairpin-Duplex switch.</strong> <em>Nucleic Acids Res.</em> 2016;44(19):9083-9095. doi: <a href="https://doi.org/10.1093/nar/gkw769" target="_blank">10.1093/nar/gkw769</a></span></div>
-      <div class="pub-row"><span class="pub-n">15</span><span class="pub-text">Cevik S, Sanders AA, Van Wijk E, et al. <strong>Active transport and diffusion barriers restrict Joubert Syndrome-associated ARL13B/ARL-13 to an Inv-like ciliary membrane subdomain.</strong> <em>PLoS Genet.</em> 2013;9(12):e1003977. doi: <a href="https://doi.org/10.1371/journal.pgen.1003977" target="_blank">10.1371/journal.pgen.1003977</a></span></div>
-      <div class="pub-row"><span class="pub-n">16</span><span class="pub-text">Kaplan OI, Doroquez DB, Cevik S, et al. <strong>Endocytosis genes facilitate protein and membrane transport in <em>C. elegans</em> sensory cilia.</strong> <em>Curr Biol.</em> 2012;22(6):451-60. doi: <a href="https://doi.org/10.1016/j.cub.2012.01.060" target="_blank">10.1016/j.cub.2012.01.060</a></span></div>
-      <div class="pub-row"><span class="pub-n">17</span><span class="pub-text">Kaplan OI, Molla-Herman A, Cevik S, et al. <strong>The AP-1 clathrin adaptor facilitates cilium formation and functions with RAB-8 in <em>C. elegans</em> ciliary membrane transport.</strong> <em>J Cell Sci.</em> 2010;123(22):3966-77. doi: <a href="https://doi.org/10.1242/jcs.073908" target="_blank">10.1242/jcs.073908</a></span></div>
-      <div class="pub-row"><span class="pub-n">18</span><span class="pub-text">Cevik S, Hori Y, Kaplan OI, et al. <strong>Joubert syndrome Arl13b functions at ciliary membranes and stabilizes protein transport in <em>Caenorhabditis elegans</em>.</strong> <em>J Cell Biol.</em> 2010;188(6):953-69. doi: <a href="https://doi.org/10.1083/jcb.200908133" target="_blank">10.1083/jcb.200908133</a></span></div>
-      <div class="pub-row"><span class="pub-n">19</span><span class="pub-text">Blacque OE, Cevik S, Kaplan OI. <strong>Intraflagellar transport: from molecular characterisation to mechanism.</strong> <em>Front Biosci.</em> 2008;13:2633-52. doi: <a href="https://doi.org/10.2741/2871" target="_blank">10.2741/2871</a></span></div>
-    </div>
+
   </div>
+
+  <!-- ── 2024 ─────────────────────────────────────────────── -->
+  <div class="pub-year-block" id="pub-2024">
+    <div class="pub-year-label">2024</div>
+
+    <div class="pub-row" id="p3">
+      <div class="pub-row-header" onclick="toggleAbstract('p3')">
+        <span class="pub-n">3</span>
+        <div class="pub-text-col">
+          <div class="pub-text">Kim AH, Sakin I, Viviano S, et al.</div>
+          <div class="pub-title">CC2D1A causes ciliopathy, intellectual disability, heterotaxy, renal dysplasia, and abnormal CSF flow.</div>
+          <div class="pub-meta">
+            <span class="pub-journal-badge badge-lsa"><em>Life Sci Alliance</em> 2024</span>
+            <button class="pub-toggle-btn" onclick="event.stopPropagation();toggleAbstract('p3')">Abstract ▾</button>
+          </div>
+        </div>
+      </div>
+      <div class="pub-abstract">
+        <p>We establish <strong>CC2D1A</strong> as a ciliopathy gene by demonstrating that loss of function causes a multisystem syndrome encompassing intellectual disability, heterotaxy, renal dysplasia, and abnormal cerebrospinal fluid flow. Functional studies in <em>C. elegans</em> and patient-derived data confirm pathogenicity, expanding the phenotypic spectrum of transition zone-associated ciliopathy genes.</p>
+        <div class="pub-doi">doi: <a href="https://doi.org/10.26508/lsa.202402708" target="_blank">10.26508/lsa.202402708</a></div>
+      </div>
+    </div>
+
+    <div class="pub-row" id="p4">
+      <div class="pub-row-header" onclick="toggleAbstract('p4')">
+        <span class="pub-n">4</span>
+        <div class="pub-text-col">
+          <div class="pub-text">Pir MS, Begar E, Yenisert F, et al.</div>
+          <div class="pub-title">CilioGenics: an integrated method and database for predicting novel ciliary genes.</div>
+          <div class="pub-meta">
+            <span class="pub-journal-badge badge-nar"><em>Nucleic Acids Res</em> 2024</span>
+            <button class="pub-toggle-btn" onclick="event.stopPropagation();toggleAbstract('p4')">Abstract ▾</button>
+          </div>
+        </div>
+      </div>
+      <div class="pub-abstract">
+        <p><strong>CilioGenics</strong> is an integrated computational method that predicts novel ciliary genes by combining co-expression networks, protein–protein interactions, evolutionary conservation, and proximity to known ciliary loci. Published in <em>Nucleic Acids Research</em>, it recovers established ciliary genes with high precision while predicting new candidates — directly addressing the incomplete genetic diagnosis rate in ciliopathies.</p>
+        <div class="pub-doi">doi: <a href="https://doi.org/10.1093/nar/gkae554" target="_blank">10.1093/nar/gkae554</a></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── 2023 ─────────────────────────────────────────────── -->
+  <div class="pub-year-block" id="pub-2023">
+    <div class="pub-year-label">2023</div>
+
+    <div class="pub-row" id="p5">
+      <div class="pub-row-header" onclick="toggleAbstract('p5')">
+        <span class="pub-n">5</span>
+        <div class="pub-text-col">
+          <div class="pub-text">Cevik S, Zhao P, Zorluer A, et al.</div>
+          <div class="pub-title">Matching variants for functional characterization of genetic variants.</div>
+          <div class="pub-meta">
+            <span class="pub-journal-badge badge-g3"><em>G3 (Bethesda)</em> 2023</span>
+            <button class="pub-toggle-btn" onclick="event.stopPropagation();toggleAbstract('p5')">Abstract ▾</button>
+          </div>
+        </div>
+      </div>
+      <div class="pub-abstract">
+        <p>We describe a CRISPR/Cas9-based pipeline for introducing patient-derived missense variants into the <em>C. elegans</em> orthologous gene to functionally distinguish pathogenic from benign variants. The approach — applied to ciliopathy genes including <strong>WDR31</strong> and <strong>CILK1</strong> — provides a rapid and cost-effective route to variant classification that complements computational prediction tools.</p>
+        <div class="pub-doi">doi: <a href="https://doi.org/10.1093/g3journal/jkad227" target="_blank">10.1093/g3journal/jkad227</a></div>
+      </div>
+    </div>
+
+    <div class="pub-row" id="p6">
+      <div class="pub-row-header" onclick="toggleAbstract('p6')">
+        <span class="pub-n">6</span>
+        <div class="pub-text-col">
+          <div class="pub-text">Cevik S, Peng X, Beyer T, et al.</div>
+          <div class="pub-title">WDR31 displays functional redundancy with ELMOD and RP2 in regulating IFT complex and recruiting the BBSome to cilium.</div>
+          <div class="pub-meta">
+            <span class="pub-journal-badge badge-lsa"><em>Life Sci Alliance</em> 2023</span>
+            <button class="pub-toggle-btn" onclick="event.stopPropagation();toggleAbstract('p6')">Abstract ▾</button>
+          </div>
+        </div>
+      </div>
+      <div class="pub-abstract">
+        <p>We identify <strong>WDR31</strong> as a novel ciliary protein and show it acts redundantly with GTPase-activating proteins <strong>ELMOD</strong> and <strong>RP2</strong> to regulate intraflagellar transport (IFT) complex assembly and BBSome recruitment. Triple mutants in <em>C. elegans</em> show severe IFT defects with accumulation of IFT-B components and impaired anterograde and retrograde transport, revealing a previously unknown layer of cilia entry regulation.</p>
+        <div class="pub-doi">doi: <a href="https://doi.org/10.26508/lsa.202201844" target="_blank">10.26508/lsa.202201844</a></div>
+      </div>
+    </div>
+
+    <div class="pub-row" id="p7">
+      <div class="pub-row-header" onclick="toggleAbstract('p7')">
+        <span class="pub-n">7</span>
+        <div class="pub-text-col">
+          <div class="pub-text">Turan MG, Kantarci H, Cevik S, Kaplan OI.</div>
+          <div class="pub-title">CiliaMiner: an integrated database for ciliopathy genes and ciliopathies.</div>
+          <div class="pub-meta">
+            <span class="pub-journal-badge badge-database"><em>Database (Oxford)</em> 2023</span>
+            <button class="pub-toggle-btn" onclick="event.stopPropagation();toggleAbstract('p7')">Abstract ▾</button>
+          </div>
+        </div>
+      </div>
+      <div class="pub-abstract">
+        <p><strong>CiliaMiner</strong> is a manually curated database covering 55 distinct ciliopathy disorders with over 4,000 clinical manifestations and 507 disease genes. It classifies diseases as primary, secondary, or atypical ciliopathies based on symptom analysis and subcellular localisation data, and provides ortholog information across six model organisms including <em>C. elegans</em>, zebrafish, and mouse.</p>
+        <div class="pub-doi">doi: <a href="https://doi.org/10.1093/database/baad047" target="_blank">10.1093/database/baad047</a></div>
+      </div>
+    </div>
+
+    <div class="pub-row" id="p8">
+      <div class="pub-row-header" onclick="toggleAbstract('p8')">
+        <span class="pub-n">8</span>
+        <div class="pub-text-col">
+          <div class="pub-text">Kaplan OI.</div>
+          <div class="pub-title">RPI-1 (human DCDC2) displays functional redundancy with Nephronophthisis 4 in regulating cilia biogenesis in <em>C. elegans</em>.</div>
+          <div class="pub-meta">
+            <span class="pub-journal-badge badge-other"><em>Turkish J Biol</em> 2023</span>
+            <button class="pub-toggle-btn" onclick="event.stopPropagation();toggleAbstract('p8')">Abstract ▾</button>
+          </div>
+        </div>
+      </div>
+      <div class="pub-abstract">
+        <p><strong>RPI-1</strong>, the <em>C. elegans</em> ortholog of human <strong>DCDC2</strong> (a doublecortin domain protein associated with nephronophthisis), is shown to act redundantly with NPHP-4 (Nephronophthisis 4) in regulating cilia biogenesis. Single mutants show mild defects; double mutants display severe ciliary phenotypes, revealing a genetic interaction relevant to nephronophthisis pathogenesis.</p>
+        <div class="pub-doi">doi: <a href="https://doi.org/10.55730/1300-0152.2642" target="_blank">10.55730/1300-0152.2642</a></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── 2022 / 2021 ───────────────────────────────────────── -->
+  <div class="pub-year-block" id="pub-2022">
+    <div class="pub-year-label">2022–2021</div>
+
+    <div class="pub-row" id="p9">
+      <div class="pub-row-header" onclick="toggleAbstract('p9')">
+        <span class="pub-n">9</span>
+        <div class="pub-text-col">
+          <div class="pub-text">Pir MS, Cevik S, Kaplan OI.</div>
+          <div class="pub-title">ConVarT: Search Engine for Missense Variants Between Humans and Other Organisms.</div>
+          <div class="pub-meta">
+            <span class="pub-journal-badge badge-curr"><em>Curr Protoc</em> 2022</span>
+            <button class="pub-toggle-btn" onclick="event.stopPropagation();toggleAbstract('p9')">Abstract ▾</button>
+          </div>
+        </div>
+      </div>
+      <div class="pub-abstract">
+        <p>A step-by-step protocol for using <strong>ConVarT</strong> to search for human missense variants at conserved positions in non-human model organisms. The protocol guides researchers through query construction, result interpretation, and integration with functional databases to accelerate variant prioritisation in rare disease genomics.</p>
+        <div class="pub-doi">doi: <a href="https://doi.org/10.1002/cpz1.619" target="_blank">10.1002/cpz1.619</a></div>
+      </div>
+    </div>
+
+    <div class="pub-row" id="p10">
+      <div class="pub-row-header" onclick="toggleAbstract('p10')">
+        <span class="pub-n">10</span>
+        <div class="pub-text-col">
+          <div class="pub-text">Turan MG, Kantarci H, Temtek SD, et al.</div>
+          <div class="pub-title">Protocol for determining average speed and frequency of kinesin and dynein-driven IFT in <em>C. elegans</em>.</div>
+          <div class="pub-meta">
+            <span class="pub-journal-badge badge-star"><em>STAR Protoc</em> 2022</span>
+            <button class="pub-toggle-btn" onclick="event.stopPropagation();toggleAbstract('p10')">Abstract ▾</button>
+          </div>
+        </div>
+      </div>
+      <div class="pub-abstract">
+        <p>A detailed quantitative protocol for measuring intraflagellar transport (IFT) train speed and frequency in living <em>C. elegans</em> using TIRF microscopy. The method enables precise comparison of anterograde (kinesin-2 driven) and retrograde (dynein-2 driven) IFT kinetics in wild-type and mutant animals, and is directly applicable to studying ciliopathy gene function.</p>
+        <div class="pub-doi">doi: <a href="https://doi.org/10.1016/j.xpro.2022.101498" target="_blank">10.1016/j.xpro.2022.101498</a></div>
+      </div>
+    </div>
+
+    <div class="pub-row" id="p11">
+      <div class="pub-row-header" onclick="toggleAbstract('p11')">
+        <span class="pub-n">11</span>
+        <div class="pub-text-col">
+          <div class="pub-text">Pir MS, Bilgin HI, Sayici A, et al.</div>
+          <div class="pub-title">ConVarT: a search engine for matching human genetic variants with variants from non-human species.</div>
+          <div class="pub-meta">
+            <span class="pub-journal-badge badge-nar"><em>Nucleic Acids Res</em> 2022</span>
+            <button class="pub-toggle-btn" onclick="event.stopPropagation();toggleAbstract('p11')">Abstract ▾</button>
+          </div>
+        </div>
+      </div>
+      <div class="pub-abstract">
+        <p><strong>ConVarT</strong> is a web-based search engine that systematically matches human missense variants to equivalent positions in <em>C. elegans</em>, zebrafish, mouse, and other organisms. By enabling cross-species variant lookup, it dramatically accelerates functional prioritisation of variants of uncertain significance (VUS) identified from patient whole exome and genome sequencing.</p>
+        <div class="pub-doi">doi: <a href="https://doi.org/10.1093/nar/gkab939" target="_blank">10.1093/nar/gkab939</a></div>
+      </div>
+    </div>
+
+    <div class="pub-row" id="p12">
+      <div class="pub-row-header" onclick="toggleAbstract('p12')">
+        <span class="pub-n">12</span>
+        <div class="pub-text-col">
+          <div class="pub-text">Torun FM, Bilgin HI, Kaplan OI.</div>
+          <div class="pub-title">MSABrowser: dynamic and fast visualization of sequence alignments, variations and annotations.</div>
+          <div class="pub-meta">
+            <span class="pub-journal-badge badge-nar"><em>Bioinform Adv</em> 2021</span>
+            <button class="pub-toggle-btn" onclick="event.stopPropagation();toggleAbstract('p12')">Abstract ▾</button>
+          </div>
+        </div>
+      </div>
+      <div class="pub-abstract">
+        <p><strong>MSABrowser</strong> is a lightweight JavaScript tool for interactive visualisation of multiple sequence alignments, genetic variants, and functional annotations directly in the browser — no installation required. It enables researchers to inspect conservation at patient variant positions across species and overlay experimental annotations, supporting variant interpretation workflows.</p>
+        <div class="pub-doi">doi: <a href="https://doi.org/10.1093/bioadv/vbab009" target="_blank">10.1093/bioadv/vbab009</a></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── Earlier ───────────────────────────────────────────── -->
+  <div class="pub-year-block" id="pub-earlier">
+    <div class="pub-year-label">Earlier</div>
+
+    <div class="pub-row" id="p13">
+      <div class="pub-row-header" onclick="toggleAbstract('p13')">
+        <span class="pub-n">13</span>
+        <div class="pub-text-col">
+          <div class="pub-text">Kimura Y, et al.</div>
+          <div class="pub-title">Environmental responsiveness of tubulin glutamylation in sensory cilia is regulated by the p38 MAPK pathway.</div>
+          <div class="pub-meta">
+            <span class="pub-journal-badge badge-other"><em>Sci Rep</em> 2018</span>
+            <button class="pub-toggle-btn" onclick="event.stopPropagation();toggleAbstract('p13')">Abstract ▾</button>
+          </div>
+        </div>
+      </div>
+      <div class="pub-abstract">
+        <p>Tubulin glutamylation — a post-translational modification of the ciliary axoneme — is shown to respond dynamically to environmental stimuli in <em>C. elegans</em> sensory cilia via the <strong>p38 MAPK</strong> pathway. This finding links signal transduction pathways to ciliary tubulin code regulation, with implications for understanding how cilia adapt to external conditions.</p>
+        <div class="pub-doi">doi: <a href="https://doi.org/10.1038/s41598-018-26694-w" target="_blank">10.1038/s41598-018-26694-w</a></div>
+      </div>
+    </div>
+
+    <div class="pub-row" id="p14">
+      <div class="pub-row-header" onclick="toggleAbstract('p14')">
+        <span class="pub-n">14</span>
+        <div class="pub-text-col">
+          <div class="pub-text">Kaplan OI, Berber B, Hekim N, Doluca O.</div>
+          <div class="pub-title">G-quadruplex prediction in <em>E. coli</em> genome reveals a conserved putative G-quadruplex-Hairpin-Duplex switch.</div>
+          <div class="pub-meta">
+            <span class="pub-journal-badge badge-nar"><em>Nucleic Acids Res</em> 2016</span>
+            <button class="pub-toggle-btn" onclick="event.stopPropagation();toggleAbstract('p14')">Abstract ▾</button>
+          </div>
+        </div>
+      </div>
+      <div class="pub-abstract">
+        <p>Genome-wide prediction of G-quadruplex (G4) forming sequences in <em>E. coli</em> reveals a conserved structural switch between G4, hairpin, and duplex conformations at regulatory regions. This work identifies putative G4 motifs in bacterial genomes and provides a computational framework for studying non-B DNA structures as potential gene expression regulators.</p>
+        <div class="pub-doi">doi: <a href="https://doi.org/10.1093/nar/gkw769" target="_blank">10.1093/nar/gkw769</a></div>
+      </div>
+    </div>
+
+    <div class="pub-row" id="p15">
+      <div class="pub-row-header" onclick="toggleAbstract('p15')">
+        <span class="pub-n">15</span>
+        <div class="pub-text-col">
+          <div class="pub-text">Cevik S, Sanders AA, Van Wijk E, et al.</div>
+          <div class="pub-title">Active transport and diffusion barriers restrict Joubert Syndrome-associated ARL13B/ARL-13 to an Inv-like ciliary membrane subdomain.</div>
+          <div class="pub-meta">
+            <span class="pub-journal-badge badge-plos"><em>PLoS Genet</em> 2013</span>
+            <button class="pub-toggle-btn" onclick="event.stopPropagation();toggleAbstract('p15')">Abstract ▾</button>
+          </div>
+        </div>
+      </div>
+      <div class="pub-abstract">
+        <p>The Joubert syndrome GTPase <strong>ARL13B</strong> is shown to be restricted to an Inv-like subdomain of the ciliary membrane by a combination of active anterograde transport and diffusion barriers at the transition zone. This compartmentalisation is essential for ARL13B function and represents a fundamental principle of ciliary membrane organisation relevant to Joubert syndrome pathogenesis.</p>
+        <div class="pub-doi">doi: <a href="https://doi.org/10.1371/journal.pgen.1003977" target="_blank">10.1371/journal.pgen.1003977</a></div>
+      </div>
+    </div>
+
+    <div class="pub-row" id="p16">
+      <div class="pub-row-header" onclick="toggleAbstract('p16')">
+        <span class="pub-n">16</span>
+        <div class="pub-text-col">
+          <div class="pub-text">Kaplan OI, Doroquez DB, Cevik S, et al.</div>
+          <div class="pub-title">Endocytosis genes facilitate protein and membrane transport in <em>C. elegans</em> sensory cilia.</div>
+          <div class="pub-meta">
+            <span class="pub-journal-badge badge-cell"><em>Curr Biol</em> 2012</span>
+            <button class="pub-toggle-btn" onclick="event.stopPropagation();toggleAbstract('p16')">Abstract ▾</button>
+          </div>
+        </div>
+      </div>
+      <div class="pub-abstract">
+        <p>Endocytosis machinery — classically associated with membrane internalisation — is shown to play an unexpected role in facilitating protein and membrane transport into <em>C. elegans</em> sensory cilia. This study reveals a non-canonical function for endocytic genes in ciliary membrane homeostasis and provides new insight into the mechanisms controlling ciliary membrane composition.</p>
+        <div class="pub-doi">doi: <a href="https://doi.org/10.1016/j.cub.2012.01.060" target="_blank">10.1016/j.cub.2012.01.060</a></div>
+      </div>
+    </div>
+
+    <div class="pub-row" id="p17">
+      <div class="pub-row-header" onclick="toggleAbstract('p17')">
+        <span class="pub-n">17</span>
+        <div class="pub-text-col">
+          <div class="pub-text">Kaplan OI, Molla-Herman A, Cevik S, et al.</div>
+          <div class="pub-title">The AP-1 clathrin adaptor facilitates cilium formation and functions with RAB-8 in <em>C. elegans</em> ciliary membrane transport.</div>
+          <div class="pub-meta">
+            <span class="pub-journal-badge badge-other"><em>J Cell Sci</em> 2010</span>
+            <button class="pub-toggle-btn" onclick="event.stopPropagation();toggleAbstract('p17')">Abstract ▾</button>
+          </div>
+        </div>
+      </div>
+      <div class="pub-abstract">
+        <p>The AP-1 clathrin adaptor complex, canonically involved in intracellular vesicle trafficking, is shown to be required for cilium formation and to cooperate with the Rab GTPase <strong>RAB-8</strong> in ciliary membrane transport in <em>C. elegans</em>. This work establishes a direct role for clathrin-mediated trafficking machinery in ciliogenesis.</p>
+        <div class="pub-doi">doi: <a href="https://doi.org/10.1242/jcs.073908" target="_blank">10.1242/jcs.073908</a></div>
+      </div>
+    </div>
+
+    <div class="pub-row" id="p18">
+      <div class="pub-row-header" onclick="toggleAbstract('p18')">
+        <span class="pub-n">18</span>
+        <div class="pub-text-col">
+          <div class="pub-text">Cevik S, Hori Y, Kaplan OI, et al.</div>
+          <div class="pub-title">Joubert syndrome Arl13b functions at ciliary membranes and stabilizes protein transport in <em>Caenorhabditis elegans</em>.</div>
+          <div class="pub-meta">
+            <span class="pub-journal-badge badge-cell"><em>J Cell Biol</em> 2010</span>
+            <button class="pub-toggle-btn" onclick="event.stopPropagation();toggleAbstract('p18')">Abstract ▾</button>
+          </div>
+        </div>
+      </div>
+      <div class="pub-abstract">
+        <p>The Joubert syndrome protein <strong>ARL13B</strong> is shown to localise to ciliary membranes and to stabilise IFT-mediated protein transport in <em>C. elegans</em>. Loss of ARL-13 disrupts ciliary membrane composition and IFT dynamics, providing the first in vivo functional characterisation of ARL13B in a genetic model organism and establishing <em>C. elegans</em> as a platform for Joubert syndrome research.</p>
+        <div class="pub-doi">doi: <a href="https://doi.org/10.1083/jcb.200908133" target="_blank">10.1083/jcb.200908133</a></div>
+      </div>
+    </div>
+
+    <div class="pub-row" id="p19">
+      <div class="pub-row-header" onclick="toggleAbstract('p19')">
+        <span class="pub-n">19</span>
+        <div class="pub-text-col">
+          <div class="pub-text">Blacque OE, Cevik S, Kaplan OI.</div>
+          <div class="pub-title">Intraflagellar transport: from molecular characterisation to mechanism.</div>
+          <div class="pub-meta">
+            <span class="pub-journal-badge badge-other"><em>Front Biosci</em> 2008</span>
+            <button class="pub-toggle-btn" onclick="event.stopPropagation();toggleAbstract('p19')">Abstract ▾</button>
+          </div>
+        </div>
+      </div>
+      <div class="pub-abstract">
+        <p>A comprehensive review of intraflagellar transport (IFT) — the bidirectional motor-driven movement of multi-protein complexes along the ciliary axoneme that is essential for cilia assembly, maintenance, and signalling. This early review synthesises molecular characterisation of IFT-A and IFT-B subcomplexes, motor proteins, and cargo, and frames the emerging connection between IFT defects and ciliopathies including Bardet-Biedl syndrome and Joubert syndrome.</p>
+        <div class="pub-doi">doi: <a href="https://doi.org/10.2741/2871" target="_blank">10.2741/2871</a></div>
+      </div>
+    </div>
+
+  </div>
+</div>
 </main>
 
+<script>
+function toggleAbstract(id) {
+  const row = document.getElementById(id);
+  const isOpen = row.classList.contains('open');
+  row.classList.toggle('open', !isOpen);
+  const btn = row.querySelector('.pub-toggle-btn');
+  btn.textContent = isOpen ? 'Abstract ▾' : 'Abstract ▴';
+}
+
+const ps = document.getElementById('pub-search');
+if (ps) ps.addEventListener('input', function() {
+  const q = this.value.toLowerCase();
+  document.querySelectorAll('.pub-row').forEach(r => {
+    r.style.display = r.textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
+  document.querySelectorAll('.pub-year-block').forEach(b => {
+    const visible = [...b.querySelectorAll('.pub-row')].some(r => r.style.display !== 'none');
+    b.style.display = visible ? '' : 'none';
+  });
+});
+</script>
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-cols">
+      <div class="footer-col">
+        <div class="footer-col-title">Kaplan Lab</div>
+      <div class="footer-col">
+        <div class="footer-col-title">Tools &amp; Databases</div>
+      <div class="footer-col">
+        <div class="footer-col-title">Quick Links</div>
+    <div class="footer-bottom">
+      <div class="footer-social">
+</footer>
+</body>
+</html>
 
 <!-- FOOTER -->
 <footer class="site-footer">
@@ -197,14 +675,5 @@
     </div>
   </div>
 </footer>
-
-<script>
-  const ps = document.getElementById('pub-search');
-  if (ps) ps.addEventListener('input', function() {
-    const q = this.value.toLowerCase();
-    document.querySelectorAll('.pub-row').forEach(r => r.style.display = r.textContent.toLowerCase().includes(q) ? '' : 'none');
-    document.querySelectorAll('.pub-year-block').forEach(b => { const v=[...b.querySelectorAll('.pub-row')].some(r=>r.style.display!=='none'); b.style.display=v?'':'none'; });
-  });
-</script>
 </body>
 </html>
