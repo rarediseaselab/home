@@ -609,7 +609,7 @@ window.generate=function(){
   // Each column = one group. Values = all numeric rows for that column.
   const groups = yCols.map((yc,i)=>({
     label : labels[i],
-    values: data.map(r=>+r[yc]).filter(v=>!isNaN(v) && String(r[yc]).trim()!==''),
+    values: data.map(r=>+r[yc]).filter(v=>!isNaN(v)),
     si    : i,
   })).filter(g=>g.values.length>0);
 
