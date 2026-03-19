@@ -840,17 +840,20 @@ window.dlTIFF=function(){
 window.dlCSVdata=function(){
   if(!data.length)return;
   const c=Object.keys(data[0]);
-  let csv=c.join(',')+'
-';
-  data.forEach(r=>{csv+=c.map(col=>JSON.stringify(String(r[col]))).join(',')+'
-';});
+  let csv=c.join(',')+'\n';
+  data.forEach(r=>{csv+=c.map(col=>JSON.stringify(String(r[col]))).join(',')+'\n';});
   const a=document.createElement('a');a.download='data.csv';a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.click();
 }
 window.dlStats=function(){
-  const tables=document.querySelectorAll('.st-table');if(!tables.length){alert('Run a statistical test first.');return;}
-  let csv='';tables.forEach(t=>{[...t.querySelectorAll('tr')].forEach(row=>{csv+=[...row.querySelectorAll('th,td')].map(c=>'"'+c.textContent.trim()+'"').join(',')+'
-';});csv+='
-';});
+  const tables=document.querySelectorAll('.st-table');
+  if(!tables.length){alert('Run a statistical test first.');return;}
+  let csv='';
+  tables.forEach(t=>{
+    [...t.querySelectorAll('tr')].forEach(row=>{
+      csv+=[...row.querySelectorAll('th,td')].map(c=>'"'+c.textContent.trim()+'"').join(',')+'\n';
+    });
+    csv+='\n';
+  });
   const a=document.createElement('a');a.download='statistics.csv';a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.click();
 }
 window.clearAll=function(){
@@ -886,8 +889,7 @@ window.loadEx=function(type){
   data=rows.slice(1).map(r=>{const o={};headers.forEach((h,i)=>o[h]=r[i]);return o;});
   cols=headers;
   // Set textarea too
-  document.getElementById('paste-ta').value=[headers.join('	'),...rows.slice(1).map(r=>r.join('	'))].join('
-');
+  document.getElementById('paste-ta').value=[headers.join('\t'),...rows.slice(1).map(r=>r.join('\t'))].join('\n');
   switchTab('paste',document.querySelectorAll('.itab')[0]);
   onDataReady(`Example: ${type}`);
   // Auto-set good defaults per example
