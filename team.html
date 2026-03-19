@@ -129,16 +129,18 @@
 
     <!-- ── Principal Investigators ─────────────────────────── -->
     <div class="team-section-title">Principal Investigators</div>
-    <div class="pi-grid">
 
-      <div class="pi-card">
-        <div class="pi-card-top">
-          <img src="Oktay.png" alt="Oktay I. Kaplan" class="pi-photo">
-          <div class="pi-card-header">
-            <div class="pi-name">Oktay I. Kaplan, Dr.</div>
-            <div class="pi-title">Principal Investigator · Associate Professor</div>
-            <div class="pi-dept">Dept. of Molecular Biology &amp; Genetics<br>Abdullah Gül University, Kayseri</div>
-            <div class="pi-links">
+    <div class="pi-accordion-row">
+
+      <!-- Oktay Kaplan -->
+      <div class="pi-acc-card" id="pi-oktay">
+        <button class="pi-acc-trigger" onclick="togglePi('pi-oktay')" aria-expanded="false">
+          <img src="Oktay.png" alt="Oktay I. Kaplan" class="pi-acc-photo">
+          <div class="pi-acc-summary">
+            <div class="pi-acc-name">Oktay I. Kaplan, Dr.</div>
+            <div class="pi-acc-title">Principal Investigator · Associate Professor</div>
+            <div class="pi-acc-dept">Molecular Biology &amp; Genetics · Abdullah Gül University</div>
+            <div class="pi-acc-links" onclick="event.stopPropagation()">
               <a href="mailto:oktay.kaplan@agu.edu.tr">Email</a>
               <a href="https://orcid.org/0000-0002-8733-0920" target="_blank">ORCID</a>
               <a href="https://scholar.google.com/citations?user=gRUvVV4AAAAJ" target="_blank">Scholar</a>
@@ -146,58 +148,65 @@
               <a href="https://x.com/KaplanOLab" target="_blank">@KaplanOLab</a>
             </div>
           </div>
-        </div>
-        <div class="pi-card-body">
-          <p>Associate Professor with 15+ years in molecular genetics, cilia biology, and rare disease. He leads the Rare Disease Laboratory, combining <em>C. elegans</em> genetics, CRISPR/Cas9, advanced imaging, and open bioinformatics to study ciliopathies and neurodevelopmental disorders.</p>
+          <span class="pi-acc-chevron">▾</span>
+        </button>
+        <div class="pi-acc-body" hidden>
+          <p>Associate Professor with 15+ years in molecular genetics, cilia biology, and rare disease. He leads the Rare Disease Laboratory, combining <em>C. elegans</em> genetics, CRISPR/Cas9, advanced imaging, and open bioinformatics to study ciliopathies and neurodevelopmental disorders — working closely with clinical geneticists for translational impact.</p>
           <div class="pi-section-label">Education &amp; Career</div>
           <div class="pi-timeline">
             <div class="pi-timeline-item"><span class="pi-year">2017–now</span><span class="pi-detail"><strong>Associate Professor &amp; PI</strong> · Abdullah Gül University</span></div>
-            <div class="pi-timeline-item"><span class="pi-year">Postdoc</span><span class="pi-detail"><strong>EMBO &amp; Helmholtz Fellow</strong> · Max Delbrück Center, Berlin</span></div>
-            <div class="pi-timeline-item"><span class="pi-year">2007–2011</span><span class="pi-detail"><strong>PhD, Genetics</strong> · University College Dublin</span></div>
+            <div class="pi-timeline-item"><span class="pi-year">Postdoc</span><span class="pi-detail"><strong>EMBO &amp; Helmholtz Fellow</strong> · Max Delbrück Center for Molecular Medicine, Berlin</span></div>
+            <div class="pi-timeline-item"><span class="pi-year">2007–2011</span><span class="pi-detail"><strong>PhD, Genetics</strong> · University College Dublin, Conway Institute, Ireland</span></div>
           </div>
-          <div class="method-pills" style="margin:10px 0 0;">
+          <div class="method-pills" style="margin:12px 0 0;">
             <span class="method-pill">Ciliopathies</span>
             <span class="method-pill">CRISPR/Cas9</span>
             <span class="method-pill">Rare disease genomics</span>
-            <span class="method-pill">Bioinformatics</span>
+            <span class="method-pill">Bioinformatics tools</span>
+            <span class="method-pill">IFT &amp; BBSome</span>
           </div>
         </div>
       </div>
 
-      <div class="pi-card">
-        <div class="pi-card-top">
-          <img src="sebihacevikaplan.png" alt="Sebiha Cevik" class="pi-photo">
-          <div class="pi-card-header">
-            <div class="pi-name">Sebiha Cevik, Dr.</div>
-            <div class="pi-title">Principal Investigator · Assistant Professor</div>
-            <div class="pi-dept">Dept. of Molecular Biology &amp; Genetics<br>Abdullah Gül University, Kayseri</div>
-            <div class="pi-links">
+      <!-- Sebiha Cevik -->
+      <div class="pi-acc-card" id="pi-sebiha">
+        <button class="pi-acc-trigger" onclick="togglePi('pi-sebiha')" aria-expanded="false">
+          <img src="sebihacevikaplan.png" alt="Sebiha Cevik" class="pi-acc-photo">
+          <div class="pi-acc-summary">
+            <div class="pi-acc-name">Sebiha Cevik, Dr.</div>
+            <div class="pi-acc-title">Principal Investigator · Assistant Professor</div>
+            <div class="pi-acc-dept">Molecular Biology &amp; Genetics · Abdullah Gül University</div>
+            <div class="pi-acc-links" onclick="event.stopPropagation()">
               <a href="mailto:sebiha.cevik@agu.edu.tr">Email</a>
               <a href="https://orcid.org/0000-0002-0935-1929" target="_blank">ORCID</a>
               <a href="https://scholar.google.com/citations?user=_o6sKOUAAAAJ" target="_blank">Scholar</a>
               <a href="https://www.scopus.com/authid/detail.uri?authorId=23471639400" target="_blank">Scopus</a>
+              <a href="https://avesis.agu.edu.tr/sebiha.cevik" target="_blank">AGU Profile</a>
             </div>
           </div>
-        </div>
-        <div class="pi-card-body">
-          <p>Ciliary biologist specialising in <em>C. elegans</em> cilia structure and membrane organisation. Pioneered work on Joubert syndrome protein ARL13B, IFT/BBSome regulation, cilia-cilia joining, and rare disease variant interpretation.</p>
+          <span class="pi-acc-chevron">▾</span>
+        </button>
+        <div class="pi-acc-body" hidden>
+          <p>Ciliary biologist specialising in <em>C. elegans</em> cilia structure and membrane organisation. Pioneered work on Joubert syndrome protein ARL13B, IFT/BBSome regulation, cilia-cilia joining, and rare disease variant interpretation. Co-leads the Rare Disease Laboratory and is a corresponding author on several key lab publications.</p>
           <div class="pi-section-label">Education &amp; Career</div>
           <div class="pi-timeline">
             <div class="pi-timeline-item"><span class="pi-year">2018–now</span><span class="pi-detail"><strong>Assistant Professor</strong> · Abdullah Gül University</span></div>
             <div class="pi-timeline-item"><span class="pi-year">2015–2018</span><span class="pi-detail"><strong>Assistant Professor</strong> · Abdullah Gül University</span></div>
-            <div class="pi-timeline-item"><span class="pi-year">2006–2011</span><span class="pi-detail"><strong>PhD, Biomolecular Science</strong> · University College Dublin</span></div>
-            <div class="pi-timeline-item"><span class="pi-year">2000–2005</span><span class="pi-detail"><strong>BSc, Molecular Biology</strong> · Haliç University</span></div>
+            <div class="pi-timeline-item"><span class="pi-year">2011–2015</span><span class="pi-detail"><strong>Postdoctoral Researcher</strong> · Rare Disease Laboratory, AGU</span></div>
+            <div class="pi-timeline-item"><span class="pi-year">2006–2011</span><span class="pi-detail"><strong>PhD, Biomolecular &amp; Biomedical Science</strong> · University College Dublin, Ireland</span></div>
+            <div class="pi-timeline-item"><span class="pi-year">2000–2005</span><span class="pi-detail"><strong>BSc, Molecular Biology</strong> · Haliç University, Istanbul</span></div>
           </div>
-          <div class="method-pills" style="margin:10px 0 0;">
+          <div class="method-pills" style="margin:12px 0 0;">
             <span class="method-pill">Ciliary membrane biology</span>
-            <span class="method-pill">ARL13B &amp; JBTS</span>
+            <span class="method-pill">ARL13B &amp; Joubert syndrome</span>
             <span class="method-pill">IFT &amp; BBSome</span>
             <span class="method-pill">Cilia-cilia joining</span>
+            <span class="method-pill">Rare disease variants</span>
           </div>
         </div>
       </div>
 
-    </div>
+    </div><!-- /.pi-accordion-row -->
 
     <!-- ── Graduate Students ────────────────────────────────── -->
     <div class="team-section-title" style="margin-top:48px;">Graduate Students</div>
@@ -253,6 +262,41 @@
   </div>
 </main>
 
+<script>
+function togglePi(id) {
+  const card   = document.getElementById(id);
+  const body   = card.querySelector('.pi-acc-body');
+  const btn    = card.querySelector('.pi-acc-trigger');
+  const chev   = card.querySelector('.pi-acc-chevron');
+  const isOpen = !body.hidden;
+
+  if (isOpen) {
+    body.style.maxHeight = body.scrollHeight + 'px';
+    requestAnimationFrame(() => {
+      body.style.maxHeight = '0';
+      body.style.opacity   = '0';
+    });
+    setTimeout(() => { body.hidden = true; body.style.maxHeight = ''; body.style.opacity = ''; }, 300);
+    btn.setAttribute('aria-expanded', 'false');
+    card.classList.remove('open');
+    chev.style.transform = '';
+  } else {
+    body.hidden = false;
+    body.style.maxHeight = '0';
+    body.style.opacity   = '0';
+    requestAnimationFrame(() => {
+      body.style.maxHeight = body.scrollHeight + 'px';
+      body.style.opacity   = '1';
+    });
+    setTimeout(() => { body.style.maxHeight = 'none'; }, 300);
+    btn.setAttribute('aria-expanded', 'true');
+    card.classList.add('open');
+    chev.style.transform = 'rotate(180deg)';
+  }
+}
+</script>
+
+
 
 <!-- FOOTER -->
 <footer class="site-footer">
@@ -285,5 +329,4 @@
       <div class="footer-social">
         <a href="https://github.com/thekaplanlab" target="_blank"><img src="github-logo.png" alt="GitHub"></a>
         <a href="https://www.instagram.com/kaplanlab/?hl=en" target="_blank"><img src="instagram-logo.png" alt="Instagram"></a>
-        <a href="https://www.linkedin.com/in/oktay-i-kaplan-74b16856/" target="_blank"><img src="linkedin-logo.png" alt="LinkedIn"></a>
-        <a href="https://x.com/KaplanOLab" targe
+        <a href="https://www.linkedin.com/in/oktay-i-kaplan-74b16856/" target="_blank"><img 
