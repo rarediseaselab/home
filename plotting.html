@@ -218,14 +218,7 @@
 
           <!-- Paste tab -->
           <div id="tab-paste">
-            <textarea class="paste-area" id="paste-area" placeholder="Paste your data here. Use Tab or comma between columns, Enter between rows.
-
-Example (tab-separated):
-Group	Value1	Value2
-WT	3.2	2.1
-WT	3.5	2.4
-arl-13	1.8	1.2
-arl-13	2.1	1.5" spellcheck="false"></textarea>
+            <textarea class="paste-area" id="paste-area" spellcheck="false" placeholder="Paste your data here. First row = column headers. Use Tab (Excel copy-paste) or comma between columns, Enter between rows."></textarea>
             <div class="paste-hint">
               Accepts tab-separated (Excel copy-paste) or comma-separated values.<br>
               First row = column headers. Columns can be numerical or categorical.
@@ -406,7 +399,17 @@ function openNav(){document.querySelector('.nav-links').classList.add('open');do
 function closeNav(){document.querySelector('.nav-links').classList.remove('open');document.querySelector('.nav-toggle').classList.remove('open');document.getElementById('nav-overlay').classList.remove('open');document.body.style.overflow='';}
 function toggleNav(){document.querySelector('.nav-links').classList.contains('open')?closeNav():openNav();}
 function toggleDrop(btn){const drop=btn.closest('.nav-drop');const isOpen=drop.classList.contains('open');document.querySelectorAll('.nav-drop.open').forEach(d=>d.classList.remove('open'));if(!isOpen)drop.classList.add('open');btn.setAttribute('aria-expanded',!isOpen);}
-document.addEventListener('DOMContentLoaded',()=>{const ov=document.getElementById('nav-overlay');if(ov)ov.addEventListener('click',closeNav);document.querySelectorAll('.nav-drop-btn').forEach(btn=>{btn.textContent=btn.textContent.replace(/\s*▾\s*$/,'').trim();btn.setAttribute('aria-expanded','false');});});
+document.addEventListener('DOMContentLoaded',()=>{
+  const ov=document.getElementById('nav-overlay');
+  if(ov)ov.addEventListener('click',closeNav);
+  document.querySelectorAll('.nav-drop-btn').forEach(btn=>{
+    btn.textContent=btn.textContent.replace(/\s*▾\s*$/,'').trim();
+    btn.setAttribute('aria-expanded','false');
+  });
+  // Set textarea example (avoids literal tabs in HTML attribute)
+  const ta=document.getElementById('paste-area');
+  if(ta) ta.placeholder='Paste your data here. First row = column headers.\nUse Tab (Excel copy-paste) or comma between columns.\n\nExample:\nGroup\tValue1\tValue2\nWT\t3.2\t2.1\nWT\t3.5\t2.4\narl-13\t1.8\t1.2\narl-13\t2.1\t1.5'.replace(/\\t/g,'\t');
+});
 
 /* ── PALETTES (Nature journal colors) ── */
 const PALETTES = {
@@ -475,7 +478,7 @@ function splitLine(line,delim){
   }
   result.push(cur);return result;
 }
-function parseCSVText(t){return parseDelimited(t,t.split('\n')[0].includes('\t')?'\t',',');}
+function parseCSVText(t){return parseDelimited(t,t.split('\n')[0].includes('\t')?'\t':',');}
 
 /* ── ON DATA READY ── */
 function onDataReady(label){
@@ -925,6 +928,27 @@ function loadExample(type){
   const lines=[headers.join('\t'),...rows.slice(1).map(r=>r.join('\t'))];
   document.getElementById('paste-area').value=lines.join('\n');
 }
+
+/* ── EXPOSE ALL ONCLICK FUNCTIONS TO WINDOW ── */
+window.toggleNav=toggleNav;
+window.toggleDrop=toggleDrop;
+window.switchTab=switchTab;
+window.parsePaste=parsePaste;
+window.handleFile=handleFile;
+window.handleDrop=handleDrop;
+window.loadExample=loadExample;
+window.setType=setType;
+window.setStat=setStat;
+window.usePalette=usePalette;
+window.buildSeriesColors=buildSeriesColors;
+window.generate=generate;
+window.liveTitle=liveTitle;
+window.dlPNG=dlPNG;
+window.dlSVG=dlSVG;
+window.dlCSV=dlCSV;
+window.dlStats=dlStats;
+window.clearAll=clearAll;
+
 </script>
 </body>
 </html>
