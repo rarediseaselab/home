@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Disease Modeling | Kaplan Lab</title>
+  <meta name="description" content="CRISPR/Cas9-based variant validation in C. elegans. Whole exome sequencing and functional screening to distinguish pathogenic from benign variants.">
+  <meta name="keywords" content="disease modeling, CRISPR Cas9, C. elegans, whole exome sequencing, variant interpretation, rare disease">
+  <meta name="author" content="Oktay I. Kaplan">
+  <link rel="canonical" href="https://rarediseaselab.github.io/home/disease-modeling.html">
+  <link rel="sitemap" type="application/xml" href="https://rarediseaselab.github.io/home/sitemap.xml">
+  <meta property="og:type"        content="website">
+  <meta property="og:url"         content="https://rarediseaselab.github.io/home/disease-modeling.html">
+  <meta property="og:title"       content="Disease Modeling | Kaplan Lab">
+  <meta property="og:description" content="CRISPR/Cas9-based variant validation in C. elegans. Whole exome sequencing and functional screening to distinguish pathogenic from benign variants.">
+  <meta property="og:image"       content="https://rarediseaselab.github.io/home/research3.jpeg">
+  <meta property="og:site_name"   content="Kaplan Lab">
+  <meta name="twitter:card"        content="summary_large_image">
+  <meta name="twitter:site"        content="@KaplanOLab">
+  <meta name="twitter:title"       content="Disease Modeling | Kaplan Lab">
+  <meta name="twitter:description" content="CRISPR/Cas9-based variant validation in C. elegans. Whole exome sequencing and functional screening to distinguish pathogenic from benign variants.">
+  <meta name="twitter:image"       content="https://rarediseaselab.github.io/home/research3.jpeg">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/png" href="elegans2.png">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-EKT3SLJ516"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-EKT3SLJ516');</script>
+  <script>
+  /* ── Mobile nav ───────────────────────────────────────────── */
+  function openNav() {
+    document.querySelector('.nav-links').classList.add('open');
+    document.querySelector('.nav-toggle').classList.add('open');
+    document.querySelector('.nav-toggle').setAttribute('aria-expanded','true');
+    const ov = document.getElementById('nav-overlay');
+    if (ov) ov.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeNav() {
+    document.querySelector('.nav-links').classList.remove('open');
+    document.querySelector('.nav-toggle').classList.remove('open');
+    document.querySelector('.nav-toggle').setAttribute('aria-expanded','false');
+    const ov = document.getElementById('nav-overlay');
+    if (ov) ov.classList.remove('open');
+    document.body.style.overflow = '';
+    document.querySelectorAll('.nav-drop.open').forEach(d => d.classList.remove('open'));
+  }
+  function toggleNav() {
+    document.querySelector('.nav-links').classList.contains('open') ? closeNav() : openNav();
+  }
+  function toggleDrop(btn) {
+    const drop = btn.closest('.nav-drop');
+    const isOpen = drop.classList.contains('open');
+    document.querySelectorAll('.nav-drop.open').forEach(d => d.classList.remove('open'));
+    if (!isOpen) drop.classList.add('open');
+    btn.setAttribute('aria-expanded', !isOpen);
+  }
+  document.addEventListener('DOMContentLoaded', () => {
+    const ov = document.getElementById('nav-overlay');
+    if (ov) ov.addEventListener('click', closeNav);
+    document.querySelectorAll('.nav-links a').forEach(a => {
+      a.addEventListener('click', () => { if (window.innerWidth <= 768) closeNav(); });
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') { closeNav(); if(typeof closeLb==='function') closeLb(); }
+    });
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 768) {
+        document.querySelector('.nav-links').classList.remove('open');
+        document.querySelector('.nav-toggle').classList.remove('open');
+        document.querySelector('.nav-toggle').setAttribute('aria-expanded','false');
+        const ov = document.getElementById('nav-overlay');
+        if (ov) ov.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+    });
+    document.querySelectorAll('.nav-drop-btn').forEach(btn => {
+      btn.textContent = btn.textContent.replace(/\s*▾\s*$/, '').trim();
+      btn.setAttribute('aria-expanded', 'false');
+    });
+  });
+  </script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a class="nav-brand" href="index.html">Kaplan Lab</a>
+  <button class="nav-toggle" onclick="toggleNav()" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li class="nav-drop">
+      <button class="nav-drop-btn" onclick="toggleDrop(this)" aria-haspopup="true" aria-expanded="false">Research ▾</button>
+      <ul class="nav-drop-menu">
+        <li><a href="research.html">Research Overview</a></li>
+        <li><a href="cilia-ciliopathies.html">Cilia &amp; Ciliopathies</a></li>
+        <li><a href="disease-modeling.html" class="active">Disease Modeling</a></li>
+        <li><a href="cilia-cilia-joining.html">Cilia-Cilia Joining</a></li>
+        <li><a href="bioinformatics.html">Bioinformatics</a></li>
+      </ul>
+    </li>
+    <li class="nav-drop">
+      <button class="nav-drop-btn" onclick="toggleDrop(this)" aria-haspopup="true" aria-expanded="false">Team ▾</button>
+      <ul class="nav-drop-menu">
+        <li><a href="team.html">Current Members</a></li>
+        <li><a href="former-members.html">Former Members</a></li>
+        <li><a href="group-photos.html">Group Photos</a></li>
+        <li><a href="join.html">Join the Lab</a></li>
+      </ul>
+    </li>
+    <li><a href="publications.html">Publications</a></li>
+    <li><a href="news.html">News</a></li>
+    <li class="nav-drop">
+      <button class="nav-drop-btn" onclick="toggleDrop(this)" aria-haspopup="true" aria-expanded="false">Tools ▾</button>
+      <ul class="nav-drop-menu">
+        <li><a href="ciliahub.html">CiliaHub</a></li>
+        <li><a href="ciliaatlas.html">CiliaAtlas</a></li>
+        <li><a href="resources.html">All Resources</a></li>
+      </ul>
+    </li>
+    <li><a href="gallery.html">Gallery</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</nav>
+<div id="nav-overlay" class="nav-overlay"></div>
+<div id="breadcrumbs"><a href="index.html">Home</a> › <a href="research.html">Research</a> › Disease Modeling</div>
+
+<main>
+<img src="research3.jpeg" alt="Disease Modeling" class="page-img">
+  <div class="section-body">
+    <p class="eyebrow">Research</p>
+    <h1>Disease Modeling</h1>
+
+    <p>Rare disease diagnosis is hampered by the sheer number of genetic variants of uncertain significance (VUS) discovered by next-generation sequencing. The Kaplan Lab develops and applies a systematic pipeline — combining patient genomics with functional validation in <em>C. elegans</em> — to resolve which variants are truly pathogenic and to understand the mechanisms by which they cause disease.</p>
+
+    <hr class="divider">
+
+    <div class="research-detail-grid">
+      <div class="research-detail-main">
+
+        <h2>The variant-to-function pipeline</h2>
+        <p>When a patient presents with a suspected ciliopathy or rare developmental syndrome, whole exome or genome sequencing identifies candidate variants. The challenge is distinguishing causative mutations from benign polymorphisms. The lab's pipeline moves from sequencing to functional answer in three stages:</p>
+
+        <div class="pipeline-steps">
+          <div class="pipeline-step">
+            <div class="pipeline-num">1</div>
+            <div class="pipeline-body">
+              <strong>Variant prioritisation</strong>
+              <p>Candidate variants are filtered by allele frequency, conservation across species, and predicted functional impact. The lab's own ConVarT tool searches for equivalent variants in non-human model organisms to flag those with prior experimental evidence.</p>
+            </div>
+          </div>
+          <div class="pipeline-step">
+            <div class="pipeline-num">2</div>
+            <div class="pipeline-body">
+              <strong>CRISPR/Cas9 modelling in <em>C. elegans</em></strong>
+              <p>The orthologous mutation is precisely introduced into the <em>C. elegans</em> genome using CRISPR/Cas9. The lab uses a PCR-based, cost-efficient screening strategy (see Resources) to confirm correct edits without sequencing every candidate.</p>
+            </div>
+          </div>
+          <div class="pipeline-step">
+            <div class="pipeline-num">3</div>
+            <div class="pipeline-body">
+              <strong>Phenotypic &amp; molecular characterisation</strong>
+              <p>Edited worms are assessed for ciliary defects (dye-filling, IFT velocity, cilia morphology by confocal and electron microscopy), developmental phenotypes, and protein localisation using fluorescent reporters. Rescue experiments with wild-type and patient-variant alleles confirm pathogenicity.</p>
+            </div>
+          </div>
+        </div>
+
+        <h2>Key findings</h2>
+        <div class="finding-list">
+          <div class="finding-item">
+            <div class="finding-gene">Cross-species variant matching</div>
+            <div class="finding-text">ConVarT, developed by the lab, enables systematic matching of human missense variants to equivalent positions in <em>C. elegans</em>, zebrafish, and other organisms — accelerating functional triage of VUS from patient cohorts. <a href="https://doi.org/10.1093/nar/gkab939" target="_blank">Pir et al., Nucleic Acids Res 2022 →</a></div>
+          </div>
+          <div class="finding-item">
+            <div class="finding-gene">CRISPR variant validation</div>
+            <div class="finding-text">Applied CRISPR/Cas9 knock-in of patient-derived variants to distinguish causative from benign alleles in genes including CILK1, WDR31, and CC2D1A, establishing functional criteria for pathogenicity classification. <a href="https://doi.org/10.1093/g3journal/jkad227" target="_blank">Cevik et al., G3 2023 →</a></div>
+          </div>
+        </div>
+
+        <h2>Technologies used</h2>
+        <div class="method-pills">
+          <span class="method-pill">Whole exome sequencing</span>
+          <span class="method-pill">CRISPR/Cas9 knock-in</span>
+          <span class="method-pill">ConVarT variant matching</span>
+          <span class="method-pill"><em>C. elegans</em> dye-filling assay</span>
+          <span class="method-pill">IFT live imaging</span>
+          <span class="method-pill">Fluorescent protein reporters</span>
+          <span class="method-pill">Phenotypic rescue</span>
+        </div>
+
+      </div>
+      <div class="research-detail-side">
+        <div class="research-side-card">
+          <img src="research3.jpeg" alt="Disease modeling in C. elegans" style="width:100%;border-radius:var(--r);display:block;margin-bottom:12px;">
+          <p style="font-size:13px;color:var(--ink-3);font-style:italic;">Functional screening of patient variants using <em>C. elegans</em> disease models.</p>
+        </div>
+        <div class="research-side-card" style="margin-top:20px;">
+          <div class="side-stat-row"><span class="side-stat-n">WES</span><span class="side-stat-l">Whole exome sequencing</span></div>
+          <div class="side-stat-row"><span class="side-stat-n">VUS</span><span class="side-stat-l">Variant classification pipeline</span></div>
+          <div class="side-stat-row"><span class="side-stat-n">CRISPR</span><span class="side-stat-l">Cas9 knock-in modelling</span></div>
+        </div>
+        <div class="research-side-card" style="margin-top:20px;">
+          <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-3);margin-bottom:10px;">Related tools</div>
+          <a class="side-pub-link" href="https://convart.org/" target="_blank">ConVarT — variant matching</a>
+          <a class="side-pub-link" href="CRISPR_protocol.pdf">CRISPR/Cas9 Protocol (PDF)</a>
+          <a class="side-pub-link" href="publications.html">Cevik et al. 2023 — G3</a>
+          <a class="side-pub-link" href="publications.html">Pir et al. 2022 — NAR</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-cols">
+      <div class="footer-col">
+        <div class="footer-col-title">Kaplan Lab</div>
+        <p>We study ciliopathies and rare genetic diseases using <em>C. elegans</em>, CRISPR/Cas9, and bioinformatics.<br><br>Faculty of Life and Natural Sciences<br>Abdullah Gül University<br>Kayseri, Türkiye</p>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Tools &amp; Databases</div>
+        <a href="ciliahub.html">CiliaHub / CiliaAI</a>
+        <a href="ciliaatlas.html">CiliaAtlas</a>
+        <a href="https://ciliogenics.com/" target="_blank">CilioGenics</a>
+        <a href="https://kaplanlab.shinyapps.io/ciliaminer/" target="_blank">CiliaMiner</a>
+        <a href="https://convart.org/" target="_blank">ConVarT</a>
+        <a href="https://github.com/thekaplanlab" target="_blank">GitHub</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Quick Links</div>
+        <a href="research.html">Research</a>
+        <a href="publications.html">Publications</a>
+        <a href="team.html">Team</a>
+        <a href="join.html">Join the Lab</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Kaplan Lab · Abdullah Gül University · Kayseri, Türkiye</span>
+      <div class="footer-social">
+        <a href="https://github.com/thekaplanlab" target="_blank"><img src="github-logo.png" alt="GitHub"></a>
+        <a href="https://www.instagram.com/kaplanlab/?hl=en" target="_blank"><img src="instagram-logo.png" alt="Instagram"></a>
+        <a href="https://www.linkedin.com/in/oktay-i-kaplan-74b16856/" target="_blank"><img src="linkedin-logo.png" alt="LinkedIn"></a>
+        <a href="https://x.com/KaplanOLab" target="_blank">𝕏 @KaplanOLab</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+</body>
+</html>

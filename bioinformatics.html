@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bioinformatics & Open Tools | Kaplan Lab</title>
+  <meta name="description" content="Open bioinformatics tools developed by the Kaplan Lab: CiliaHub, CiliaAtlas, CilioGenics, CiliaMiner, ConVarT, and MSABrowser for cilia and rare disease research.">
+  <meta name="keywords" content="CiliaHub, CiliaAtlas, CilioGenics, CiliaMiner, ConVarT, MSABrowser, cilia bioinformatics, ciliopathy tools">
+  <meta name="author" content="Oktay I. Kaplan">
+  <link rel="canonical" href="https://rarediseaselab.github.io/home/bioinformatics.html">
+  <link rel="sitemap" type="application/xml" href="https://rarediseaselab.github.io/home/sitemap.xml">
+  <meta property="og:type"        content="website">
+  <meta property="og:url"         content="https://rarediseaselab.github.io/home/bioinformatics.html">
+  <meta property="og:title"       content="Bioinformatics & Open Tools | Kaplan Lab">
+  <meta property="og:description" content="Open bioinformatics tools developed by the Kaplan Lab: CiliaHub, CiliaAtlas, CilioGenics, CiliaMiner, ConVarT, and MSABrowser for cilia and rare disease research.">
+  <meta property="og:image"       content="https://rarediseaselab.github.io/home/convart.jpeg">
+  <meta property="og:site_name"   content="Kaplan Lab">
+  <meta name="twitter:card"        content="summary_large_image">
+  <meta name="twitter:site"        content="@KaplanOLab">
+  <meta name="twitter:title"       content="Bioinformatics & Open Tools | Kaplan Lab">
+  <meta name="twitter:description" content="Open bioinformatics tools developed by the Kaplan Lab: CiliaHub, CiliaAtlas, CilioGenics, CiliaMiner, ConVarT, and MSABrowser for cilia and rare disease research.">
+  <meta name="twitter:image"       content="https://rarediseaselab.github.io/home/convart.jpeg">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/png" href="elegans2.png">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-EKT3SLJ516"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-EKT3SLJ516');</script>
+  <script>
+  /* ── Mobile nav ───────────────────────────────────────────── */
+  function openNav() {
+    document.querySelector('.nav-links').classList.add('open');
+    document.querySelector('.nav-toggle').classList.add('open');
+    document.querySelector('.nav-toggle').setAttribute('aria-expanded','true');
+    const ov = document.getElementById('nav-overlay');
+    if (ov) ov.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeNav() {
+    document.querySelector('.nav-links').classList.remove('open');
+    document.querySelector('.nav-toggle').classList.remove('open');
+    document.querySelector('.nav-toggle').setAttribute('aria-expanded','false');
+    const ov = document.getElementById('nav-overlay');
+    if (ov) ov.classList.remove('open');
+    document.body.style.overflow = '';
+    document.querySelectorAll('.nav-drop.open').forEach(d => d.classList.remove('open'));
+  }
+  function toggleNav() {
+    document.querySelector('.nav-links').classList.contains('open') ? closeNav() : openNav();
+  }
+  function toggleDrop(btn) {
+    const drop = btn.closest('.nav-drop');
+    const isOpen = drop.classList.contains('open');
+    document.querySelectorAll('.nav-drop.open').forEach(d => d.classList.remove('open'));
+    if (!isOpen) drop.classList.add('open');
+    btn.setAttribute('aria-expanded', !isOpen);
+  }
+  document.addEventListener('DOMContentLoaded', () => {
+    const ov = document.getElementById('nav-overlay');
+    if (ov) ov.addEventListener('click', closeNav);
+    document.querySelectorAll('.nav-links a').forEach(a => {
+      a.addEventListener('click', () => { if (window.innerWidth <= 768) closeNav(); });
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') { closeNav(); if(typeof closeLb==='function') closeLb(); }
+    });
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 768) {
+        document.querySelector('.nav-links').classList.remove('open');
+        document.querySelector('.nav-toggle').classList.remove('open');
+        document.querySelector('.nav-toggle').setAttribute('aria-expanded','false');
+        const ov = document.getElementById('nav-overlay');
+        if (ov) ov.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+    });
+    document.querySelectorAll('.nav-drop-btn').forEach(btn => {
+      btn.textContent = btn.textContent.replace(/\s*▾\s*$/, '').trim();
+      btn.setAttribute('aria-expanded', 'false');
+    });
+  });
+  </script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a class="nav-brand" href="index.html">Kaplan Lab</a>
+  <button class="nav-toggle" onclick="toggleNav()" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li class="nav-drop">
+      <button class="nav-drop-btn" onclick="toggleDrop(this)" aria-haspopup="true" aria-expanded="false">Research ▾</button>
+      <ul class="nav-drop-menu">
+        <li><a href="research.html">Research Overview</a></li>
+        <li><a href="cilia-ciliopathies.html">Cilia &amp; Ciliopathies</a></li>
+        <li><a href="disease-modeling.html">Disease Modeling</a></li>
+        <li><a href="cilia-cilia-joining.html">Cilia-Cilia Joining</a></li>
+        <li><a href="bioinformatics.html" class="active">Bioinformatics</a></li>
+      </ul>
+    </li>
+    <li class="nav-drop">
+      <button class="nav-drop-btn" onclick="toggleDrop(this)" aria-haspopup="true" aria-expanded="false">Team ▾</button>
+      <ul class="nav-drop-menu">
+        <li><a href="team.html">Current Members</a></li>
+        <li><a href="former-members.html">Former Members</a></li>
+        <li><a href="group-photos.html">Group Photos</a></li>
+        <li><a href="join.html">Join the Lab</a></li>
+      </ul>
+    </li>
+    <li><a href="publications.html">Publications</a></li>
+    <li><a href="news.html">News</a></li>
+    <li class="nav-drop">
+      <button class="nav-drop-btn" onclick="toggleDrop(this)" aria-haspopup="true" aria-expanded="false">Tools ▾</button>
+      <ul class="nav-drop-menu">
+        <li><a href="ciliahub.html">CiliaHub</a></li>
+        <li><a href="ciliaatlas.html">CiliaAtlas</a></li>
+        <li><a href="resources.html">All Resources</a></li>
+      </ul>
+    </li>
+    <li><a href="gallery.html">Gallery</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</nav>
+<div id="nav-overlay" class="nav-overlay"></div>
+<div id="breadcrumbs"><a href="index.html">Home</a> › <a href="research.html">Research</a> › Bioinformatics</div>
+
+<main>
+<img src="convart.jpeg" alt="Bioinformatics" class="page-img">
+  <div class="section-body">
+    <p class="eyebrow">Research</p>
+    <h1>Bioinformatics &amp; Open Tools</h1>
+
+    <p>The Kaplan Lab has a strong commitment to open science and has developed a suite of freely available bioinformatics resources used by cilia and rare disease researchers worldwide. Our tools span gene prediction, variant interpretation, database curation, and cell-type classification — together forming a comprehensive computational infrastructure for the ciliopathy research community.</p>
+
+    <hr class="divider">
+
+    <div class="research-detail-grid">
+      <div class="research-detail-main">
+
+        <h2>Our bioinformatics philosophy</h2>
+        <p>We build tools we need ourselves, then release them openly. Every resource listed below emerged from a concrete research problem in the lab — the absence of a comprehensive ciliary gene catalogue, the difficulty of matching patient variants to model organisms, the lack of a cell-type atlas for ciliation status. By making these tools public, we aim to accelerate the broader rare disease community's ability to interpret genomic data.</p>
+
+        <h2>Tools &amp; databases</h2>
+
+        <div class="bioinfo-tool-grid">
+          <div class="bioinfo-tool-card">
+            <div class="bioinfo-tool-header">
+              <span class="bioinfo-tool-name">CiliaHub</span>
+              <span class="bioinfo-tool-badge">2,002+ genes</span>
+            </div>
+            <p>A curated, continuously updated database of all experimentally confirmed ciliary genes — an evolution of the original ciliary Gold Standard list. Each entry includes gene description, synonyms, subcellular localisation, OMIM disease links, and key references. Used by researchers worldwide to classify candidate genes from sequencing studies.</p>
+            <div class="bioinfo-tool-links">
+              <a href="ciliahub.html">Open in-page →</a>
+              <a href="https://theciliahub.github.io/" target="_blank">theciliahub.github.io</a>
+            </div>
+          </div>
+
+          <div class="bioinfo-tool-card">
+            <div class="bioinfo-tool-header">
+              <span class="bioinfo-tool-name">CiliaAtlas</span>
+              <span class="bioinfo-tool-badge">359 cell types</span>
+            </div>
+            <p>A cilia cell atlas classifying 359 human cell types by ciliation status across 13 organ systems. Enables researchers to rapidly determine whether a cell type of interest is ciliated, the cilia subtype present, and which diseases are associated with that cilia type. Built from systematic literature curation.</p>
+            <div class="bioinfo-tool-links">
+              <a href="ciliaatlas.html">Open CiliaAtlas →</a>
+              <a href="https://rarediseaselab.github.io/home/ciliaatlas.html" target="_blank">Full page</a>
+            </div>
+          </div>
+
+          <div class="bioinfo-tool-card">
+            <div class="bioinfo-tool-header">
+              <span class="bioinfo-tool-name">CilioGenics</span>
+              <span class="bioinfo-tool-badge">Gene prediction</span>
+            </div>
+            <p>An integrated method and database for predicting novel ciliary genes by integrating co-expression networks, protein–protein interactions, evolutionary signatures, and proximity to known ciliary loci. Published in <em>Nucleic Acids Research</em> (2024) and shown to recover known ciliary genes with high precision while predicting new candidates.</p>
+            <div class="bioinfo-tool-links">
+              <a href="https://ciliogenics.com/" target="_blank">ciliogenics.com</a>
+              <a href="https://doi.org/10.1093/nar/gkae554" target="_blank">NAR 2024 paper</a>
+            </div>
+          </div>
+
+          <div class="bioinfo-tool-card">
+            <div class="bioinfo-tool-header">
+              <span class="bioinfo-tool-name">CiliaMiner</span>
+              <span class="bioinfo-tool-badge">Gene–disease browser</span>
+            </div>
+            <p>An interactive bioinformatics platform for exploring gene–disease associations in ciliopathies. Allows users to browse ciliopathy genes, their associated syndromes, model organism data, and expression patterns in a single unified interface. Published in <em>Database (Oxford)</em> (2023).</p>
+            <div class="bioinfo-tool-links">
+              <a href="https://kaplanlab.shinyapps.io/ciliaminer/" target="_blank">Launch CiliaMiner</a>
+              <a href="https://doi.org/10.1093/database/baad047" target="_blank">Database 2023 paper</a>
+            </div>
+          </div>
+
+          <div class="bioinfo-tool-card">
+            <div class="bioinfo-tool-header">
+              <span class="bioinfo-tool-name">ConVarT</span>
+              <span class="bioinfo-tool-badge">Variant matching</span>
+            </div>
+            <p>A search engine for matching human missense variants to equivalent positions in non-human model organisms including <em>C. elegans</em>, zebrafish, and mouse. Helps identify whether a candidate human VUS has a functional counterpart with existing experimental data, dramatically speeding up variant prioritisation. Published in <em>Nucleic Acids Research</em> (2022).</p>
+            <div class="bioinfo-tool-links">
+              <a href="https://convart.org/" target="_blank">convart.org</a>
+              <a href="https://doi.org/10.1093/nar/gkab939" target="_blank">NAR 2022 paper</a>
+            </div>
+          </div>
+
+          <div class="bioinfo-tool-card">
+            <div class="bioinfo-tool-header">
+              <span class="bioinfo-tool-name">MSABrowser</span>
+              <span class="bioinfo-tool-badge">Sequence visualisation</span>
+            </div>
+            <p>A dynamic, fast JavaScript tool for visualising multiple sequence alignments, variations, and annotations directly in the browser — no server or installation required. Useful for inspecting conservation at patient variant positions across species. Published in <em>Bioinformatics Advances</em> (2021).</p>
+            <div class="bioinfo-tool-links">
+              <a href="https://github.com/thekaplanlab" target="_blank">GitHub</a>
+              <a href="https://doi.org/10.1093/bioadv/vbab009" target="_blank">BioAdv 2021 paper</a>
+            </div>
+          </div>
+        </div>
+
+        <h2>GitHub &amp; open code</h2>
+        <p>All tool source code, analysis pipelines, and protocols are available on GitHub under open licences. We maintain two organisations: <a href="https://github.com/thekaplanlab" target="_blank">github.com/thekaplanlab</a> (tools and pipelines) and <a href="https://github.com/rarediseaselab" target="_blank">github.com/rarediseaselab</a> (website and databases).</p>
+
+      </div>
+      <div class="research-detail-side">
+        <div class="research-side-card">
+          <img src="convart.jpeg" alt="Bioinformatics" style="width:100%;border-radius:var(--r);display:block;margin-bottom:12px;">
+          <p style="font-size:13px;color:var(--ink-3);font-style:italic;">Computational approaches to rare disease genomics.</p>
+        </div>
+        <div class="research-side-card" style="margin-top:20px;">
+          <div class="side-stat-row"><span class="side-stat-n">5+</span><span class="side-stat-l">Open tools &amp; databases</span></div>
+          <div class="side-stat-row"><span class="side-stat-n">2,002+</span><span class="side-stat-l">Curated ciliary genes</span></div>
+          <div class="side-stat-row"><span class="side-stat-n">359</span><span class="side-stat-l">Cell types in CiliaAtlas</span></div>
+        </div>
+        <div class="research-side-card" style="margin-top:20px;">
+          <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-3);margin-bottom:10px;">Key publications</div>
+          <a class="side-pub-link" href="https://doi.org/10.1093/nar/gkae554" target="_blank">Pir et al. 2024 — CilioGenics</a>
+          <a class="side-pub-link" href="https://doi.org/10.1093/database/baad047" target="_blank">Turan et al. 2023 — CiliaMiner</a>
+          <a class="side-pub-link" href="https://doi.org/10.1093/nar/gkab939" target="_blank">Pir et al. 2022 — ConVarT</a>
+          <a class="side-pub-link" href="https://doi.org/10.1093/bioadv/vbab009" target="_blank">Torun et al. 2021 — MSABrowser</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-cols">
+      <div class="footer-col">
+        <div class="footer-col-title">Kaplan Lab</div>
+        <p>We study ciliopathies and rare genetic diseases using <em>C. elegans</em>, CRISPR/Cas9, and bioinformatics.<br><br>Faculty of Life and Natural Sciences<br>Abdullah Gül University<br>Kayseri, Türkiye</p>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Tools &amp; Databases</div>
+        <a href="ciliahub.html">CiliaHub / CiliaAI</a>
+        <a href="ciliaatlas.html">CiliaAtlas</a>
+        <a href="https://ciliogenics.com/" target="_blank">CilioGenics</a>
+        <a href="https://kaplanlab.shinyapps.io/ciliaminer/" target="_blank">CiliaMiner</a>
+        <a href="https://convart.org/" target="_blank">ConVarT</a>
+        <a href="https://github.com/thekaplanlab" target="_blank">GitHub</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Quick Links</div>
+        <a href="research.html">Research</a>
+        <a href="publications.html">Publications</a>
+        <a href="team.html">Team</a>
+        <a href="join.html">Join the Lab</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Kaplan Lab · Abdullah Gül University · Kayseri, Türkiye</span>
+      <div class="footer-social">
+        <a href="https://github.com/thekaplanlab" target="_blank"><img src="github-logo.png" alt="GitHub"></a>
+        <a href="https://www.instagram.com/kaplanlab/?hl=en" target="_blank"><img src="instagram-logo.png" alt="Instagram"></a>
+        <a href="https://www.linkedin.com/in/oktay-i-kaplan-74b16856/" target="_blank"><img src="linkedin-logo.png" alt="LinkedIn"></a>
+        <a href="https://x.com/KaplanOLab" target="_blank">𝕏 @KaplanOLab</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+</body>
+</html>

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CiliaHub — Ciliary Gene Database | Kaplan Lab</title>
+  <meta name="description" content="CiliaHub: curated database of 2,002+ experimentally confirmed ciliary genes. Search, filter, and download the complete ciliome. Developed by the Kaplan Lab.">
+  <meta name="keywords" content="CiliaHub, ciliary genes, ciliome, Gold Standard cilia genes, ciliopathy database, Kaplan Lab">
+  <meta name="author" content="Oktay I. Kaplan">
+  <link rel="canonical" href="https://rarediseaselab.github.io/home/ciliahub.html">
+  <link rel="sitemap" type="application/xml" href="https://rarediseaselab.github.io/home/sitemap.xml">
+  <meta property="og:type"        content="website">
+  <meta property="og:url"         content="https://rarediseaselab.github.io/home/ciliahub.html">
+  <meta property="og:title"       content="CiliaHub — Ciliary Gene Database | Kaplan Lab">
+  <meta property="og:description" content="CiliaHub: curated database of 2,002+ experimentally confirmed ciliary genes. Search, filter, and download the complete ciliome. Developed by the Kaplan Lab.">
+  <meta property="og:image"       content="https://rarediseaselab.github.io/home/CiliaHub_Logo.png">
+  <meta property="og:site_name"   content="Kaplan Lab">
+  <meta name="twitter:card"        content="summary_large_image">
+  <meta name="twitter:site"        content="@KaplanOLab">
+  <meta name="twitter:title"       content="CiliaHub — Ciliary Gene Database | Kaplan Lab">
+  <meta name="twitter:description" content="CiliaHub: curated database of 2,002+ experimentally confirmed ciliary genes. Search, filter, and download the complete ciliome. Developed by the Kaplan Lab.">
+  <meta name="twitter:image"       content="https://rarediseaselab.github.io/home/CiliaHub_Logo.png">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/png" href="elegans2.png">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-EKT3SLJ516"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-EKT3SLJ516');</script>
+  <script>
+  /* ── Mobile nav ───────────────────────────────────────────── */
+  function openNav() {
+    document.querySelector('.nav-links').classList.add('open');
+    document.querySelector('.nav-toggle').classList.add('open');
+    document.querySelector('.nav-toggle').setAttribute('aria-expanded','true');
+    const ov = document.getElementById('nav-overlay');
+    if (ov) ov.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeNav() {
+    document.querySelector('.nav-links').classList.remove('open');
+    document.querySelector('.nav-toggle').classList.remove('open');
+    document.querySelector('.nav-toggle').setAttribute('aria-expanded','false');
+    const ov = document.getElementById('nav-overlay');
+    if (ov) ov.classList.remove('open');
+    document.body.style.overflow = '';
+    document.querySelectorAll('.nav-drop.open').forEach(d => d.classList.remove('open'));
+  }
+  function toggleNav() {
+    document.querySelector('.nav-links').classList.contains('open') ? closeNav() : openNav();
+  }
+  function toggleDrop(btn) {
+    const drop = btn.closest('.nav-drop');
+    const isOpen = drop.classList.contains('open');
+    document.querySelectorAll('.nav-drop.open').forEach(d => d.classList.remove('open'));
+    if (!isOpen) drop.classList.add('open');
+    btn.setAttribute('aria-expanded', !isOpen);
+  }
+  document.addEventListener('DOMContentLoaded', () => {
+    const ov = document.getElementById('nav-overlay');
+    if (ov) ov.addEventListener('click', closeNav);
+    document.querySelectorAll('.nav-links a').forEach(a => {
+      a.addEventListener('click', () => { if (window.innerWidth <= 768) closeNav(); });
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') { closeNav(); if(typeof closeLb==='function') closeLb(); }
+    });
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 768) {
+        document.querySelector('.nav-links').classList.remove('open');
+        document.querySelector('.nav-toggle').classList.remove('open');
+        document.querySelector('.nav-toggle').setAttribute('aria-expanded','false');
+        const ov = document.getElementById('nav-overlay');
+        if (ov) ov.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+    });
+    document.querySelectorAll('.nav-drop-btn').forEach(btn => {
+      btn.textContent = btn.textContent.replace(/\s*▾\s*$/, '').trim();
+      btn.setAttribute('aria-expanded', 'false');
+    });
+  });
+  </script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a class="nav-brand" href="index.html">Kaplan Lab</a>
+  <button class="nav-toggle" onclick="toggleNav()" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li class="nav-drop">
+      <button class="nav-drop-btn" onclick="toggleDrop(this)" aria-haspopup="true" aria-expanded="false">Research ▾</button>
+      <ul class="nav-drop-menu">
+        <li><a href="research.html">Research Overview</a></li>
+        <li><a href="cilia-ciliopathies.html">Cilia &amp; Ciliopathies</a></li>
+        <li><a href="disease-modeling.html">Disease Modeling</a></li>
+        <li><a href="cilia-cilia-joining.html">Cilia-Cilia Joining</a></li>
+        <li><a href="bioinformatics.html">Bioinformatics</a></li>
+      </ul>
+    </li>
+    <li class="nav-drop">
+      <button class="nav-drop-btn" onclick="toggleDrop(this)" aria-haspopup="true" aria-expanded="false">Team ▾</button>
+      <ul class="nav-drop-menu">
+        <li><a href="team.html">Current Members</a></li>
+        <li><a href="former-members.html">Former Members</a></li>
+        <li><a href="group-photos.html">Group Photos</a></li>
+        <li><a href="join.html">Join the Lab</a></li>
+      </ul>
+    </li>
+    <li><a href="publications.html">Publications</a></li>
+    <li><a href="news.html">News</a></li>
+    <li class="nav-drop">
+      <button class="nav-drop-btn" onclick="toggleDrop(this)" aria-haspopup="true" aria-expanded="false">Tools ▾</button>
+      <ul class="nav-drop-menu">
+        <li><a href="ciliahub.html" class="active">CiliaHub</a></li>
+        <li><a href="ciliaatlas.html">CiliaAtlas</a></li>
+        <li><a href="resources.html">All Resources</a></li>
+      </ul>
+    </li>
+    <li><a href="gallery.html">Gallery</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</nav>
+<div id="nav-overlay" class="nav-overlay"></div>
+<div id="breadcrumbs"><a href="index.html">Home</a> › <a href="resources.html">Tools</a> › CiliaHub</div>
+
+<main>
+<div class="section-body">
+    <div id="ciliahub-error" style="display:none;color:red;text-align:center;margin-bottom:16px;"></div>
+    <img src="CiliaHub_Logo.png" alt="CiliaHub Logo" style="max-width:100%;height:auto;display:block;margin:0 auto 16px;">
+    <h1 style="text-align:center;">CiliaHub: Ciliary Gene Database</h1>
+    <p><strong>CiliaHub</strong> is an updated and curated database of all experimentally confirmed ciliary genes — an evolution of the ciliary "Gold Standard" gene list. The database now includes over 2,002 genes, including <strong>1,300+ newly associated ciliary genes</strong>.</p>
+    <ul><li>Explore curated gene entries with descriptions and known synonyms</li><li>Access references linked to each gene</li><li>Navigate to external databases via direct hyperlinks</li><li>Download the full gene list for further analysis</li></ul>
+    <div id="statistics-dashboard" class="stats-dashboard" style="margin-top:20px;">
+      <h3 style="text-align:center;margin-bottom:16px;">📊 Cilia-Related Gene Statistics</h3>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-number" id="total-genes">0</div><div class="stat-label">Cilia-Related Genes</div></div>
+        <div class="stat-card"><div class="stat-number" id="unique-localizations">0</div><div class="stat-label">Cilia Localizations</div></div>
+        <div class="stat-card"><div class="stat-number" id="with-omim">0</div><div class="stat-label">With OMIM Entries</div></div>
+        <div class="stat-card"><div class="stat-number" id="with-references">0</div><div class="stat-label">With References</div></div>
+      </div>
+      <div class="chart-container">
+        <div class="chart-section"><h4>Distribution by Localization</h4><canvas id="localizationChart" width="400" height="200"></canvas></div>
+        <div class="chart-section"><h4>Database Growth Over Time</h4><canvas id="growthChart" width="400" height="200"></canvas></div>
+      </div>
+    </div>
+    <details style="background:var(--off);border:1px solid var(--border);padding:14px;border-radius:var(--r);margin:16px 0;">
+      <summary style="font-weight:600;cursor:pointer;">How to Use CiliaHub</summary>
+      <ul style="margin-top:10px;"><li><strong>Search:</strong> Enter a gene name, Ensembl ID, OMIM ID, or synonym.</li><li><strong>Filter:</strong> Use dropdowns to filter by localization, OMIM, or references.</li><li><strong>Download:</strong> Export the full gene list as CSV.</li><li><strong>Batch Query:</strong> Paste multiple genes for bulk lookup.</li></ul>
+    </details>
+    <div class="ciliahub-controls">
+      <input type="text" id="ciliahub-search" placeholder="Search by Gene, Ensembl ID, or Synonym..." aria-label="Search CiliaHub" autocomplete="off">
+      <div id="search-suggestions" class="search-suggestions"></div>
+      <div class="advanced-filters">
+        <select id="ciliahub-filter"><option value="">All Localizations</option><option value="basal-body">Basal Body</option><option value="transition-zone">Transition Zone</option><option value="cilia">Cilia</option><option value="basal-body-cilia">Basal Body, Cilia</option><option value="cilia-basal-body">Cilia, Basal Body</option><option value="flagella-cilia">Flagella, Cilia</option><option value="cilia-basal-body-transition-zone">Cilia, Basal Body, Transition Zone</option><option value="flagella-cilia-basal-body">Flagella, Cilia, Basal Body</option><option value="ciliary-associated-gene">Ciliary Associated Gene</option></select>
+        <select id="omim-filter"><option value="">All OMIM Status</option><option value="has-omim">Has OMIM ID</option><option value="no-omim">No OMIM ID</option></select>
+        <select id="reference-filter"><option value="">All Reference Status</option><option value="has-reference">Has References</option><option value="no-reference">No References</option></select>
+        <input type="text" id="synonym-filter" placeholder="Filter by synonym...">
+      </div>
+      <div class="control-buttons">
+        <button id="ciliahub-reset">Reset All</button>
+        <button id="download-ciliahub">Download Data</button>
+        <button id="export-filtered">Export Filtered</button>
+      </div>
+    </div>
+    <div id="results-counter" class="results-counter"></div>
+    <div id="popularGenesWidget"><h3>Popular Genes This Session</h3><ul id="popularGenesList"></ul></div>
+    <div style="max-width:560px;margin:0 auto 24px;"><label for="batchGenes" style="font-weight:600;font-size:14px;display:block;margin-bottom:6px;">Batch Query</label><textarea id="batchGenes" rows="4" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:var(--r);font-family:monospace;font-size:13px;" placeholder="e.g. IFT88, BBS1, NPHP1"></textarea><button id="batchQueryBtn" style="margin-top:8px;">Batch Query</button></div>
+    <div id="batchResultsContainer" style="max-width:900px;margin:0 auto;display:none;"><h3 style="text-align:center;">Batch Query Results</h3><div id="batchResults"></div><button id="clearBatchResults" style="margin-top:10px;">Clear Results</button></div>
+    <div class="table-wrap">
+      <div id="ciliahub-loading" style="text-align:center;padding:20px;">Loading data…</div>
+      <table class="db-table" style="display:none;"><thead><tr><th style="width:10%">Gene</th><th style="width:15%">Ensembl ID</th><th style="width:20%">Description</th><th style="width:10%">Synonym</th><th style="width:10%">OMIM ID</th><th style="width:20%">Reference</th><th style="width:15%">Localization</th></tr></thead><tbody id="ciliahub-table-body"></tbody></table>
+    </div>
+    <div class="citation-box"><strong>Suggested citation:</strong> Yenisert F, Kaplan OI. <em>Expanded Catalog of Ciliary Genes: Integration of Novel Ciliary Genes into the Ciliome</em>. 2025. Available at: <a href="https://rarediseaselab.github.io/home/" target="_blank">rarediseaselab.github.io/home/</a></div>
+    <p style="text-align:center;margin-top:20px;"><a href="mailto:oktay.kaplan@agu.edu.tr?subject=CiliaHub Feedback" class="btn btn-primary">Submit Feedback</a></p>
+  </div>
+</main>
+
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-cols">
+      <div class="footer-col">
+        <div class="footer-col-title">Kaplan Lab</div>
+        <p>We study ciliopathies and rare genetic diseases using <em>C. elegans</em>, CRISPR/Cas9, and bioinformatics.<br><br>Faculty of Life and Natural Sciences<br>Abdullah Gül University<br>Kayseri, Türkiye</p>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Tools &amp; Databases</div>
+        <a href="ciliahub.html">CiliaHub / CiliaAI</a>
+        <a href="ciliaatlas.html">CiliaAtlas</a>
+        <a href="https://ciliogenics.com/" target="_blank">CilioGenics</a>
+        <a href="https://kaplanlab.shinyapps.io/ciliaminer/" target="_blank">CiliaMiner</a>
+        <a href="https://convart.org/" target="_blank">ConVarT</a>
+        <a href="https://github.com/thekaplanlab" target="_blank">GitHub</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Quick Links</div>
+        <a href="research.html">Research</a>
+        <a href="publications.html">Publications</a>
+        <a href="team.html">Team</a>
+        <a href="join.html">Join the Lab</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Kaplan Lab · Abdullah Gül University · Kayseri, Türkiye</span>
+      <div class="footer-social">
+        <a href="https://github.com/thekaplanlab" target="_blank"><img src="github-logo.png" alt="GitHub"></a>
+        <a href="https://www.instagram.com/kaplanlab/?hl=en" target="_blank"><img src="instagram-logo.png" alt="Instagram"></a>
+        <a href="https://www.linkedin.com/in/oktay-i-kaplan-74b16856/" target="_blank"><img src="linkedin-logo.png" alt="LinkedIn"></a>
+        <a href="https://x.com/KaplanOLab" target="_blank">𝕏 @KaplanOLab</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

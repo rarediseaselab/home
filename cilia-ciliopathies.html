@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cilia & Ciliopathies | Kaplan Lab</title>
+  <meta name="description" content="Research on Joubert syndrome, Bardet-Biedl syndrome, and cranioectodermal dysplasia. Key genes: CILK1, WDR31, ELMOD, ARL13B, CC2D1A.">
+  <meta name="keywords" content="ciliopathy, Joubert syndrome, Bardet-Biedl syndrome, CILK1, WDR31, ELMOD, ARL13B, C. elegans, cilia">
+  <meta name="author" content="Oktay I. Kaplan">
+  <link rel="canonical" href="https://rarediseaselab.github.io/home/cilia-ciliopathies.html">
+  <link rel="sitemap" type="application/xml" href="https://rarediseaselab.github.io/home/sitemap.xml">
+  <meta property="og:type"        content="website">
+  <meta property="og:url"         content="https://rarediseaselab.github.io/home/cilia-ciliopathies.html">
+  <meta property="og:title"       content="Cilia & Ciliopathies | Kaplan Lab">
+  <meta property="og:description" content="Research on Joubert syndrome, Bardet-Biedl syndrome, and cranioectodermal dysplasia. Key genes: CILK1, WDR31, ELMOD, ARL13B, CC2D1A.">
+  <meta property="og:image"       content="https://rarediseaselab.github.io/home/cilia_res1.jpg">
+  <meta property="og:site_name"   content="Kaplan Lab">
+  <meta name="twitter:card"        content="summary_large_image">
+  <meta name="twitter:site"        content="@KaplanOLab">
+  <meta name="twitter:title"       content="Cilia & Ciliopathies | Kaplan Lab">
+  <meta name="twitter:description" content="Research on Joubert syndrome, Bardet-Biedl syndrome, and cranioectodermal dysplasia. Key genes: CILK1, WDR31, ELMOD, ARL13B, CC2D1A.">
+  <meta name="twitter:image"       content="https://rarediseaselab.github.io/home/cilia_res1.jpg">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/png" href="elegans2.png">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-EKT3SLJ516"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-EKT3SLJ516');</script>
+  <script>
+  /* ── Mobile nav ───────────────────────────────────────────── */
+  function openNav() {
+    document.querySelector('.nav-links').classList.add('open');
+    document.querySelector('.nav-toggle').classList.add('open');
+    document.querySelector('.nav-toggle').setAttribute('aria-expanded','true');
+    const ov = document.getElementById('nav-overlay');
+    if (ov) ov.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeNav() {
+    document.querySelector('.nav-links').classList.remove('open');
+    document.querySelector('.nav-toggle').classList.remove('open');
+    document.querySelector('.nav-toggle').setAttribute('aria-expanded','false');
+    const ov = document.getElementById('nav-overlay');
+    if (ov) ov.classList.remove('open');
+    document.body.style.overflow = '';
+    document.querySelectorAll('.nav-drop.open').forEach(d => d.classList.remove('open'));
+  }
+  function toggleNav() {
+    document.querySelector('.nav-links').classList.contains('open') ? closeNav() : openNav();
+  }
+  function toggleDrop(btn) {
+    const drop = btn.closest('.nav-drop');
+    const isOpen = drop.classList.contains('open');
+    document.querySelectorAll('.nav-drop.open').forEach(d => d.classList.remove('open'));
+    if (!isOpen) drop.classList.add('open');
+    btn.setAttribute('aria-expanded', !isOpen);
+  }
+  document.addEventListener('DOMContentLoaded', () => {
+    const ov = document.getElementById('nav-overlay');
+    if (ov) ov.addEventListener('click', closeNav);
+    document.querySelectorAll('.nav-links a').forEach(a => {
+      a.addEventListener('click', () => { if (window.innerWidth <= 768) closeNav(); });
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') { closeNav(); if(typeof closeLb==='function') closeLb(); }
+    });
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 768) {
+        document.querySelector('.nav-links').classList.remove('open');
+        document.querySelector('.nav-toggle').classList.remove('open');
+        document.querySelector('.nav-toggle').setAttribute('aria-expanded','false');
+        const ov = document.getElementById('nav-overlay');
+        if (ov) ov.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+    });
+    document.querySelectorAll('.nav-drop-btn').forEach(btn => {
+      btn.textContent = btn.textContent.replace(/\s*▾\s*$/, '').trim();
+      btn.setAttribute('aria-expanded', 'false');
+    });
+  });
+  </script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a class="nav-brand" href="index.html">Kaplan Lab</a>
+  <button class="nav-toggle" onclick="toggleNav()" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li class="nav-drop">
+      <button class="nav-drop-btn" onclick="toggleDrop(this)" aria-haspopup="true" aria-expanded="false">Research ▾</button>
+      <ul class="nav-drop-menu">
+        <li><a href="research.html">Research Overview</a></li>
+        <li><a href="cilia-ciliopathies.html" class="active">Cilia &amp; Ciliopathies</a></li>
+        <li><a href="disease-modeling.html">Disease Modeling</a></li>
+        <li><a href="cilia-cilia-joining.html">Cilia-Cilia Joining</a></li>
+        <li><a href="bioinformatics.html">Bioinformatics</a></li>
+      </ul>
+    </li>
+    <li class="nav-drop">
+      <button class="nav-drop-btn" onclick="toggleDrop(this)" aria-haspopup="true" aria-expanded="false">Team ▾</button>
+      <ul class="nav-drop-menu">
+        <li><a href="team.html">Current Members</a></li>
+        <li><a href="former-members.html">Former Members</a></li>
+        <li><a href="group-photos.html">Group Photos</a></li>
+        <li><a href="join.html">Join the Lab</a></li>
+      </ul>
+    </li>
+    <li><a href="publications.html">Publications</a></li>
+    <li><a href="news.html">News</a></li>
+    <li class="nav-drop">
+      <button class="nav-drop-btn" onclick="toggleDrop(this)" aria-haspopup="true" aria-expanded="false">Tools ▾</button>
+      <ul class="nav-drop-menu">
+        <li><a href="ciliahub.html">CiliaHub</a></li>
+        <li><a href="ciliaatlas.html">CiliaAtlas</a></li>
+        <li><a href="resources.html">All Resources</a></li>
+      </ul>
+    </li>
+    <li><a href="gallery.html">Gallery</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</nav>
+<div id="nav-overlay" class="nav-overlay"></div>
+<div id="breadcrumbs"><a href="index.html">Home</a> › <a href="research.html">Research</a> › Cilia & Ciliopathies</div>
+
+<main>
+<img src="cilia_res1.jpg" alt="Cilia Research" class="page-img">
+  <div class="section-body">
+    <p class="eyebrow">Research</p>
+    <h1>Cilia &amp; Ciliopathies</h1>
+
+    <p>Cilia are microtubule-based organelles that project from nearly every vertebrate cell and mediate critical processes including motility, mechanosensation, and developmental signalling through pathways such as Hedgehog and Wnt. <strong>Ciliopathies</strong> are a clinically and genetically heterogeneous group of rare diseases caused by structural or functional defects in cilia or basal bodies, encompassing syndromes that affect multiple organ systems simultaneously.</p>
+
+    <hr class="divider">
+
+    <div class="research-detail-grid">
+      <div class="research-detail-main">
+
+        <h2>What are ciliopathies?</h2>
+        <p>The Kaplan Lab focuses on a spectrum of ciliopathy syndromes including <strong>Joubert syndrome (JBTS)</strong>, <strong>Bardet-Biedl syndrome (BBS)</strong>, <strong>Meckel–Gruber syndrome (MKS)</strong>, and <strong>cranioectodermal dysplasia (CED)</strong>. These conditions share overlapping genetic architecture — mutations in genes encoding components of the transition zone, IFT machinery, or BBSome — yet produce distinct phenotypes affecting the kidney, retina, brain, and skeleton.</p>
+
+        <h2>Key discoveries</h2>
+        <div class="finding-list">
+          <div class="finding-item">
+            <div class="finding-gene">CILK1 / DYF-5</div>
+            <div class="finding-text">Identified as a novel causative gene of cranioectodermal dysplasia in a consanguineous family carrying a homozygous frameshift variant. CILK1 encodes an ICK-related kinase that phosphorylates IFT-B components and regulates cilia length. <a href="https://doi.org/10.1038/s41431-025-01902-0" target="_blank">Sezer et al., Eur J Hum Genet 2025 →</a></div>
+          </div>
+          <div class="finding-item">
+            <div class="finding-gene">WDR31 / ELMOD</div>
+            <div class="finding-text">Demonstrated that WDR31 displays functional redundancy with ELMOD and RP2 in regulating IFT complex integrity and recruiting the BBSome to cilia in <em>C. elegans</em>. Single mutants have mild defects; double mutants show severe ciliary phenotypes. <a href="https://doi.org/10.26508/lsa.202201844" target="_blank">Cevik et al., Life Sci Alliance 2023 →</a></div>
+          </div>
+          <div class="finding-item">
+            <div class="finding-gene">ARL13B / ARL-13</div>
+            <div class="finding-text">Showed that Joubert syndrome-associated ARL13B is restricted to an Inv-like ciliary membrane subdomain by active transport and diffusion barriers, defining a ciliary compartment relevant to JBTS pathogenesis. <a href="https://doi.org/10.1371/journal.pgen.1003977" target="_blank">Cevik et al., PLoS Genet 2013 →</a></div>
+          </div>
+          <div class="finding-item">
+            <div class="finding-gene">CC2D1A</div>
+            <div class="finding-text">Established CC2D1A as a ciliopathy gene causing intellectual disability, heterotaxy, renal dysplasia, and abnormal CSF flow — expanding the phenotypic spectrum of transition zone-associated genes. <a href="https://doi.org/10.26508/lsa.202402708" target="_blank">Kim et al., Life Sci Alliance 2024 →</a></div>
+          </div>
+        </div>
+
+        <h2>Approaches &amp; model systems</h2>
+        <div class="method-pills">
+          <span class="method-pill"><em>C. elegans</em> genetics</span>
+          <span class="method-pill">CRISPR/Cas9 knock-in &amp; knock-out</span>
+          <span class="method-pill">Confocal &amp; TIRF microscopy</span>
+          <span class="method-pill">FIB-SEM ultrastructure</span>
+          <span class="method-pill">Whole exome sequencing</span>
+          <span class="method-pill">Patient variant analysis</span>
+          <span class="method-pill">Biochemical pull-down assays</span>
+        </div>
+
+        <h2>Why <em>C. elegans</em>?</h2>
+        <p><em>Caenorhabditis elegans</em> is uniquely suited to ciliopathy research. Its 60 ciliated sensory neurons are anatomically invariant and genetically tractable. The nematode ciliome is highly conserved with humans, CRISPR editing is rapid and inexpensive, and fluorescent reporter strains allow real-time imaging of IFT trains and ciliary membrane proteins in living animals. The lab uses <em>C. elegans</em> to validate variants identified from patient sequencing and to dissect gene function at single-cell resolution.</p>
+
+      </div>
+      <div class="research-detail-side">
+        <div class="research-side-card">
+          <img src="cilia_res1.jpg" alt="Ciliary structure in C. elegans" style="width:100%;border-radius:var(--r);display:block;margin-bottom:12px;">
+          <p style="font-size:13px;color:var(--ink-3);font-style:italic;">Cilia types in <em>C. elegans</em> sensory neurons.</p>
+        </div>
+        <div class="research-side-card" style="margin-top:20px;">
+          <div class="side-stat-row"><span class="side-stat-n">4+</span><span class="side-stat-l">Ciliopathy syndromes studied</span></div>
+          <div class="side-stat-row"><span class="side-stat-n">10+</span><span class="side-stat-l">Ciliopathy genes characterised</span></div>
+          <div class="side-stat-row"><span class="side-stat-n">2008</span><span class="side-stat-l">First cilia paper published</span></div>
+        </div>
+        <div class="research-side-card" style="margin-top:20px;">
+          <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-3);margin-bottom:10px;">Related publications</div>
+          <a class="side-pub-link" href="publications.html">Sezer et al. 2025 — CILK1 &amp; CED</a>
+          <a class="side-pub-link" href="publications.html">Cevik et al. 2023 — WDR31 &amp; IFT</a>
+          <a class="side-pub-link" href="publications.html">Kim et al. 2024 — CC2D1A</a>
+          <a class="side-pub-link" href="publications.html">Cevik et al. 2013 — ARL13B</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-cols">
+      <div class="footer-col">
+        <div class="footer-col-title">Kaplan Lab</div>
+        <p>We study ciliopathies and rare genetic diseases using <em>C. elegans</em>, CRISPR/Cas9, and bioinformatics.<br><br>Faculty of Life and Natural Sciences<br>Abdullah Gül University<br>Kayseri, Türkiye</p>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Tools &amp; Databases</div>
+        <a href="ciliahub.html">CiliaHub / CiliaAI</a>
+        <a href="ciliaatlas.html">CiliaAtlas</a>
+        <a href="https://ciliogenics.com/" target="_blank">CilioGenics</a>
+        <a href="https://kaplanlab.shinyapps.io/ciliaminer/" target="_blank">CiliaMiner</a>
+        <a href="https://convart.org/" target="_blank">ConVarT</a>
+        <a href="https://github.com/thekaplanlab" target="_blank">GitHub</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Quick Links</div>
+        <a href="research.html">Research</a>
+        <a href="publications.html">Publications</a>
+        <a href="team.html">Team</a>
+        <a href="join.html">Join the Lab</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Kaplan Lab · Abdullah Gül University · Kayseri, Türkiye</span>
+      <div class="footer-social">
+        <a href="https://github.com/thekaplanlab" target="_blank"><img src="github-logo.png" alt="GitHub"></a>
+        <a href="https://www.instagram.com/kaplanlab/?hl=en" target="_blank"><img src="instagram-logo.png" alt="Instagram"></a>
+        <a href="https://www.linkedin.com/in/oktay-i-kaplan-74b16856/" target="_blank"><img src="linkedin-logo.png" alt="LinkedIn"></a>
+        <a href="https://x.com/KaplanOLab" target="_blank">𝕏 @KaplanOLab</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+</body>
+</html>
