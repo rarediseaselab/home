@@ -183,7 +183,8 @@
   /* Animated canvas area */
   .tool-canvas {
     height: 160px; position: relative; overflow: hidden;
-    background: #0d1b3e;
+    background: #ffffff;
+    border-bottom: 1px solid var(--border);
   }
   .tool-canvas canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
 
@@ -328,13 +329,10 @@
     /* Two columns of sequence letters, animated match lines between them */
     const humanSeq  = ['V','A','R','G','T','K','L','P','E','S'];
     const wormSeq   = ['V','A','R','G','T','K','L','P','E','S'];
-    const matches   = [0,1,2,3,4,5,6,7,8,9]; /* all match */
+    const matches   = [0,1,2,3,4,5,6,7,8,9];
     const highlight = [2,5,7]; /* variants of interest */
+    let beams = [];
 
-    let tick = 0;
-    let beams = []; /* animated beams: {srcY, dstY, prog, col} */
-
-    /* spawn a new beam periodically */
     setInterval(() => {
       const i = highlight[Math.floor(Math.random()*highlight.length)];
       beams.push({ i, prog: 0 });
@@ -342,76 +340,72 @@
     }, 900);
 
     function draw() {
-      ctx.clearRect(0,0,W,H);
+      /* white background */
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0,0,W,H);
 
-      const lx = Math.round(W * 0.22);   /* left column x */
-      const rx = Math.round(W * 0.78);   /* right column x */
+      const lx  = Math.round(W * 0.22);
+      const rx  = Math.round(W * 0.78);
       const rows = humanSeq.length;
       const rowH = H / (rows + 1);
 
       /* column headers */
       ctx.font = 'bold 10px monospace';
-      ctx.fillStyle = 'rgba(255,255,255,.45)';
+      ctx.fillStyle = '#888';
       ctx.textAlign = 'center';
       ctx.fillText('HUMAN', lx, 14);
       ctx.fillText('C. ELEGANS', rx, 14);
 
-      /* draw residues */
       for (let i = 0; i < rows; i++) {
-        const y = rowH * (i + 1);
+        const y    = rowH * (i + 1);
         const isHL = highlight.includes(i);
 
-        /* left residue */
+        /* left residue circle */
         ctx.beginPath();
         ctx.arc(lx, y, 14, 0, Math.PI*2);
-        ctx.fillStyle = isHL ? '#e8799a' : 'rgba(255,255,255,.08)';
+        ctx.fillStyle = isHL ? '#1f3c88' : '#f0f0f0';
         ctx.fill();
+        if (isHL) { ctx.strokeStyle = '#1f3c88'; ctx.lineWidth = 1.5; ctx.stroke(); }
         ctx.font = isHL ? 'bold 13px monospace' : '12px monospace';
-        ctx.fillStyle = isHL ? '#fff' : 'rgba(255,255,255,.55)';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
+        ctx.fillStyle = isHL ? '#fff' : '#888';
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
         ctx.fillText(humanSeq[i], lx, y);
 
-        /* right residue */
+        /* right residue circle */
         ctx.beginPath();
         ctx.arc(rx, y, 14, 0, Math.PI*2);
-        ctx.fillStyle = isHL ? '#4a90b8' : 'rgba(255,255,255,.08)';
+        ctx.fillStyle = isHL ? '#e8799a' : '#f0f0f0';
         ctx.fill();
         ctx.font = isHL ? 'bold 13px monospace' : '12px monospace';
-        ctx.fillStyle = isHL ? '#fff' : 'rgba(255,255,255,.55)';
+        ctx.fillStyle = isHL ? '#fff' : '#888';
         ctx.fillText(wormSeq[matches[i]], rx, y);
 
-        /* static grey connector */
+        /* static connector */
         if (!isHL) {
           ctx.beginPath();
           ctx.moveTo(lx+15, y); ctx.lineTo(rx-15, y);
-          ctx.strokeStyle = 'rgba(255,255,255,.06)';
+          ctx.strokeStyle = '#e0e0e0';
           ctx.lineWidth = 1; ctx.stroke();
         }
       }
 
-      /* animated beams */
+      /* animated match beams */
       beams.forEach(b => {
-        b.prog = Math.min(b.prog + 0.03, 1);
+        b.prog = Math.min(b.prog + 0.028, 1);
         const y    = rowH * (b.i + 1);
         const xEnd = lx + 15 + (rx - lx - 30) * b.prog;
         const alpha = b.prog < 0.5 ? b.prog*2 : (1 - b.prog)*2;
         ctx.beginPath();
         ctx.moveTo(lx+15, y); ctx.lineTo(xEnd, y);
-        ctx.strokeStyle = `rgba(232,121,154,${alpha * 0.9})`;
-        ctx.lineWidth = 2;
-        ctx.shadowColor = '#e8799a'; ctx.shadowBlur = 8;
-        ctx.stroke();
-        ctx.shadowBlur = 0;
-
+        ctx.strokeStyle = `rgba(31,60,136,${alpha * 0.7})`;
+        ctx.lineWidth = 2; ctx.stroke();
         /* moving dot */
         ctx.beginPath();
-        ctx.arc(xEnd, y, 3.5, 0, Math.PI*2);
+        ctx.arc(xEnd, y, 4, 0, Math.PI*2);
         ctx.fillStyle = `rgba(232,121,154,${alpha})`;
         ctx.fill();
       });
 
-      tick++;
       requestAnimationFrame(draw);
     }
     draw();
@@ -448,7 +442,9 @@
     }, 120);
 
     function draw() {
-      ctx.clearRect(0,0,W,H);
+      /* white background */
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0,0,W,H);
 
       const sx = W * 0.04;
 
@@ -457,18 +453,13 @@
         const y = srcY(i);
         ctx.beginPath();
         ctx.moveTo(sx + 70, y);
-        /* bezier curve to centre */
-        ctx.bezierCurveTo(
-          W*0.45, y,
-          W*0.55, dstY(),
-          dstX() - 16, dstY()
-        );
-        ctx.strokeStyle = colours[i] + '28';
+        ctx.bezierCurveTo(W*0.45, y, W*0.55, dstY(), dstX() - 16, dstY());
+        ctx.strokeStyle = colours[i] + '30';
         ctx.lineWidth = 1.5; ctx.stroke();
 
         /* label */
         ctx.font = '10px sans-serif';
-        ctx.fillStyle = colours[i] + 'cc';
+        ctx.fillStyle = colours[i];
         ctx.textAlign = 'left';
         ctx.textBaseline = 'middle';
         ctx.fillText(lbl, sx + 2, y);
@@ -476,11 +467,11 @@
         /* source dot */
         ctx.beginPath();
         ctx.arc(sx + 68, y, 5, 0, Math.PI*2);
-        ctx.fillStyle = colours[i] + '88';
+        ctx.fillStyle = colours[i] + 'aa';
         ctx.fill();
       });
 
-      /* draw destination node */
+      /* destination node */
       ctx.beginPath();
       ctx.arc(dstX(), dstY(), 20, 0, Math.PI*2);
       ctx.fillStyle = '#1f3c88';
@@ -496,13 +487,11 @@
       ctx.fillText('CILIA', dstX(), dstY()-5);
       ctx.fillText('GENES', dstX(), dstY()+6);
 
-      /* draw particles along bezier paths */
+      /* particles */
       particles.forEach(p => {
         p.prog = Math.min(p.prog + p.speed, 1);
         const y  = srcY(p.i);
-        /* evaluate bezier at p.prog */
-        const t  = p.prog;
-        const t1 = 1-t;
+        const t  = p.prog, t1 = 1-t;
         const p0x = sx+68, p0y = y;
         const p1x = W*0.45, p1y = y;
         const p2x = W*0.55, p2y = dstY();
@@ -513,25 +502,21 @@
         ctx.beginPath();
         ctx.arc(px, py, 3, 0, Math.PI*2);
         ctx.fillStyle = colours[p.i] + Math.round(alpha*255).toString(16).padStart(2,'0');
-        ctx.shadowColor = colours[p.i]; ctx.shadowBlur = 6;
         ctx.fill();
-        ctx.shadowBlur = 0;
       });
 
-      /* glow on destination when particles arrive */
+      /* arriving glow */
       const arriving = particles.filter(p => p.prog > 0.92);
       if (arriving.length) {
         ctx.beginPath();
         ctx.arc(dstX(), dstY(), 24, 0, Math.PI*2);
-        ctx.strokeStyle = `rgba(74,112,204,${Math.min(arriving.length*0.25,0.8)})`;
-        ctx.lineWidth = 3;
-        ctx.shadowColor = '#4a70cc'; ctx.shadowBlur = 12;
-        ctx.stroke(); ctx.shadowBlur = 0;
+        ctx.strokeStyle = `rgba(74,112,204,${Math.min(arriving.length*0.25,0.7)})`;
+        ctx.lineWidth = 3; ctx.stroke();
       }
 
-      /* right-side label */
+      /* right label — dark for white bg */
       ctx.font = 'bold 11px sans-serif';
-      ctx.fillStyle = 'rgba(255,255,255,.55)';
+      ctx.fillStyle = '#444';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'middle';
       ctx.fillText('Novel', dstX()+28, dstY()-7);
@@ -582,6 +567,7 @@
     </div>
   </div>
 </footer>
+
 
 </body>
 </html>
