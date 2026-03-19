@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plotting Tool | Kaplan Lab</title>
+  <meta name="description" content="Scientific plotting and statistical analysis tool. Upload or paste data, generate publication-quality plots with Nature journal colors, and perform t-tests, ANOVA, and more.">
+  <link rel="canonical" href="https://rarediseaselab.github.io/home/plotting.html">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/png" href="elegans2.png">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <style>
+  /* ── Layout ─────────────────────────────────────────────── */
+  .plot-wrap { max-width: 1300px; margin: 0 auto; padding: 28px 28px 48px; }
+  .plot-grid { display: grid; grid-template-columns: 340px 1fr; gap: 24px; align-items: start; }
+
+  /* ── Panel card ─────────────────────────────────────────── */
+  .panel { background: var(--off); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+  .panel-head { padding: 12px 16px; background: var(--white); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+  .panel-head h3 { font-size: 13px; font-weight: 700; color: var(--ink); }
+  .panel-num { width: 20px; height: 20px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .panel-body { padding: 14px 16px; }
+
+  /* ── Tabs (Data input) ──────────────────────────────────── */
+  .input-tabs { display: flex; gap: 2px; margin-bottom: 12px; background: var(--border); border-radius: 6px; padding: 2px; }
+  .input-tab { flex: 1; padding: 6px; border: none; border-radius: 5px; font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit; background: transparent; color: var(--ink-3); transition: all .15s; }
+  .input-tab.active { background: var(--white); color: var(--accent); box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+
+  /* ── Paste area ─────────────────────────────────────────── */
+  .paste-area {
+    width: 100%; min-height: 140px; padding: 10px 12px;
+    border: 1px solid var(--border); border-radius: 6px;
+    font-family: 'Courier New', monospace; font-size: 12px;
+    color: var(--ink); resize: vertical; line-height: 1.5;
+    background: var(--white); outline: none;
+  }
+  .paste-area:focus { border-color: var(--accent); }
+  .paste-hint { font-size: 11px; color: var(--ink-3); margin-top: 5px; line-height: 1.5; }
+
+  /* ── Upload zone ────────────────────────────────────────── */
+  .upload-zone {
+    border: 2px dashed var(--border); border-radius: 8px;
+    padding: 20px 12px; text-align: center; cursor: pointer;
+    transition: border-color .15s, background .15s; background: var(--white);
+  }
+  .upload-zone:hover { border-color: var(--accent); background: var(--pale); }
+  .upload-zone input { display: none; }
+  .upload-zone p { font-size: 12px; color: var(--ink-2); margin: 4px 0 0; }
+  .upload-zone small { font-size: 11px; color: var(--ink-3); }
+
+  /* ── Controls ───────────────────────────────────────────── */
+  .ctrl { margin-bottom: 12px; }
+  .ctrl label { display: block; font-size: 11px; font-weight: 700; color: var(--ink-2); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 4px; }
+  .ctrl select, .ctrl input[type="text"], .ctrl input[type="number"] {
+    width: 100%; padding: 7px 10px; border: 1px solid var(--border); border-radius: 5px;
+    font-size: 13px; font-family: inherit; color: var(--ink); background: var(--white); outline: none;
+  }
+  .ctrl select:focus, .ctrl input:focus { border-color: var(--accent); }
+
+  /* ── Plot type grid ─────────────────────────────────────── */
+  .type-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .type-btn {
+    padding: 8px 4px; border: 1.5px solid var(--border); border-radius: 6px;
+    background: var(--white); color: var(--ink-3); cursor: pointer; font-family: inherit;
+    font-size: 11px; font-weight: 600; text-align: center; transition: all .15s; line-height: 1.3;
+  }
+  .type-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--pale); }
+  .type-btn.active { border-color: var(--accent); color: var(--accent); background: var(--pale); }
+  .type-icon { font-size: 18px; display: block; margin-bottom: 3px; }
+
+  /* ── Palette row ────────────────────────────────────────── */
+  .palette-row { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-bottom: 6px; }
+  .palette-btn {
+    display: flex; gap: 2px; align-items: center; padding: 3px 8px;
+    border: 1px solid var(--border); border-radius: 100px; cursor: pointer;
+    font-size: 10px; font-weight: 600; color: var(--ink-2);
+    background: var(--white); font-family: inherit; transition: all .12s;
+  }
+  .palette-btn:hover, .palette-btn.active { border-color: var(--accent); color: var(--accent); background: var(--pale); }
+  .pal-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .series-row { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
+  .series-row input[type="color"] { width: 26px; height: 22px; border: 1px solid var(--border); border-radius: 3px; padding: 1px; cursor: pointer; }
+  .series-label { flex: 1; font-size: 12px; padding: 3px 7px; border: 1px solid var(--border); border-radius: 4px; font-family: inherit; color: var(--ink); }
+
+  /* ── Toggle ─────────────────────────────────────────────── */
+  .tog-row { display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: var(--ink-2); margin-bottom: 7px; }
+  .tog { width: 32px; height: 17px; background: var(--border); border-radius: 9px; position: relative; cursor: pointer; transition: background .2s; flex-shrink: 0; }
+  .tog.on { background: var(--accent); }
+  .tog::after { content: ''; position: absolute; width: 13px; height: 13px; background: #fff; border-radius: 50%; top: 2px; left: 2px; transition: transform .2s; }
+  .tog.on::after { transform: translateX(15px); }
+
+  /* ── Action buttons ─────────────────────────────────────── */
+  .btn-primary { background: var(--accent); color: #fff; border: none; border-radius: 6px; padding: 10px 20px; font-size: 14px; font-weight: 700; cursor: pointer; width: 100%; font-family: inherit; transition: background .15s; }
+  .btn-primary:hover { background: var(--accent-h); }
+  .btn-sm { padding: 6px 14px; font-size: 12px; font-weight: 600; border-radius: 5px; cursor: pointer; font-family: inherit; border: 1px solid var(--border); background: var(--white); color: var(--ink-2); transition: all .12s; }
+  .btn-sm:hover { background: var(--pale); border-color: var(--accent); color: var(--accent); }
+  .btn-sm.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .btn-sm.primary:hover { background: var(--accent-h); }
+
+  /* ── Right canvas ───────────────────────────────────────── */
+  .canvas-area { display: flex; flex-direction: column; gap: 20px; }
+  .chart-card { background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 24px; }
+  .chart-title-input { width: 100%; border: none; border-bottom: 1px dashed transparent; font-size: 16px; font-weight: 700; color: var(--ink); font-family: inherit; background: transparent; margin-bottom: 16px; padding: 2px 0; }
+  .chart-title-input:focus { outline: none; border-bottom-color: var(--accent); }
+
+  /* ── Stats table ────────────────────────────────────────── */
+  .stats-card { background: var(--white); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+  .stats-card-head { padding: 12px 18px; background: var(--off); border-bottom: 1px solid var(--border); font-size: 13px; font-weight: 700; color: var(--ink); display: flex; align-items: center; justify-content: space-between; }
+  .stats-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .stats-table th { background: var(--off); padding: 8px 14px; text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); border-bottom: 1px solid var(--border); }
+  .stats-table td { padding: 8px 14px; border-bottom: 1px solid #f0f0f0; color: var(--ink-2); vertical-align: middle; }
+  .stats-table tr:last-child td { border-bottom: none; }
+  .stats-table tr:hover td { background: var(--off); }
+  .sig-star { font-weight: 700; }
+  .sig-yes { color: #c62828; }
+  .sig-no  { color: var(--ink-3); }
+  .sig-badge { display: inline-block; padding: 1px 7px; border-radius: 100px; font-size: 11px; font-weight: 700; }
+  .sig-badge.p001 { background: #fde8e8; color: #8a1515; }
+  .sig-badge.p01  { background: #fff3e0; color: #a05000; }
+  .sig-badge.p05  { background: #fff8e1; color: #827717; }
+  .sig-badge.ns   { background: var(--off); color: var(--ink-3); }
+
+  /* ── Preview table ──────────────────────────────────────── */
+  .preview-wrap { overflow: auto; max-height: 160px; border: 1px solid var(--border); border-radius: 5px; margin-top: 8px; }
+  .preview-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+  .preview-table th { background: var(--off); padding: 5px 8px; text-align: left; font-weight: 600; color: var(--ink-2); border-bottom: 1px solid var(--border); white-space: nowrap; position: sticky; top: 0; }
+  .preview-table td { padding: 4px 8px; border-bottom: 1px solid #f4f4f4; color: var(--ink-2); white-space: nowrap; }
+
+  /* ── Empty state ────────────────────────────────────────── */
+  .empty { text-align: center; padding: 60px 24px; color: var(--ink-3); border: 1px dashed var(--border); border-radius: 8px; }
+  .empty h3 { font-size: 16px; color: var(--ink-2); margin-bottom: 6px; }
+  .empty p  { font-size: 13px; }
+
+  /* ── Download bar ───────────────────────────────────────── */
+  .dl-bar { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  /* ── Column checkboxes ──────────────────────────────────── */
+  .col-checks { display: flex; flex-direction: column; gap: 3px; max-height: 160px; overflow-y: auto; }
+  .col-check { display: flex; align-items: center; gap: 7px; font-size: 12px; color: var(--ink-2); padding: 4px 6px; border-radius: 4px; cursor: pointer; }
+  .col-check:hover { background: var(--pale); }
+  .col-check input { accent-color: var(--accent); width: 13px; height: 13px; }
+
+  /* ── Stat test selector ─────────────────────────────────── */
+  .stat-chips { display: flex; gap: 5px; flex-wrap: wrap; }
+  .stat-chip { padding: 4px 10px; border: 1px solid var(--border); border-radius: 100px; font-size: 11px; font-weight: 600; cursor: pointer; background: var(--white); color: var(--ink-2); font-family: inherit; transition: all .12s; }
+  .stat-chip:hover, .stat-chip.active { background: var(--pale); border-color: var(--accent); color: var(--accent); }
+
+  @media (max-width: 900px) { .plot-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a class="nav-brand" href="index.html">Kaplan Lab</a>
+  <button class="nav-toggle" onclick="toggleNav()" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li class="nav-drop">
+      <button class="nav-drop-btn" onclick="toggleDrop(this)" aria-haspopup="true" aria-expanded="false">Research ▾</button>
+      <ul class="nav-drop-menu">
+        <li><a href="research.html">Research Overview</a></li>
+        <li><a href="cilia-ciliopathies.html">Cilia &amp; Ciliopathies</a></li>
+        <li><a href="disease-modeling.html">Disease Modeling</a></li>
+        <li><a href="cilia-cilia-joining.html">Cilia-Cilia Joining</a></li>
+        <li><a href="bioinformatics.html">Bioinformatics</a></li>
+      </ul>
+    </li>
+    <li class="nav-drop">
+      <button class="nav-drop-btn" onclick="toggleDrop(this)" aria-haspopup="true" aria-expanded="false">Team ▾</button>
+      <ul class="nav-drop-menu">
+        <li><a href="team.html">Current Members</a></li>
+        <li><a href="former-members.html">Former Members</a></li>
+        <li><a href="group-photos.html">Group Photos</a></li>
+        <li><a href="join.html">Join the Lab</a></li>
+      </ul>
+    </li>
+    <li><a href="publications.html">Publications</a></li>
+    <li><a href="news.html">News</a></li>
+    <li class="nav-drop">
+      <button class="nav-drop-btn" onclick="toggleDrop(this)" aria-haspopup="true" aria-expanded="false">Tools ▾</button>
+      <ul class="nav-drop-menu">
+        <li><a href="ciliahub.html">CiliaHub</a></li>
+        <li><a href="ciliaatlas.html">CiliaAtlas</a></li>
+        <li><a href="plotting.html" class="active">Plotting</a></li>
+        <li><a href="resources.html">All Resources</a></li>
+      </ul>
+    </li>
+    <li><a href="gallery.html">Gallery</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</nav>
+<div id="nav-overlay" class="nav-overlay"></div>
+<div id="breadcrumbs"><a href="index.html">Home</a> › <a href="resources.html">Tools</a> › Plotting</div>
+
+<div class="plot-wrap">
+  <p class="eyebrow">Tools</p>
+  <h1 style="margin-bottom:6px">Plotting &amp; Statistics</h1>
+  <p style="color:var(--ink-2);font-size:15px;margin-bottom:28px;max-width:680px">Upload a file or paste your data directly. Generate publication-quality plots with Nature journal colors and run statistical tests — all in the browser, no installation needed.</p>
+
+  <div class="plot-grid">
+
+    <!-- ══ LEFT PANEL ══════════════════════════════════════ -->
+    <div style="display:flex;flex-direction:column;gap:16px">
+
+      <!-- 1. Data input -->
+      <div class="panel">
+        <div class="panel-head">
+          <h3 style="display:flex;align-items:center;gap:8px"><span class="panel-num">1</span> Data input</h3>
+        </div>
+        <div class="panel-body">
+          <div class="input-tabs">
+            <button class="input-tab active" onclick="switchTab('paste',this)">Paste data</button>
+            <button class="input-tab" onclick="switchTab('upload',this)">Upload file</button>
+            <button class="input-tab" onclick="switchTab('example',this)">Examples</button>
+          </div>
+
+          <!-- Paste tab -->
+          <div id="tab-paste">
+            <textarea class="paste-area" id="paste-area" placeholder="Paste your data here. Use Tab or comma between columns, Enter between rows.
+
+Example (tab-separated):
+Group	Value1	Value2
+WT	3.2	2.1
+WT	3.5	2.4
+arl-13	1.8	1.2
+arl-13	2.1	1.5" spellcheck="false"></textarea>
+            <div class="paste-hint">
+              Accepts tab-separated (Excel copy-paste) or comma-separated values.<br>
+              First row = column headers. Columns can be numerical or categorical.
+            </div>
+            <button class="btn-primary" style="margin-top:10px" onclick="parsePaste()">Load data →</button>
+          </div>
+
+          <!-- Upload tab -->
+          <div id="tab-upload" style="display:none">
+            <div class="upload-zone" onclick="document.getElementById('file-inp').click()"
+                 ondragover="event.preventDefault();this.style.borderColor='var(--accent)'"
+                 ondragleave="this.style.borderColor=''"
+                 ondrop="handleDrop(event)">
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M16 4v16M10 10l6-6 6 6" stroke="#1f3c88" stroke-width="2" stroke-linecap="round"/><path d="M6 22v2a2 2 0 002 2h16a2 2 0 002-2v-2" stroke="#888" stroke-width="1.5" stroke-linecap="round"/></svg>
+              <p>Drop file here or click to browse</p>
+              <small>.xlsx · .xls · .csv</small>
+              <input type="file" id="file-inp" accept=".xlsx,.xls,.csv" onchange="handleFile(this.files[0])">
+            </div>
+          </div>
+
+          <!-- Examples tab -->
+          <div id="tab-example" style="display:none">
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <button class="btn-sm" onclick="loadExample('ift')">IFT speed (anterograde vs retrograde)</button>
+              <button class="btn-sm" onclick="loadExample('cilialength')">Cilia length — WT vs mutants</button>
+              <button class="btn-sm" onclick="loadExample('categorical')">Categorical % (cilia status)</button>
+              <button class="btn-sm" onclick="loadExample('western')">Western blot band intensity</button>
+            </div>
+          </div>
+
+          <!-- Preview -->
+          <div id="preview-section" style="display:none;margin-top:12px">
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-3);margin-bottom:5px">Preview</div>
+            <div class="preview-wrap" id="preview-wrap"></div>
+            <div style="font-size:11px;color:var(--ink-3);margin-top:5px" id="data-info"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Columns -->
+      <div class="panel" id="cols-panel" style="display:none">
+        <div class="panel-head"><h3 style="display:flex;align-items:center;gap:8px"><span class="panel-num">2</span> Columns</h3></div>
+        <div class="panel-body">
+          <div class="ctrl">
+            <label>X-axis / Group column</label>
+            <select id="x-sel"></select>
+          </div>
+          <div class="ctrl">
+            <label>Y-axis / Data columns</label>
+            <div class="col-checks" id="y-checks"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Plot type -->
+      <div class="panel" id="type-panel" style="display:none">
+        <div class="panel-head"><h3 style="display:flex;align-items:center;gap:8px"><span class="panel-num">3</span> Plot type</h3></div>
+        <div class="panel-body">
+          <div class="type-grid">
+            <button class="type-btn active" data-t="bar" onclick="setType('bar',this)"><span class="type-icon">📊</span>Bar</button>
+            <button class="type-btn" data-t="line" onclick="setType('line',this)"><span class="type-icon">📈</span>Line</button>
+            <button class="type-btn" data-t="scatter" onclick="setType('scatter',this)"><span class="type-icon">🔵</span>Scatter</button>
+            <button class="type-btn" data-t="boxplot" onclick="setType('boxplot',this)"><span class="type-icon">📦</span>Box plot</button>
+            <button class="type-btn" data-t="stackedbar" onclick="setType('stackedbar',this)"><span class="type-icon">🗂</span>Stacked bar</button>
+            <button class="type-btn" data-t="percentbar" onclick="setType('percentbar',this)"><span class="type-icon">🔲</span>% Bar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Statistics -->
+      <div class="panel" id="stat-panel" style="display:none">
+        <div class="panel-head"><h3 style="display:flex;align-items:center;gap:8px"><span class="panel-num">4</span> Statistical tests</h3></div>
+        <div class="panel-body">
+          <div class="stat-chips" id="stat-chips">
+            <button class="stat-chip active" data-st="none" onclick="setStat('none',this)">None</button>
+            <button class="stat-chip" data-st="ttest" onclick="setStat('ttest',this)">t-test</button>
+            <button class="stat-chip" data-st="welch" onclick="setStat('welch',this)">Welch t-test</button>
+            <button class="stat-chip" data-st="mwu" onclick="setStat('mwu',this)">Mann-Whitney</button>
+            <button class="stat-chip" data-st="anova" onclick="setStat('anova',this)">One-way ANOVA</button>
+            <button class="stat-chip" data-st="descriptive" onclick="setStat('descriptive',this)">Descriptive</button>
+          </div>
+          <div style="font-size:11px;color:var(--ink-3);margin-top:8px" id="stat-hint">Select a test to run it automatically on your data.</div>
+        </div>
+      </div>
+
+      <!-- 5. Appearance -->
+      <div class="panel" id="appear-panel" style="display:none">
+        <div class="panel-head"><h3 style="display:flex;align-items:center;gap:8px"><span class="panel-num">5</span> Appearance</h3></div>
+        <div class="panel-body">
+          <!-- Palette -->
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-3);margin-bottom:6px">Palette</div>
+          <div class="palette-row" id="pal-row"></div>
+          <!-- Per-series colors -->
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-3);margin:10px 0 6px">Series colors</div>
+          <div id="series-colors"></div>
+          <!-- Options -->
+          <div style="margin-top:10px">
+            <div class="ctrl">
+              <label>Chart title</label>
+              <input type="text" id="opt-title" placeholder="My chart title" oninput="liveTitle(this.value)">
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+              <div class="ctrl"><label>X label</label><input type="text" id="opt-xlabel" placeholder="X axis"></div>
+              <div class="ctrl"><label>Y label</label><input type="text" id="opt-ylabel" placeholder="Y axis"></div>
+            </div>
+            <div class="tog-row"><span>Error bars (SEM)</span><div class="tog on" id="tog-err" onclick="this.classList.toggle('on')"></div></div>
+            <div class="tog-row"><span>Show data points</span><div class="tog on" id="tog-pts" onclick="this.classList.toggle('on')"></div></div>
+            <div class="tog-row"><span>Show legend</span><div class="tog on" id="tog-leg" onclick="this.classList.toggle('on')"></div></div>
+            <div class="tog-row"><span>Show grid</span><div class="tog on" id="tog-grid" onclick="this.classList.toggle('on')"></div></div>
+            <div class="ctrl">
+              <label>Font size</label>
+              <select id="opt-fs"><option value="11">Small</option><option value="13" selected>Medium</option><option value="15">Large</option><option value="17">X-Large</option></select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Generate -->
+      <div id="gen-row" style="display:none">
+        <button class="btn-primary" onclick="generate()">Generate plot &amp; statistics</button>
+      </div>
+
+    </div><!-- end left -->
+
+    <!-- ══ RIGHT CANVAS ════════════════════════════════════ -->
+    <div class="canvas-area" id="canvas-area">
+      <div class="empty" id="empty-state">
+        <div style="font-size:48px;margin-bottom:12px">📊</div>
+        <h3>Ready to plot</h3>
+        <p>Paste your data or upload a file on the left,<br>then click <strong>Generate</strong>.</p>
+      </div>
+    </div>
+
+  </div><!-- end grid -->
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-cols">
+      <div class="footer-col">
+        <div class="footer-col-title">Kaplan Lab</div>
+        <p>We study ciliopathies and rare genetic diseases using <em>C. elegans</em>, CRISPR/Cas9, and bioinformatics.<br><br>Faculty of Life and Natural Sciences<br>Abdullah Gül University<br>Kayseri, Türkiye</p>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Tools &amp; Databases</div>
+        <a href="ciliahub.html">CiliaHub / CiliaAI</a>
+        <a href="ciliaatlas.html">CiliaAtlas</a>
+        <a href="plotting.html">Plotting</a>
+        <a href="https://ciliogenics.com/" target="_blank">CilioGenics</a>
+        <a href="https://kaplanlab.shinyapps.io/ciliaminer/" target="_blank">CiliaMiner</a>
+        <a href="https://convart.org/" target="_blank">ConVarT</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Quick Links</div>
+        <a href="research.html">Research</a>
+        <a href="publications.html">Publications</a>
+        <a href="team.html">Team</a>
+        <a href="join.html">Join the Lab</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Kaplan Lab · Abdullah Gül University · Kayseri, Türkiye</span>
+      <div class="footer-social">
+        <a href="https://github.com/thekaplanlab" target="_blank"><img src="github-logo.png" alt="GitHub"></a>
+        <a href="https://www.instagram.com/kaplanlab/?hl=en" target="_blank"><img src="instagram-logo.png" alt="Instagram"></a>
+        <a href="https://www.linkedin.com/in/oktay-i-kaplan-74b16856/" target="_blank"><img src="linkedin-logo.png" alt="LinkedIn"></a>
+        <a href="https://x.com/KaplanOLab" target="_blank">𝕏 @KaplanOLab</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ── NAV ── */
+function openNav(){document.querySelector('.nav-links').classList.add('open');document.querySelector('.nav-toggle').classList.add('open');document.getElementById('nav-overlay').classList.add('open');document.body.style.overflow='hidden';}
+function closeNav(){document.querySelector('.nav-links').classList.remove('open');document.querySelector('.nav-toggle').classList.remove('open');document.getElementById('nav-overlay').classList.remove('open');document.body.style.overflow='';}
+function toggleNav(){document.querySelector('.nav-links').classList.contains('open')?closeNav():openNav();}
+function toggleDrop(btn){const drop=btn.closest('.nav-drop');const isOpen=drop.classList.contains('open');document.querySelectorAll('.nav-drop.open').forEach(d=>d.classList.remove('open'));if(!isOpen)drop.classList.add('open');btn.setAttribute('aria-expanded',!isOpen);}
+document.addEventListener('DOMContentLoaded',()=>{const ov=document.getElementById('nav-overlay');if(ov)ov.addEventListener('click',closeNav);document.querySelectorAll('.nav-drop-btn').forEach(btn=>{btn.textContent=btn.textContent.replace(/\s*▾\s*$/,'').trim();btn.setAttribute('aria-expanded','false');});});
+
+/* ── PALETTES (Nature journal colors) ── */
+const PALETTES = {
+  'Nature'   :['#E64B35','#4DBBD5','#00A087','#3C5488','#F39B7F','#8491B4','#91D1C2','#DC0000','#7E6148'],
+  'Science'  :['#3B4992','#EE0000','#008B45','#631879','#008280','#BB0021','#5F559B','#A20056','#808180'],
+  'Cell'     :['#6AAFE6','#E87F6B','#74C476','#CE9ECA','#F0D96B','#97C8C8','#F7A35C','#8085E9','#A0A0A0'],
+  'CB-safe'  :['#0072B2','#E69F00','#56B4E9','#009E73','#F0E442','#D55E00','#CC79A7','#999999'],
+  'Pastel'   :['#AEC6CF','#FFD1DC','#B5EAD7','#C7CEEA','#FFDAC1','#FF9AA2','#A8E6CF','#DCEDC1'],
+};
+let palette = PALETTES['Nature'];
+
+/* ── STATE ── */
+let data=[], cols=[], plotType='bar', statTest='none', chartInst=null, seriesClrs=[];
+
+/* ── TAB SWITCHING ── */
+function switchTab(id,btn){
+  ['paste','upload','example'].forEach(t=>document.getElementById('tab-'+t).style.display=t===id?'':'none');
+  document.querySelectorAll('.input-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+/* ── FILE HANDLING ── */
+function handleDrop(e){e.preventDefault();const f=e.dataTransfer.files[0];if(f)handleFile(f);}
+function handleFile(file){
+  const ext=file.name.split('.').pop().toLowerCase();
+  const reader=new FileReader();
+  reader.onload=e=>{
+    let d;
+    if(ext==='csv'){d=parseCSVText(e.target.result);}
+    else{const wb=XLSX.read(e.target.result,{type:'binary'});const ws=wb.Sheets[wb.SheetNames[0]];d=XLSX.utils.sheet_to_json(ws,{defval:''});}
+    if(d&&d.length){data=d;cols=Object.keys(d[0]);onDataReady('File: '+file.name);}
+  };
+  if(ext==='csv')reader.readAsText(file);else reader.readAsBinaryString(file);
+}
+
+/* ── PASTE PARSING ── */
+function parsePaste(){
+  const raw=document.getElementById('paste-area').value.trim();
+  if(!raw){alert('Please paste some data first.');return;}
+  // Detect delimiter
+  const firstLine=raw.split('\n')[0];
+  const delim=firstLine.includes('\t')?'\t':',';
+  data=parseDelimited(raw,delim);
+  if(!data.length){alert('Could not parse data. Make sure the first row contains column headers.');return;}
+  cols=Object.keys(data[0]);
+  onDataReady('Pasted data');
+}
+
+function parseDelimited(text,delim){
+  const lines=text.trim().split('\n').filter(l=>l.trim());
+  const headers=lines[0].split(delim).map(h=>h.trim().replace(/^"|"$/g,''));
+  return lines.slice(1).map(line=>{
+    const vals=splitLine(line,delim);
+    const obj={};
+    headers.forEach((h,i)=>{const v=(vals[i]||'').trim().replace(/^"|"$/g,'');obj[h]=v===''?'':isNaN(v)?v:+v;});
+    return obj;
+  }).filter(r=>Object.values(r).some(v=>v!==''));
+}
+function splitLine(line,delim){
+  // Handle quoted fields
+  const result=[];let cur='';let inQ=false;
+  for(let i=0;i<line.length;i++){
+    if(line[i]==='"'){inQ=!inQ;}
+    else if(line[i]===delim&&!inQ){result.push(cur);cur='';}
+    else{cur+=line[i];}
+  }
+  result.push(cur);return result;
+}
+function parseCSVText(t){return parseDelimited(t,t.split('\n')[0].includes('\t')?'\t',',');}
+
+/* ── ON DATA READY ── */
+function onDataReady(label){
+  showPreview();
+  buildColumnPickers();
+  buildPaletteUI();
+  buildSeriesColors();
+  ['cols-panel','type-panel','stat-panel','appear-panel','gen-row'].forEach(id=>{
+    const el=document.getElementById(id);if(el)el.style.display='';
+  });
+  document.getElementById('preview-section').style.display='';
+  document.getElementById('data-info').textContent=`${data.length} rows · ${cols.length} columns · ${label}`;
+}
+
+function showPreview(){
+  const mc=Math.min(cols.length,7);
+  const mr=Math.min(data.length,5);
+  let h=`<table class="preview-table"><thead><tr>${cols.slice(0,mc).map(c=>`<th>${c}</th>`).join('')}${cols.length>mc?'<th>…</th>':''}</tr></thead><tbody>`;
+  data.slice(0,mr).forEach(r=>{h+=`<tr>${cols.slice(0,mc).map(c=>`<td>${String(r[c]).substring(0,18)}</td>`).join('')}${cols.length>mc?'<td>…</td>':''}</tr>`;});
+  h+='</tbody></table>';
+  document.getElementById('preview-wrap').innerHTML=h;
+}
+
+function buildColumnPickers(){
+  const xSel=document.getElementById('x-sel');
+  xSel.innerHTML=cols.map((c,i)=>`<option value="${c}" ${i===0?'selected':''}>${c}</option>`).join('');
+  const yDiv=document.getElementById('y-checks');
+  yDiv.innerHTML=cols.map((c,i)=>`<label class="col-check"><input type="checkbox" value="${c}" ${i>0?'checked':''} onchange="buildSeriesColors()"><span>${c}</span></label>`).join('');
+}
+
+/* ── PALETTE UI ── */
+function buildPaletteUI(){
+  const row=document.getElementById('pal-row');
+  row.innerHTML=Object.entries(PALETTES).map(([name,clrs])=>`
+    <button class="palette-btn${name==='Nature'?' active':''}" onclick="usePalette('${name}',this)">
+      ${clrs.slice(0,5).map(c=>`<span class="pal-dot" style="background:${c}"></span>`).join('')}
+      <span style="margin-left:3px">${name}</span>
+    </button>`).join('');
+}
+function usePalette(name,btn){
+  palette=PALETTES[name];
+  document.querySelectorAll('.palette-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  buildSeriesColors();
+}
+
+function getYCols(){return[...document.querySelectorAll('#y-checks input:checked')].map(cb=>cb.value);}
+
+function buildSeriesColors(){
+  const yCols=getYCols();
+  seriesClrs=yCols.map((_,i)=>palette[i%palette.length]);
+  const div=document.getElementById('series-colors');
+  div.innerHTML=yCols.map((c,i)=>`
+    <div class="series-row">
+      <input type="color" value="${seriesClrs[i]}" id="sc${i}" onchange="seriesClrs[${i}]=this.value">
+      <input class="series-label" type="text" value="${c}" id="sl${i}" placeholder="Label">
+    </div>`).join('');
+}
+
+/* ── PLOT TYPE & STAT ── */
+function setType(t,btn){plotType=t;document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+function setStat(t,btn){
+  statTest=t;
+  document.querySelectorAll('.stat-chip').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const hints={
+    none:'No statistical test will be run.',
+    ttest:'Student\'s t-test (assumes equal variance, normal distribution). Best for comparing two groups.',
+    welch:'Welch\'s t-test (unequal variance). More robust for unequal sample sizes.',
+    mwu:'Mann-Whitney U (non-parametric). Use when data is not normally distributed.',
+    anova:'One-way ANOVA. Compares means across 3+ groups followed by pairwise t-tests.',
+    descriptive:'Descriptive statistics: mean, median, SD, SEM, min, max, n for each group.'
+  };
+  document.getElementById('stat-hint').textContent=hints[t]||'';
+}
+
+/* ── STATS ENGINE ── */
+function mean(a){return a.length?a.reduce((s,v)=>s+v,0)/a.length:0;}
+function variance(a){if(a.length<2)return 0;const m=mean(a);return a.reduce((s,v)=>s+(v-m)**2,0)/(a.length-1);}
+function sd(a){return Math.sqrt(variance(a));}
+function sem(a){return a.length?sd(a)/Math.sqrt(a.length):0;}
+function median(a){const s=[...a].sort((x,y)=>x-y);const m=Math.floor(s.length/2);return s.length%2?s[m]:(s[m-1]+s[m])/2;}
+function q1(a){const s=[...a].sort((x,y)=>x-y);return s[Math.floor(s.length/4)]||s[0];}
+function q3(a){const s=[...a].sort((x,y)=>x-y);return s[Math.floor(3*s.length/4)]||s[s.length-1];}
+
+// t-distribution approx (Cornish-Fisher)
+function tCDF(t,df){
+  const x=df/(df+t*t);
+  let ib=0;
+  // Beta incomplete function approximation
+  const a=df/2,b=0.5;
+  // Simple numerical approximation
+  const z=Math.abs(t)/Math.sqrt(df);
+  const p=1/(1+0.2316419*z);
+  const poly=p*(0.319381530+p*(-0.356563782+p*(1.781477937+p*(-1.821255978+p*1.330274429))));
+  const normal=Math.exp(-z*z/2)/Math.sqrt(2*Math.PI);
+  const oneTail=normal*poly;
+  return 2*oneTail; // two-tailed
+}
+
+function studentT(a,b){
+  const na=a.length,nb=b.length;
+  if(na<2||nb<2)return{t:NaN,p:NaN,df:na+nb-2};
+  const ma=mean(a),mb=mean(b);
+  const va=variance(a),vb=variance(b);
+  const sp=Math.sqrt(((na-1)*va+(nb-1)*vb)/(na+nb-2));
+  const t=(ma-mb)/(sp*Math.sqrt(1/na+1/nb));
+  const df=na+nb-2;
+  return{t,p:tCDF(t,df),df};
+}
+function welchT(a,b){
+  const na=a.length,nb=b.length;
+  if(na<2||nb<2)return{t:NaN,p:NaN,df:0};
+  const ma=mean(a),mb=mean(b);
+  const va=variance(a),vb=variance(b);
+  const t=(ma-mb)/Math.sqrt(va/na+vb/nb);
+  const df=Math.pow(va/na+vb/nb,2)/(Math.pow(va/na,2)/(na-1)+Math.pow(vb/nb,2)/(nb-1));
+  return{t,p:tCDF(t,df),df};
+}
+function mannWhitneyU(a,b){
+  let u=0;
+  a.forEach(av=>b.forEach(bv=>{if(av>bv)u++;else if(av===bv)u+=0.5;}));
+  const n1=a.length,n2=b.length;
+  const mu=n1*n2/2;
+  const sigma=Math.sqrt(n1*n2*(n1+n2+1)/12);
+  const z=sigma?(u-mu)/sigma:0;
+  const p=2*(1-normalCDF(Math.abs(z)));
+  return{u,z,p};
+}
+function normalCDF(x){return 0.5*(1+erf(x/Math.sqrt(2)));}
+function erf(x){const t=1/(1+0.3275911*Math.abs(x));const poly=t*(0.254829592+t*(-0.284496736+t*(1.421413741+t*(-1.453152027+t*1.061405429))));const e=1-poly*Math.exp(-x*x);return x>=0?e:-e;}
+
+function pLabel(p){
+  if(isNaN(p))return{text:'n/a',cls:'ns'};
+  if(p<0.001)return{text:'p < 0.001 ***',cls:'p001'};
+  if(p<0.01) return{text:`p = ${p.toFixed(3)} **`,cls:'p01'};
+  if(p<0.05) return{text:`p = ${p.toFixed(3)} *`,cls:'p05'};
+  return{text:`p = ${p.toFixed(3)} ns`,cls:'ns'};
+}
+
+function runStats(groups){
+  // groups: [{label, values:[]}]
+  if(statTest==='none')return null;
+  if(statTest==='descriptive'){
+    return{type:'descriptive',rows:groups.map(g=>({
+      label:g.label,n:g.values.length,
+      mean:mean(g.values).toFixed(3),
+      median:median(g.values).toFixed(3),
+      sd:sd(g.values).toFixed(3),
+      sem:sem(g.values).toFixed(3),
+      min:Math.min(...g.values).toFixed(3),
+      max:Math.max(...g.values).toFixed(3),
+    }))};
+  }
+  const pairs=[];
+  for(let i=0;i<groups.length;i++)for(let j=i+1;j<groups.length;j++){
+    const a=groups[i].values,b=groups[j].values;
+    let res;
+    if(statTest==='ttest') res=studentT(a,b);
+    else if(statTest==='welch') res=welchT(a,b);
+    else if(statTest==='mwu'){const r=mannWhitneyU(a,b);res={t:r.z,p:r.p,df:'—',extra:`U=${r.u.toFixed(1)}`};}
+    else if(statTest==='anova') res=studentT(a,b); // pairwise t for ANOVA display
+    const pl=pLabel(res.p);
+    pairs.push({a:groups[i].label,b:groups[j].label,stat:isNaN(res.t)?'—':res.t.toFixed(3),df:res.df!==undefined?res.df:'—',p:pl,extra:res.extra||''});
+  }
+  return{type:'pairwise',pairs,testName:{ttest:"Student's t-test",welch:"Welch's t-test",mwu:'Mann-Whitney U',anova:'One-way ANOVA (pairwise)'}[statTest]};
+}
+
+/* ── GENERATE ── */
+function generate(){
+  if(!data.length){alert('Load some data first.');return;}
+  if(chartInst){try{chartInst.destroy();}catch(e){}}
+  const xCol=document.getElementById('x-sel').value;
+  const yCols=getYCols();
+  if(!yCols.length){alert('Select at least one Y column.');return;}
+  const title=document.getElementById('opt-title').value||'Chart';
+  const xlabel=document.getElementById('opt-xlabel').value||xCol;
+  const ylabel=document.getElementById('opt-ylabel').value||yCols[0];
+  const showErr=document.getElementById('tog-err').classList.contains('on');
+  const showPts=document.getElementById('tog-pts').classList.contains('on');
+  const showLeg=document.getElementById('tog-leg').classList.contains('on');
+  const showGrid=document.getElementById('tog-grid').classList.contains('on');
+  const fs=+document.getElementById('opt-fs').value;
+  const colors=yCols.map((_,i)=>document.getElementById('sc'+i)?.value||seriesClrs[i]);
+  const labels=yCols.map((_,i)=>document.getElementById('sl'+i)?.value||yCols[i]);
+
+  const xVals=[...new Set(data.map(r=>r[xCol]))];
+  const isCatX=data.some(r=>typeof r[xCol]==='string'&&isNaN(r[xCol]));
+
+  // Build groups for stats
+  let groups=[];
+  if(isCatX){
+    yCols.forEach((yc,si)=>{
+      xVals.forEach(xv=>{
+        const vals=data.filter(r=>r[xCol]===xv).map(r=>+r[yc]).filter(v=>!isNaN(v));
+        if(vals.length)groups.push({label:`${xv}${yCols.length>1?' / '+labels[si]:''}`,values:vals,series:si,group:xv});
+      });
+    });
+  } else {
+    yCols.forEach((yc,si)=>{
+      const vals=data.map(r=>+r[yc]).filter(v=>!isNaN(v));
+      if(vals.length)groups.push({label:labels[si],values:vals,series:si});
+    });
+  }
+
+  // Clear canvas area
+  document.getElementById('empty-state').style.display='none';
+  document.getElementById('canvas-area').innerHTML='<div class="empty" id="empty-state" style="display:none"></div>';
+  const area=document.getElementById('canvas-area');
+
+  // Chart card
+  const cc=document.createElement('div');cc.className='chart-card';
+  cc.innerHTML=`<input class="chart-title-input" value="${title}" oninput="this.style.width=this.value.length+'ch'">
+    <div style="position:relative"><canvas id="the-chart" style="max-height:460px"></canvas></div>`;
+  area.appendChild(cc);
+
+  if(plotType==='boxplot'){
+    buildBoxPlot(groups,labels,colors,ylabel,showLeg,showGrid,showPts,fs);
+  } else {
+    buildMainChart(yCols,labels,colors,xVals,xCol,isCatX,xlabel,ylabel,showErr,showPts,showLeg,showGrid,fs);
+  }
+
+  // Statistics card
+  const sr=runStats(groups);
+  if(sr){
+    const sc=document.createElement('div');sc.className='stats-card';
+    sc.innerHTML=buildStatsHTML(sr);
+    area.appendChild(sc);
+  }
+
+  // Download bar
+  const db=document.createElement('div');db.className='dl-bar';
+  db.innerHTML=`<button class="btn-sm primary" onclick="dlPNG()">⬇ Download PNG</button>
+    <button class="btn-sm" onclick="dlSVG()">⬇ Download SVG</button>
+    <button class="btn-sm" onclick="dlCSV()">⬇ Export CSV</button>
+    <button class="btn-sm" onclick="dlStats()">⬇ Export statistics</button>
+    <button class="btn-sm" onclick="clearAll()">✕ Clear</button>`;
+  area.appendChild(db);
+}
+
+function buildMainChart(yCols,labels,colors,xVals,xCol,isCatX,xlabel,ylabel,showErr,showPts,showLeg,showGrid,fs){
+  const stacked=plotType==='stackedbar'||plotType==='percentbar';
+  const ds=yCols.map((yc,i)=>{
+    let d,errors;
+    if(isCatX){
+      const pts=xVals.map(xv=>{
+        const vals=data.filter(r=>r[xCol]===xv).map(r=>+r[yc]).filter(v=>!isNaN(v));
+        return{m:mean(vals),s:sem(vals),pts:vals};
+      });
+      d=pts.map(p=>p.m);errors=pts.map(p=>p.s);
+      // individual points
+      if(showPts&&plotType==='bar'){
+        // overlay as scatter — added via plugin
+      }
+    } else {
+      d=data.map(r=>({x:+r[xCol],y:+r[yc]}));
+    }
+    return{
+      label:labels[i],data:d,errors,
+      backgroundColor:colors[i]+(plotType==='scatter'?'cc':'99'),
+      borderColor:colors[i],borderWidth:1.5,
+      fill:false,tension:0.35,
+      pointRadius:plotType==='scatter'?6:3,
+      pointBackgroundColor:colors[i],
+    };
+  });
+
+  // Individual points plugin
+  const ptsPlugin={
+    id:'pts',
+    afterDatasetsDraw(chart){
+      if(!showPts||plotType!=='bar')return;
+      const {ctx,scales:{x,y}}=chart;
+      chart.data.datasets.forEach((ds,di)=>{
+        if(!ds.errors)return;
+        const meta=chart.getDatasetMeta(di);
+        const yCols_idx=di;
+        // get raw values
+        const xVals2=[...new Set(data.map(r=>r[document.getElementById('x-sel').value]))];
+        const yc=getYCols()[di];
+        xVals2.forEach((xv,ji)=>{
+          const pts=data.filter(r=>r[document.getElementById('x-sel').value]===xv).map(r=>+r[yc]).filter(v=>!isNaN(v));
+          const el=meta.data[ji];if(!el)return;
+          pts.forEach(v=>{
+            const px=el.x+(Math.random()-.5)*10;
+            const py=y.getPixelForValue(v);
+            ctx.beginPath();ctx.arc(px,py,3,0,Math.PI*2);
+            ctx.fillStyle=ds.borderColor+'cc';ctx.fill();
+          });
+        });
+      });
+    }
+  };
+
+  const errPlugin={
+    id:'err',
+    afterDatasetsDraw(chart){
+      if(!showErr)return;
+      const{ctx,scales:{x,y}}=chart;
+      chart.data.datasets.forEach((ds,di)=>{
+        if(!ds.errors)return;
+        const meta=chart.getDatasetMeta(di);
+        ds.errors.forEach((e,ji)=>{
+          if(!e||!meta.data[ji])return;
+          const xp=meta.data[ji].x,yv=chart.data.datasets[di].data[ji];
+          const yt=y.getPixelForValue(yv+e),yb=y.getPixelForValue(yv-e);
+          ctx.save();ctx.strokeStyle=ds.borderColor;ctx.lineWidth=1.5;
+          ctx.beginPath();ctx.moveTo(xp,yt);ctx.lineTo(xp,yb);ctx.stroke();
+          [yt,yb].forEach(yy=>{ctx.beginPath();ctx.moveTo(xp-5,yy);ctx.lineTo(xp+5,yy);ctx.stroke();});
+          ctx.restore();
+        });
+      });
+    }
+  };
+
+  const type=plotType==='line'?'line':plotType==='scatter'?'scatter':'bar';
+  const ctx=document.getElementById('the-chart').getContext('2d');
+  chartInst=new Chart(ctx,{
+    type,
+    data:{labels:isCatX?xVals:undefined,datasets:ds},
+    options:{
+      responsive:true,
+      plugins:{legend:{display:showLeg,labels:{font:{size:fs,family:'Inter'}}}},
+      scales:{
+        x:{stacked,title:{display:!!xlabel,text:xlabel,font:{size:fs,family:'Inter'}},grid:{display:showGrid,color:'rgba(0,0,0,.05)'},ticks:{font:{size:fs-1,family:'Inter'}}},
+        y:{stacked,title:{display:!!ylabel,text:ylabel,font:{size:fs,family:'Inter'}},grid:{display:showGrid,color:'rgba(0,0,0,.05)'},ticks:{font:{size:fs-1,family:'Inter'}}},
+      },
+      animation:{duration:500},
+    },
+    plugins:[errPlugin,ptsPlugin],
+  });
+}
+
+function buildBoxPlot(groups,labels,colors,ylabel,showLeg,showGrid,showPts,fs){
+  // Get unique series
+  const seriesLabels=[...new Set(groups.map(g=>g.label))];
+  const ctx=document.getElementById('the-chart').getContext('2d');
+  const boxPlugin={
+    id:'box',
+    afterDatasetsDraw(chart){
+      const{ctx,scales:{x,y}}=chart;
+      groups.forEach((g,i)=>{
+        const bw=28,xp=x.getPixelForValue(i)||x.getPixelForValue(seriesLabels[i]);
+        if(!xp)return;
+        const v=g.values,clr=colors[g.series%colors.length];
+        const s={min:Math.min(...v),q1:q1(v),med:median(v),q3:q3(v),max:Math.max(...v)};
+        ctx.save();ctx.strokeStyle=clr;ctx.fillStyle=clr+'33';ctx.lineWidth=1.5;
+        const yQ1=y.getPixelForValue(s.q1),yQ3=y.getPixelForValue(s.q3),yMed=y.getPixelForValue(s.med),yMin=y.getPixelForValue(s.min),yMax=y.getPixelForValue(s.max);
+        ctx.fillRect(xp-bw/2,yQ3,bw,yQ1-yQ3);
+        ctx.strokeRect(xp-bw/2,yQ3,bw,yQ1-yQ3);
+        ctx.beginPath();ctx.moveTo(xp-bw/2,yMed);ctx.lineTo(xp+bw/2,yMed);ctx.lineWidth=2.5;ctx.stroke();
+        ctx.lineWidth=1.5;
+        [[yQ3,yMax],[yQ1,yMin]].forEach(([a,b])=>{ctx.beginPath();ctx.moveTo(xp,a);ctx.lineTo(xp,b);ctx.stroke();ctx.beginPath();ctx.moveTo(xp-6,b);ctx.lineTo(xp+6,b);ctx.stroke();});
+        if(showPts){v.forEach(val=>{const px=xp+(Math.random()-.5)*18,py=y.getPixelForValue(val);ctx.beginPath();ctx.arc(px,py,3,0,Math.PI*2);ctx.fillStyle=clr+'bb';ctx.fill();});}
+        ctx.restore();
+      });
+    }
+  };
+  chartInst=new Chart(ctx,{
+    type:'bar',
+    data:{labels:groups.map(g=>g.label),datasets:[{data:groups.map(g=>q3(g.values)),backgroundColor:'transparent',borderColor:'transparent'}]},
+    options:{responsive:true,plugins:{legend:{display:false}},scales:{
+      x:{grid:{display:showGrid,color:'rgba(0,0,0,.05)'},ticks:{font:{size:fs-1,family:'Inter'}}},
+      y:{title:{display:!!ylabel,text:ylabel,font:{size:fs,family:'Inter'}},grid:{display:showGrid,color:'rgba(0,0,0,.05)'},ticks:{font:{size:fs-1,family:'Inter'}}}
+    }},
+    plugins:[boxPlugin],
+  });
+}
+
+/* ── STATS HTML ── */
+function buildStatsHTML(sr){
+  if(sr.type==='descriptive'){
+    return`<div class="stats-card-head"><span>Descriptive statistics</span></div>
+      <div style="overflow-x:auto"><table class="stats-table">
+        <thead><tr><th>Group</th><th>n</th><th>Mean</th><th>Median</th><th>SD</th><th>SEM</th><th>Min</th><th>Max</th></tr></thead>
+        <tbody>${sr.rows.map(r=>`<tr><td><strong>${r.label}</strong></td><td>${r.n}</td><td>${r.mean}</td><td>${r.median}</td><td>${r.sd}</td><td>${r.sem}</td><td>${r.min}</td><td>${r.max}</td></tr>`).join('')}</tbody>
+      </table></div>`;
+  }
+  return`<div class="stats-card-head"><span>${sr.testName} — pairwise comparisons</span></div>
+    <div style="overflow-x:auto"><table class="stats-table">
+      <thead><tr><th>Group A</th><th>Group B</th><th>Statistic</th><th>p-value</th><th>Significance</th></tr></thead>
+      <tbody>${sr.pairs.map(p=>`<tr>
+        <td><strong>${p.a}</strong></td><td><strong>${p.b}</strong></td>
+        <td style="font-family:monospace">${p.stat}${p.extra?' ('+p.extra+')':''}</td>
+        <td><span class="sig-badge ${p.p.cls}">${p.p.text}</span></td>
+        <td class="sig-star ${p.p.cls==='ns'?'sig-no':'sig-yes'}">${p.p.cls==='ns'?'—':p.p.text.includes('***')?'***':p.p.text.includes('**')?'**':'*'}</td>
+      </tr>`).join('')}</tbody>
+    </table></div>
+    <div style="padding:10px 14px;font-size:11px;color:var(--ink-3)">*** p&lt;0.001 &nbsp;** p&lt;0.01 &nbsp;* p&lt;0.05 &nbsp;ns = not significant. Results are for reference only — always verify assumptions before publication.</div>`;
+}
+
+/* ── DOWNLOADS ── */
+let lastStatsResult=null;
+function generate_wrapped(){generate();lastStatsResult=runStats([]);}
+function dlPNG(){if(!chartInst)return;const a=document.createElement('a');a.download='plot.png';a.href=chartInst.toBase64Image();a.click();}
+function dlSVG(){if(!chartInst)return;const img=chartInst.toBase64Image();const w=chartInst.canvas.width,h=chartInst.canvas.height;const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}"><image href="${img}" width="${w}" height="${h}"/></svg>`;const blob=new Blob([svg],{type:'image/svg+xml'});const a=document.createElement('a');a.download='plot.svg';a.href=URL.createObjectURL(blob);a.click();}
+function dlCSV(){if(!data.length)return;const c=Object.keys(data[0]);let csv=c.join(',')+'\n';data.forEach(r=>{csv+=c.map(col=>JSON.stringify(String(r[col]))).join(',')+'\n';});const blob=new Blob([csv],{type:'text/csv'});const a=document.createElement('a');a.download='data.csv';a.href=URL.createObjectURL(blob);a.click();}
+function dlStats(){
+  const tables=document.querySelectorAll('.stats-table');
+  if(!tables.length){alert('Generate a plot with statistics first.');return;}
+  let csv='';
+  tables.forEach(t=>{
+    const rows=[...t.querySelectorAll('tr')];
+    rows.forEach(row=>{csv+=[...row.querySelectorAll('th,td')].map(c=>'"'+c.textContent.trim()+'"').join(',')+'\n';});
+    csv+='\n';
+  });
+  const blob=new Blob([csv],{type:'text/csv'});const a=document.createElement('a');a.download='statistics.csv';a.href=URL.createObjectURL(blob);a.click();
+}
+
+function clearAll(){if(chartInst){try{chartInst.destroy();}catch(e){}}chartInst=null;document.getElementById('canvas-area').innerHTML='<div class="empty" id="empty-state"><div style="font-size:48px;margin-bottom:12px">📊</div><h3>Ready to plot</h3><p>Paste your data or upload a file on the left,<br>then click <strong>Generate</strong>.</p></div>';}
+function liveTitle(v){document.querySelectorAll('.chart-title-input').forEach(el=>el.value=v);}
+
+/* ── EXAMPLES ── */
+function loadExample(type){
+  const examples={
+    ift:[
+      ['Track','Anterograde_um_s','Retrograde_um_s'],
+      ['1',0.72,0.58],['2',0.68,0.61],['3',0.75,0.55],['4',0.81,0.63],['5',0.70,0.59],
+      ['6',0.77,0.57],['7',0.73,0.62],['8',0.69,0.60],['9',0.74,0.56],['10',0.78,0.64],
+    ],
+    cilialength:[
+      ['Genotype','Cilia_length_um'],
+      ['WT',3.2],['WT',3.5],['WT',3.1],['WT',3.4],['WT',3.3],
+      ['arl-13',1.8],['arl-13',2.1],['arl-13',1.9],['arl-13',2.0],
+      ['ift-88',0.8],['ift-88',1.1],['ift-88',0.9],['ift-88',0.7],
+      ['bbs-1',2.8],['bbs-1',3.0],['bbs-1',2.7],['bbs-1',2.9],
+    ],
+    categorical:[
+      ['Cell_line','Primary_%','Non_ciliated_%','Motile_%'],
+      ['HEK293',65,30,5],['IMCD3',80,12,8],['RPE1',72,25,3],['NIH3T3',55,43,2],['mIMCD3',88,6,6],
+    ],
+    western:[
+      ['Condition','Band_intensity_AU'],
+      ['Control',1.00],['Control',0.98],['Control',1.03],['Control',0.95],
+      ['Treated_1h',0.72],['Treated_1h',0.68],['Treated_1h',0.75],
+      ['Treated_4h',0.45],['Treated_4h',0.41],['Treated_4h',0.48],
+      ['Treated_24h',0.21],['Treated_24h',0.19],['Treated_24h',0.24],
+    ],
+  };
+  const rows=examples[type];
+  const headers=rows[0];
+  data=rows.slice(1).map(r=>{const o={};headers.forEach((h,i)=>o[h]=r[i]);return o;});
+  cols=headers;
+  onDataReady(`Example: ${type}`);
+  switchTab('paste',document.querySelectorAll('.input-tab')[0]);
+  // Set textarea to show the example
+  const lines=[headers.join('\t'),...rows.slice(1).map(r=>r.join('\t'))];
+  document.getElementById('paste-area').value=lines.join('\n');
+}
+</script>
+</body>
+</html>
