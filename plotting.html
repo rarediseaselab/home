@@ -460,7 +460,25 @@ function parsePaste(){
 
 function parseDelimited(text,delim){
   const lines=text.trim().split('\n').filter(l=>l.trim());
-  const headers=lines[0].split(delim).map(h=>h.trim().replace(/^"|"$/g,''));
+
+  // Split header and first data row
+  let rawHeaders=splitLine(lines[0],delim).map(h=>h.trim().replace(/^"|"$/g,''));
+  const firstDataCols=lines.length>1?splitLine(lines[1],delim).length:rawHeaders.length;
+
+  // If header has fewer cols than data, a header cell likely contains
+  // multiple column names separated by spaces (e.g. "UNC5C  NULL")
+  if(firstDataCols>rawHeaders.length){
+    const deficit=firstDataCols-rawHeaders.length;
+    const lastH=rawHeaders[rawHeaders.length-1];
+    const extraParts=lastH.trim().split(/\s+/);
+    if(extraParts.length>=deficit+1){
+      rawHeaders=[...rawHeaders.slice(0,-1),...extraParts];
+    } else {
+      for(let i=0;i<deficit;i++) rawHeaders.push('Col'+(rawHeaders.length+1));
+    }
+  }
+  const headers=rawHeaders;
+
   return lines.slice(1).map(line=>{
     const vals=splitLine(line,delim);
     const obj={};
