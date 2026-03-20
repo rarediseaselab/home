@@ -224,8 +224,8 @@
         <div class="pt2-card-body">
           <div style="font-size:10px;color:var(--ink-2);background:var(--pale);border:1px solid #c8d3ee;border-radius:5px;padding:6px 8px;margin-bottom:9px;line-height:1.6">Each checked column = one group on the plot. Edit label in the text field.</div>
           <div class="pt2-fc-2">
-            <div class="pt2-fc"><label>X-axis label</label><input type="text" id="opt-xlabel" placeholder="e.g. Genotype"></div>
-            <div class="pt2-fc"><label>Y-axis label</label><input type="text" id="opt-ylabel" placeholder="e.g. Speed (&micro;m/s)"></div>
+            <div class="pt2-fc"><label>X-axis label</label><input type="text" id="opt-xlabel" placeholder="e.g. Genotype" oninput="if(PT.chart&&PT.data.length)generate()"></div>
+            <div class="pt2-fc"><label>Y-axis label</label><input type="text" id="opt-ylabel" placeholder="e.g. Speed (&micro;m/s)" oninput="if(PT.chart&&PT.data.length)generate()"></div>
           </div>
           <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-3);margin-bottom:5px">Columns &nbsp;<span style="font-weight:400;text-transform:none;letter-spacing:0">&mdash; check | color | rename</span></div>
           <div id="col-list" style="max-height:180px;overflow-y:auto"></div>
@@ -253,9 +253,9 @@
           <span class="pt2-step">4</span><h3>Axes &amp; labels</h3><span class="pt2-chev">&#9660;</span>
         </div>
         <div class="pt2-card-body">
-          <div class="pt2-fc"><label>Chart title</label><input type="text" id="opt-title" placeholder="Title"></div>
+          <div class="pt2-fc"><label>Chart title</label><input type="text" id="opt-title" placeholder="Title" oninput="if(PT.chart&&PT.data.length)generate()"></div>
           <div class="pt2-fc"><label>Font size</label>
-            <select id="opt-fs"><option value="11">Small (11)</option><option value="13" selected>Medium (13)</option><option value="15">Large (15)</option><option value="17">X-Large (17)</option></select>
+            <select id="opt-fs" onchange="if(PT.chart&&PT.data.length)generate()"><option value="11">Small (11)</option><option value="13" selected>Medium (13)</option><option value="15">Large (15)</option><option value="17">X-Large (17)</option></select>
           </div>
         </div>
       </div>
@@ -674,77 +674,172 @@ function drawNumericChart(groups) {
 }
 
 function drawCatChart(yCols, labels) {
-  var xlabel = el('opt-xlabel').value||'';
-  var ylabel = el('opt-ylabel').value||'Percentage (%)';
-  var fs     = +el('opt-fs').value||13;
-  var axisW  = +el('opt-axlw').value||2;
-  var barPct = +el('opt-barw').value/100||0.7;
-  var showGrid=tog('tog-grid');
+  var xlabel  = el('opt-xlabel').value || '';
+  var ylabel  = el('opt-ylabel').value || 'Percentage (%)';
+  var fs      = +el('opt-fs').value || 13;
+  var axisW   = +el('opt-axlw').value || 2;
+  var barPct  = +el('opt-barw').value / 100 || 0.7;
+  var showGrid= tog('tog-grid');
 
-  /* gather all unique categories */
-  var allCats=[];
-  PT.data.forEach(function(r){
-    yCols.forEach(function(c){
-      var v=String(r[c]||'').trim();
-      if(v && allCats.indexOf(v)<0) allCats.push(v);
+  /* gather unique categories across all selected columns */
+  var allCats = [];
+  PT.data.forEach(function(r) {
+    yCols.forEach(function(c) {
+      var v = String(r[c] || '').trim();
+      if (v && allCats.indexOf(v) < 0) allCats.push(v);
     });
   });
 
   /* count + pct per column */
-  var catPal=['#b0b0b0','#f4a261','#457b9d','#2a9d8f','#e76f51','#8ecae6','#a8dadc','#264653'];
-  var colData=yCols.map(function(c){
-    var vals=PT.data.map(function(r){return String(r[c]||'').trim();}).filter(Boolean);
-    var counts={},pct={};
-    allCats.forEach(function(cat){
-      counts[cat]=vals.filter(function(v){return v===cat;}).length;
-      pct[cat]=vals.length ? Math.round(counts[cat]/vals.length*1000)/10 : 0;
+  var colData = yCols.map(function(c) {
+    var vals = PT.data.map(function(r) { return String(r[c] || '').trim(); }).filter(Boolean);
+    var counts = {}, pct = {};
+    allCats.forEach(function(cat) {
+      counts[cat] = vals.filter(function(v) { return v === cat; }).length;
+      pct[cat] = vals.length ? Math.round(counts[cat] / vals.length * 1000) / 10 : 0;
     });
-    return {counts:counts,pct:pct,n:vals.length};
+    return { counts: counts, pct: pct, n: vals.length };
   });
 
-  var canvas=el('plot-canvas');
-  PT.chart=new Chart(canvas.getContext('2d'),{
-    type:'bar',
-    data:{labels:labels,datasets:allCats.map(function(cat,ci){
-      return {label:cat,data:colData.map(function(cc){return cc.pct[cat]||0;}),
-        backgroundColor:catPal[ci%catPal.length],borderColor:'#fff',borderWidth:1.5};
-    })},
-    options:{responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{display:true,position:'right',labels:{font:{size:fs-1},padding:12}}},
-      layout:{padding:{top:16,right:180,bottom:10,left:10}},
-      scales:{
-        x:{stacked:true,border:{display:true,color:'#333',width:axisW},grid:{display:false},
-          ticks:{color:'#333',font:{size:fs-1},maxRotation:45,minRotation:30},
-          title:{display:!!xlabel,text:xlabel,color:'#333',font:{size:fs}}},
-        y:{stacked:true,min:0,max:100,border:{display:true,color:'#333',width:axisW},
-          grid:{display:showGrid,color:'rgba(0,0,0,0.07)'},
-          ticks:{color:'#333',font:{size:fs-1},callback:function(v){return v+'%';}},
-          title:{display:true,text:ylabel,color:'#333',font:{size:fs}}}
+  /* FIX 3: rebuild col-list to show category colors, not column colors */
+  var catPal = getPal();
+  var colListEl = el('col-list');
+  if (colListEl) {
+    colListEl.innerHTML = '<div style="font-size:10px;color:var(--ink-3);margin-bottom:6px;font-style:italic">Colors below control category segments:</div>'
+      + allCats.map(function(cat, ci) {
+          var col = (function() { var e = el('sclr-' + ci); return (e && e.value) ? e.value : catPal[ci % catPal.length]; })();
+          return '<div class="pt2-col-row">'
+            + '<label class="pt2-col-item"><span>' + cat + '</span></label>'
+            + '<input type="color" class="pt2-sclr" id="sclr-' + ci + '" value="' + col + '"'
+            + ' oninput="if(PT.chart&&PT.data.length)generate()"'
+            + ' onchange="if(PT.chart&&PT.data.length)generate()">'
+            + '</div>';
+        }).join('');
+  }
+
+  /* read category colors live from pickers */
+  function catColor(ci) {
+    var e = el('sclr-' + ci);
+    return (e && e.value) ? e.value : catPal[ci % catPal.length];
+  }
+
+  /* FIX 1: Chi-square test for independence */
+  function chiSquare() {
+    if (yCols.length < 2) return null;
+    /* Build contingency table: rows = columns (groups), cols = categories */
+    var table = colData.map(function(cc) {
+      return allCats.map(function(cat) { return cc.counts[cat] || 0; });
+    });
+    var nRows = table.length, nCols = allCats.length;
+    var rowTotals = table.map(function(row) { return row.reduce(function(s, v) { return s + v; }, 0); });
+    var colTotals = allCats.map(function(_, ci) {
+      return table.reduce(function(s, row) { return s + row[ci]; }, 0);
+    });
+    var grand = rowTotals.reduce(function(s, v) { return s + v; }, 0);
+    if (!grand) return null;
+    var chi2 = 0;
+    table.forEach(function(row, ri) {
+      row.forEach(function(obs, ci) {
+        var exp = rowTotals[ri] * colTotals[ci] / grand;
+        if (exp > 0) chi2 += Math.pow(obs - exp, 2) / exp;
+      });
+    });
+    var df = (nRows - 1) * (nCols - 1);
+    /* p-value approximation via chi2 -> normal for df>=1 */
+    var p = NaN;
+    if (df >= 1) {
+      /* Wilson-Hilferty approximation: chi2 -> normal */
+      var z = Math.pow(chi2 / df, 1 / 3) - (1 - 2 / (9 * df));
+      z = z / Math.sqrt(2 / (9 * df));
+      /* one-tailed upper */
+      p = 1 - normCDF(z);
+    }
+    return { chi2: chi2, df: df, p: p, pl: pLabel(p) };
+  }
+
+  var chiRes = (PT.statTest !== 'none' && PT.statTest !== 'desc') ? chiSquare() : null;
+
+  var canvas = el('plot-canvas');
+  PT.chart = new Chart(canvas.getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: allCats.map(function(cat, ci) {
+        return {
+          label: cat,
+          data: colData.map(function(cc) { return cc.pct[cat] || 0; }),
+          backgroundColor: catColor(ci),
+          borderColor: '#fff',
+          borderWidth: 1.5
+        };
+      })
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: true, position: 'right', labels: { font: { size: fs - 1 }, padding: 12 } }
       },
-      barPercentage:barPct,categoryPercentage:0.9,animation:{duration:400}},
-    plugins:[{beforeDraw:function(c){
-      var ctx=c.ctx,ca=c.chartArea;if(!ca)return;
-      ctx.save();ctx.fillStyle='#fff';ctx.fillRect(ca.left,ca.top,ca.width,ca.height);ctx.restore();
-    }}]
+      layout: { padding: { top: 16, right: 180, bottom: 10, left: 10 } },
+      scales: {
+        x: {
+          stacked: true,
+          border: { display: true, color: '#333', width: axisW },
+          grid: { display: false },
+          ticks: { color: '#333', font: { size: fs - 1 }, maxRotation: 45, minRotation: 30 },
+          title: { display: !!xlabel, text: xlabel, color: '#333', font: { size: fs } }
+        },
+        y: {
+          stacked: true, min: 0, max: 100,
+          border: { display: true, color: '#333', width: axisW },
+          grid: { display: showGrid, color: 'rgba(0,0,0,0.07)' },
+          ticks: { color: '#333', font: { size: fs - 1 }, callback: function(v) { return v + '%'; } },
+          title: { display: true, text: ylabel, color: '#333', font: { size: fs } }
+        }
+      },
+      barPercentage: barPct, categoryPercentage: 0.9, animation: { duration: 400 }
+    },
+    plugins: [{
+      beforeDraw: function(chart) {
+        var ctx = chart.ctx, ca = chart.chartArea; if (!ca) return;
+        ctx.save(); ctx.fillStyle = '#fff'; ctx.fillRect(ca.left, ca.top, ca.width, ca.height); ctx.restore();
+      }
+    }]
   });
 
-  /* count table */
-  var right=el('plot-right');
-  var tbl=document.createElement('div'); tbl.className='pt2-stats';
-  var th='<tr><th>Column</th><th>n</th>'+allCats.map(function(c){return '<th>'+c+'</th>';}).join('')+'</tr>';
-  var tb=yCols.map(function(c,i){
-    var cc=colData[i];
-    return '<tr><td><strong>'+labels[i]+'</strong></td><td>'+cc.n+'</td>'
-      +allCats.map(function(cat){return '<td>'+cc.counts[cat]+'('+cc.pct[cat].toFixed(1)+'%)</td>';}).join('')+'</tr>';
+  /* counts table */
+  var right = el('plot-right');
+  var tbl = document.createElement('div'); tbl.className = 'pt2-stats';
+  var th = '<tr><th>Column</th><th>n</th>' + allCats.map(function(c) { return '<th>' + c + '</th>'; }).join('') + '</tr>';
+  var tb = yCols.map(function(c, i) {
+    var cc = colData[i];
+    return '<tr><td><strong>' + labels[i] + '</strong></td><td>' + cc.n + '</td>'
+      + allCats.map(function(cat) { return '<td>' + cc.counts[cat] + ' (' + cc.pct[cat].toFixed(1) + '%)' + '</td>'; }).join('')
+      + '</tr>';
   }).join('');
-  tbl.innerHTML='<div class="pt2-stats-head"><span>Counts &amp; percentages</span>'
-    +'<button class="pt2-btn-sm" onclick="dlStats()">&darr; Stats CSV</button></div>'
-    +'<table class="pt2-table"><thead>'+th+'</thead><tbody>'+tb+'</tbody></table>';
+  var statsHtml = '<div class="pt2-stats-head"><span>Category counts &amp; percentages</span>'
+    + '<button class="pt2-btn-sm" onclick="dlStats()">&darr; Stats CSV</button></div>'
+    + '<table class="pt2-table"><thead>' + th + '</thead><tbody>' + tb + '</tbody></table>';
+
+  /* FIX 1: Chi-square result */
+  if (chiRes) {
+    statsHtml += '<div style="padding:10px 14px;border-top:1px solid var(--border)">'
+      + '<strong style="font-size:12px">Chi-square test of independence</strong>'
+      + '<table class="pt2-table" style="margin-top:6px"><thead><tr><th>Chi&sup2;</th><th>df</th><th>p-value</th><th>Significance</th></tr></thead>'
+      + '<tbody><tr>'
+      + '<td style="font-family:monospace">' + chiRes.chi2.toFixed(3) + '</td>'
+      + '<td>' + chiRes.df + '</td>'
+      + '<td><span class="pt2-sig pt2-' + chiRes.pl.cls + '">' + chiRes.pl.str + '</span></td>'
+      + '<td style="font-weight:700;color:' + (chiRes.pl.cls === 'ns' ? '#999' : '#c62828') + '">' + chiRes.pl.stars + '</td>'
+      + '</tr></tbody></table>'
+      + '<p class="pt2-note">Chi-square test evaluates whether the distribution of categories differs between columns.</p>'
+      + '</div>';
+  }
+
+  tbl.innerHTML = statsHtml;
   right.appendChild(tbl);
 }
 
 
-/* ---- MAIN GENERATE ---- */
 function generate() {
   if (!PT.data.length) return;
   destroyChart();
