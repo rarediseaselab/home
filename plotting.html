@@ -146,7 +146,7 @@
 
 /* ── Right: chart area ── */
 .pt-right{display:flex;flex-direction:column;gap:16px}
-.chart-card{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:24px 24px 16px}
+.chart-card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:24px 24px 16px}
 .chart-topbar{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
 .chart-title-inp{flex:1;border:none;border-bottom:1px dashed transparent;font-size:15px;font-weight:700;color:var(--ink);font-family:inherit;background:transparent;padding:2px 0;min-width:150px}
 .chart-title-inp:focus{outline:none;border-bottom-color:var(--accent)}
@@ -313,10 +313,22 @@ ift-88&#9;0.91&#9;1.30"></textarea>
         <div class="pt-card-body">
           <div class="fc"><label>Palette</label><div class="pal-grid" id="pal-grid"></div></div>
           <div class="fc"><label>Series colors</label><div id="series-clrs"></div></div>
-          <div class="tog-row"><span>Error bars (SEM)</span><div class="tog on" id="tog-err" onclick="this.classList.toggle('on')"></div></div>
-          <div class="tog-row"><span>Show data points</span><div class="tog on" id="tog-pts" onclick="this.classList.toggle('on')"></div></div>
-          <div class="tog-row"><span>Legend</span><div class="tog on" id="tog-leg" onclick="this.classList.toggle('on')"></div></div>
-          <div class="tog-row"><span>Grid lines</span><div class="tog on" id="tog-grid" onclick="this.classList.toggle('on')"></div></div>
+          <div class="tog-row"><span>SEM error bars</span><div class="tog on" id="tog-err" onclick="this.classList.toggle('on')"></div></div>
+          <div class="tog-row"><span>Show data points (open circles)</span><div class="tog on" id="tog-pts" onclick="this.classList.toggle('on')"></div></div>
+          <div class="tog-row"><span>Legend</span><div class="tog" id="tog-leg" onclick="this.classList.toggle('on')"></div></div>
+          <div class="tog-row"><span>Grid lines</span><div class="tog" id="tog-grid" onclick="this.classList.toggle('on')"></div></div>
+          <div class="fc" style="margin-top:10px">
+            <label>Axis line width: <span id="axlw-val">2</span>px</label>
+            <input type="range" id="opt-axlw" min="0.5" max="5" step="0.5" value="2" style="width:100%;margin-top:4px" oninput="document.getElementById('axlw-val').textContent=this.value">
+          </div>
+          <div class="fc">
+            <label>Bar width (% of slot): <span id="bw-val">70</span>%</label>
+            <input type="range" id="opt-barw" min="20" max="95" step="5" value="70" style="width:100%;margin-top:4px" oninput="document.getElementById('bw-val').textContent=this.value">
+          </div>
+          <div class="fc">
+            <label>Point size: <span id="ps-val">4</span>px</label>
+            <input type="range" id="opt-pts-size" min="2" max="10" step="1" value="4" style="width:100%;margin-top:4px" oninput="document.getElementById('ps-val').textContent=this.value">
+          </div>
         </div>
       </div>
 
@@ -409,7 +421,7 @@ document.addEventListener('DOMContentLoaded',()=>{const ov=document.getElementBy
 
 /* ═══════════════════════ PALETTES ══════════════════════════ */
 const PALS={
-  'Nature'  :['#E64B35','#4DBBD5','#00A087','#3C5488','#F39B7F','#8491B4','#91D1C2','#DC0000','#7E6148','#B09C85'],
+  'Nature'  :['#555555','#999999','#6baed6','#9e9ac8','#74c476','#fd8d3c','#e377c2','#bcbd22','#17becf','#393b79'],
   'Science' :['#3B4992','#EE0000','#008B45','#631879','#008280','#BB0021','#5F559B','#A20056','#808180','#1B1919'],
   'Cell'    :['#6AAFE6','#E87F6B','#74C476','#CE9ECA','#F0D96B','#97C8C8','#F7A35C','#8085E9','#A0A0A0','#434348'],
   'CB-safe' :['#0072B2','#E69F00','#56B4E9','#009E73','#F0E442','#D55E00','#CC79A7','#999999','#000000'],
@@ -603,6 +615,9 @@ window.generate=function(){
   const showLeg  = document.getElementById('tog-leg').classList.contains('on');
   const showGrid = document.getElementById('tog-grid').classList.contains('on');
   const showSig  = document.getElementById('tog-sigplot').classList.contains('on');
+  const axisLW   = +( document.getElementById('opt-axlw')?.value||2 );
+  const barWidthPct = +( document.getElementById('opt-barw')?.value||70 )/100;
+  const ptSize   = +( document.getElementById('opt-pts-size')?.value||4 );
   const colors   = yCols.map((_,i)=>document.getElementById('sc'+i)?.value||seriesClrs[i]||pal[i%pal.length]);
   const labels   = yCols.map((_,i)=>document.getElementById('sl'+i)?.value||yCols[i]);
 
@@ -631,7 +646,7 @@ window.generate=function(){
 
   // Always box plot by default; respect plotType for other types
   if(plotType==='boxplot'){
-    doBoxPlot(groups,colors,xlabel,ylabel,showLeg,showGrid,showPts,fs,showSig,sr);
+    doBoxPlot(groups,colors,xlabel,ylabel,showLeg,showGrid,showPts,fs,showSig,sr,axisLW,barWidthPct,ptSize);
   } else {
     doColumnChart(groups,colors,xlabel,ylabel,showLeg,showGrid,fs);
   }
@@ -705,115 +720,198 @@ function doMainChart(yCols,labels,colors,xVals,xCol,isCatX,xlabel,ylabel,showErr
 }
 
 /* ═══════════════════════ BOX PLOT ══════════════════════════ */
-function doBoxPlot(groups,colors,xlabel,ylabel,showLeg,showGrid,showPts,fs,showSig,sr){
-  const grpLabels=groups.map(g=>g.label);
-  const boxPlugin={id:'bp',afterDatasetsDraw(chart){
-    const{ctx,scales:{x,y}}=chart;
+function doBoxPlot(groups,colors,xlabel,ylabel,showLeg,showGrid,showPts,fs,showSig,sr,axisLW,barWidthPct,ptSize){
+  axisLW      = axisLW      ?? 2;
+  barWidthPct = barWidthPct ?? 0.70;
+  ptSize      = ptSize      ?? 4;
+
+  const grpLabels = groups.map(g=>g.label);
+  const allVals   = groups.flatMap(g=>g.values);
+  const yMin      = Math.min(...allVals);
+  const yMax      = Math.max(...allVals);
+  const yRange    = yMax - yMin || 1;
+
+  const boxPlugin = {id:'bp', afterDatasetsDraw(chart){
+    const {ctx, chartArea, scales:{x,y}} = chart;
+    const slotW = chartArea.width / groups.length;
+    const bw    = slotW * barWidthPct;
+
     groups.forEach((g,i)=>{
-      const bw=Math.min(44,Math.max(16,chart.chartArea.width/(groups.length*2.2)));
-      const xp=x.getPixelForValue(i);if(!xp)return;
-      const v=g.values,clr=colors[g.si%colors.length];
-      const stats={
-        min:Math.min(...v),q1:$q1(v),med:$med(v),q3:$q3(v),max:Math.max(...v),
-        mean:$m(v),sem:$sem(v)
+      const xp  = x.getPixelForValue(i);
+      const v   = g.values;
+      const clr = colors[g.si % colors.length];
+
+      const stats = {
+        min  : Math.min(...v),
+        q1   : $q1(v),
+        med  : $med(v),
+        q3   : $q3(v),
+        max  : Math.max(...v),
+        mean : $m(v),
+        sem  : $sem(v),
       };
+
+      const yQ1   = y.getPixelForValue(stats.q1);
+      const yQ3   = y.getPixelForValue(stats.q3);
+      const yMed  = y.getPixelForValue(stats.med);
+      const yMinP = y.getPixelForValue(stats.min);
+      const yMaxP = y.getPixelForValue(stats.max);
+      const yMean = y.getPixelForValue(stats.mean);
+      const ySemT = y.getPixelForValue(stats.mean + stats.sem);
+      const ySemB = y.getPixelForValue(stats.mean - stats.sem);
+
       ctx.save();
-      // Box fill
-      ctx.fillStyle=clr+'2a';ctx.strokeStyle=clr;ctx.lineWidth=1.5;
-      const yQ1=y.getPixelForValue(stats.q1),yQ3=y.getPixelForValue(stats.q3),
-            yMed=y.getPixelForValue(stats.med),yMin=y.getPixelForValue(stats.min),
-            yMax=y.getPixelForValue(stats.max),yMean=y.getPixelForValue(stats.mean),
-            ySemT=y.getPixelForValue(stats.mean+stats.sem),
-            ySemB=y.getPixelForValue(stats.mean-stats.sem);
-      ctx.fillRect(xp-bw/2,yQ3,bw,yQ1-yQ3);
-      ctx.strokeRect(xp-bw/2,yQ3,bw,yQ1-yQ3);
-      // Median line
-      ctx.beginPath();ctx.moveTo(xp-bw/2,yMed);ctx.lineTo(xp+bw/2,yMed);
-      ctx.strokeStyle=clr;ctx.lineWidth=2.5;ctx.stroke();
-      // Whiskers
-      ctx.strokeStyle=clr;ctx.lineWidth=1.5;
-      [[yQ3,yMax],[yQ1,yMin]].forEach(([a,b])=>{
-        ctx.beginPath();ctx.moveTo(xp,a);ctx.lineTo(xp,b);ctx.stroke();
-        ctx.beginPath();ctx.moveTo(xp-bw/4,b);ctx.lineTo(xp+bw/4,b);ctx.stroke();
+
+      /* ── Bar fill (solid, like reference) ── */
+      ctx.fillStyle   = clr;
+      ctx.strokeStyle = clr;
+      ctx.lineWidth   = 1;
+
+      /* Draw bar from y=0 (or yMin) up to mean */
+      const yZero = y.getPixelForValue(Math.max(0, stats.min));
+      const yTop  = yMean;
+      ctx.fillRect(xp - bw/2, yTop, bw, yZero - yTop);
+
+      /* Bar border */
+      ctx.strokeRect(xp - bw/2, yTop, bw, yZero - yTop);
+
+      /* ── SEM error bar ── */
+      ctx.strokeStyle = '#333';
+      ctx.lineWidth   = axisLW * 0.75;
+      ctx.beginPath(); ctx.moveTo(xp, ySemT); ctx.lineTo(xp, ySemB); ctx.stroke();
+      /* Caps */
+      const capW = bw * 0.25;
+      [ySemT, ySemB].forEach(yy=>{
+        ctx.beginPath(); ctx.moveTo(xp - capW, yy); ctx.lineTo(xp + capW, yy); ctx.stroke();
       });
-      // SEM error bar on mean
-      ctx.beginPath();ctx.moveTo(xp,ySemT);ctx.lineTo(xp,ySemB);
-      ctx.strokeStyle=clr;ctx.lineWidth=2;ctx.stroke();
-      [ySemT,ySemB].forEach(yy=>{
-        ctx.beginPath();ctx.moveTo(xp-5,yy);ctx.lineTo(xp+5,yy);ctx.stroke();
-      });
-      // Mean diamond
-      ctx.beginPath();ctx.moveTo(xp,yMean-5);ctx.lineTo(xp+5,yMean);
-      ctx.lineTo(xp,yMean+5);ctx.lineTo(xp-5,yMean);ctx.closePath();
-      ctx.fillStyle=clr;ctx.fill();
-      // Individual data points
+
+      /* ── Individual data points (open circles, like reference) ── */
       if(showPts){
         v.forEach(val=>{
+          const jitter = (Math.random() - 0.5) * bw * 0.55;
+          const py     = y.getPixelForValue(val);
           ctx.beginPath();
-          ctx.arc(xp+(Math.random()-.5)*bw*0.85,y.getPixelForValue(val),2.5,0,Math.PI*2);
-          ctx.fillStyle=clr+'99';ctx.fill();
+          ctx.arc(xp + jitter, py, ptSize, 0, Math.PI*2);
+          ctx.strokeStyle = clr;
+          ctx.lineWidth   = 1.2;
+          ctx.fillStyle   = 'rgba(255,255,255,0.7)';
+          ctx.fill();
+          ctx.stroke();
         });
       }
+
       ctx.restore();
     });
-    // Significance brackets on plot
-    if(showSig&&sr&&sr.type==='pairs'){
-      sr.pairs.forEach((pair,pi)=>{
-        if(pair.p.stars==='ns'||pair.p.stars==='')return;
-        const ai=grpLabels.indexOf(pair.a),bi=grpLabels.indexOf(pair.b);
-        if(ai<0||bi<0)return;
-        const xa=x.getPixelForValue(ai),xb=x.getPixelForValue(bi);
-        const allVals=groups.flatMap(g=>g.values);
-        const topY=y.getPixelForValue(Math.max(...allVals))-(pi+1)*24;
-        ctx.save();ctx.strokeStyle='#555';ctx.lineWidth=1;ctx.fillStyle='#333';
-        ctx.font='bold 11px Inter';ctx.textAlign='center';
+
+    /* ── Significance brackets ── */
+    if(showSig && sr && sr.type==='pairs'){
+      const bracket_pairs = sr.pairs.filter(p=>p.p.stars && p.p.stars!=='ns');
+      bracket_pairs.forEach((pair,pi)=>{
+        const ai = grpLabels.indexOf(pair.a);
+        const bi = grpLabels.indexOf(pair.b);
+        if(ai<0 || bi<0) return;
+        const xa   = x.getPixelForValue(ai);
+        const xb   = x.getPixelForValue(bi);
+        const topY = chartArea.top + 8 + pi * 22;
+        ctx.save();
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth   = 1.2;
+        ctx.font        = `bold ${fs}px Inter, sans-serif`;
+        ctx.fillStyle   = '#333';
+        ctx.textAlign   = 'center';
+        /* L-shaped bracket */
         ctx.beginPath();
-        ctx.moveTo(xa,topY+6);ctx.lineTo(xa,topY);
-        ctx.lineTo(xb,topY);ctx.lineTo(xb,topY+6);ctx.stroke();
-        ctx.fillText(pair.p.stars,(xa+xb)/2,topY-3);
+        ctx.moveTo(xa, topY + 8);
+        ctx.lineTo(xa, topY);
+        ctx.lineTo(xb, topY);
+        ctx.lineTo(xb, topY + 8);
+        ctx.stroke();
+        ctx.fillText(pair.p.stars, (xa+xb)/2, topY - 3);
         ctx.restore();
       });
     }
   }};
 
-  // Calculate y-range including whiskers + space for sig bars
-  const allVals=groups.flatMap(g=>g.values);
-  const yMin=Math.min(...allVals),yMax=Math.max(...allVals),yRange=yMax-yMin;
+  /* ── Y-axis range: start at 0 or slightly below min, add space above ── */
+  const yPadTop    = yRange * (showSig ? 0.30 : 0.15);
+  const yAxisMin   = Math.min(0, yMin - yRange * 0.05);
+  const yAxisMax   = yMax + yPadTop;
 
-  const ctx=document.getElementById('the-chart').getContext('2d');
-  chartInst=new Chart(ctx,{
-    type:'bar',
-    data:{
-      labels:grpLabels,
-      datasets:[{
-        data:groups.map(g=>$q3(g.values)),
-        backgroundColor:'transparent',borderColor:'transparent'
+  const ctx = document.getElementById('the-chart').getContext('2d');
+
+  /* White canvas background */
+  Chart.register({
+    id: 'whiteBg',
+    beforeDraw(chart){
+      const {ctx:c2, chartArea:{left,top,width,height}} = chart;
+      c2.save(); c2.fillStyle='#ffffff'; c2.fillRect(left,top,width,height); c2.restore();
+    }
+  });
+
+  chartInst = new Chart(ctx, {
+    type : 'bar',
+    data : {
+      labels   : grpLabels,
+      datasets : [{
+        data            : groups.map(()=>0),
+        backgroundColor : 'transparent',
+        borderColor     : 'transparent',
       }]
     },
-    options:{
-      responsive:true,
-      plugins:{legend:{display:false}},
-      scales:{
-        x:{
-          title:{display:!!xlabel,text:xlabel,font:{size:fs,family:'Inter'}},
-          grid:{display:showGrid,color:'rgba(0,0,0,.05)'},
-          ticks:{font:{size:Math.max(fs-2,10),family:'Inter'},maxRotation:45,minRotation:0}
+    options : {
+      responsive  : true,
+      layout      : { padding: { top: showSig ? 40 : 20, right: 20, bottom: 10, left: 10 } },
+      plugins     : {
+        legend : { display: false },
+        tooltip: { enabled: false },
+      },
+      scales : {
+        x : {
+          border : { display: true, color: '#333', width: axisLW },
+          grid   : { display: false, drawTicks: true, tickLength: 5, color: '#ccc' },
+          ticks  : {
+            font          : { size: fs-1, family: 'Inter, sans-serif' },
+            color         : '#333',
+            maxRotation   : 45,
+            minRotation   : 30,
+          },
+          title  : {
+            display : !!xlabel,
+            text    : xlabel,
+            font    : { size: fs, family: 'Inter, sans-serif' },
+            color   : '#333',
+          },
         },
-        y:{
-          title:{display:!!ylabel,text:ylabel,font:{size:fs,family:'Inter'}},
-          grid:{display:showGrid,color:'rgba(0,0,0,.05)'},
-          ticks:{font:{size:fs-1,family:'Inter'}},
-          min: yMin - yRange*0.08,
-          max: yMax + yRange*(showSig?0.35:0.15),
+        y : {
+          border : { display: true, color: '#333', width: axisLW },
+          grid   : {
+            display     : showGrid,
+            color       : 'rgba(0,0,0,0.08)',
+            drawTicks   : true,
+            tickLength  : 5,
+          },
+          min    : yAxisMin,
+          max    : yAxisMax,
+          ticks  : {
+            font  : { size: fs-1, family: 'Inter, sans-serif' },
+            color : '#333',
+          },
+          title  : {
+            display : !!ylabel,
+            text    : ylabel,
+            font    : { size: fs, family: 'Inter, sans-serif' },
+            color   : '#333',
+          },
         },
       },
-      animation:{duration:450}
+      animation : { duration: 400 },
+      barPercentage     : barWidthPct,
+      categoryPercentage: 0.95,
     },
-    plugins:[boxPlugin]
+    plugins : [boxPlugin],
   });
 }
 
-/* ═══════════════════════ COLUMN CHART (non-boxplot) ═══════════════ */
 function doColumnChart(groups,colors,xlabel,ylabel,showLeg,showGrid,fs){
   // Bar: mean per column; Scatter: all raw values; Line: means connected
   const type=plotType==='line'?'line':plotType==='scatter'?'scatter':'bar';
