@@ -400,13 +400,12 @@ document.addEventListener('DOMContentLoaded',()=>{
 });
 
 /* ======================= PALETTES ======================= */
-/* requested priority: light gray + light orange first */
 const PALS={
-  'Gray-Orange Light':['#d9d9d9','#f7c9a9','#bdbdbd','#f4b183','#cfcfcf','#ffd8bf','#a6a6a6','#e6a57e'],
+  'Gray-Orange Light':['#d9d9d9','#f4b183','#bdbdbd','#f7c9a9','#a6a6a6','#f9d5bf','#c9c9c9','#e6a57e'],
   'Nature Soft':['#d9d9d9','#f4b183','#b7c9e2','#d9c2e9','#b7ddb0','#f9cb9c','#ead1dc','#d9d9a8'],
   'Gray-Blue Soft':['#d9d9d9','#bdd7ee','#c9daf8','#b4c7dc','#d0e0e3','#cfe2f3','#bcbddc','#d9d2e9'],
   'Pastel':['#AEC6CF','#FFD1DC','#B5EAD7','#C7CEEA','#FFDAC1','#FF9AA2','#A8E6CF','#DCEDC1','#FFD3B6'],
-  'Science':['#d0d0d0','#f4b183','#9fb6cd','#d5c0e6','#b6d7a8','#f9cb9c','#d9d2e9','#cccccc']
+  'Science Soft':['#d0d0d0','#f4b183','#9fb6cd','#d5c0e6','#b6d7a8','#f9cb9c','#d9d2e9','#cccccc']
 };
 let pal=PALS['Gray-Orange Light'];
 
@@ -418,7 +417,7 @@ let statTest='none';
 let chartInst=null;
 let seriesClrs=[];
 let latestStats=null;
-let currentMode='numeric'; // numeric | categorical
+let currentMode='numeric';
 
 /* ===================== UI HELPERS ======================= */
 function toggleCard(id){
@@ -444,10 +443,10 @@ function setStat(t,btn){
   const h={
     none:'No test.',
     descriptive:'Mean, median, SD, SEM, min, max for each group.',
-    ttest:"Student's t-test — for two groups.",
-    welch:"Welch's t-test — recommended for two groups with unequal variance.",
-    mwu:'Mann-Whitney U — non-parametric, for two groups.',
-    anova:'One-way ANOVA + pairwise comparisons for 3+ groups.'
+    ttest:"Student's t-test — for exactly 2 groups.",
+    welch:"Welch's t-test — recommended for exactly 2 groups.",
+    mwu:'Mann-Whitney U — non-parametric, for exactly 2 groups.',
+    anova:'One-way ANOVA for 3 or more groups.'
   };
   document.getElementById('stat-hint').textContent=h[t]||'';
   if(chartInst && data.length) generate();
@@ -537,45 +536,27 @@ function splitLine(line,d){
   return res;
 }
 
-/* Detects very special pasted data like:
-   header1header2header3
-   3.5100.6983.905...
-*/
 function parseSpecialNumericBlock(raw){
   const cleaned=raw.replace(/\u00A0/g,' ').trim();
   const lines=cleaned.split(/\n+/).map(s=>s.trim()).filter(Boolean);
   if(lines.length<2) return null;
 
-  // gather header text from first 1-3 non-numeric lines
-  const textLines=[];
-  let numberLineIndex=-1;
-  for(let i=0;i<lines.length;i++){
-    const compact=lines[i].replace(/\s+/g,'');
-    const hasLotsOfDigits=(compact.match(/\d/g)||[]).length>8;
-    if(hasLotsOfDigits){
-      numberLineIndex=i;
-      break;
-    }
-    textLines.push(lines[i]);
-  }
-  if(numberLineIndex===-1 || textLines.length===0) return null;
+  const nonEmpty=lines.filter(Boolean);
+  let headerBlob=nonEmpty[0] || '';
+  let numericBlob=nonEmpty.slice(1).join('').replace(/\s+/g,'');
 
-  const headerBlob=textLines.join(' ').replace(/\s+/g,' ').trim();
-  const numericBlob=lines.slice(numberLineIndex).join('').replace(/\s+/g,'');
+  if(!/\d/.test(numericBlob)) return null;
 
-  // split headers by common biological label patterns
   let headers=headerBlob
     .replace(/\)\s*(?=[A-Za-z])/g,')|')
     .replace(/(?<=\))(?=[A-Za-z])/g,'|')
     .replace(/(?<=\w)(?=unc-\d)/g,'|')
     .replace(/(?<=\w)(?=N2\b)/g,'|')
-    .replace(/(?<=\w)(?=Wild type\b)/g,'|')
     .split('|')
     .map(s=>s.trim())
     .filter(Boolean);
 
   headers=headers.map(h=>h.replace(/\s+/g,' ').trim());
-
   if(headers.length<2) return null;
 
   const nums=numericBlob.match(/-?\d+(?:\.\d+)?/g);
@@ -593,24 +574,20 @@ function parseSpecialNumericBlock(raw){
     });
     out.push(obj);
   }
-
   return out.length ? out : null;
 }
 
-/* Detects special categorical form like:
-   Wild typeunc-5normalmisshape normalno axon...
-*/
 function parseSpecialCategoricalBlock(raw){
   const cleaned=raw.replace(/\u00A0/g,' ').trim();
   const one=cleaned.replace(/\s+/g,' ').trim();
 
   if(!/(Wild type|unc-\d|normal|misshape|no axon)/i.test(one)) return null;
 
-  let headerCandidates=[];
+  let headers=[];
   let body=one;
 
   if(body.includes('Wild type') && body.includes('unc-5')){
-    headerCandidates=['Wild type','unc-5'];
+    headers=['Wild type','unc-5'];
     body=body.replace(/^.*?Wild type\s*unc-5/i,'');
   }else{
     return null;
@@ -627,13 +604,13 @@ function parseSpecialCategoricalBlock(raw){
   const tokens=body.match(/normal|misshape|no axon/gi);
   if(!tokens || tokens.length<4) return null;
 
-  const colsN=headerCandidates.length;
+  const colsN=headers.length;
   const rowCount=Math.floor(tokens.length/colsN);
   const out=[];
   for(let i=0;i<rowCount;i++){
     const obj={};
     for(let j=0;j<colsN;j++){
-      obj[headerCandidates[j]]=tokens[i*colsN+j];
+      obj[headers[j]]=tokens[i*colsN+j];
     }
     out.push(obj);
   }
@@ -751,7 +728,7 @@ function showPreview(){
 function buildColPickers(){
   document.getElementById('y-list').innerHTML=cols.map(c=>`
     <label class="col-item">
-      <input type="checkbox" value="${escapeHTML(c)}" checked onchange="buildSeriesClrs()">
+      <input type="checkbox" value="${escapeHTML(c)}" checked onchange="buildSeriesClrs(); if(chartInst) generate();">
       <span>${escapeHTML(c)}</span>
     </label>
   `).join('');
@@ -841,8 +818,6 @@ function oneWayANOVA(groups){
   const msBetween=ssBetween/df1;
   const msWithin=ssWithin/df2;
   const F=msBetween/msWithin;
-
-  // rough approximation using transformed z; acceptable for display only
   const z=Math.sqrt(Math.abs(F));
   const p=normalPFromZ(z);
   return {F,p};
@@ -866,18 +841,14 @@ function runNumericStats(groups){
       }))
     };
   }
-if((statTest==='ttest' || statTest==='welch' || statTest==='mwu') && groups.length !== 2){
-  return {
-    type:'warning',
-    message:'This test requires exactly 2 groups.'
-  };
-}
-if(statTest==='anova' && groups.length < 3){
-  return {
-    type:'warning',
-    message:'ANOVA requires at least 3 groups.'
-  };
-}
+
+  if((statTest==='ttest' || statTest==='welch' || statTest==='mwu') && groups.length!==2){
+    return {type:'warning',message:'This test requires exactly 2 groups.'};
+  }
+  if(statTest==='anova' && groups.length<3){
+    return {type:'warning',message:'ANOVA requires at least 3 groups.'};
+  }
+
   const pairs=[];
   if(groups.length>=2){
     for(let i=0;i<groups.length;i++){
@@ -908,21 +879,14 @@ if(statTest==='anova' && groups.length < 3){
     const a=oneWayANOVA(groups);
     return {
       type:'anova',
-      omnibus:{
-        F:isNaN(a.F)?'—':a.F.toFixed(3),
-        p:pFmt(a.p)
-      },
+      omnibus:{F:isNaN(a.F)?'—':a.F.toFixed(3),p:pFmt(a.p)},
       pairs
     };
   }
 
   return {
     type:'pairs',
-    testName:{
-      ttest:"Student's t-test",
-      welch:"Welch's t-test",
-      mwu:'Mann-Whitney U'
-    }[statTest],
+    testName:{ttest:"Student's t-test",welch:"Welch's t-test",mwu:'Mann-Whitney U'}[statTest],
     pairs
   };
 }
@@ -1048,8 +1012,7 @@ function buildCategoricalSummary(catCols, labels, colors){
   const rows=catCols.map(col=>{
     const vals=data.map(r=>String(r[col]||'').trim()).filter(Boolean);
     const total=vals.length;
-    const counts={};
-    const pct={};
+    const counts={}, pct={};
     categories.forEach(cat=>{
       counts[cat]=vals.filter(v=>v===cat).length;
       pct[cat]=total ? (counts[cat]/total*100) : 0;
@@ -1081,28 +1044,13 @@ function doCategoricalChart(summary, xlabel, ylabel, showLeg, showGrid, fs, axis
   const ctx=document.getElementById('the-chart').getContext('2d');
   chartInst=new Chart(ctx,{
     type:'bar',
-    data:{
-      labels:summary.rows.map(r=>r.label),
-      datasets
-    },
+    data:{labels:summary.rows.map(r=>r.label),datasets},
     options:{
       responsive:true,
       plugins:{
-        title:{
-          display:!!title,
-          text:title,
-          font:{size:fs+1,weight:'bold'}
-        },
-        legend:{
-          display:true,
-          position:'right',
-          labels:{font:{size:fs-1}}
-        },
-        tooltip:{
-          callbacks:{
-            label:c=>`${c.dataset.label}: ${c.parsed.y.toFixed(1)}%`
-          }
-        }
+        title:{display:!!title,text:title,font:{size:fs+1,weight:'bold'}},
+        legend:{display:true,position:'right',labels:{font:{size:fs-1}}},
+        tooltip:{callbacks:{label:c=>`${c.dataset.label}: ${c.parsed.y.toFixed(1)}%`}}
       },
       scales:{
         x:{
@@ -1118,10 +1066,7 @@ function doCategoricalChart(summary, xlabel, ylabel, showLeg, showGrid, fs, axis
           max:100,
           border:{display:true,color:'#333',width:axisLW},
           grid:{display:showGrid,color:'rgba(0,0,0,0.08)'},
-          ticks:{
-            font:{size:fs-1},color:'#333',
-            callback:v=>v+'%'
-          },
+          ticks:{font:{size:fs-1},color:'#333',callback:v=>v+'%'},
           title:{display:true,text:ylabel || 'Percentage (%)',font:{size:fs},color:'#333'}
         }
       },
@@ -1133,10 +1078,7 @@ function doCategoricalChart(summary, xlabel, ylabel, showLeg, showGrid, fs, axis
       beforeDraw(chart){
         const {ctx,chartArea}=chart;
         if(!chartArea) return;
-        ctx.save();
-        ctx.fillStyle='#fff';
-        ctx.fillRect(chartArea.left,chartArea.top,chartArea.width,chartArea.height);
-        ctx.restore();
+        ctx.save(); ctx.fillStyle='#fff'; ctx.fillRect(chartArea.left,chartArea.top,chartArea.width,chartArea.height); ctx.restore();
       }
     }]
   });
@@ -1151,6 +1093,7 @@ function doNumericChart(groups, xlabel, ylabel, showLeg, showGrid, showErr, fs, 
   if(mode==='scatter') type='scatter';
 
   const datasets=groups.map((g,i)=>{
+    const liveColor=document.getElementById('sc'+i)?.value || g.color || pal[i%pal.length];
     const m=mean(g.values);
     const s=sem(g.values);
 
@@ -1160,8 +1103,8 @@ function doNumericChart(groups, xlabel, ylabel, showLeg, showGrid, showErr, fs, 
         data:g.values.map(v=>({x:i+1+(Math.random()-.5)*0.18,y:v})),
         pointRadius:4,
         pointHoverRadius:5,
-        pointBackgroundColor:g.color,
-        pointBorderColor:g.color,
+        pointBackgroundColor:liveColor,
+        pointBorderColor:liveColor,
         showLine:false
       };
     }
@@ -1170,10 +1113,10 @@ function doNumericChart(groups, xlabel, ylabel, showLeg, showGrid, showErr, fs, 
       return {
         label:g.label,
         data:[m],
-        borderColor:g.color,
-        backgroundColor:g.color+'66',
-        pointBackgroundColor:g.color,
-        pointBorderColor:g.color,
+        borderColor:liveColor,
+        backgroundColor:liveColor+'66',
+        pointBackgroundColor:liveColor,
+        pointBorderColor:liveColor,
         pointRadius:5,
         fill:false,
         tension:0.3,
@@ -1184,62 +1127,46 @@ function doNumericChart(groups, xlabel, ylabel, showLeg, showGrid, showErr, fs, 
     return {
       label:g.label,
       data:[m],
-      backgroundColor:g.color,
-      borderColor:g.color,
+      backgroundColor:liveColor,
+      borderColor:liveColor,
       borderWidth:1.2,
       errors:[s]
     };
   });
 
-  const errPlugin={
-    id:'errbars',
-    afterDatasetsDraw(chart){
-      if(!showErr) return;
-      const {ctx,scales:{y}}=chart;
-      chart.data.datasets.forEach((ds,di)=>{
-        const meta=chart.getDatasetMeta(di);
-        if(!ds.errors || !meta.data.length) return;
-        ds.errors.forEach((e,ji)=>{
-          if(!e || !meta.data[ji]) return;
-          const xp=meta.data[ji].x;
-          const yv=(type==='scatter') ? meta.data[ji].parsed.y : Number(ds.data[ji]);
-          const yt=y.getPixelForValue(yv+e);
-          const yb=y.getPixelForValue(yv-e);
-          ctx.save();
-          ctx.strokeStyle=ds.borderColor || ds.pointBorderColor || '#333';
-          ctx.lineWidth=1.4;
-          ctx.beginPath();
-          ctx.moveTo(xp,yt);
-          ctx.lineTo(xp,yb);
-          ctx.stroke();
-          ctx.beginPath();
-          ctx.moveTo(xp-5,yt); ctx.lineTo(xp+5,yt);
-          ctx.moveTo(xp-5,yb); ctx.lineTo(xp+5,yb);
-          ctx.stroke();
-          ctx.restore();
-        });
+  const errPlugin={id:'errbars',afterDatasetsDraw(chart){
+    if(!showErr) return;
+    const {ctx,scales:{y}}=chart;
+    chart.data.datasets.forEach((ds,di)=>{
+      const meta=chart.getDatasetMeta(di);
+      if(!ds.errors || !meta.data.length) return;
+      ds.errors.forEach((e,ji)=>{
+        if(!e || !meta.data[ji]) return;
+        const xp=meta.data[ji].x;
+        const yv=(type==='scatter') ? meta.data[ji].parsed.y : Number(ds.data[ji]);
+        const yt=y.getPixelForValue(yv+e);
+        const yb=y.getPixelForValue(yv-e);
+        ctx.save();
+        ctx.strokeStyle=ds.borderColor || ds.pointBorderColor || '#333';
+        ctx.lineWidth=1.4;
+        ctx.beginPath(); ctx.moveTo(xp,yt); ctx.lineTo(xp,yb); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(xp-5,yt); ctx.lineTo(xp+5,yt);
+        ctx.moveTo(xp-5,yb); ctx.lineTo(xp+5,yb);
+        ctx.stroke();
+        ctx.restore();
       });
-    }
-  };
+    });
+  }};
 
   chartInst=new Chart(ctx,{
     type,
-    data:{
-      labels:type==='scatter'?undefined:groups.map(g=>g.label),
-      datasets
-    },
+    data:{labels:type==='scatter'?undefined:groups.map(g=>g.label),datasets},
     options:{
       responsive:true,
       plugins:{
-        title:{
-          display:!!title,
-          text:title,
-          font:{size:fs+1,weight:'bold'}
-        },
-        legend:{
-          display:showLeg,
-          labels:{font:{size:fs-1}}
-        }
+        title:{display:!!title,text:title,font:{size:fs+1,weight:'bold'}},
+        legend:{display:showLeg,labels:{font:{size:fs-1}}}
       },
       scales:{
         x:{
@@ -1254,14 +1181,10 @@ function doNumericChart(groups, xlabel, ylabel, showLeg, showGrid, showErr, fs, 
                   const idx=Math.round(v)-1;
                   return groups[idx] ? groups[idx].label : '';
                 },
-                font:{size:fs-1},
-                color:'#333'
+                font:{size:fs-1},color:'#333'
               }
             : {
-                font:{size:fs-1},
-                color:'#333',
-                maxRotation:30,
-                minRotation:20
+                font:{size:fs-1},color:'#333',maxRotation:30,minRotation:20
               },
           title:{display:!!xlabel,text:xlabel,font:{size:fs},color:'#333'}
         },
@@ -1280,10 +1203,7 @@ function doNumericChart(groups, xlabel, ylabel, showLeg, showGrid, showErr, fs, 
       beforeDraw(chart){
         const {ctx,chartArea}=chart;
         if(!chartArea) return;
-        ctx.save();
-        ctx.fillStyle='#fff';
-        ctx.fillRect(chartArea.left,chartArea.top,chartArea.width,chartArea.height);
-        ctx.restore();
+        ctx.save(); ctx.fillStyle='#fff'; ctx.fillRect(chartArea.left,chartArea.top,chartArea.width,chartArea.height); ctx.restore();
       }
     }, errPlugin]
   });
@@ -1292,7 +1212,6 @@ function doNumericChart(groups, xlabel, ylabel, showLeg, showGrid, showErr, fs, 
 /* ======================= BOX PLOT ======================= */
 function doBoxPlot(groups, xlabel, ylabel, showLeg, showGrid, showPts, showErr, fs, showSig, statsResult, axisLW, barWidthPct, ptSize, title){
   const ctx=document.getElementById('the-chart').getContext('2d');
-
   const labels=groups.map(g=>g.label);
   const allVals=groups.flatMap(g=>g.values);
   const minY=Math.min(...allVals);
@@ -1300,11 +1219,11 @@ function doBoxPlot(groups, xlabel, ylabel, showLeg, showGrid, showPts, showErr, 
   const rng=(maxY-minY)||1;
 
   const sigPairs=(showSig && statsResult && (statsResult.type==='pairs' || statsResult.type==='anova'))
-  ? (statsResult.pairs || []).filter(p=>{
-      return p.p && p.p.stars && p.p.stars!=='ns' &&
-             labels.includes(p.a) && labels.includes(p.b);
-    })
-  : [];
+    ? (statsResult.pairs || []).filter(p=>{
+        return p.p && p.p.stars && p.p.stars!=='ns' &&
+               labels.includes(p.a) && labels.includes(p.b);
+      })
+    : [];
 
   chartInst=new Chart(ctx,{
     type:'bar',
@@ -1320,17 +1239,11 @@ function doBoxPlot(groups, xlabel, ylabel, showLeg, showGrid, showPts, showErr, 
     options:{
       responsive:true,
       plugins:{
-        title:{
-          display:!!title,
-          text:title,
-          font:{size:fs+1,weight:'bold'}
-        },
+        title:{display:!!title,text:title,font:{size:fs+1,weight:'bold'}},
         legend:{display:false},
         tooltip:{enabled:false}
       },
-      layout:{
-        padding:{top:20 + sigPairs.length*20,right:16,bottom:8,left:8}
-      },
+      layout:{padding:{top:20 + sigPairs.length*20,right:16,bottom:8,left:8}},
       scales:{
         x:{
           border:{display:true,color:'#333',width:axisLW},
@@ -1356,10 +1269,7 @@ function doBoxPlot(groups, xlabel, ylabel, showLeg, showGrid, showPts, showErr, 
         beforeDraw(chart){
           const {ctx,chartArea}=chart;
           if(!chartArea) return;
-          ctx.save();
-          ctx.fillStyle='#fff';
-          ctx.fillRect(chartArea.left,chartArea.top,chartArea.width,chartArea.height);
-          ctx.restore();
+          ctx.save(); ctx.fillStyle='#fff'; ctx.fillRect(chartArea.left,chartArea.top,chartArea.width,chartArea.height); ctx.restore();
         }
       },
       {
@@ -1373,6 +1283,7 @@ function doBoxPlot(groups, xlabel, ylabel, showLeg, showGrid, showPts, showErr, 
             const vals=[...g.values].sort((a,b)=>a-b);
             if(!vals.length) return;
 
+            const liveColor=document.getElementById('sc'+i)?.value || g.color || pal[i % pal.length];
             const q1=quantile(vals,0.25);
             const med=quantile(vals,0.50);
             const q3=quantile(vals,0.75);
@@ -1405,8 +1316,7 @@ function doBoxPlot(groups, xlabel, ylabel, showLeg, showGrid, showPts, showErr, 
             ctx.stroke();
 
             // box
-            cconst liveColor=document.getElementById('sc'+i)?.value || g.color || pal[i % pal.length];
-            ctx.fillStyle=liveColor + 'cc';
+            ctx.fillStyle=liveColor+'cc';
             ctx.strokeStyle='#444';
             ctx.lineWidth=1.2;
             ctx.fillRect(xp-boxWidth/2,yQ3,boxWidth,yQ1-yQ3);
@@ -1464,6 +1374,7 @@ function doBoxPlot(groups, xlabel, ylabel, showLeg, showGrid, showPts, showErr, 
               const a=labels.indexOf(p.a);
               const b=labels.indexOf(p.b);
               if(a<0 || b<0) return;
+
               const key=`${Math.min(a,b)}-${Math.max(a,b)}`;
               const lev=usedLevels[key] || 0;
               usedLevels[key]=lev+1;
@@ -1499,6 +1410,14 @@ function doBoxPlot(groups, xlabel, ylabel, showLeg, showGrid, showPts, showErr, 
 /* ====================== STATS HTML ====================== */
 function buildStatsHTML(sr){
   if(!sr) return '';
+
+  if(sr.type==='warning'){
+    return `
+      <div class="stats-out-head"><span>Statistics</span></div>
+      <div style="padding:12px 14px;font-size:12px;color:var(--ink-2)">
+        ${escapeHTML(sr.message)}
+      </div>`;
+  }
 
   if(sr.type==='desc'){
     return `
@@ -1543,13 +1462,7 @@ function buildStatsHTML(sr){
       </div>
       <div style="padding:8px 12px;font-size:10px;color:var(--ink-3)">*** p&lt;0.001 &nbsp; ** p&lt;0.01 &nbsp; * p&lt;0.05 &nbsp; ns = not significant.</div>`;
   }
-if(sr.type==='warning'){
-  return `
-    <div class="stats-out-head"><span>Statistics</span></div>
-    <div style="padding:12px 14px;font-size:12px;color:var(--ink-2)">
-      ${escapeHTML(sr.message)}
-    </div>`;
-}
+
   if(sr.type==='anova'){
     return `
       <div class="stats-out-head"><span>One-way ANOVA + pairwise comparisons</span><button class="btn-sm" type="button" onclick="dlStats()">⬇ Export CSV</button></div>
