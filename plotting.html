@@ -773,16 +773,11 @@ function doCategoricalChart(yCols,labels,colors,xlabel,ylabel,showLeg,showGrid,f
   const ctx2 = document.getElementById('the-chart').getContext('2d');
 
   // Safe white-bg plugin with unique id
-  const wbPlugin = {
-    id:'catWhiteBg',
-    beforeDraw(chart){
-      const {ctx:cc,chartArea}=chart;
-      if(!chartArea)return;
-      cc.save();cc.fillStyle='#ffffff';
-      cc.fillRect(chartArea.left,chartArea.top,chartArea.width,chartArea.height);
-      cc.restore();
-    }
-  };
+  // Inline white-bg plugin (no ID = no global registration conflict)
+  const wbPlugin = {beforeDraw(chart){
+    const {ctx:cc,chartArea:ca}=chart; if(!ca)return;
+    cc.save();cc.fillStyle='#fff';cc.fillRect(ca.left,ca.top,ca.width,ca.height);cc.restore();
+  }};
 
   chartInst = new Chart(ctx2, {
     type    : 'bar',
@@ -860,174 +855,126 @@ function doCategoricalChart(yCols,labels,colors,xlabel,ylabel,showLeg,showGrid,f
 }
 
 function doBoxPlot(groups,colors,xlabel,ylabel,showLeg,showGrid,showPts,fs,showSig,sr,axisLW,barWidthPct,ptSize){
-  axisLW      = isNaN(axisLW)?2:axisLW;
-  barWidthPct = isNaN(barWidthPct)?0.70:barWidthPct;
-  ptSize      = isNaN(ptSize)?4:ptSize;
+  axisLW=+axisLW||2; barWidthPct=+barWidthPct||0.70; ptSize=+ptSize||4;
 
   const grpLabels = groups.map(g=>g.label);
   const allVals   = groups.flatMap(g=>g.values);
   const yDataMin  = Math.min(...allVals);
   const yDataMax  = Math.max(...allVals);
-  const yRange    = yDataMax - yDataMin || 1;
+  const yRange    = yDataMax-yDataMin||1;
+  const sigPairs  = (showSig&&sr&&sr.type==='pairs')
+    ? sr.pairs.filter(p=>p.p.stars&&p.p.stars!=='ns') : [];
 
-  // Pairs to show (significant only)
-  const sigPairs = (showSig && sr && sr.type==='pairs')
-    ? sr.pairs.filter(p=>p.p.stars && p.p.stars!=='ns')
-    : [];
+  // Destroy previous chart first
+  if(chartInst){try{chartInst.destroy();}catch(e){} chartInst=null;}
 
-  // White background plugin
-  const wbPlugin = {
-    id: 'boxWhiteBg',
-    beforeDraw(chart){
-      const {ctx:cc, chartArea} = chart;
-      if(!chartArea) return;
-      cc.save();
-      cc.fillStyle = '#ffffff';
-      cc.fillRect(chartArea.left, chartArea.top, chartArea.width, chartArea.height);
-      cc.restore();
-    }
-  };
+  const canvas = document.getElementById('the-chart');
+  const ctx    = canvas.getContext('2d');
 
-  // Main drawing plugin
-  const boxPlugin = {
-    id: 'bp',
-    afterDatasetsDraw(chart){
-      const {ctx, chartArea, scales:{x, y}} = chart;
-      const slotW = chartArea.width / Math.max(groups.length, 1);
-      const bw    = slotW * barWidthPct;
+  // Capture all variables needed by draw functions NOW (no DOM reads in draw loop)
+  // Exception: color pickers are read live so changes apply without re-generating
+  const bracketPad = 20 + sigPairs.length*24;
+  const yAxisMin   = Math.min(0, yDataMin-yRange*0.03);
+  const yAxisMax   = yDataMax+yRange*(0.15+sigPairs.length*0.10);
 
-      // Read colors live from DOM so picker changes apply instantly
-      const liveColors = groups.map((g, i) =>
-        document.getElementById('sc'+i)?.value || colors[i] || pal[i%pal.length]
-      );
-
-      // ── Draw each group ──────────────────────────────────────
-      groups.forEach((g, gi) => {
-        const xp  = x.getPixelForValue(gi);
-        const v   = g.values;
-        const clr = liveColors[gi];
-        if(!v.length) return;
-
-        const mean = $m(v);
-        const sem  = $sem(v);
-        const yBase = y.getPixelForValue(Math.max(y.min, 0));
-        const yMean = y.getPixelForValue(mean);
-        const ySemT = y.getPixelForValue(mean + sem);
-        const ySemB = y.getPixelForValue(mean - sem);
-
-        ctx.save();
-
-        // Solid bar from baseline to mean
-        ctx.fillStyle   = clr;
-        ctx.strokeStyle = darken(clr, 0.15);
-        ctx.lineWidth   = 1;
-        ctx.fillRect(xp - bw/2, yMean, bw, yBase - yMean);
-        ctx.strokeRect(xp - bw/2, yMean, bw, yBase - yMean);
-
-        // SEM error bar (black, centered on mean)
-        ctx.strokeStyle = '#111';
-        ctx.lineWidth   = Math.max(1, axisLW * 0.7);
-        ctx.beginPath(); ctx.moveTo(xp, ySemT); ctx.lineTo(xp, ySemB); ctx.stroke();
-        const cap = Math.max(4, bw * 0.20);
-        [ySemT, ySemB].forEach(yy => {
-          ctx.beginPath(); ctx.moveTo(xp-cap, yy); ctx.lineTo(xp+cap, yy); ctx.stroke();
-        });
-
-        // Individual data points (open circles)
-        if(showPts){
-          v.forEach(val => {
-            const jitter = (Math.random()-0.5) * bw * 0.55;
-            ctx.beginPath();
-            ctx.arc(xp + jitter, y.getPixelForValue(val), ptSize, 0, Math.PI*2);
-            ctx.fillStyle   = 'rgba(255,255,255,0.8)';
-            ctx.strokeStyle = clr;
-            ctx.lineWidth   = 1.3;
-            ctx.fill();
-            ctx.stroke();
-          });
-        }
-
-        ctx.restore();
-      });
-
-      // ── Significance brackets ────────────────────────────────
-      if(sigPairs.length){
-        const levelOf = {};
-        sigPairs.forEach((pair, pi) => {
-          const ai = grpLabels.indexOf(pair.a);
-          const bi = grpLabels.indexOf(pair.b);
-          if(ai < 0 || bi < 0) return;
-          const xa = x.getPixelForValue(ai);
-          const xb = x.getPixelForValue(bi);
-          const key = `${Math.min(ai,bi)}-${Math.max(ai,bi)}`;
-          if(levelOf[key] === undefined) levelOf[key] = 0;
-          const level = levelOf[key]++;
-          // Stack brackets downward from top of chart area
-          const topY = chartArea.top + 10 + level * 22;
-          ctx.save();
-          ctx.strokeStyle  = '#333';
-          ctx.lineWidth    = 1.3;
-          ctx.font         = `bold ${fs}px Inter,sans-serif`;
-          ctx.fillStyle    = '#333';
-          ctx.textAlign    = 'center';
-          ctx.textBaseline = 'bottom';
-          // Bracket lines
-          ctx.beginPath();
-          ctx.moveTo(xa, topY+8); ctx.lineTo(xa, topY);
-          ctx.lineTo(xb, topY);   ctx.lineTo(xb, topY+8);
-          ctx.stroke();
-          // Stars text above bracket
-          ctx.fillText(pair.p.stars, (xa+xb)/2, topY - 1);
-          ctx.restore();
-        });
-      }
-    }
-  };
-
-  // Y-axis range with padding for brackets
-  const bracketRows  = sigPairs.length;
-  const yPadTopFrac  = 0.15 + bracketRows * 0.10;
-  const yAxisMin     = Math.min(0, yDataMin - yRange * 0.03);
-  const yAxisMax     = yDataMax + yRange * yPadTopFrac;
-  const layoutPadTop = 20 + bracketRows * 24;
-
-  const ctx = document.getElementById('the-chart').getContext('2d');
   chartInst = new Chart(ctx, {
-    type : 'bar',
-    data : {
-      labels   : grpLabels,
-      datasets : [{ data: groups.map(()=>0), backgroundColor:'transparent', borderColor:'transparent' }]
+    type:'bar',
+    data:{
+      labels  : grpLabels,
+      datasets: [{data:groups.map(()=>0), backgroundColor:'transparent', borderColor:'transparent'}]
     },
-    options : {
-      responsive  : true,
-      layout      : { padding:{ top:layoutPadTop, right:20, bottom:10, left:10 } },
-      plugins     : { legend:{ display:false }, tooltip:{ enabled:false } },
-      scales : {
-        x : {
-          border : { display:true, color:'#333', width:axisLW },
-          grid   : { display:false, drawTicks:true, tickLength:5 },
-          ticks  : {
-            font        : { size:Math.max(fs-2,10), family:'Inter,sans-serif' },
-            color       : '#333',
-            maxRotation : 45,
-            minRotation : 30,
-          },
-          title : { display:!!xlabel, text:xlabel, font:{size:fs,family:'Inter,sans-serif'}, color:'#333' },
+    options:{
+      responsive:true,
+      layout:{padding:{top:bracketPad,right:20,bottom:10,left:10}},
+      plugins:{legend:{display:false},tooltip:{enabled:false}},
+      scales:{
+        x:{
+          border:{display:true,color:'#333',width:axisLW},
+          grid:{display:false,drawTicks:true,tickLength:5},
+          ticks:{font:{size:Math.max(fs-2,10),family:'Inter,sans-serif'},color:'#333',maxRotation:45,minRotation:30},
+          title:{display:!!xlabel,text:xlabel,font:{size:fs,family:'Inter,sans-serif'},color:'#333'},
         },
-        y : {
-          border : { display:true, color:'#333', width:axisLW },
-          grid   : { display:showGrid, color:'rgba(0,0,0,0.07)', drawBorder:false, tickLength:5 },
-          min    : yAxisMin,
-          max    : yAxisMax,
-          ticks  : { font:{size:fs-1,family:'Inter,sans-serif'}, color:'#333' },
-          title  : { display:!!ylabel, text:ylabel, font:{size:fs,family:'Inter,sans-serif'}, color:'#333' },
+        y:{
+          border:{display:true,color:'#333',width:axisLW},
+          grid:{display:showGrid,color:'rgba(0,0,0,0.07)',drawBorder:false,tickLength:5},
+          min:yAxisMin, max:yAxisMax,
+          ticks:{font:{size:fs-1,family:'Inter,sans-serif'},color:'#333'},
+          title:{display:!!ylabel,text:ylabel,font:{size:fs,family:'Inter,sans-serif'},color:'#333'},
         },
       },
-      barPercentage      : barWidthPct,
-      categoryPercentage : 0.95,
-      animation          : { duration:400 },
+      barPercentage:barWidthPct, categoryPercentage:0.95, animation:{duration:400},
     },
-    plugins : [wbPlugin, boxPlugin],
+    plugins:[
+      // WHITE BACKGROUND (inline — not globally registered)
+      {beforeDraw(chart){
+        const {ctx:cc,chartArea:ca}=chart; if(!ca)return;
+        cc.save();cc.fillStyle='#fff';cc.fillRect(ca.left,ca.top,ca.width,ca.height);cc.restore();
+      }},
+      // BARS + ERROR BARS + DATA POINTS + SIG BRACKETS
+      {afterDatasetsDraw(chart){
+        const {ctx:cc,chartArea:ca,scales:{x,y}}=chart;
+        const slotW=ca.width/Math.max(groups.length,1);
+        const bw=slotW*barWidthPct;
+
+        groups.forEach((g,gi)=>{
+          // Read color LIVE from picker
+          const el=document.getElementById('sc'+gi);
+          const clr=(el&&el.value)||colors[gi]||pal[gi%pal.length];
+          const v=g.values; if(!v.length)return;
+          const xp=x.getPixelForValue(gi);
+          const mn=$m(v), sm=$sem(v);
+          const yBase=y.getPixelForValue(Math.max(y.min,0));
+          const yMean=y.getPixelForValue(mn);
+          const ySemT=y.getPixelForValue(mn+sm);
+          const ySemB=y.getPixelForValue(mn-sm);
+          const cap=Math.max(5,bw*0.22);
+
+          cc.save();
+          // Filled bar
+          cc.fillStyle=clr; cc.strokeStyle='rgba(0,0,0,0.15)'; cc.lineWidth=0.5;
+          cc.fillRect(xp-bw/2,yMean,bw,yBase-yMean);
+          cc.strokeRect(xp-bw/2,yMean,bw,yBase-yMean);
+          // SEM error bar
+          cc.strokeStyle='#111'; cc.lineWidth=Math.max(1,axisLW*0.7);
+          cc.beginPath();cc.moveTo(xp,ySemT);cc.lineTo(xp,ySemB);cc.stroke();
+          [ySemT,ySemB].forEach(yy=>{
+            cc.beginPath();cc.moveTo(xp-cap,yy);cc.lineTo(xp+cap,yy);cc.stroke();
+          });
+          // Open circle data points
+          if(showPts){
+            v.forEach(val=>{
+              cc.beginPath();
+              cc.arc(xp+(Math.random()-.5)*bw*.55,y.getPixelForValue(val),ptSize,0,Math.PI*2);
+              cc.fillStyle='rgba(255,255,255,0.85)'; cc.strokeStyle=clr; cc.lineWidth=1.3;
+              cc.fill(); cc.stroke();
+            });
+          }
+          cc.restore();
+        });
+
+        // Significance brackets
+        if(sigPairs.length){
+          const levels={};
+          sigPairs.forEach(pair=>{
+            const ai=grpLabels.indexOf(pair.a), bi=grpLabels.indexOf(pair.b);
+            if(ai<0||bi<0)return;
+            const xa=x.getPixelForValue(ai), xb=x.getPixelForValue(bi);
+            const key=Math.min(ai,bi)+'-'+Math.max(ai,bi);
+            const lv=levels[key]=(levels[key]||0); levels[key]++;
+            const topY=ca.top+8+lv*22;
+            cc.save();
+            cc.strokeStyle='#333'; cc.lineWidth=1.3;
+            cc.beginPath();
+            cc.moveTo(xa,topY+8);cc.lineTo(xa,topY);cc.lineTo(xb,topY);cc.lineTo(xb,topY+8);
+            cc.stroke();
+            cc.font=`bold ${fs}px Inter,sans-serif`;
+            cc.fillStyle='#333'; cc.textAlign='center'; cc.textBaseline='bottom';
+            cc.fillText(pair.p.stars,(xa+xb)/2,topY-2);
+            cc.restore();
+          });
+        }
+      }}
+    ],
   });
 }
 
