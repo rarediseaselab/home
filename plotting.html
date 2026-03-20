@@ -352,10 +352,13 @@ ift-88&#9;0.91&#9;1.30"></textarea>
       </div>
 
       <!-- Generate -->
-      <div id="gen-wrap" style="display:none">
+      <div id="gen-wrap" style="display:none;flex-direction:column;gap:8px">
         <button class="btn-gen" onclick="generate()">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 12l4-5 3 3 3-4 2 6" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           Generate plot
+        </button>
+        <button class="btn-gen" onclick="generate()" style="background:var(--off);color:var(--accent);border:1.5px solid var(--accent);font-size:13px;padding:8px">
+          ↺ Apply changes
         </button>
       </div>
 
@@ -515,9 +518,10 @@ function onDataReady(label){
   buildColPickers();
   buildPalUI();
   buildSeriesClrs();
-  ['card-cols','card-type','card-axes','card-appear','card-stat','gen-wrap'].forEach(id=>{
+  ['card-cols','card-type','card-axes','card-appear','card-stat'].forEach(id=>{
     const el=document.getElementById(id);if(el)el.style.display='';
   });
+  const gw=document.getElementById('gen-wrap');if(gw)gw.style.display='flex';
   document.getElementById('prev-sec').style.display='';
   document.getElementById('data-info').textContent=`${data.length} rows · ${cols.length} columns · ${label}`;
 }
@@ -547,10 +551,8 @@ function buildSeriesClrs(){
   document.getElementById('series-clrs').innerHTML=yCols.map((c,i)=>`
     <div class="series-row">
       <input type="color" value="${seriesClrs[i]}" id="sc${i}"
-        onchange="seriesClrs[${i}]=this.value; if(chartInst && chartInst.data){
-          chartInst.data.datasets.forEach(ds=>{ if(ds._colIdx===undefined) return; });
-          chartInst.update();
-        }">
+        oninput="seriesClrs[${i}]=this.value; if(chartInst){chartInst.update('none');}"
+        onchange="seriesClrs[${i}]=this.value; if(chartInst){chartInst.update('none');}">
       <input class="series-lbl" type="text" value="${c}" id="sl${i}">
     </div>`).join('');
 }
@@ -858,152 +860,159 @@ function doCategoricalChart(yCols,labels,colors,xlabel,ylabel,showLeg,showGrid,f
 }
 
 function doBoxPlot(groups,colors,xlabel,ylabel,showLeg,showGrid,showPts,fs,showSig,sr,axisLW,barWidthPct,ptSize){
-  axisLW      = axisLW      ?? 2;
-  barWidthPct = barWidthPct ?? 0.70;
-  ptSize      = ptSize      ?? 4;
+  axisLW      = isNaN(axisLW)?2:axisLW;
+  barWidthPct = isNaN(barWidthPct)?0.70:barWidthPct;
+  ptSize      = isNaN(ptSize)?4:ptSize;
 
   const grpLabels = groups.map(g=>g.label);
   const allVals   = groups.flatMap(g=>g.values);
-  const yMin      = Math.min(...allVals);
-  const yMax      = Math.max(...allVals);
-  const yRange    = yMax - yMin || 1;
+  const yDataMin  = Math.min(...allVals);
+  const yDataMax  = Math.max(...allVals);
+  const yRange    = yDataMax - yDataMin || 1;
 
-  // Significance pairs that have a non-ns result
+  // Pairs to show (significant only)
   const sigPairs = (showSig && sr && sr.type==='pairs')
     ? sr.pairs.filter(p=>p.p.stars && p.p.stars!=='ns')
     : [];
 
+  // White background plugin
   const wbPlugin = {
-    id:'boxWhiteBg',
+    id: 'boxWhiteBg',
     beforeDraw(chart){
-      const {ctx:cc,chartArea}=chart;
-      if(!chartArea)return;
-      cc.save();cc.fillStyle='#ffffff';
-      cc.fillRect(chartArea.left,chartArea.top,chartArea.width,chartArea.height);
+      const {ctx:cc, chartArea} = chart;
+      if(!chartArea) return;
+      cc.save();
+      cc.fillStyle = '#ffffff';
+      cc.fillRect(chartArea.left, chartArea.top, chartArea.width, chartArea.height);
       cc.restore();
     }
   };
 
-  const boxPlugin = {id:'bp', afterDatasetsDraw(chart){
-    const {ctx, chartArea, scales:{x,y}} = chart;
-    // Read colors fresh from DOM on every draw so color picker changes apply
-    const liveColors = groups.map((_,i)=>document.getElementById('sc'+i)?.value || colors[i]);
-    const slotW = chartArea.width / groups.length;
-    const bw    = slotW * barWidthPct;
+  // Main drawing plugin
+  const boxPlugin = {
+    id: 'bp',
+    afterDatasetsDraw(chart){
+      const {ctx, chartArea, scales:{x, y}} = chart;
+      const slotW = chartArea.width / Math.max(groups.length, 1);
+      const bw    = slotW * barWidthPct;
 
-    groups.forEach((g,gi)=>{
-      const xp  = x.getPixelForValue(gi);
-      const v   = g.values;
-      const clr = liveColors[gi];
+      // Read colors live from DOM so picker changes apply instantly
+      const liveColors = groups.map((g, i) =>
+        document.getElementById('sc'+i)?.value || colors[i] || pal[i%pal.length]
+      );
 
-      const mean  = $m(v);
-      const sem   = $sem(v);
-      const med   = $med(v);
-      const q1    = $q1(v);
-      const q3    = $q3(v);
-      const vmin  = Math.min(...v);
-      const vmax  = Math.max(...v);
+      // ── Draw each group ──────────────────────────────────────
+      groups.forEach((g, gi) => {
+        const xp  = x.getPixelForValue(gi);
+        const v   = g.values;
+        const clr = liveColors[gi];
+        if(!v.length) return;
 
-      const yMean  = y.getPixelForValue(mean);
-      const ySemT  = y.getPixelForValue(mean + sem);
-      const ySemB  = y.getPixelForValue(mean - sem);
-      const yMed   = y.getPixelForValue(med);
-      const yQ1    = y.getPixelForValue(q1);
-      const yQ3    = y.getPixelForValue(q3);
-      const yMinP  = y.getPixelForValue(vmin);
-      const yMaxP  = y.getPixelForValue(vmax);
-      const yBase  = y.getPixelForValue(Math.max(y.min, 0));
+        const mean = $m(v);
+        const sem  = $sem(v);
+        const yBase = y.getPixelForValue(Math.max(y.min, 0));
+        const yMean = y.getPixelForValue(mean);
+        const ySemT = y.getPixelForValue(mean + sem);
+        const ySemB = y.getPixelForValue(mean - sem);
 
-      ctx.save();
-
-      // ── Solid bar from baseline to mean ──
-      ctx.fillStyle   = clr;
-      ctx.strokeStyle = clr;
-      ctx.lineWidth   = 1;
-      ctx.fillRect(xp - bw/2, yMean, bw, yBase - yMean);
-      ctx.strokeRect(xp - bw/2, yMean, bw, yBase - yMean);
-
-      // ── SEM error bars ──
-      ctx.strokeStyle = '#222';
-      ctx.lineWidth   = axisLW * 0.65;
-      ctx.beginPath(); ctx.moveTo(xp, ySemT); ctx.lineTo(xp, ySemB); ctx.stroke();
-      const cap = bw * 0.22;
-      [ySemT, ySemB].forEach(yy=>{
-        ctx.beginPath(); ctx.moveTo(xp-cap, yy); ctx.lineTo(xp+cap, yy); ctx.stroke();
-      });
-
-      // ── Individual data points (open circles) ──
-      if(showPts){
-        v.forEach(val=>{
-          const jitter = (Math.random()-0.5) * bw * 0.5;
-          ctx.beginPath();
-          ctx.arc(xp+jitter, y.getPixelForValue(val), ptSize, 0, Math.PI*2);
-          ctx.fillStyle   = 'rgba(255,255,255,0.75)';
-          ctx.strokeStyle = clr;
-          ctx.lineWidth   = 1.3;
-          ctx.fill();
-          ctx.stroke();
-        });
-      }
-
-      ctx.restore();
-    });
-
-    // ── Significance brackets above bars ──
-    if(sigPairs.length){
-      const usedLevels = {};
-      sigPairs.forEach((pair)=>{
-        const ai = grpLabels.indexOf(pair.a);
-        const bi = grpLabels.indexOf(pair.b);
-        if(ai<0||bi<0) return;
-        const xa = x.getPixelForValue(ai);
-        const xb = x.getPixelForValue(bi);
-        // Stack brackets so they don't overlap
-        const key = `${Math.min(ai,bi)}-${Math.max(ai,bi)}`;
-        const level = usedLevels[key] = (usedLevels[key]||0);
-        usedLevels[key]++;
-        const topY = chartArea.top + 6 + level * 22;
         ctx.save();
-        ctx.strokeStyle = '#333';
-        ctx.lineWidth   = 1.3;
-        ctx.font        = `bold ${fs}px Inter,sans-serif`;
-        ctx.fillStyle   = '#333';
-        ctx.textAlign   = 'center';
-        ctx.textBaseline= 'bottom';
-        ctx.beginPath();
-        ctx.moveTo(xa, topY+7); ctx.lineTo(xa, topY);
-        ctx.lineTo(xb, topY);   ctx.lineTo(xb, topY+7);
-        ctx.stroke();
-        ctx.fillText(pair.p.stars, (xa+xb)/2, topY-1);
+
+        // Solid bar from baseline to mean
+        ctx.fillStyle   = clr;
+        ctx.strokeStyle = darken(clr, 0.15);
+        ctx.lineWidth   = 1;
+        ctx.fillRect(xp - bw/2, yMean, bw, yBase - yMean);
+        ctx.strokeRect(xp - bw/2, yMean, bw, yBase - yMean);
+
+        // SEM error bar (black, centered on mean)
+        ctx.strokeStyle = '#111';
+        ctx.lineWidth   = Math.max(1, axisLW * 0.7);
+        ctx.beginPath(); ctx.moveTo(xp, ySemT); ctx.lineTo(xp, ySemB); ctx.stroke();
+        const cap = Math.max(4, bw * 0.20);
+        [ySemT, ySemB].forEach(yy => {
+          ctx.beginPath(); ctx.moveTo(xp-cap, yy); ctx.lineTo(xp+cap, yy); ctx.stroke();
+        });
+
+        // Individual data points (open circles)
+        if(showPts){
+          v.forEach(val => {
+            const jitter = (Math.random()-0.5) * bw * 0.55;
+            ctx.beginPath();
+            ctx.arc(xp + jitter, y.getPixelForValue(val), ptSize, 0, Math.PI*2);
+            ctx.fillStyle   = 'rgba(255,255,255,0.8)';
+            ctx.strokeStyle = clr;
+            ctx.lineWidth   = 1.3;
+            ctx.fill();
+            ctx.stroke();
+          });
+        }
+
         ctx.restore();
       });
-    }
-  }};
 
-  // Y padding: extra space at top for significance brackets
-  const bracketPad = sigPairs.length * 0.12;
-  const yPadTop    = yRange * (0.15 + bracketPad);
-  const yAxisMin   = Math.min(0, yMin - yRange*0.03);
-  const yAxisMax   = yMax + yPadTop;
+      // ── Significance brackets ────────────────────────────────
+      if(sigPairs.length){
+        const levelOf = {};
+        sigPairs.forEach((pair, pi) => {
+          const ai = grpLabels.indexOf(pair.a);
+          const bi = grpLabels.indexOf(pair.b);
+          if(ai < 0 || bi < 0) return;
+          const xa = x.getPixelForValue(ai);
+          const xb = x.getPixelForValue(bi);
+          const key = `${Math.min(ai,bi)}-${Math.max(ai,bi)}`;
+          if(levelOf[key] === undefined) levelOf[key] = 0;
+          const level = levelOf[key]++;
+          // Stack brackets downward from top of chart area
+          const topY = chartArea.top + 10 + level * 22;
+          ctx.save();
+          ctx.strokeStyle  = '#333';
+          ctx.lineWidth    = 1.3;
+          ctx.font         = `bold ${fs}px Inter,sans-serif`;
+          ctx.fillStyle    = '#333';
+          ctx.textAlign    = 'center';
+          ctx.textBaseline = 'bottom';
+          // Bracket lines
+          ctx.beginPath();
+          ctx.moveTo(xa, topY+8); ctx.lineTo(xa, topY);
+          ctx.lineTo(xb, topY);   ctx.lineTo(xb, topY+8);
+          ctx.stroke();
+          // Stars text above bracket
+          ctx.fillText(pair.p.stars, (xa+xb)/2, topY - 1);
+          ctx.restore();
+        });
+      }
+    }
+  };
+
+  // Y-axis range with padding for brackets
+  const bracketRows  = sigPairs.length;
+  const yPadTopFrac  = 0.15 + bracketRows * 0.10;
+  const yAxisMin     = Math.min(0, yDataMin - yRange * 0.03);
+  const yAxisMax     = yDataMax + yRange * yPadTopFrac;
+  const layoutPadTop = 20 + bracketRows * 24;
 
   const ctx = document.getElementById('the-chart').getContext('2d');
-
   chartInst = new Chart(ctx, {
     type : 'bar',
     data : {
       labels   : grpLabels,
-      datasets : [{ data:groups.map(()=>0), backgroundColor:'transparent', borderColor:'transparent' }]
+      datasets : [{ data: groups.map(()=>0), backgroundColor:'transparent', borderColor:'transparent' }]
     },
     options : {
-      responsive : true,
-      layout     : { padding:{ top: sigPairs.length ? 50 : 20, right:20, bottom:10, left:10 } },
-      plugins    : { legend:{ display:false }, tooltip:{ enabled:false } },
+      responsive  : true,
+      layout      : { padding:{ top:layoutPadTop, right:20, bottom:10, left:10 } },
+      plugins     : { legend:{ display:false }, tooltip:{ enabled:false } },
       scales : {
         x : {
           border : { display:true, color:'#333', width:axisLW },
           grid   : { display:false, drawTicks:true, tickLength:5 },
-          ticks  : { font:{size:Math.max(fs-2,10),family:'Inter,sans-serif'}, color:'#333', maxRotation:45, minRotation:30 },
-          title  : { display:!!xlabel, text:xlabel, font:{size:fs,family:'Inter,sans-serif'}, color:'#333' },
+          ticks  : {
+            font        : { size:Math.max(fs-2,10), family:'Inter,sans-serif' },
+            color       : '#333',
+            maxRotation : 45,
+            minRotation : 30,
+          },
+          title : { display:!!xlabel, text:xlabel, font:{size:fs,family:'Inter,sans-serif'}, color:'#333' },
         },
         y : {
           border : { display:true, color:'#333', width:axisLW },
@@ -1014,34 +1023,243 @@ function doBoxPlot(groups,colors,xlabel,ylabel,showLeg,showGrid,showPts,fs,showS
           title  : { display:!!ylabel, text:ylabel, font:{size:fs,family:'Inter,sans-serif'}, color:'#333' },
         },
       },
-      animation          : { duration:400 },
       barPercentage      : barWidthPct,
       categoryPercentage : 0.95,
+      animation          : { duration:400 },
     },
-    plugins:[wbPlugin, boxPlugin],
+    plugins : [wbPlugin, boxPlugin],
   });
 }
 
+// Slightly darken a hex color for bar border
+function darken(hex, amt){
+  try{
+    const n=parseInt(hex.replace('#',''),16);
+    const r=Math.max(0,Math.min(255,(n>>16)-(255*amt)|0));
+    const g=Math.max(0,Math.min(255,((n>>8)&0xff)-(255*amt)|0));
+    const b=Math.max(0,Math.min(255,(n&0xff)-(255*amt)|0));
+    return `rgb(${r},${g},${b})`;
+  }catch(e){return hex;}
+}
+
+function doColumnChart(groups,colors,xlabel,ylabel,showLeg,showGrid,fs){
+  const type=plotType==='line'?'line':plotType==='scatter'?'scatter':'bar';
+  const axisLW=+(document.getElementById('opt-axlw')?.value||2);
+  const bwp=+(document.getElementById('opt-barw')?.value||70)/100;
+  const datasets=groups.map((g,i)=>{
+    const clr=document.getElementById('sc'+i)?.value||colors[i];
+    const m=$m(g.values), s=$sem(g.values);
+    return{
+      label:g.label,
+      data:type==='scatter'?g.values.map((v,j)=>({x:i+(Math.random()-.5)*0.3,y:v})):[m],
+      errors:[s],
+      backgroundColor:clr+'99', borderColor:clr, borderWidth:1.5,
+      pointRadius:5, pointBackgroundColor:clr, fill:false, tension:0.3,
+    };
+  });
+  const errPlugin={id:'err2',afterDatasetsDraw(chart){
+    const{ctx,scales:{x,y}}=chart;
+    chart.data.datasets.forEach((ds,di)=>{
+      if(!ds.errors)return;
+      const meta=chart.getDatasetMeta(di);
+      ds.errors.forEach((e,ji)=>{
+        if(!e||!meta.data[ji])return;
+        const xp=meta.data[ji].x, yv=+ds.data[ji];
+        const yt=y.getPixelForValue(yv+e), yb=y.getPixelForValue(yv-e);
+        ctx.save();ctx.strokeStyle=ds.borderColor;ctx.lineWidth=1.5;
+        ctx.beginPath();ctx.moveTo(xp,yt);ctx.lineTo(xp,yb);ctx.stroke();
+        [yt,yb].forEach(yy=>{ctx.beginPath();ctx.moveTo(xp-5,yy);ctx.lineTo(xp+5,yy);ctx.stroke();});
+        ctx.restore();
+      });
+    });
+  }};
+  const wbC={id:'wbCol',beforeDraw(chart){const{ctx:cc,chartArea:ca}=chart;if(!ca)return;cc.save();cc.fillStyle='#fff';cc.fillRect(ca.left,ca.top,ca.width,ca.height);cc.restore();}};
+  const ctx=document.getElementById('the-chart').getContext('2d');
+  chartInst=new Chart(ctx,{type,
+    data:{labels:type==='scatter'?undefined:groups.map(g=>g.label),datasets},
+    options:{responsive:true,
+      plugins:{legend:{display:showLeg,labels:{font:{size:fs,family:'Inter,sans-serif'}}}},
+      scales:{
+        x:{border:{display:true,color:'#333',width:axisLW},grid:{display:false},
+           ticks:{font:{size:fs-1,family:'Inter,sans-serif'},color:'#333',maxRotation:45,minRotation:30},
+           title:{display:!!xlabel,text:xlabel,font:{size:fs,family:'Inter,sans-serif'},color:'#333'}},
+        y:{border:{display:true,color:'#333',width:axisLW},grid:{display:showGrid,color:'rgba(0,0,0,0.07)'},
+           ticks:{font:{size:fs-1,family:'Inter,sans-serif'},color:'#333'},
+           title:{display:!!ylabel,text:ylabel,font:{size:fs,family:'Inter,sans-serif'},color:'#333'}},
+      },
+      barPercentage:bwp, categoryPercentage:0.95, animation:{duration:400}},
+    plugins:[wbC,errPlugin]});
+}
+
+/* ═══════════════════ STATS HTML ════════════════════════════ */
+function buildStatsHTML(sr){
+  if(sr.type==='desc') return`
+    <div class="stats-out-head"><span>Descriptive statistics</span><button class="btn-sm" onclick="dlStats()">⬇ Export CSV</button></div>
+    <div style="overflow-x:auto"><table class="st-table">
+      <thead><tr><th>Group</th><th>n</th><th>Mean</th><th>Median</th><th>SD</th><th>SEM</th><th>Min</th><th>Max</th></tr></thead>
+      <tbody>${sr.rows.map(r=>`<tr><td><strong>${r.label}</strong></td><td>${r.n}</td><td>${r.mean}</td><td>${r.median}</td><td>${r.sd}</td><td>${r.sem}</td><td>${r.min}</td><td>${r.max}</td></tr>`).join('')}</tbody>
+    </table></div>`;
+  return`
+    <div class="stats-out-head"><span>${sr.testName}</span><button class="btn-sm" onclick="dlStats()">⬇ Export CSV</button></div>
+    <div style="overflow-x:auto"><table class="st-table">
+      <thead><tr><th>Group A</th><th>Group B</th><th>Statistic</th><th>p-value</th><th>Sig.</th></tr></thead>
+      <tbody>${sr.pairs.map(p=>`<tr>
+        <td><strong>${p.a}</strong></td><td><strong>${p.b}</strong></td>
+        <td style="font-family:monospace;font-size:11px">${p.stat}${p.extra?' ('+p.extra+')':''}</td>
+        <td><span class="sig ${p.p.cls}">${p.p.str}</span></td>
+        <td style="font-weight:700;color:${p.p.cls==='sig-ns'?'#999':'#c62828'}">${p.p.stars}</td>
+      </tr>`).join('')}</tbody>
+    </table></div>
+    <div style="padding:8px 12px;font-size:10px;color:var(--ink-3)">*** p&lt;0.001 &nbsp;** p&lt;0.01 &nbsp;* p&lt;0.05 &nbsp;ns = not significant.</div>`;
+}
+
+/* ═══════════════════ DOWNLOAD BUTTONS ══════════════════════ */
+function buildDlButtons(){
+  const row=document.getElementById('dl-row');
+  if(!row)return;
+  row.innerHTML=`
+    <button class="btn-sm accent" onclick="dlPNG()">⬇ PNG</button>
+    <button class="btn-sm accent" onclick="dlPDF()">⬇ PDF</button>
+    <button class="btn-sm" onclick="dlSVG()">⬇ SVG</button>
+    <button class="btn-sm" onclick="dlTIFF()">⬇ TIFF</button>
+    <button class="btn-sm" onclick="dlCSVdata()">⬇ CSV</button>
+    <button class="btn-sm" onclick="dlStats()">⬇ Stats CSV</button>
+    <button class="btn-sm" onclick="clearAll()" style="margin-left:6px">✕ Clear</button>`;
+}
+
+function dlPNG(){
+  if(!chartInst)return;
+  const a=document.createElement('a');
+  a.download='plot.png';
+  a.href=chartInst.toBase64Image('image/png',1);
+  a.click();
+}
+function dlPDF(){
+  if(!chartInst)return;
+  try{
+    const {jsPDF}=window.jspdf;
+    const pdf=new jsPDF({orientation:'landscape',unit:'mm',format:'a4'});
+    const img=chartInst.toBase64Image('image/png',1);
+    const pw=pdf.internal.pageSize.getWidth(), ph=pdf.internal.pageSize.getHeight();
+    const cw=chartInst.canvas.width, ch=chartInst.canvas.height, ar=cw/ch;
+    let iw=pw-20, ih=iw/ar;
+    if(ih>ph-20){ih=ph-20;iw=ih*ar;}
+    pdf.addImage(img,'PNG',(pw-iw)/2,(ph-ih)/2,iw,ih);
+    pdf.save('plot.pdf');
+  }catch(e){alert('PDF failed — try PNG. Error: '+e.message);}
+}
+function dlSVG(){
+  if(!chartInst)return;
+  const img=chartInst.toBase64Image('image/png',1);
+  const w=chartInst.canvas.width, h=chartInst.canvas.height;
+  const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}"><image href="${img}" width="${w}" height="${h}"/></svg>`;
+  const a=document.createElement('a');
+  a.download='plot.svg';
+  a.href=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml'}));
+  a.click();
+}
+function dlTIFF(){
+  if(!chartInst)return;
+  const canvas=chartInst.canvas;
+  const hi=document.createElement('canvas');
+  hi.width=canvas.width*3; hi.height=canvas.height*3;
+  const ctx=hi.getContext('2d');
+  ctx.scale(3,3); ctx.drawImage(canvas,0,0);
+  const a=document.createElement('a');
+  a.download='plot_hires.png';
+  a.href=hi.toDataURL('image/png',1);
+  a.click();
+}
+function dlCSVdata(){
+  if(!data.length)return;
+  const keys=Object.keys(data[0]);
+  let csv=keys.join(',')+'\n';
+  data.forEach(r=>{csv+=keys.map(k=>JSON.stringify(String(r[k]))).join(',')+'\n';});
+  const a=document.createElement('a');
+  a.download='data.csv';
+  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+  a.click();
+}
+function dlStats(){
+  const tables=document.querySelectorAll('.st-table');
+  if(!tables.length){alert('Generate a plot with statistics first.');return;}
+  let csv='';
+  tables.forEach(t=>{
+    [...t.querySelectorAll('tr')].forEach(row=>{
+      csv+=[...row.querySelectorAll('th,td')].map(c=>'"'+c.textContent.trim()+'"').join(',')+'\n';
+    });
+    csv+='\n';
+  });
+  const a=document.createElement('a');
+  a.download='statistics.csv';
+  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+  a.click();
+}
+function clearAll(){
+  if(chartInst){try{chartInst.destroy();}catch(e){}}
+  chartInst=null;
+  document.getElementById('pt-right').innerHTML=`<div class="pt-empty" id="pt-empty">
+    <div class="pt-empty-icon">📊</div>
+    <h3>Upload or paste your data</h3>
+    <p>All columns shown by default.<br>Box plot with SEM error bars is the default.<br>Nature journal colors applied automatically.</p>
+  </div>`;
+}
+function liveTitle(v){
+  document.querySelectorAll('.chart-title-inp').forEach(el=>el.value=v);
+}
+
+/* ═══════════════════ EXAMPLES ══════════════════════════════ */
+function loadEx(type){
+  const ex={
+    ift:[['Genotype','Anterograde_um_s','Retrograde_um_s'],
+      ['WT',0.72,0.58],['WT',0.68,0.61],['WT',0.75,0.55],['WT',0.81,0.63],['WT',0.70,0.59],['WT',0.77,0.57],
+      ['arl-13',0.44,0.38],['arl-13',0.41,0.35],['arl-13',0.47,0.40],['arl-13',0.43,0.36],
+      ['ift-88',0.21,0.18],['ift-88',0.25,0.20],['ift-88',0.19,0.17],
+    ],
+    length:[['Genotype','Cilia_length_um'],
+      ['WT',3.2],['WT',3.5],['WT',3.1],['WT',3.4],['WT',3.3],['WT',3.6],
+      ['arl-13',1.8],['arl-13',2.1],['arl-13',1.9],['arl-13',2.0],['arl-13',1.7],
+      ['ift-88',0.8],['ift-88',1.1],['ift-88',0.9],['ift-88',0.7],['ift-88',1.0],
+      ['bbs-1',2.8],['bbs-1',3.0],['bbs-1',2.7],['bbs-1',2.9],['bbs-1',3.1],
+    ],
+    cat:[['Wild_type','unc-5'],
+      ['normal','misshape'],['normal','no axon'],['normal','misshape'],['normal','misshape'],
+      ['normal','no axon'],['normal','misshape'],['normal','no axon'],['normal','misshape'],
+      ['normal','misshape'],['normal','misshape'],['normal','no axon'],['normal','misshape'],
+      ['normal','misshape'],['normal','misshape'],['normal','misshape'],
+    ],
+    wb:[['Condition','Band_AU'],
+      ['Control',1.00],['Control',0.98],['Control',1.03],['Control',0.95],['Control',1.05],
+      ['siRNA_1h',0.72],['siRNA_1h',0.68],['siRNA_1h',0.75],['siRNA_1h',0.70],
+      ['siRNA_4h',0.45],['siRNA_4h',0.41],['siRNA_4h',0.48],['siRNA_4h',0.43],
+      ['siRNA_24h',0.21],['siRNA_24h',0.19],['siRNA_24h',0.24],['siRNA_24h',0.20],
+    ],
+  };
+  const rows=ex[type]; const headers=rows[0];
+  data=rows.slice(1).map(r=>{const o={};headers.forEach((h,i)=>o[h]=r[i]);return o;});
+  cols=headers;
+  document.getElementById('paste-ta').value=[headers.join('\t'),...rows.slice(1).map(r=>r.join('\t'))].join('\n');
+  switchTab('paste',document.querySelectorAll('.itab')[0]);
+  onDataReady('Example: '+type);
+  if(type==='cat'){document.querySelector('[data-t="pctbar"]').click();}
+  else{document.querySelector('[data-t="boxplot"]').click();}
+  if(type==='ift'||type==='length'){
+    document.getElementById('opt-xlabel').value='Genotype';
+    document.getElementById('opt-ylabel').value=type==='ift'?'Speed (µm/s)':'Cilia length (µm)';
+  }
+  if(type==='wb'){
+    document.getElementById('opt-xlabel').value='Condition';
+    document.getElementById('opt-ylabel').value='Band intensity (AU)';
+  }
+}
+
+
 /* ══ WINDOW EXPORTS ════════════════════════════════════════ */
-window.parsePaste    = parsePaste;
-window.handleFile    = handleFile;
-window.handleDrop    = handleDrop;
-window.loadEx        = loadEx;
-window.generate      = window.generate;
-window.buildSeriesClrs = buildSeriesClrs;
-window.liveTitle     = liveTitle;
-window.dlPNG         = dlPNG;
-window.dlPDF         = dlPDF;
-window.dlSVG         = dlSVG;
-window.dlTIFF        = dlTIFF;
-window.dlCSVdata     = dlCSVdata;
-window.dlStats       = dlStats;
-window.clearAll      = clearAll;
-window.toggleCard    = toggleCard;
-window.switchTab     = switchTab;
-window.setType       = setType;
-window.setStat       = setStat;
-window.usePal        = usePal;
+['parsePaste','handleFile','handleDrop','loadEx','buildSeriesClrs','liveTitle',
+ 'dlPNG','dlPDF','dlSVG','dlTIFF','dlCSVdata','dlStats','clearAll','buildDlButtons',
+ 'toggleCard','switchTab','setType','setStat','usePal'
+].forEach(fn=>{ if(typeof eval(fn)==='function') window[fn]=eval(fn); });
+window.generate=window.generate;
 </script>
 </body>
 </html>
