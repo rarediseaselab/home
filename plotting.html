@@ -269,7 +269,7 @@ ift-88&#9;0.91&#9;1.30"></textarea>
         <div class="pt-card-body">
           <div class="fc"><label>Palette</label><div class="pal-grid" id="pal-grid"></div></div>
           <div class="fc"><label>Series colors</label><div id="series-clrs"></div></div>
-          <div class="tog-row"><span>SEM error bars</span><div class="tog on" id="tog-err" onclick="this.classList.toggle('on')"></div></div>
+          <div class="tog-row"><span>SEM error bars</span><div class="tog on" id="tog-err" onclick="this.classList.toggle('on'); if(chartInst) generate();"></div></div>
           <div class="tog-row"><span>Show data points (open circles)</span><div class="tog on" id="tog-pts" onclick="this.classList.toggle('on')"></div></div>
           <div class="tog-row"><span>Legend</span><div class="tog" id="tog-leg" onclick="this.classList.toggle('on')"></div></div>
           <div class="tog-row"><span>Grid lines</span><div class="tog" id="tog-grid" onclick="this.classList.toggle('on')"></div></div>
@@ -460,7 +460,7 @@ function usePal(name,btn){
   document.querySelectorAll('.pal-row-btn').forEach(b=>b.classList.remove('on'));
   btn.classList.add('on');
   buildSeriesClrs();
-  if(chartInst && data.length) generate();
+  if(data.length) generate();
 }
 
 /* ==================== SMALL UTILITIES =================== */
@@ -775,9 +775,10 @@ function buildSeriesClrs(){
   document.getElementById('series-clrs').innerHTML=yCols.map((c,i)=>`
     <div class="series-row">
       <input type="color" value="${seriesClrs[i]}" id="sc${i}"
-        oninput="seriesClrs[${i}]=this.value"
-        onchange="seriesClrs[${i}]=this.value">
-      <input class="series-lbl" type="text" value="${escapeHTML(c)}" id="sl${i}">
+        oninput="seriesClrs[${i}]=this.value; if(chartInst) generate();"
+        onchange="seriesClrs[${i}]=this.value; if(chartInst) generate();">
+      <input class="series-lbl" type="text" value="${escapeHTML(c)}" id="sl${i}"
+        oninput="if(chartInst) generate();">
     </div>
   `).join('');
 }
@@ -865,7 +866,18 @@ function runNumericStats(groups){
       }))
     };
   }
-
+if((statTest==='ttest' || statTest==='welch' || statTest==='mwu') && groups.length !== 2){
+  return {
+    type:'warning',
+    message:'This test requires exactly 2 groups.'
+  };
+}
+if(statTest==='anova' && groups.length < 3){
+  return {
+    type:'warning',
+    message:'ANOVA requires at least 3 groups.'
+  };
+}
   const pairs=[];
   if(groups.length>=2){
     for(let i=0;i<groups.length;i++){
@@ -1288,8 +1300,11 @@ function doBoxPlot(groups, xlabel, ylabel, showLeg, showGrid, showPts, showErr, 
   const rng=(maxY-minY)||1;
 
   const sigPairs=(showSig && statsResult && (statsResult.type==='pairs' || statsResult.type==='anova'))
-    ? (statsResult.pairs || []).filter(p=>p.p && p.p.stars && p.p.stars!=='ns')
-    : [];
+  ? (statsResult.pairs || []).filter(p=>{
+      return p.p && p.p.stars && p.p.stars!=='ns' &&
+             labels.includes(p.a) && labels.includes(p.b);
+    })
+  : [];
 
   chartInst=new Chart(ctx,{
     type:'bar',
@@ -1390,7 +1405,8 @@ function doBoxPlot(groups, xlabel, ylabel, showLeg, showGrid, showPts, showErr, 
             ctx.stroke();
 
             // box
-            ctx.fillStyle=g.color+'cc';
+            cconst liveColor=document.getElementById('sc'+i)?.value || g.color || pal[i % pal.length];
+            ctx.fillStyle=liveColor + 'cc';
             ctx.strokeStyle='#444';
             ctx.lineWidth=1.2;
             ctx.fillRect(xp-boxWidth/2,yQ3,boxWidth,yQ1-yQ3);
@@ -1431,7 +1447,7 @@ function doBoxPlot(groups, xlabel, ylabel, showLeg, showGrid, showPts, showErr, 
                 ctx.beginPath();
                 ctx.arc(xp+(Math.random()-.5)*boxWidth*0.65,y.getPixelForValue(v),ptSize,0,Math.PI*2);
                 ctx.fillStyle='rgba(255,255,255,0.92)';
-                ctx.strokeStyle=g.color;
+                ctx.strokeStyle=liveColor;
                 ctx.lineWidth=1.1;
                 ctx.fill();
                 ctx.stroke();
@@ -1527,7 +1543,13 @@ function buildStatsHTML(sr){
       </div>
       <div style="padding:8px 12px;font-size:10px;color:var(--ink-3)">*** p&lt;0.001 &nbsp; ** p&lt;0.01 &nbsp; * p&lt;0.05 &nbsp; ns = not significant.</div>`;
   }
-
+if(sr.type==='warning'){
+  return `
+    <div class="stats-out-head"><span>Statistics</span></div>
+    <div style="padding:12px 14px;font-size:12px;color:var(--ink-2)">
+      ${escapeHTML(sr.message)}
+    </div>`;
+}
   if(sr.type==='anova'){
     return `
       <div class="stats-out-head"><span>One-way ANOVA + pairwise comparisons</span><button class="btn-sm" type="button" onclick="dlStats()">⬇ Export CSV</button></div>
