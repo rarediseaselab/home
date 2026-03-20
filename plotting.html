@@ -448,6 +448,8 @@ window.setStat=function(t,btn){
   document.querySelectorAll('.sc').forEach(b=>b.classList.remove('on'));btn.classList.add('on');
   const h={none:'No test.',ttest:"Student's t-test — normal distribution, equal variance.",welch:"Welch's t-test — unequal variance. Recommended for most comparisons.",mwu:'Mann-Whitney U — non-parametric, no normality assumption.',anova:'One-way ANOVA + pairwise t-tests.',descriptive:'Mean, median, SD, SEM, min, max for each group.'};
   document.getElementById('stat-hint').textContent=h[t]||'';
+  // Auto-regenerate if a chart is already displayed
+  if(chartInst && data.length) window.generate();
 }
 window.liveTitle=function(v){document.querySelectorAll('.chart-title-inp').forEach(el=>el.value=v);}
 window.usePal=function(name,btn){pal=PALS[name];document.querySelectorAll('.pal-row-btn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');buildSeriesClrs();}
@@ -551,8 +553,8 @@ function buildSeriesClrs(){
   document.getElementById('series-clrs').innerHTML=yCols.map((c,i)=>`
     <div class="series-row">
       <input type="color" value="${seriesClrs[i]}" id="sc${i}"
-        oninput="seriesClrs[${i}]=this.value; if(chartInst){chartInst.update('none');}"
-        onchange="seriesClrs[${i}]=this.value; if(chartInst){chartInst.update('none');}">
+        oninput="seriesClrs[${i}]=this.value; if(chartInst){chartInst.draw();}"
+        onchange="seriesClrs[${i}]=this.value; if(chartInst){chartInst.draw();}">
       <input class="series-lbl" type="text" value="${c}" id="sl${i}">
     </div>`).join('');
 }
