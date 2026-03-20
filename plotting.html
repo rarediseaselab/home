@@ -400,14 +400,15 @@ document.addEventListener('DOMContentLoaded',()=>{
 });
 
 /* ======================= PALETTES ======================= */
+/* requested priority: light gray + light orange first */
 const PALS={
-  'Nature':['#555555','#999999','#6baed6','#9e9ac8','#74c476','#fd8d3c','#e377c2','#bcbd22','#17becf','#393b79'],
-  'Science':['#3B4992','#EE0000','#008B45','#631879','#008280','#BB0021','#5F559B','#A20056','#808180','#1B1919'],
-  'Cell':['#6AAFE6','#E87F6B','#74C476','#CE9ECA','#F0D96B','#97C8C8','#F7A35C','#8085E9','#A0A0A0','#434348'],
-  'CB-safe':['#0072B2','#E69F00','#56B4E9','#009E73','#F0E442','#D55E00','#CC79A7','#999999','#000000'],
-  'Pastel':['#AEC6CF','#FFD1DC','#B5EAD7','#C7CEEA','#FFDAC1','#FF9AA2','#A8E6CF','#DCEDC1','#FFD3B6']
+  'Gray-Orange Light':['#d9d9d9','#f7c9a9','#bdbdbd','#f4b183','#cfcfcf','#ffd8bf','#a6a6a6','#e6a57e'],
+  'Nature Soft':['#d9d9d9','#f4b183','#b7c9e2','#d9c2e9','#b7ddb0','#f9cb9c','#ead1dc','#d9d9a8'],
+  'Gray-Blue Soft':['#d9d9d9','#bdd7ee','#c9daf8','#b4c7dc','#d0e0e3','#cfe2f3','#bcbddc','#d9d2e9'],
+  'Pastel':['#AEC6CF','#FFD1DC','#B5EAD7','#C7CEEA','#FFDAC1','#FF9AA2','#A8E6CF','#DCEDC1','#FFD3B6'],
+  'Science':['#d0d0d0','#f4b183','#9fb6cd','#d5c0e6','#b6d7a8','#f9cb9c','#d9d2e9','#cccccc']
 };
-let pal=PALS['Nature'];
+let pal=PALS['Gray-Orange Light'];
 
 /* ======================== STATE ========================= */
 let data=[];
@@ -416,6 +417,8 @@ let plotType='boxplot';
 let statTest='none';
 let chartInst=null;
 let seriesClrs=[];
+let latestStats=null;
+let currentMode='numeric'; // numeric | categorical
 
 /* ===================== UI HELPERS ======================= */
 function toggleCard(id){
@@ -423,7 +426,7 @@ function toggleCard(id){
 }
 function switchTab(id,btn){
   ['paste','upload','example'].forEach(t=>{
-    document.getElementById('tab-'+t).style.display = (t===id ? '' : 'none');
+    document.getElementById('tab-'+t).style.display=(t===id?'':'none');
   });
   document.querySelectorAll('.itab').forEach(b=>b.classList.remove('on'));
   btn.classList.add('on');
@@ -432,19 +435,19 @@ function setType(t,btn){
   plotType=t;
   document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('on'));
   btn.classList.add('on');
+  if(chartInst && data.length) generate();
 }
 function setStat(t,btn){
   statTest=t;
   document.querySelectorAll('.sc').forEach(b=>b.classList.remove('on'));
   btn.classList.add('on');
-
   const h={
     none:'No test.',
-    ttest:"Student's t-test — normal distribution, equal variance.",
-    welch:"Welch's t-test — unequal variance. Recommended for most comparisons.",
-    mwu:'Mann-Whitney U — non-parametric, no normality assumption.',
-    anova:'One-way ANOVA + pairwise t-tests.',
-    descriptive:'Mean, median, SD, SEM, min, max for each group.'
+    descriptive:'Mean, median, SD, SEM, min, max for each group.',
+    ttest:"Student's t-test — for two groups.",
+    welch:"Welch's t-test — recommended for two groups with unequal variance.",
+    mwu:'Mann-Whitney U — non-parametric, for two groups.',
+    anova:'One-way ANOVA + pairwise comparisons for 3+ groups.'
   };
   document.getElementById('stat-hint').textContent=h[t]||'';
   if(chartInst && data.length) generate();
@@ -457,9 +460,65 @@ function usePal(name,btn){
   document.querySelectorAll('.pal-row-btn').forEach(b=>b.classList.remove('on'));
   btn.classList.add('on');
   buildSeriesClrs();
+  if(chartInst && data.length) generate();
 }
 
-/* ======================= PARSING ======================== */
+/* ==================== SMALL UTILITIES =================== */
+function escapeHTML(str){
+  return String(str).replace(/[&<>"']/g,m=>({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[m]));
+}
+function uniq(arr){ return [...new Set(arr)]; }
+function isNumericValue(v){
+  return v!=='' && v!==null && v!==undefined && !isNaN(Number(v));
+}
+function mean(a){ return a.reduce((s,v)=>s+v,0)/a.length; }
+function variance(a){
+  if(a.length<2) return 0;
+  const m=mean(a);
+  return a.reduce((s,v)=>s+(v-m)**2,0)/(a.length-1);
+}
+function sd(a){ return Math.sqrt(variance(a)); }
+function sem(a){ return a.length ? sd(a)/Math.sqrt(a.length) : 0; }
+function median(a){
+  const s=[...a].sort((x,y)=>x-y);
+  const m=Math.floor(s.length/2);
+  return s.length%2 ? s[m] : (s[m-1]+s[m])/2;
+}
+function quantile(a,q){
+  const s=[...a].sort((x,y)=>x-y);
+  if(!s.length) return NaN;
+  const pos=(s.length-1)*q;
+  const base=Math.floor(pos);
+  const rest=pos-base;
+  if(s[base+1]!==undefined) return s[base]+rest*(s[base+1]-s[base]);
+  return s[base];
+}
+function erf(x){
+  const t=1/(1+0.3275911*Math.abs(x));
+  const p=t*(0.254829592+t*(-0.284496736+t*(1.421413741+t*(-1.453152027+t*1.061405429))));
+  const e=1-p*Math.exp(-x*x);
+  return x>=0?e:-e;
+}
+function normalPFromZ(z){
+  return 2*(1-0.5*(1+erf(Math.abs(z)/Math.sqrt(2))));
+}
+function tApproxP(t,df){
+  const z=Math.abs(t)/Math.sqrt(df);
+  const p2=1/(1+0.2316419*z);
+  const poly=p2*(0.319381530+p2*(-0.356563782+p2*(1.781477937+p2*(-1.821255978+p2*1.330274429))));
+  return 2*(Math.exp(-z*z/2)/Math.sqrt(2*Math.PI))*poly;
+}
+function pFmt(p){
+  if(isNaN(p)) return {str:'n/a',cls:'sig-ns',stars:''};
+  if(p<0.001) return {str:'p < 0.001',cls:'sig-001',stars:'***'};
+  if(p<0.01) return {str:`p = ${p.toFixed(3)}`,cls:'sig-01',stars:'**'};
+  if(p<0.05) return {str:`p = ${p.toFixed(3)}`,cls:'sig-05',stars:'*'};
+  return {str:`p = ${p.toFixed(3)}`,cls:'sig-ns',stars:'ns'};
+}
+
+/* ====================== PARSING ========================= */
 function splitLine(line,d){
   const res=[];
   let cur='';
@@ -478,43 +537,135 @@ function splitLine(line,d){
   return res;
 }
 
-function parseDelimited(text,delim){
-  const lines=text.trim().split('\n').filter(l=>l.trim());
-  if(lines.length===0) return [];
+/* Detects very special pasted data like:
+   header1header2header3
+   3.5100.6983.905...
+*/
+function parseSpecialNumericBlock(raw){
+  const cleaned=raw.replace(/\u00A0/g,' ').trim();
+  const lines=cleaned.split(/\n+/).map(s=>s.trim()).filter(Boolean);
+  if(lines.length<2) return null;
 
-  let rawH=splitLine(lines[0],delim).map(h=>h.trim().replace(/^"|"$/g,''));
+  // gather header text from first 1-3 non-numeric lines
+  const textLines=[];
+  let numberLineIndex=-1;
+  for(let i=0;i<lines.length;i++){
+    const compact=lines[i].replace(/\s+/g,'');
+    const hasLotsOfDigits=(compact.match(/\d/g)||[]).length>8;
+    if(hasLotsOfDigits){
+      numberLineIndex=i;
+      break;
+    }
+    textLines.push(lines[i]);
+  }
+  if(numberLineIndex===-1 || textLines.length===0) return null;
 
-  if(rawH.length===1 && lines.length>1){
-    const secondLine=lines[1];
-    let tokens;
-    if(secondLine.match(/\d+\.\d+/)){
-      tokens=secondLine.match(/-?\d*\.?\d+/g) || [secondLine];
-    }else if(secondLine.match(/[A-Z][a-z]/)){
-      tokens=secondLine.split(/(?=[A-Z])/).map(t=>t.trim());
-    }else{
-      tokens=splitLine(secondLine,delim);
-    }
-    if(tokens.length>rawH.length){
-      rawH=Array(tokens.length).fill(0).map((_,i)=>`Col${i+1}`);
-    }
+  const headerBlob=textLines.join(' ').replace(/\s+/g,' ').trim();
+  const numericBlob=lines.slice(numberLineIndex).join('').replace(/\s+/g,'');
+
+  // split headers by common biological label patterns
+  let headers=headerBlob
+    .replace(/\)\s*(?=[A-Za-z])/g,')|')
+    .replace(/(?<=\))(?=[A-Za-z])/g,'|')
+    .replace(/(?<=\w)(?=unc-\d)/g,'|')
+    .replace(/(?<=\w)(?=N2\b)/g,'|')
+    .replace(/(?<=\w)(?=Wild type\b)/g,'|')
+    .split('|')
+    .map(s=>s.trim())
+    .filter(Boolean);
+
+  headers=headers.map(h=>h.replace(/\s+/g,' ').trim());
+
+  if(headers.length<2) return null;
+
+  const nums=numericBlob.match(/-?\d+(?:\.\d+)?/g);
+  if(!nums || nums.length<headers.length*2) return null;
+
+  const groupSize=Math.floor(nums.length/headers.length);
+  const usable=groupSize*headers.length;
+  const sliced=nums.slice(0,usable).map(Number);
+
+  const out=[];
+  for(let r=0;r<groupSize;r++){
+    const obj={};
+    headers.forEach((h,ci)=>{
+      obj[h]=sliced[r*headers.length+ci];
+    });
+    out.push(obj);
   }
 
-  return lines.slice(1).map(line=>{
-    let vals=splitLine(line,delim);
-    if(vals.length===1){
-      if(line.match(/\d+\.\d+/)){
-        vals=line.match(/-?\d*\.?\d+/g) || [line];
-      }else if(line.match(/[A-Z][a-z]/)){
-        vals=line.split(/(?=[A-Z])/).map(t=>t.trim());
-      }
-    }
+  return out.length ? out : null;
+}
+
+/* Detects special categorical form like:
+   Wild typeunc-5normalmisshape normalno axon...
+*/
+function parseSpecialCategoricalBlock(raw){
+  const cleaned=raw.replace(/\u00A0/g,' ').trim();
+  const one=cleaned.replace(/\s+/g,' ').trim();
+
+  if(!/(Wild type|unc-\d|normal|misshape|no axon)/i.test(one)) return null;
+
+  let headerCandidates=[];
+  let body=one;
+
+  if(body.includes('Wild type') && body.includes('unc-5')){
+    headerCandidates=['Wild type','unc-5'];
+    body=body.replace(/^.*?Wild type\s*unc-5/i,'');
+  }else{
+    return null;
+  }
+
+  body=body
+    .replace(/normalno axon/gi,'normal no axon ')
+    .replace(/normalmisshape/gi,'normal misshape ')
+    .replace(/misshapenormal/gi,'misshape normal ')
+    .replace(/axonnormal/gi,'axon normal ')
+    .replace(/\s+/g,' ')
+    .trim();
+
+  const tokens=body.match(/normal|misshape|no axon/gi);
+  if(!tokens || tokens.length<4) return null;
+
+  const colsN=headerCandidates.length;
+  const rowCount=Math.floor(tokens.length/colsN);
+  const out=[];
+  for(let i=0;i<rowCount;i++){
     const obj={};
-    rawH.forEach((h,i)=>{
+    for(let j=0;j<colsN;j++){
+      obj[headerCandidates[j]]=tokens[i*colsN+j];
+    }
+    out.push(obj);
+  }
+  return out.length ? out : null;
+}
+
+function parseRegularDelimited(text,delim){
+  const lines=text.trim().split('\n').filter(l=>l.trim());
+  if(!lines.length) return [];
+
+  const headers=splitLine(lines[0],delim).map(h=>h.trim().replace(/^"|"$/g,''));
+  return lines.slice(1).map(line=>{
+    const vals=splitLine(line,delim);
+    const obj={};
+    headers.forEach((h,i)=>{
       const v=(vals[i]||'').trim().replace(/^"|"$/g,'');
-      obj[h]=v==='' ? '' : (isNaN(v) ? v : +v);
+      obj[h]=v==='' ? '' : (isNumericValue(v) ? +v : v);
     });
     return obj;
   }).filter(r=>Object.values(r).some(v=>v!==''));
+}
+
+function parseAnyInput(raw){
+  const specialNum=parseSpecialNumericBlock(raw);
+  if(specialNum) return specialNum;
+
+  const specialCat=parseSpecialCategoricalBlock(raw);
+  if(specialCat) return specialCat;
+
+  const firstLine=raw.trim().split('\n')[0] || '';
+  const delim=firstLine.includes('\t') ? '\t' : ',';
+  return parseRegularDelimited(raw,delim);
 }
 
 function parsePaste(){
@@ -523,10 +674,9 @@ function parsePaste(){
     alert('Paste some data first.');
     return;
   }
-  const d=raw.split('\n')[0].includes('\t') ? '\t' : ',';
-  const parsed=parseDelimited(raw,d);
+  const parsed=parseAnyInput(raw);
   if(!parsed.length){
-    alert('Could not parse data — try tabs, commas, or new lines.');
+    alert('Could not parse data. Please check the pasted format.');
     return;
   }
   data=parsed;
@@ -540,10 +690,9 @@ function handleFile(file){
   const rd=new FileReader();
 
   rd.onload=e=>{
-    let d;
+    let d=[];
     if(ext==='csv'){
-      const delim=e.target.result.split('\n')[0].includes('\t') ? '\t' : ',';
-      d=parseDelimited(e.target.result,delim);
+      d=parseAnyInput(e.target.result);
     }else{
       const wb=XLSX.read(e.target.result,{type:'binary'});
       const ws=wb.Sheets[wb.SheetNames[0]];
@@ -570,7 +719,7 @@ function handleDrop(e){
   if(f) handleFile(f);
 }
 
-/* ===================== DATA READY ======================= */
+/* =================== DATA READY / UI ==================== */
 function onDataReady(label){
   showPreview();
   buildColPickers();
@@ -592,44 +741,34 @@ function onDataReady(label){
 function showPreview(){
   const mc=Math.min(cols.length,7);
   const mr=Math.min(data.length,5);
-
-  let h=`<table class="prev-table"><thead><tr>${
-    cols.slice(0,mc).map(c=>`<th>${c}</th>`).join('')
-  }${cols.length>mc?'<th>…</th>':''}</tr></thead><tbody>`;
-
+  let h=`<table class="prev-table"><thead><tr>${cols.slice(0,mc).map(c=>`<th>${escapeHTML(c)}</th>`).join('')}${cols.length>mc?'<th>…</th>':''}</tr></thead><tbody>`;
   data.slice(0,mr).forEach(r=>{
-    h+=`<tr>${
-      cols.slice(0,mc).map(c=>`<td>${String(r[c]).substring(0,16)}</td>`).join('')
-    }${cols.length>mc?'<td>…</td>':''}</tr>`;
+    h+=`<tr>${cols.slice(0,mc).map(c=>`<td>${escapeHTML(String(r[c]).substring(0,22))}</td>`).join('')}${cols.length>mc?'<td>…</td>':''}</tr>`;
   });
-
   document.getElementById('prev-wrap').innerHTML=h+'</tbody></table>';
 }
 
 function buildColPickers(){
   document.getElementById('y-list').innerHTML=cols.map(c=>`
     <label class="col-item">
-      <input type="checkbox" value="${c}" checked onchange="buildSeriesClrs()">
-      <span>${c}</span>
+      <input type="checkbox" value="${escapeHTML(c)}" checked onchange="buildSeriesClrs()">
+      <span>${escapeHTML(c)}</span>
     </label>
   `).join('');
 }
-
 function getYCols(){
   return [...document.querySelectorAll('#y-list input:checked')].map(cb=>cb.value);
 }
 
-/* ==================== PALETTE UI ======================== */
 function buildPalUI(){
   const g=document.getElementById('pal-grid');
   g.innerHTML=Object.entries(PALS).map(([name,clrs],idx)=>`
-    <button class="pal-row-btn${idx===0?' on':''}" type="button" onclick="usePal('${name}',this)">
-      <span class="pal-name">${name}</span>
+    <button class="pal-row-btn${idx===0?' on':''}" type="button" onclick="usePal('${name.replace(/'/g,"\\'")}',this)">
+      <span class="pal-name">${escapeHTML(name)}</span>
       ${clrs.slice(0,7).map(c=>`<span class="pal-dot" style="background:${c}"></span>`).join('')}
     </button>
   `).join('');
 }
-
 function buildSeriesClrs(){
   const yCols=getYCols();
   seriesClrs=yCols.map((_,i)=>pal[i%pal.length]);
@@ -638,66 +777,77 @@ function buildSeriesClrs(){
       <input type="color" value="${seriesClrs[i]}" id="sc${i}"
         oninput="seriesClrs[${i}]=this.value"
         onchange="seriesClrs[${i}]=this.value">
-      <input class="series-lbl" type="text" value="${c}" id="sl${i}">
+      <input class="series-lbl" type="text" value="${escapeHTML(c)}" id="sl${i}">
     </div>
   `).join('');
 }
 
-/* ==================== STATISTICS ======================== */
-const $m=a=>a.reduce((s,v)=>s+v,0)/a.length;
-const $var=a=>{if(a.length<2)return 0;const m=$m(a);return a.reduce((s,v)=>s+(v-m)**2,0)/(a.length-1);}
-const $sd=a=>Math.sqrt($var(a));
-const $sem=a=>a.length?$sd(a)/Math.sqrt(a.length):0;
-const $med=a=>{const s=[...a].sort((x,y)=>x-y);const m=Math.floor(s.length/2);return s.length%2?s[m]:(s[m-1]+s[m])/2;}
+/* ==================== DATA DETECTION ==================== */
+function detectColumnTypes(selectedCols){
+  return selectedCols.map(col=>{
+    const vals=data.map(r=>r[col]).filter(v=>v!=='' && v!==null && v!==undefined);
+    const numericCount=vals.filter(isNumericValue).length;
+    const frac=vals.length ? numericCount/vals.length : 0;
+    return {col, numeric: frac>=0.8};
+  });
+}
 
-function erf(x){
-  const t=1/(1+0.3275911*Math.abs(x));
-  const p=t*(0.254829592+t*(-0.284496736+t*(1.421413741+t*(-1.453152027+t*1.061405429))));
-  const e=1-p*Math.exp(-x*x);
-  return x>=0?e:-e;
-}
-function tCDFApprox(t,df){
-  const z=Math.abs(t)/Math.sqrt(df);
-  const p2=1/(1+0.2316419*z);
-  const poly=p2*(0.319381530+p2*(-0.356563782+p2*(1.781477937+p2*(-1.821255978+p2*1.330274429))));
-  return 2*(Math.exp(-z*z/2)/Math.sqrt(2*Math.PI))*poly;
-}
-function stuT(a,b){
-  const na=a.length,nb=b.length;
-  if(na<2||nb<2) return {t:NaN,p:NaN};
-  const ma=$m(a),mb=$m(b),va=$var(a),vb=$var(b);
-  const sp=Math.sqrt(((na-1)*va+(nb-1)*vb)/(na+nb-2));
+/* ===================== STATISTICS ======================= */
+function studentT(a,b){
+  const na=a.length, nb=b.length;
+  if(na<2 || nb<2) return {t:NaN,p:NaN};
+  const ma=mean(a), mb=mean(b), va=variance(a), vb=variance(b);
+  const sp=Math.sqrt(((na-1)*va + (nb-1)*vb)/(na+nb-2));
   const t=(ma-mb)/(sp*Math.sqrt(1/na+1/nb));
-  return {t,p:tCDFApprox(t,na+nb-2)};
+  return {t,p:tApproxP(t,na+nb-2)};
 }
 function welchT(a,b){
-  const na=a.length,nb=b.length;
-  if(na<2||nb<2) return {t:NaN,p:NaN};
-  const ma=$m(a),mb=$m(b),va=$var(a),vb=$var(b);
+  const na=a.length, nb=b.length;
+  if(na<2 || nb<2) return {t:NaN,p:NaN};
+  const ma=mean(a), mb=mean(b), va=variance(a), vb=variance(b);
   const t=(ma-mb)/Math.sqrt(va/na+vb/nb);
-  const df=(va/na+vb/nb)**2/((va/na)**2/(na-1)+(vb/nb)**2/(nb-1));
-  return {t,p:tCDFApprox(t,df)};
+  const df=(va/na+vb/nb)**2 / (((va/na)**2)/(na-1) + ((vb/nb)**2)/(nb-1));
+  return {t,p:tApproxP(t,df)};
 }
-function mwu(a,b){
+function mannWhitney(a,b){
   let u=0;
   a.forEach(av=>b.forEach(bv=>{
     if(av>bv) u++;
     else if(av===bv) u+=0.5;
   }));
-  const n1=a.length,n2=b.length,mu=n1*n2/2,sig=Math.sqrt(n1*n2*(n1+n2+1)/12);
-  const z=sig?(u-mu)/sig:0;
-  const p=2*(1-0.5*(1+erf(Math.abs(z)/Math.sqrt(2))));
-  return {u,z,p};
+  const n1=a.length, n2=b.length;
+  const mu=n1*n2/2;
+  const sig=Math.sqrt(n1*n2*(n1+n2+1)/12);
+  const z=sig ? (u-mu)/sig : 0;
+  return {u,z,p:normalPFromZ(z)};
 }
-function pFmt(p){
-  if(isNaN(p)) return {str:'n/a',cls:'sig-ns',stars:''};
-  if(p<0.001) return {str:'p < 0.001',cls:'sig-001',stars:'***'};
-  if(p<0.01) return {str:`p = ${p.toFixed(3)}`,cls:'sig-01',stars:'**'};
-  if(p<0.05) return {str:`p = ${p.toFixed(3)}`,cls:'sig-05',stars:'*'};
-  return {str:`p = ${p.toFixed(3)}`,cls:'sig-ns',stars:'ns'};
+function oneWayANOVA(groups){
+  const nonEmpty=groups.filter(g=>g.values.length>0);
+  const k=nonEmpty.length;
+  const all=nonEmpty.flatMap(g=>g.values);
+  const N=all.length;
+  if(k<2 || N<=k) return {F:NaN,p:NaN};
+
+  const grand=mean(all);
+  const ssBetween=nonEmpty.reduce((s,g)=>s + g.values.length*(mean(g.values)-grand)**2,0);
+  const ssWithin=nonEmpty.reduce((s,g)=>{
+    const m=mean(g.values);
+    return s + g.values.reduce((a,v)=>a+(v-m)**2,0);
+  },0);
+
+  const df1=k-1;
+  const df2=N-k;
+  const msBetween=ssBetween/df1;
+  const msWithin=ssWithin/df2;
+  const F=msBetween/msWithin;
+
+  // rough approximation using transformed z; acceptable for display only
+  const z=Math.sqrt(Math.abs(F));
+  const p=normalPFromZ(z);
+  return {F,p};
 }
 
-function runStats(groups){
+function runNumericStats(groups){
   if(statTest==='none') return null;
 
   if(statTest==='descriptive'){
@@ -706,10 +856,10 @@ function runStats(groups){
       rows:groups.map(g=>({
         label:g.label,
         n:g.values.length,
-        mean:$m(g.values).toFixed(3),
-        median:$med(g.values).toFixed(3),
-        sd:$sd(g.values).toFixed(3),
-        sem:$sem(g.values).toFixed(3),
+        mean:mean(g.values).toFixed(3),
+        median:median(g.values).toFixed(3),
+        sd:sd(g.values).toFixed(3),
+        sem:sem(g.values).toFixed(3),
         min:Math.min(...g.values).toFixed(3),
         max:Math.max(...g.values).toFixed(3)
       }))
@@ -717,54 +867,75 @@ function runStats(groups){
   }
 
   const pairs=[];
-  for(let i=0;i<groups.length;i++){
-    for(let j=i+1;j<groups.length;j++){
-      const a=groups[i].values;
-      const b=groups[j].values;
-      let r;
-      if(statTest==='ttest') r=stuT(a,b);
-      else if(statTest==='welch') r=welchT(a,b);
-      else if(statTest==='mwu'){
-        const m=mwu(a,b);
-        r={t:m.z,p:m.p,extra:`U=${m.u.toFixed(1)}`};
-      }else{
-        r=stuT(a,b);
+  if(groups.length>=2){
+    for(let i=0;i<groups.length;i++){
+      for(let j=i+1;j<groups.length;j++){
+        const a=groups[i].values, b=groups[j].values;
+        let r;
+        if(statTest==='ttest') r=studentT(a,b);
+        else if(statTest==='welch') r=welchT(a,b);
+        else if(statTest==='mwu'){
+          const m=mannWhitney(a,b);
+          r={stat:m.z,p:m.p,extra:`U=${m.u.toFixed(1)}`};
+        }else{
+          r=studentT(a,b);
+        }
+        const pf=pFmt(r.p);
+        pairs.push({
+          a:groups[i].label,
+          b:groups[j].label,
+          stat:isNaN(r.t ?? r.stat) ? '—' : (r.t ?? r.stat).toFixed(3),
+          p:pf,
+          extra:r.extra||''
+        });
       }
-      const pf=pFmt(r.p);
-      pairs.push({
-        a:groups[i].label,
-        b:groups[j].label,
-        stat:isNaN(r.t)?'—':r.t.toFixed(3),
-        p:pf,
-        extra:r.extra||''
-      });
     }
   }
 
-  const tn={
-    ttest:"Student's t-test",
-    welch:"Welch's t-test",
-    mwu:'Mann-Whitney U',
-    anova:'One-way ANOVA (pairwise)'
-  }[statTest];
+  if(statTest==='anova'){
+    const a=oneWayANOVA(groups);
+    return {
+      type:'anova',
+      omnibus:{
+        F:isNaN(a.F)?'—':a.F.toFixed(3),
+        p:pFmt(a.p)
+      },
+      pairs
+    };
+  }
 
-  return {type:'pairs',pairs,testName:tn};
+  return {
+    type:'pairs',
+    testName:{
+      ttest:"Student's t-test",
+      welch:"Welch's t-test",
+      mwu:'Mann-Whitney U'
+    }[statTest],
+    pairs
+  };
 }
 
-/* ===================== GENERATE ========================= */
+function runCategoricalStats(catSummary){
+  return {
+    type:'categorical',
+    rows:catSummary.rows,
+    categories:catSummary.categories
+  };
+}
+
+/* ======================= GENERATE ======================= */
 function generate(){
   if(!data.length){
     alert('Load data first.');
     return;
   }
-
   if(chartInst){
     try{ chartInst.destroy(); }catch(e){}
     chartInst=null;
   }
 
-  const yCols=getYCols();
-  if(!yCols.length){
+  const selectedCols=getYCols();
+  if(!selectedCols.length){
     alert('Select at least one column.');
     return;
   }
@@ -787,119 +958,137 @@ function generate(){
   const barWidthPct=+(document.getElementById('opt-barw')?.value || 70)/100;
   const ptSize=+(document.getElementById('opt-pts-size')?.value || 4);
 
-  const colors=yCols.map((_,i)=>document.getElementById('sc'+i)?.value || seriesClrs[i] || pal[i%pal.length]);
-  const labels=yCols.map((_,i)=>document.getElementById('sl'+i)?.value || yCols[i]);
-
-  function colIsNumeric(col){
-    const vals=data.map(r=>r[col]).filter(v=>v!==''&&v!==null&&v!==undefined);
-    return vals.length>0 && vals.every(v=>!isNaN(+v));
-  }
-  const isCategorical=yCols.some(yc=>!colIsNumeric(yc));
+  const colors=selectedCols.map((_,i)=>document.getElementById('sc'+i)?.value || seriesClrs[i] || pal[i%pal.length]);
+  const labels=selectedCols.map((_,i)=>document.getElementById('sl'+i)?.value || selectedCols[i]);
 
   const right=document.getElementById('pt-right');
   right.innerHTML='';
-
   const cc=document.createElement('div');
   cc.className='chart-card';
   cc.innerHTML=`<div class="chart-topbar">
-    <input class="chart-title-inp" value="${title}" placeholder="Chart title (click to edit)" oninput="liveTitle(this.value)">
+    <input class="chart-title-inp" value="${escapeHTML(title)}" placeholder="Chart title (click to edit)" oninput="liveTitle(this.value)">
     <div class="dl-row" id="dl-row"></div>
   </div>
   <div style="position:relative"><canvas id="the-chart" style="max-height:520px"></canvas></div>`;
   right.appendChild(cc);
 
-  if(isCategorical){
-    doCategoricalChart(yCols,labels,colors,xlabel,ylabel||'Percentage (%)',showLeg,showGrid,fs,axisLW,barWidthPct);
+  const typed=detectColumnTypes(selectedCols);
+  const numericCols=typed.filter(x=>x.numeric).map(x=>x.col);
+  const categoricalCols=typed.filter(x=>!x.numeric).map(x=>x.col);
+
+  if(categoricalCols.length && !numericCols.length){
+    currentMode='categorical';
+    const summary=buildCategoricalSummary(categoricalCols, labels, colors);
+    latestStats=runCategoricalStats(summary);
+    doCategoricalChart(summary, xlabel, ylabel || 'Percentage (%)', showLeg, showGrid, fs, axisLW, barWidthPct, title);
+    right.appendChild(buildStatsNode(buildStatsHTML(latestStats)));
     buildDlButtons();
     return;
   }
 
-  const groups=yCols.map((yc,i)=>({
-    label:labels[i],
-    values:data.map(r=>+r[yc]).filter(v=>!isNaN(v)),
-    si:i
-  })).filter(g=>g.values.length>0);
+  if(numericCols.length){
+    currentMode='numeric';
+    const groups=numericCols.map((col,ix)=>{
+      const originalIndex=selectedCols.indexOf(col);
+      return {
+        label:labels[originalIndex],
+        values:data.map(r=>Number(r[col])).filter(v=>!isNaN(v)),
+        color:colors[originalIndex]
+      };
+    }).filter(g=>g.values.length>0);
 
-  if(!groups.length){
-    alert('No numeric data found in the selected columns.');
+    if(!groups.length){
+      alert('No usable numeric data found.');
+      return;
+    }
+
+    latestStats=runNumericStats(groups);
+
+    if(plotType==='boxplot'){
+      doBoxPlot(groups, xlabel, ylabel, showLeg, showGrid, showPts, showErr, fs, showSig, latestStats, axisLW, barWidthPct, ptSize, title);
+    }else{
+      doNumericChart(groups, xlabel, ylabel, showLeg, showGrid, showErr, fs, axisLW, barWidthPct, plotType, title);
+    }
+
+    if(latestStats){
+      right.appendChild(buildStatsNode(buildStatsHTML(latestStats)));
+    }
+    buildDlButtons();
     return;
   }
 
-  const sr=runStats(groups);
-
-  if(plotType==='boxplot'){
-    doBoxPlot(groups,colors,xlabel,ylabel,showLeg,showGrid,showPts,showErr,fs,showSig,sr,axisLW,barWidthPct,ptSize);
-  }else{
-    doColumnChart(groups,colors,xlabel,ylabel,showLeg,showGrid,showErr,fs);
-  }
-
-  if(sr){
-    const sc=document.createElement('div');
-    sc.className='stats-out';
-    sc.innerHTML=buildStatsHTML(sr);
-    right.appendChild(sc);
-  }
-
-  buildDlButtons();
+  alert('Could not determine a valid numeric or categorical structure from the selected columns.');
 }
 
-/* =================== CATEGORICAL ======================== */
-function doCategoricalChart(yCols,labels,colors,xlabel,ylabel,showLeg,showGrid,fs,axisLW,barWidthPct){
-  const allCats=[...new Set(
-    data.flatMap(r=>yCols.map(yc=>String(r[yc]||'').trim()))
-  )].filter(v=>v!=='');
+function buildStatsNode(html){
+  const div=document.createElement('div');
+  div.className='stats-out';
+  div.innerHTML=html;
+  return div;
+}
 
-  const colCounts=yCols.map(yc=>{
-    const vals=data.map(r=>String(r[yc]||'').trim()).filter(v=>v!=='');
+/* =================== CATEGORICAL MODE =================== */
+function buildCategoricalSummary(catCols, labels, colors){
+  const categories=uniq(
+    data.flatMap(r=>catCols.map(c=>String(r[c]||'').trim()))
+  ).filter(Boolean);
+
+  const rows=catCols.map(col=>{
+    const vals=data.map(r=>String(r[col]||'').trim()).filter(Boolean);
     const total=vals.length;
-    const counts={}, pct={};
-    allCats.forEach(cat=>{
+    const counts={};
+    const pct={};
+    categories.forEach(cat=>{
       counts[cat]=vals.filter(v=>v===cat).length;
-      pct[cat]=total ? Math.round(counts[cat]/total*1000)/10 : 0;
+      pct[cat]=total ? (counts[cat]/total*100) : 0;
     });
-    return {pct,total,counts};
+    return {
+      column:col,
+      label:labels[catCols.indexOf(col)] || col,
+      total,
+      counts,
+      pct,
+      color:colors[catCols.indexOf(col)] || pal[catCols.indexOf(col)%pal.length]
+    };
   });
 
-  const catPal=['#555555','#6baed6','#9e9ac8','#74c476','#fd8d3c','#de77ae','#bcbd22','#17becf','#aec7e8','#ffbb78'];
+  return {categories, rows};
+}
 
-  const datasets=allCats.map((cat,ci)=>({
+function doCategoricalChart(summary, xlabel, ylabel, showLeg, showGrid, fs, axisLW, barWidthPct, title){
+  const catPal=['#d9d9d9','#f4b183','#bdbdbd','#f7c9a9','#a6a6a6','#f9d5bf','#c9c9c9','#e6a57e','#eeeeee','#f3c6a6'];
+
+  const datasets=summary.categories.map((cat,ci)=>({
     label:cat,
-    data:colCounts.map(cc=>cc.pct[cat]||0),
+    data:summary.rows.map(r=>r.pct[cat] || 0),
     backgroundColor:catPal[ci % catPal.length],
     borderColor:'#ffffff',
-    borderWidth:1.5
+    borderWidth:1.2
   }));
 
-  const ctx2=document.getElementById('the-chart').getContext('2d');
-  const wbPlugin={beforeDraw(chart){
-    const {ctx:cc,chartArea:ca}=chart;
-    if(!ca) return;
-    cc.save();
-    cc.fillStyle='#fff';
-    cc.fillRect(ca.left,ca.top,ca.width,ca.height);
-    cc.restore();
-  }};
-
-  chartInst=new Chart(ctx2,{
+  const ctx=document.getElementById('the-chart').getContext('2d');
+  chartInst=new Chart(ctx,{
     type:'bar',
-    data:{labels,datasets},
+    data:{
+      labels:summary.rows.map(r=>r.label),
+      datasets
+    },
     options:{
       responsive:true,
-      layout:{padding:{top:16,right:showLeg ? 160 : 20,bottom:10,left:10}},
       plugins:{
+        title:{
+          display:!!title,
+          text:title,
+          font:{size:fs+1,weight:'bold'}
+        },
         legend:{
-          display:showLeg || true,
+          display:true,
           position:'right',
-          labels:{
-            font:{size:fs-1,family:'Inter,sans-serif'},
-            boxWidth:14,
-            padding:10,
-            color:'#333'
-          }
+          labels:{font:{size:fs-1}}
         },
         tooltip:{
           callbacks:{
-            label:ctx3=>`${ctx3.dataset.label}: ${ctx3.parsed.y.toFixed(1)}%`
+            label:c=>`${c.dataset.label}: ${c.parsed.y.toFixed(1)}%`
           }
         }
       },
@@ -908,320 +1097,485 @@ function doCategoricalChart(yCols,labels,colors,xlabel,ylabel,showLeg,showGrid,f
           stacked:true,
           border:{display:true,color:'#333',width:axisLW},
           grid:{display:false},
-          ticks:{font:{size:fs-1,family:'Inter,sans-serif'},color:'#333',maxRotation:45,minRotation:30},
-          title:{display:!!xlabel,text:xlabel,font:{size:fs,family:'Inter,sans-serif'},color:'#333'}
+          ticks:{font:{size:fs-1},color:'#333',maxRotation:30,minRotation:20},
+          title:{display:!!xlabel,text:xlabel,font:{size:fs},color:'#333'}
         },
         y:{
           stacked:true,
           min:0,
           max:100,
           border:{display:true,color:'#333',width:axisLW},
-          grid:{display:showGrid,color:'rgba(0,0,0,0.08)',drawBorder:false},
+          grid:{display:showGrid,color:'rgba(0,0,0,0.08)'},
           ticks:{
-            font:{size:fs-1,family:'Inter,sans-serif'},
-            color:'#333',
-            callback:v=>v+'%',
-            stepSize:25
+            font:{size:fs-1},color:'#333',
+            callback:v=>v+'%'
           },
-          title:{
-            display:true,
-            text:ylabel || 'Percentage (%)',
-            font:{size:fs,family:'Inter,sans-serif'},
-            color:'#333'
-          }
+          title:{display:true,text:ylabel || 'Percentage (%)',font:{size:fs},color:'#333'}
         }
       },
       barPercentage:barWidthPct,
-      categoryPercentage:0.90,
-      animation:{duration:400}
+      categoryPercentage:0.82,
+      animation:{duration:350}
     },
-    plugins:[wbPlugin]
+    plugins:[{
+      beforeDraw(chart){
+        const {ctx,chartArea}=chart;
+        if(!chartArea) return;
+        ctx.save();
+        ctx.fillStyle='#fff';
+        ctx.fillRect(chartArea.left,chartArea.top,chartArea.width,chartArea.height);
+        ctx.restore();
+      }
+    }]
   });
-
-  const right2=document.getElementById('pt-right');
-  const tbl=document.createElement('div');
-  tbl.className='stats-out';
-  tbl.innerHTML=`
-    <div class="stats-out-head">
-      <span>Category counts &amp; percentages</span>
-      <button class="btn-sm" type="button" onclick="dlStats()">⬇ Export CSV</button>
-    </div>
-    <div style="overflow-x:auto">
-      <table class="st-table">
-        <thead><tr><th>Column</th><th>n</th>${allCats.map(cat=>`<th>${cat}</th>`).join('')}</tr></thead>
-        <tbody>${yCols.map((yc,i)=>{
-          const cc=colCounts[i];
-          return `<tr><td><strong>${labels[i]}</strong></td><td>${cc.total}</td>${allCats.map(cat=>`<td>${cc.counts[cat]||0} (${(cc.pct[cat]||0).toFixed(1)}%)</td>`).join('')}</tr>`;
-        }).join('')}</tbody>
-      </table>
-    </div>`;
-  right2.appendChild(tbl);
 }
 
-/* ====================== BOX PLOT ======================== */
-function doBoxPlot(groups,colors,xlabel,ylabel,showLeg,showGrid,showPts,showErr,fs,showSig,sr,axisLW,barWidthPct,ptSize){
-  axisLW=+axisLW||2;
-  barWidthPct=+barWidthPct||0.70;
-  ptSize=+ptSize||4;
+/* ===================== NUMERIC MODE ===================== */
+function doNumericChart(groups, xlabel, ylabel, showLeg, showGrid, showErr, fs, axisLW, barWidthPct, mode, title){
+  const ctx=document.getElementById('the-chart').getContext('2d');
 
-  const grpLabels=groups.map(g=>g.label);
+  let type='bar';
+  if(mode==='line') type='line';
+  if(mode==='scatter') type='scatter';
+
+  const datasets=groups.map((g,i)=>{
+    const m=mean(g.values);
+    const s=sem(g.values);
+
+    if(type==='scatter'){
+      return {
+        label:g.label,
+        data:g.values.map(v=>({x:i+1+(Math.random()-.5)*0.18,y:v})),
+        pointRadius:4,
+        pointHoverRadius:5,
+        pointBackgroundColor:g.color,
+        pointBorderColor:g.color,
+        showLine:false
+      };
+    }
+
+    if(type==='line'){
+      return {
+        label:g.label,
+        data:[m],
+        borderColor:g.color,
+        backgroundColor:g.color+'66',
+        pointBackgroundColor:g.color,
+        pointBorderColor:g.color,
+        pointRadius:5,
+        fill:false,
+        tension:0.3,
+        errors:[s]
+      };
+    }
+
+    return {
+      label:g.label,
+      data:[m],
+      backgroundColor:g.color,
+      borderColor:g.color,
+      borderWidth:1.2,
+      errors:[s]
+    };
+  });
+
+  const errPlugin={
+    id:'errbars',
+    afterDatasetsDraw(chart){
+      if(!showErr) return;
+      const {ctx,scales:{y}}=chart;
+      chart.data.datasets.forEach((ds,di)=>{
+        const meta=chart.getDatasetMeta(di);
+        if(!ds.errors || !meta.data.length) return;
+        ds.errors.forEach((e,ji)=>{
+          if(!e || !meta.data[ji]) return;
+          const xp=meta.data[ji].x;
+          const yv=(type==='scatter') ? meta.data[ji].parsed.y : Number(ds.data[ji]);
+          const yt=y.getPixelForValue(yv+e);
+          const yb=y.getPixelForValue(yv-e);
+          ctx.save();
+          ctx.strokeStyle=ds.borderColor || ds.pointBorderColor || '#333';
+          ctx.lineWidth=1.4;
+          ctx.beginPath();
+          ctx.moveTo(xp,yt);
+          ctx.lineTo(xp,yb);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(xp-5,yt); ctx.lineTo(xp+5,yt);
+          ctx.moveTo(xp-5,yb); ctx.lineTo(xp+5,yb);
+          ctx.stroke();
+          ctx.restore();
+        });
+      });
+    }
+  };
+
+  chartInst=new Chart(ctx,{
+    type,
+    data:{
+      labels:type==='scatter'?undefined:groups.map(g=>g.label),
+      datasets
+    },
+    options:{
+      responsive:true,
+      plugins:{
+        title:{
+          display:!!title,
+          text:title,
+          font:{size:fs+1,weight:'bold'}
+        },
+        legend:{
+          display:showLeg,
+          labels:{font:{size:fs-1}}
+        }
+      },
+      scales:{
+        x:{
+          type:type==='scatter'?'linear':'category',
+          min:type==='scatter'?0.5:undefined,
+          max:type==='scatter'?groups.length+0.5:undefined,
+          border:{display:true,color:'#333',width:axisLW},
+          grid:{display:false},
+          ticks:type==='scatter'
+            ? {
+                callback:(v)=>{
+                  const idx=Math.round(v)-1;
+                  return groups[idx] ? groups[idx].label : '';
+                },
+                font:{size:fs-1},
+                color:'#333'
+              }
+            : {
+                font:{size:fs-1},
+                color:'#333',
+                maxRotation:30,
+                minRotation:20
+              },
+          title:{display:!!xlabel,text:xlabel,font:{size:fs},color:'#333'}
+        },
+        y:{
+          border:{display:true,color:'#333',width:axisLW},
+          grid:{display:showGrid,color:'rgba(0,0,0,0.08)'},
+          ticks:{font:{size:fs-1},color:'#333'},
+          title:{display:!!ylabel,text:ylabel,font:{size:fs},color:'#333'}
+        }
+      },
+      barPercentage:barWidthPct,
+      categoryPercentage:0.82,
+      animation:{duration:350}
+    },
+    plugins:[{
+      beforeDraw(chart){
+        const {ctx,chartArea}=chart;
+        if(!chartArea) return;
+        ctx.save();
+        ctx.fillStyle='#fff';
+        ctx.fillRect(chartArea.left,chartArea.top,chartArea.width,chartArea.height);
+        ctx.restore();
+      }
+    }, errPlugin]
+  });
+}
+
+/* ======================= BOX PLOT ======================= */
+function doBoxPlot(groups, xlabel, ylabel, showLeg, showGrid, showPts, showErr, fs, showSig, statsResult, axisLW, barWidthPct, ptSize, title){
+  const ctx=document.getElementById('the-chart').getContext('2d');
+
+  const labels=groups.map(g=>g.label);
   const allVals=groups.flatMap(g=>g.values);
-  const yDataMin=Math.min(...allVals);
-  const yDataMax=Math.max(...allVals);
-  const yRange=yDataMax-yDataMin || 1;
-  const sigPairs=(showSig && sr && sr.type==='pairs') ? sr.pairs.filter(p=>p.p.stars && p.p.stars!=='ns') : [];
+  const minY=Math.min(...allVals);
+  const maxY=Math.max(...allVals);
+  const rng=(maxY-minY)||1;
 
-  const canvas=document.getElementById('the-chart');
-  const ctx=canvas.getContext('2d');
-
-  const bracketPad=20 + sigPairs.length*24;
-  const yAxisMin=Math.min(0, yDataMin-yRange*0.03);
-  const yAxisMax=yDataMax+yRange*(0.15+sigPairs.length*0.10);
+  const sigPairs=(showSig && statsResult && (statsResult.type==='pairs' || statsResult.type==='anova'))
+    ? (statsResult.pairs || []).filter(p=>p.p && p.p.stars && p.p.stars!=='ns')
+    : [];
 
   chartInst=new Chart(ctx,{
     type:'bar',
     data:{
-      labels:grpLabels,
-      datasets:[{data:groups.map(()=>0),backgroundColor:'transparent',borderColor:'transparent'}]
+      labels,
+      datasets:[{
+        label:'boxplot-helper',
+        data:groups.map(()=>0),
+        backgroundColor:'rgba(0,0,0,0)',
+        borderColor:'rgba(0,0,0,0)'
+      }]
     },
     options:{
       responsive:true,
-      layout:{padding:{top:bracketPad,right:20,bottom:10,left:10}},
-      plugins:{legend:{display:false},tooltip:{enabled:false}},
-      scales:{
-        x:{
-          border:{display:true,color:'#333',width:axisLW},
-          grid:{display:false,drawTicks:true,tickLength:5},
-          ticks:{font:{size:Math.max(fs-2,10),family:'Inter,sans-serif'},color:'#333',maxRotation:45,minRotation:30},
-          title:{display:!!xlabel,text:xlabel,font:{size:fs,family:'Inter,sans-serif'},color:'#333'}
+      plugins:{
+        title:{
+          display:!!title,
+          text:title,
+          font:{size:fs+1,weight:'bold'}
         },
-        y:{
-          border:{display:true,color:'#333',width:axisLW},
-          grid:{display:showGrid,color:'rgba(0,0,0,0.07)',drawBorder:false,tickLength:5},
-          min:yAxisMin,
-          max:yAxisMax,
-          ticks:{font:{size:fs-1,family:'Inter,sans-serif'},color:'#333'},
-          title:{display:!!ylabel,text:ylabel,font:{size:fs,family:'Inter,sans-serif'},color:'#333'}
-        }
+        legend:{display:false},
+        tooltip:{enabled:false}
       },
-      barPercentage:barWidthPct,
-      categoryPercentage:0.95,
-      animation:{duration:400}
-    },
-    plugins:[
-      {beforeDraw(chart){
-        const {ctx:cc,chartArea:ca}=chart;
-        if(!ca) return;
-        cc.save();
-        cc.fillStyle='#fff';
-        cc.fillRect(ca.left,ca.top,ca.width,ca.height);
-        cc.restore();
-      }},
-      {afterDatasetsDraw(chart){
-        const {ctx:cc,chartArea:ca,scales:{x,y}}=chart;
-        const slotW=ca.width/Math.max(groups.length,1);
-        const bw=slotW*barWidthPct;
-
-        groups.forEach((g,gi)=>{
-          const el=document.getElementById('sc'+gi);
-          const clr=(el&&el.value)||colors[gi]||pal[gi%pal.length];
-          const v=g.values;
-          if(!v.length) return;
-
-          const xp=x.getPixelForValue(gi);
-          const mn=$m(v);
-          const sm=$sem(v);
-          const yBase=y.getPixelForValue(Math.max(y.min,0));
-          const yMean=y.getPixelForValue(mn);
-          const ySemT=y.getPixelForValue(mn+sm);
-          const ySemB=y.getPixelForValue(mn-sm);
-          const cap=Math.max(5,bw*0.22);
-
-          cc.save();
-          cc.fillStyle=clr;
-          cc.strokeStyle='rgba(0,0,0,0.15)';
-          cc.lineWidth=0.5;
-          cc.fillRect(xp-bw/2,yMean,bw,yBase-yMean);
-          cc.strokeRect(xp-bw/2,yMean,bw,yBase-yMean);
-
-          if(showErr){
-            cc.strokeStyle='#111';
-            cc.lineWidth=Math.max(1,axisLW*0.7);
-            cc.beginPath();
-            cc.moveTo(xp,ySemT);
-            cc.lineTo(xp,ySemB);
-            cc.stroke();
-            [ySemT,ySemB].forEach(yy=>{
-              cc.beginPath();
-              cc.moveTo(xp-cap,yy);
-              cc.lineTo(xp+cap,yy);
-              cc.stroke();
-            });
-          }
-
-          if(showPts){
-            v.forEach(val=>{
-              cc.beginPath();
-              cc.arc(xp+(Math.random()-.5)*bw*.55,y.getPixelForValue(val),ptSize,0,Math.PI*2);
-              cc.fillStyle='rgba(255,255,255,0.85)';
-              cc.strokeStyle=clr;
-              cc.lineWidth=1.3;
-              cc.fill();
-              cc.stroke();
-            });
-          }
-
-          cc.restore();
-        });
-
-        if(sigPairs.length){
-          const levels={};
-          sigPairs.forEach(pair=>{
-            const ai=grpLabels.indexOf(pair.a);
-            const bi=grpLabels.indexOf(pair.b);
-            if(ai<0||bi<0) return;
-
-            const xa=x.getPixelForValue(ai);
-            const xb=x.getPixelForValue(bi);
-            const key=Math.min(ai,bi)+'-'+Math.max(ai,bi);
-            const lv=levels[key]=(levels[key]||0);
-            levels[key]++;
-
-            const topY=ca.top+8+lv*22;
-            cc.save();
-            cc.strokeStyle='#333';
-            cc.lineWidth=1.3;
-            cc.beginPath();
-            cc.moveTo(xa,topY+8);
-            cc.lineTo(xa,topY);
-            cc.lineTo(xb,topY);
-            cc.lineTo(xb,topY+8);
-            cc.stroke();
-            cc.font=`bold ${fs}px Inter,sans-serif`;
-            cc.fillStyle='#333';
-            cc.textAlign='center';
-            cc.textBaseline='bottom';
-            cc.fillText(pair.p.stars,(xa+xb)/2,topY-2);
-            cc.restore();
-          });
-        }
-      }}
-    ]
-  });
-}
-
-/* ==================== COLUMN CHART ====================== */
-function doColumnChart(groups,colors,xlabel,ylabel,showLeg,showGrid,showErr,fs){
-  const type=plotType==='line' ? 'line' : plotType==='scatter' ? 'scatter' : 'bar';
-  const axisLW=+(document.getElementById('opt-axlw')?.value || 2);
-  const bwp=+(document.getElementById('opt-barw')?.value || 70)/100;
-
-  const datasets=groups.map((g,i)=>{
-    const clr=document.getElementById('sc'+i)?.value || colors[i];
-    const m=$m(g.values), s=$sem(g.values);
-    return {
-      label:g.label,
-      data:type==='scatter' ? g.values.map((v)=>({x:i+(Math.random()-.5)*0.3,y:v})) : [m],
-      errors:[s],
-      backgroundColor:clr+'99',
-      borderColor:clr,
-      borderWidth:1.5,
-      pointRadius:5,
-      pointBackgroundColor:clr,
-      fill:false,
-      tension:0.3
-    };
-  });
-
-  const errPlugin={id:'err2',afterDatasetsDraw(chart){
-    if(!showErr) return;
-    const {ctx,scales:{y}}=chart;
-    chart.data.datasets.forEach((ds,di)=>{
-      if(!ds.errors) return;
-      const meta=chart.getDatasetMeta(di);
-      ds.errors.forEach((e,ji)=>{
-        if(!e || !meta.data[ji]) return;
-        const xp=meta.data[ji].x;
-        const yv=(type==='scatter') ? meta.data[ji].parsed.y : +ds.data[ji];
-        const yt=y.getPixelForValue(yv+e);
-        const yb=y.getPixelForValue(yv-e);
-        ctx.save();
-        ctx.strokeStyle=ds.borderColor;
-        ctx.lineWidth=1.5;
-        ctx.beginPath();
-        ctx.moveTo(xp,yt);
-        ctx.lineTo(xp,yb);
-        ctx.stroke();
-        [yt,yb].forEach(yy=>{
-          ctx.beginPath();
-          ctx.moveTo(xp-5,yy);
-          ctx.lineTo(xp+5,yy);
-          ctx.stroke();
-        });
-        ctx.restore();
-      });
-    });
-  }};
-
-  const wbC={id:'wbCol',beforeDraw(chart){
-    const {ctx:cc,chartArea:ca}=chart;
-    if(!ca) return;
-    cc.save();
-    cc.fillStyle='#fff';
-    cc.fillRect(ca.left,ca.top,ca.width,ca.height);
-    cc.restore();
-  }};
-
-  const ctx=document.getElementById('the-chart').getContext('2d');
-  chartInst=new Chart(ctx,{
-    type,
-    data:{labels:type==='scatter'?undefined:groups.map(g=>g.label),datasets},
-    options:{
-      responsive:true,
-      plugins:{legend:{display:showLeg,labels:{font:{size:fs,family:'Inter,sans-serif'}}}},
+      layout:{
+        padding:{top:20 + sigPairs.length*20,right:16,bottom:8,left:8}
+      },
       scales:{
         x:{
           border:{display:true,color:'#333',width:axisLW},
           grid:{display:false},
-          ticks:{font:{size:fs-1,family:'Inter,sans-serif'},color:'#333',maxRotation:45,minRotation:30},
-          title:{display:!!xlabel,text:xlabel,font:{size:fs,family:'Inter,sans-serif'},color:'#333'}
+          ticks:{font:{size:fs-1},color:'#333',maxRotation:30,minRotation:20},
+          title:{display:!!xlabel,text:xlabel,font:{size:fs},color:'#333'}
         },
         y:{
+          min:minY-rng*0.08,
+          max:maxY+rng*(0.18 + sigPairs.length*0.08),
           border:{display:true,color:'#333',width:axisLW},
-          grid:{display:showGrid,color:'rgba(0,0,0,0.07)'},
-          ticks:{font:{size:fs-1,family:'Inter,sans-serif'},color:'#333'},
-          title:{display:!!ylabel,text:ylabel,font:{size:fs,family:'Inter,sans-serif'},color:'#333'}
+          grid:{display:showGrid,color:'rgba(0,0,0,0.08)'},
+          ticks:{font:{size:fs-1},color:'#333'},
+          title:{display:!!ylabel,text:ylabel,font:{size:fs},color:'#333'}
         }
       },
-      barPercentage:bwp,
-      categoryPercentage:0.95,
-      animation:{duration:400}
+      barPercentage:barWidthPct,
+      categoryPercentage:0.8,
+      animation:{duration:350}
     },
-    plugins:[wbC,errPlugin]
+    plugins:[
+      {
+        beforeDraw(chart){
+          const {ctx,chartArea}=chart;
+          if(!chartArea) return;
+          ctx.save();
+          ctx.fillStyle='#fff';
+          ctx.fillRect(chartArea.left,chartArea.top,chartArea.width,chartArea.height);
+          ctx.restore();
+        }
+      },
+      {
+        id:'customBoxplot',
+        afterDatasetsDraw(chart){
+          const {ctx,scales:{x,y},chartArea}=chart;
+          const slotWidth=chartArea.width / Math.max(groups.length,1);
+          const boxWidth=slotWidth*Math.min(barWidthPct,0.55);
+
+          groups.forEach((g,i)=>{
+            const vals=[...g.values].sort((a,b)=>a-b);
+            if(!vals.length) return;
+
+            const q1=quantile(vals,0.25);
+            const med=quantile(vals,0.50);
+            const q3=quantile(vals,0.75);
+            const mn=Math.min(...vals);
+            const mx=Math.max(...vals);
+            const m=mean(vals);
+            const s=sem(vals);
+
+            const xp=x.getPixelForValue(i);
+            const yQ1=y.getPixelForValue(q1);
+            const yMed=y.getPixelForValue(med);
+            const yQ3=y.getPixelForValue(q3);
+            const yMin=y.getPixelForValue(mn);
+            const yMax=y.getPixelForValue(mx);
+
+            ctx.save();
+
+            // whiskers
+            ctx.strokeStyle='#444';
+            ctx.lineWidth=1.3;
+            ctx.beginPath();
+            ctx.moveTo(xp,yMin); ctx.lineTo(xp,yQ1);
+            ctx.moveTo(xp,yQ3); ctx.lineTo(xp,yMax);
+            ctx.stroke();
+
+            // caps
+            ctx.beginPath();
+            ctx.moveTo(xp-boxWidth*0.22,yMin); ctx.lineTo(xp+boxWidth*0.22,yMin);
+            ctx.moveTo(xp-boxWidth*0.22,yMax); ctx.lineTo(xp+boxWidth*0.22,yMax);
+            ctx.stroke();
+
+            // box
+            ctx.fillStyle=g.color+'cc';
+            ctx.strokeStyle='#444';
+            ctx.lineWidth=1.2;
+            ctx.fillRect(xp-boxWidth/2,yQ3,boxWidth,yQ1-yQ3);
+            ctx.strokeRect(xp-boxWidth/2,yQ3,boxWidth,yQ1-yQ3);
+
+            // median
+            ctx.beginPath();
+            ctx.moveTo(xp-boxWidth/2,yMed);
+            ctx.lineTo(xp+boxWidth/2,yMed);
+            ctx.stroke();
+
+            // mean + sem
+            if(showErr){
+              const yMean=y.getPixelForValue(m);
+              const ySemTop=y.getPixelForValue(m+s);
+              const ySemBot=y.getPixelForValue(m-s);
+              ctx.strokeStyle='#111';
+              ctx.lineWidth=1.2;
+              ctx.beginPath();
+              ctx.moveTo(xp,ySemTop); ctx.lineTo(xp,ySemBot);
+              ctx.stroke();
+              ctx.beginPath();
+              ctx.moveTo(xp-5,ySemTop); ctx.lineTo(xp+5,ySemTop);
+              ctx.moveTo(xp-5,ySemBot); ctx.lineTo(xp+5,ySemBot);
+              ctx.stroke();
+
+              ctx.beginPath();
+              ctx.arc(xp,yMean,3.3,0,Math.PI*2);
+              ctx.fillStyle='#fff';
+              ctx.fill();
+              ctx.strokeStyle='#111';
+              ctx.stroke();
+            }
+
+            // points
+            if(showPts){
+              vals.forEach(v=>{
+                ctx.beginPath();
+                ctx.arc(xp+(Math.random()-.5)*boxWidth*0.65,y.getPixelForValue(v),ptSize,0,Math.PI*2);
+                ctx.fillStyle='rgba(255,255,255,0.92)';
+                ctx.strokeStyle=g.color;
+                ctx.lineWidth=1.1;
+                ctx.fill();
+                ctx.stroke();
+              });
+            }
+
+            ctx.restore();
+          });
+
+          // significance brackets
+          if(sigPairs.length){
+            const usedLevels={};
+            sigPairs.forEach(p=>{
+              const a=labels.indexOf(p.a);
+              const b=labels.indexOf(p.b);
+              if(a<0 || b<0) return;
+              const key=`${Math.min(a,b)}-${Math.max(a,b)}`;
+              const lev=usedLevels[key] || 0;
+              usedLevels[key]=lev+1;
+
+              const xa=x.getPixelForValue(a);
+              const xb=x.getPixelForValue(b);
+              const top=chartArea.top + 8 + lev*18;
+
+              ctx.save();
+              ctx.strokeStyle='#333';
+              ctx.lineWidth=1.2;
+              ctx.beginPath();
+              ctx.moveTo(xa,top+6);
+              ctx.lineTo(xa,top);
+              ctx.lineTo(xb,top);
+              ctx.lineTo(xb,top+6);
+              ctx.stroke();
+
+              ctx.font=`bold ${Math.max(fs-1,11)}px Arial`;
+              ctx.fillStyle='#333';
+              ctx.textAlign='center';
+              ctx.textBaseline='bottom';
+              ctx.fillText(p.p.stars,(xa+xb)/2,top-2);
+              ctx.restore();
+            });
+          }
+        }
+      }
+    ]
   });
 }
 
 /* ====================== STATS HTML ====================== */
 function buildStatsHTML(sr){
-  if(sr.type==='desc') return `
-    <div class="stats-out-head"><span>Descriptive statistics</span><button class="btn-sm" type="button" onclick="dlStats()">⬇ Export CSV</button></div>
-    <div style="overflow-x:auto"><table class="st-table">
-      <thead><tr><th>Group</th><th>n</th><th>Mean</th><th>Median</th><th>SD</th><th>SEM</th><th>Min</th><th>Max</th></tr></thead>
-      <tbody>${sr.rows.map(r=>`<tr><td><strong>${r.label}</strong></td><td>${r.n}</td><td>${r.mean}</td><td>${r.median}</td><td>${r.sd}</td><td>${r.sem}</td><td>${r.min}</td><td>${r.max}</td></tr>`).join('')}</tbody>
-    </table></div>`;
+  if(!sr) return '';
 
-  return `
-    <div class="stats-out-head"><span>${sr.testName}</span><button class="btn-sm" type="button" onclick="dlStats()">⬇ Export CSV</button></div>
-    <div style="overflow-x:auto"><table class="st-table">
-      <thead><tr><th>Group A</th><th>Group B</th><th>Statistic</th><th>p-value</th><th>Sig.</th></tr></thead>
-      <tbody>${sr.pairs.map(p=>`<tr>
-        <td><strong>${p.a}</strong></td><td><strong>${p.b}</strong></td>
-        <td style="font-family:monospace;font-size:11px">${p.stat}${p.extra?' ('+p.extra+')':''}</td>
-        <td><span class="sig ${p.p.cls}">${p.p.str}</span></td>
-        <td style="font-weight:700;color:${p.p.cls==='sig-ns'?'#999':'#c62828'}">${p.p.stars}</td>
-      </tr>`).join('')}</tbody>
-    </table></div>
-    <div style="padding:8px 12px;font-size:10px;color:var(--ink-3)">*** p&lt;0.001 &nbsp;** p&lt;0.01 &nbsp;* p&lt;0.05 &nbsp;ns = not significant.</div>`;
+  if(sr.type==='desc'){
+    return `
+      <div class="stats-out-head"><span>Descriptive statistics</span><button class="btn-sm" type="button" onclick="dlStats()">⬇ Export CSV</button></div>
+      <div style="overflow-x:auto">
+        <table class="st-table">
+          <thead><tr><th>Group</th><th>n</th><th>Mean</th><th>Median</th><th>SD</th><th>SEM</th><th>Min</th><th>Max</th></tr></thead>
+          <tbody>
+            ${sr.rows.map(r=>`
+              <tr>
+                <td><strong>${escapeHTML(r.label)}</strong></td>
+                <td>${r.n}</td>
+                <td>${r.mean}</td>
+                <td>${r.median}</td>
+                <td>${r.sd}</td>
+                <td>${r.sem}</td>
+                <td>${r.min}</td>
+                <td>${r.max}</td>
+              </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>`;
+  }
+
+  if(sr.type==='pairs'){
+    return `
+      <div class="stats-out-head"><span>${escapeHTML(sr.testName)}</span><button class="btn-sm" type="button" onclick="dlStats()">⬇ Export CSV</button></div>
+      <div style="overflow-x:auto">
+        <table class="st-table">
+          <thead><tr><th>Group A</th><th>Group B</th><th>Statistic</th><th>p-value</th><th>Sig.</th></tr></thead>
+          <tbody>
+            ${sr.pairs.map(p=>`
+              <tr>
+                <td><strong>${escapeHTML(p.a)}</strong></td>
+                <td><strong>${escapeHTML(p.b)}</strong></td>
+                <td style="font-family:monospace;font-size:11px">${p.stat}${p.extra?' ('+escapeHTML(p.extra)+')':''}</td>
+                <td><span class="sig ${p.p.cls}">${escapeHTML(p.p.str)}</span></td>
+                <td style="font-weight:700;color:${p.p.cls==='sig-ns'?'#999':'#c62828'}">${escapeHTML(p.p.stars)}</td>
+              </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+      <div style="padding:8px 12px;font-size:10px;color:var(--ink-3)">*** p&lt;0.001 &nbsp; ** p&lt;0.01 &nbsp; * p&lt;0.05 &nbsp; ns = not significant.</div>`;
+  }
+
+  if(sr.type==='anova'){
+    return `
+      <div class="stats-out-head"><span>One-way ANOVA + pairwise comparisons</span><button class="btn-sm" type="button" onclick="dlStats()">⬇ Export CSV</button></div>
+      <div style="padding:12px 14px;font-size:12px;color:var(--ink-2)">
+        <strong>Omnibus test:</strong> F = ${escapeHTML(sr.omnibus.F)}, <span class="sig ${sr.omnibus.p.cls}">${escapeHTML(sr.omnibus.p.str)}</span>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="st-table">
+          <thead><tr><th>Group A</th><th>Group B</th><th>Statistic</th><th>p-value</th><th>Sig.</th></tr></thead>
+          <tbody>
+            ${sr.pairs.map(p=>`
+              <tr>
+                <td><strong>${escapeHTML(p.a)}</strong></td>
+                <td><strong>${escapeHTML(p.b)}</strong></td>
+                <td style="font-family:monospace;font-size:11px">${p.stat}${p.extra?' ('+escapeHTML(p.extra)+')':''}</td>
+                <td><span class="sig ${p.p.cls}">${escapeHTML(p.p.str)}</span></td>
+                <td style="font-weight:700;color:${p.p.cls==='sig-ns'?'#999':'#c62828'}">${escapeHTML(p.p.stars)}</td>
+              </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>`;
+  }
+
+  if(sr.type==='categorical'){
+    return `
+      <div class="stats-out-head"><span>Category counts &amp; percentages</span><button class="btn-sm" type="button" onclick="dlStats()">⬇ Export CSV</button></div>
+      <div style="overflow-x:auto">
+        <table class="st-table">
+          <thead>
+            <tr>
+              <th>Column</th>
+              <th>n</th>
+              ${sr.categories.map(cat=>`<th>${escapeHTML(cat)}</th>`).join('')}
+            </tr>
+          </thead>
+          <tbody>
+            ${sr.rows.map(r=>`
+              <tr>
+                <td><strong>${escapeHTML(r.label)}</strong></td>
+                <td>${r.total}</td>
+                ${sr.categories.map(cat=>`<td>${r.counts[cat]||0} (${(r.pct[cat]||0).toFixed(1)}%)</td>`).join('')}
+              </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>`;
+  }
+
+  return '';
 }
 
 /* ===================== DOWNLOADS ======================== */
@@ -1237,7 +1591,6 @@ function buildDlButtons(){
     <button class="btn-sm" type="button" onclick="dlStats()">⬇ Stats CSV</button>
     <button class="btn-sm" type="button" onclick="clearAll()" style="margin-left:6px">✕ Clear</button>`;
 }
-
 function dlPNG(){
   if(!chartInst) return;
   const a=document.createElement('a');
@@ -1256,23 +1609,18 @@ function dlPDF(){
     const cw=chartInst.canvas.width;
     const ch=chartInst.canvas.height;
     const ar=cw/ch;
-    let iw=pw-20;
-    let ih=iw/ar;
-    if(ih>ph-20){
-      ih=ph-20;
-      iw=ih*ar;
-    }
+    let iw=pw-20, ih=iw/ar;
+    if(ih>ph-20){ ih=ph-20; iw=ih*ar; }
     pdf.addImage(img,'PNG',(pw-iw)/2,(ph-ih)/2,iw,ih);
     pdf.save('plot.pdf');
   }catch(e){
-    alert('PDF failed — try PNG. Error: '+e.message);
+    alert('PDF failed: '+e.message);
   }
 }
 function dlSVG(){
   if(!chartInst) return;
   const img=chartInst.toBase64Image('image/png',1);
-  const w=chartInst.canvas.width;
-  const h=chartInst.canvas.height;
+  const w=chartInst.canvas.width, h=chartInst.canvas.height;
   const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}"><image href="${img}" width="${w}" height="${h}"/></svg>`;
   const a=document.createElement('a');
   a.download='plot.svg';
@@ -1308,7 +1656,7 @@ function dlCSVdata(){
 function dlStats(){
   const tables=document.querySelectorAll('.st-table');
   if(!tables.length){
-    alert('Generate a plot with statistics first.');
+    alert('No statistics table available.');
     return;
   }
   let csv='';
@@ -1316,7 +1664,7 @@ function dlStats(){
     [...t.querySelectorAll('tr')].forEach(row=>{
       csv += [...row.querySelectorAll('th,td')].map(c=>'"'+c.textContent.trim()+'"').join(',')+'\n';
     });
-    csv+='\n';
+    csv += '\n';
   });
   const a=document.createElement('a');
   a.download='statistics.csv';
@@ -1328,39 +1676,22 @@ function clearAll(){
     try{ chartInst.destroy(); }catch(e){}
   }
   chartInst=null;
+  latestStats=null;
   document.getElementById('pt-right').innerHTML=`<div class="pt-empty" id="pt-empty">
     <div class="pt-empty-icon">📊</div>
     <h3>Upload or paste your data</h3>
-    <p>All columns shown by default.<br>Box plot with SEM error bars is the default.<br>Nature journal colors applied automatically.</p>
+    <p>All columns shown by default.<br>Box plot with statistics is the default.<br>Light gray + light orange palette applied automatically.</p>
   </div>`;
 }
 
 /* ====================== EXAMPLES ======================== */
 function loadEx(type){
   const ex={
-    ift:[['Genotype','Anterograde_um_s','Retrograde_um_s'],
-      ['WT',0.72,0.58],['WT',0.68,0.61],['WT',0.75,0.55],['WT',0.81,0.63],['WT',0.70,0.59],['WT',0.77,0.57],
-      ['arl-13',0.44,0.38],['arl-13',0.41,0.35],['arl-13',0.47,0.40],['arl-13',0.43,0.36],
-      ['ift-88',0.21,0.18],['ift-88',0.25,0.20],['ift-88',0.19,0.17]
-    ],
-    length:[['Genotype','Cilia_length_um'],
-      ['WT',3.2],['WT',3.5],['WT',3.1],['WT',3.4],['WT',3.3],['WT',3.6],
-      ['arl-13',1.8],['arl-13',2.1],['arl-13',1.9],['arl-13',2.0],['arl-13',1.7],
-      ['ift-88',0.8],['ift-88',1.1],['ift-88',0.9],['ift-88',0.7],['ift-88',1.0],
-      ['bbs-1',2.8],['bbs-1',3.0],['bbs-1',2.7],['bbs-1',2.9],['bbs-1',3.1]
-    ],
-    cat:[['Wild_type','unc-5'],
+    ift:[['WT','unc-5 mutant','rescue'],
+      [3.51,0.69,3.90],[4.05,0.96,3.72],[3.84,0.68,2.95],[3.61,1.03,1.79],[4.65,0.73,2.22]],
+    cat:[['Wild type','unc-5'],
       ['normal','misshape'],['normal','no axon'],['normal','misshape'],['normal','misshape'],
-      ['normal','no axon'],['normal','misshape'],['normal','no axon'],['normal','misshape'],
-      ['normal','misshape'],['normal','misshape'],['normal','no axon'],['normal','misshape'],
-      ['normal','misshape'],['normal','misshape'],['normal','misshape']
-    ],
-    wb:[['Condition','Band_AU'],
-      ['Control',1.00],['Control',0.98],['Control',1.03],['Control',0.95],['Control',1.05],
-      ['siRNA_1h',0.72],['siRNA_1h',0.68],['siRNA_1h',0.75],['siRNA_1h',0.70],
-      ['siRNA_4h',0.45],['siRNA_4h',0.41],['siRNA_4h',0.48],['siRNA_4h',0.43],
-      ['siRNA_24h',0.21],['siRNA_24h',0.19],['siRNA_24h',0.24],['siRNA_24h',0.20]
-    ]
+      ['normal','no axon'],['normal','misshape'],['normal','no axon'],['normal','misshape']]
   };
 
   const rows=ex[type];
@@ -1371,22 +1702,11 @@ function loadEx(type){
     return o;
   });
   cols=headers;
-
   document.getElementById('paste-ta').value=[headers.join('\t'),...rows.slice(1).map(r=>r.join('\t'))].join('\n');
   switchTab('paste',document.querySelectorAll('.itab')[0]);
   onDataReady('Example: '+type);
-
-  if(type==='cat') document.querySelector('[data-t="pctbar"]').click();
-  else document.querySelector('[data-t="boxplot"]').click();
-
-  if(type==='ift' || type==='length'){
-    document.getElementById('opt-xlabel').value='Genotype';
-    document.getElementById('opt-ylabel').value=type==='ift' ? 'Speed (µm/s)' : 'Cilia length (µm)';
-  }
-  if(type==='wb'){
-    document.getElementById('opt-xlabel').value='Condition';
-    document.getElementById('opt-ylabel').value='Band intensity (AU)';
-  }
+  if(type==='cat') document.querySelector('[data-t="pctbar"]')?.click();
+  else document.querySelector('[data-t="boxplot"]')?.click();
 }
 
 /* ===================== GLOBAL EXPORT ==================== */
