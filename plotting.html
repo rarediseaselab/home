@@ -380,7 +380,9 @@ var PT = {
   statTest:  'none',   // none|ttest|welch|mwu|anova|desc
   palette:   'bio',    // bio|nature|science|cbsafe|pastel
   chart:     null,
-  lastSr:    null
+  lastSr:    null,
+  lastYCols: [],       // saved for re-render on color change
+  lastLabels:[]        // saved labels
 };
 
 /* ---- PALETTES ---- */
@@ -844,11 +846,19 @@ function generate() {
   if (!PT.data.length) return;
   destroyChart();
 
+  /* For categorical re-renders (color changes), col-list checkboxes are replaced
+     by category color pickers, so fall back to the saved columns. */
   var yCols = getSelectedCols();
-  if (!yCols.length) { alert('Select at least one column.'); return; }
+  if (!yCols.length) {
+    if (PT.lastYCols.length) { yCols = PT.lastYCols; }
+    else { alert('Select at least one column.'); return; }
+  }
   var labels = yCols.map(function(_,i){
-    var e=el('lbl-'+i); return (e&&e.value) ? e.value : yCols[i];
+    var e=el('lbl-'+i); return (e&&e.value) ? e.value : PT.lastLabels[i] || yCols[i];
   });
+  /* Save for future re-renders */
+  PT.lastYCols   = yCols;
+  PT.lastLabels  = labels;
 
   /* rebuild right panel */
   var right=el('plot-right');
