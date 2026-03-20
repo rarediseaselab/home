@@ -347,7 +347,7 @@ ift-88&#9;0.91&#9;1.30"></textarea>
             <button class="sc" data-s="anova" onclick="setStat('anova',this)">ANOVA</button>
           </div>
           <div style="font-size:10px;color:var(--ink-3);margin-top:7px" id="stat-hint">Select a test to apply it.</div>
-          <div class="tog-row" style="margin-top:10px"><span>Show p-values on plot</span><div class="tog" id="tog-sigplot" onclick="this.classList.toggle('on')"></div></div>
+          <div class="tog-row" style="margin-top:10px"><span>Show p-values on plot</span><div class="tog on" id="tog-sigplot" onclick="this.classList.toggle('on')"></div></div>
         </div>
       </div>
 
@@ -546,7 +546,11 @@ function buildSeriesClrs(){
   seriesClrs=yCols.map((_,i)=>pal[i%pal.length]);
   document.getElementById('series-clrs').innerHTML=yCols.map((c,i)=>`
     <div class="series-row">
-      <input type="color" value="${seriesClrs[i]}" id="sc${i}" onchange="seriesClrs[${i}]=this.value">
+      <input type="color" value="${seriesClrs[i]}" id="sc${i}"
+        onchange="seriesClrs[${i}]=this.value; if(chartInst && chartInst.data){
+          chartInst.data.datasets.forEach(ds=>{ if(ds._colIdx===undefined) return; });
+          chartInst.update();
+        }">
       <input class="series-lbl" type="text" value="${c}" id="sl${i}">
     </div>`).join('');
 }
@@ -734,70 +738,73 @@ function doMainChart(yCols,labels,colors,xVals,xCol,isCatX,xlabel,ylabel,showErr
 /* ═══════════════════════ BOX PLOT ══════════════════════════ */
 /* ═══════════════ CATEGORICAL CHART ═══════════════════════ */
 function doCategoricalChart(yCols,labels,colors,xlabel,ylabel,showLeg,showGrid,fs,axisLW,barWidthPct){
-  // Gather all unique category values across all columns (trim whitespace)
+
+  // Gather unique category values, trim all whitespace
   const allCats = [...new Set(
-    data.flatMap(r=> yCols.map(yc=> String(r[yc]||'').trim()) )
+    data.flatMap(r=> yCols.map(yc=> String(r[yc]||'').trim()))
   )].filter(v=>v!=='');
 
-  // For each column: count each category → convert to %
+  // Count per column
   const colCounts = yCols.map(yc=>{
-    const vals = data.map(r=>String(r[yc]||'').trim()).filter(v=>v!=='');
+    const vals  = data.map(r=>String(r[yc]||'').trim()).filter(v=>v!=='');
     const total = vals.length;
-    const counts = {};
-    allCats.forEach(cat=>{ counts[cat] = vals.filter(v=>v===cat).length; });
-    const pct = {};
-    allCats.forEach(cat=>{ pct[cat] = total ? Math.round(counts[cat]/total*1000)/10 : 0; });
-    return { pct, total, counts };
+    const counts={}, pct={};
+    allCats.forEach(cat=>{
+      counts[cat] = vals.filter(v=>v===cat).length;
+      pct[cat]    = total ? Math.round(counts[cat]/total*1000)/10 : 0;
+    });
+    return {pct, total, counts};
   });
 
-  // Nature-style category colors (distinct from column colors)
-  const catPalette = ['#555555','#6baed6','#9e9ac8','#74c476','#fd8d3c','#e377c2','#bcbd22','#17becf','#999999','#393b79'];
+  // Nature-friendly palette for categories
+  const catPal = ['#555555','#6baed6','#9e9ac8','#74c476','#fd8d3c','#de77ae','#bcbd22','#17becf','#aec7e8','#ffbb78'];
 
-  // Build Chart.js stacked bar datasets — one dataset per category value
+  // One dataset per category value
   const datasets = allCats.map((cat,ci)=>({
     label           : cat,
     data            : colCounts.map(cc=>cc.pct[cat]||0),
-    backgroundColor : catPalette[ci % catPalette.length],
-    borderColor     : '#fff',
-    borderWidth     : 1,
+    backgroundColor : catPal[ci % catPal.length],
+    borderColor     : '#ffffff',
+    borderWidth     : 1.5,
   }));
 
-  // Build a summary table to show below chart
-  const summaryRows = yCols.map((yc,i)=>{
-    const cc = colCounts[i];
-    return `<tr><td><strong>${labels[i]}</strong></td><td>${cc.total}</td>${
-      allCats.map(cat=>`<td>${cc.counts[cat]||0} (${cc.pct[cat]||0}%)</td>`).join('')
-    }</tr>`;
-  }).join('');
+  const ctx2 = document.getElementById('the-chart').getContext('2d');
 
-  const ctx = document.getElementById('the-chart').getContext('2d');
-
-  Chart.register({
-    id:'whiteBg2',
+  // Safe white-bg plugin with unique id
+  const wbPlugin = {
+    id:'catWhiteBg',
     beforeDraw(chart){
-      const {ctx:c2,chartArea:{left,top,width,height}}=chart;
-      c2.save();c2.fillStyle='#ffffff';c2.fillRect(left,top,width,height);c2.restore();
+      const {ctx:cc,chartArea}=chart;
+      if(!chartArea)return;
+      cc.save();cc.fillStyle='#ffffff';
+      cc.fillRect(chartArea.left,chartArea.top,chartArea.width,chartArea.height);
+      cc.restore();
     }
-  });
+  };
 
-  chartInst = new Chart(ctx, {
-    type : 'bar',
-    data : { labels: labels, datasets },
+  chartInst = new Chart(ctx2, {
+    type    : 'bar',
+    data    : { labels, datasets },
     options : {
       responsive : true,
+      layout     : { padding:{ top:16, right: showLeg ? 160 : 20, bottom:10, left:10 } },
       plugins    : {
-        legend  : {
-          display  : showLeg,
+        legend : {
+          display  : true,           // always ON for categorical
           position : 'right',
-          labels   : { font:{size:fs-1,family:'Inter,sans-serif'}, boxWidth:14, padding:10 },
+          labels   : {
+            font     : { size:fs-1, family:'Inter,sans-serif' },
+            boxWidth : 14,
+            padding  : 10,
+            color    : '#333',
+          },
         },
         tooltip : {
-          callbacks : {
-            label : ctx2=>`${ctx2.dataset.label}: ${ctx2.parsed.y.toFixed(1)}%`
+          callbacks:{
+            label: ctx3=>`${ctx3.dataset.label}: ${ctx3.parsed.y.toFixed(1)}%`
           }
         },
       },
-      layout : { padding:{ top:20, right:showLeg?10:20, bottom:10, left:10 } },
       scales : {
         x : {
           stacked : true,
@@ -807,45 +814,47 @@ function doCategoricalChart(yCols,labels,colors,xlabel,ylabel,showLeg,showGrid,f
           title   : { display:!!xlabel, text:xlabel, font:{size:fs,family:'Inter,sans-serif'}, color:'#333' },
         },
         y : {
-          stacked : true,
-          min     : 0,
-          max     : 100,
-          border  : { display:true, color:'#333', width:axisLW },
-          grid    : { display:showGrid, color:'rgba(0,0,0,0.08)' },
-          ticks   : {
-            font     : { size:fs-1, family:'Inter,sans-serif' },
-            color    : '#333',
-            callback : v=>v+'%',
-            stepSize : 25,
+          stacked  : true,
+          min      : 0,
+          max      : 100,
+          border   : { display:true, color:'#333', width:axisLW },
+          grid     : { display:showGrid, color:'rgba(0,0,0,0.08)', drawBorder:false },
+          ticks    : {
+            font:{size:fs-1,family:'Inter,sans-serif'}, color:'#333',
+            callback : v=>v+'%', stepSize:25,
           },
-          title : { display:true, text:ylabel||'Percentage (%)', font:{size:fs,family:'Inter,sans-serif'}, color:'#333' },
+          title : {
+            display:true, text: ylabel||'Percentage (%)',
+            font:{size:fs,family:'Inter,sans-serif'}, color:'#333',
+          },
         },
       },
       barPercentage      : barWidthPct,
-      categoryPercentage : 0.95,
+      categoryPercentage : 0.90,
       animation          : { duration:400 },
     },
+    plugins:[wbPlugin],
   });
 
-  // Append summary table
-  const right = document.getElementById('pt-right');
+  // Summary table
+  const right2 = document.getElementById('pt-right');
   const tbl = document.createElement('div');
-  tbl.className = 'stats-out';
-  tbl.innerHTML = `
+  tbl.className='stats-out';
+  tbl.innerHTML=`
     <div class="stats-out-head">
       <span>Category counts &amp; percentages</span>
       <button class="btn-sm" onclick="dlStats()">⬇ Export CSV</button>
     </div>
     <div style="overflow-x:auto">
       <table class="st-table">
-        <thead><tr>
-          <th>Column</th><th>Total n</th>
-          ${allCats.map(cat=>`<th>${cat}</th>`).join('')}
-        </tr></thead>
-        <tbody>${summaryRows}</tbody>
+        <thead><tr><th>Column</th><th>n</th>${allCats.map(cat=>`<th>${cat}</th>`).join('')}</tr></thead>
+        <tbody>${yCols.map((yc,i)=>{
+          const cc=colCounts[i];
+          return `<tr><td><strong>${labels[i]}</strong></td><td>${cc.total}</td>${allCats.map(cat=>`<td>${cc.counts[cat]||0} (${(cc.pct[cat]||0).toFixed(1)}%)</td>`).join('')}</tr>`;
+        }).join('')}</tbody>
       </table>
     </div>`;
-  right.appendChild(tbl);
+  right2.appendChild(tbl);
 }
 
 function doBoxPlot(groups,colors,xlabel,ylabel,showLeg,showGrid,showPts,fs,showSig,sr,axisLW,barWidthPct,ptSize){
@@ -859,70 +868,79 @@ function doBoxPlot(groups,colors,xlabel,ylabel,showLeg,showGrid,showPts,fs,showS
   const yMax      = Math.max(...allVals);
   const yRange    = yMax - yMin || 1;
 
+  // Significance pairs that have a non-ns result
+  const sigPairs = (showSig && sr && sr.type==='pairs')
+    ? sr.pairs.filter(p=>p.p.stars && p.p.stars!=='ns')
+    : [];
+
+  const wbPlugin = {
+    id:'boxWhiteBg',
+    beforeDraw(chart){
+      const {ctx:cc,chartArea}=chart;
+      if(!chartArea)return;
+      cc.save();cc.fillStyle='#ffffff';
+      cc.fillRect(chartArea.left,chartArea.top,chartArea.width,chartArea.height);
+      cc.restore();
+    }
+  };
+
   const boxPlugin = {id:'bp', afterDatasetsDraw(chart){
     const {ctx, chartArea, scales:{x,y}} = chart;
+    // Read colors fresh from DOM on every draw so color picker changes apply
+    const liveColors = groups.map((_,i)=>document.getElementById('sc'+i)?.value || colors[i]);
     const slotW = chartArea.width / groups.length;
     const bw    = slotW * barWidthPct;
 
-    groups.forEach((g,i)=>{
-      const xp  = x.getPixelForValue(i);
+    groups.forEach((g,gi)=>{
+      const xp  = x.getPixelForValue(gi);
       const v   = g.values;
-      const clr = colors[g.si % colors.length];
+      const clr = liveColors[gi];
 
-      const stats = {
-        min  : Math.min(...v),
-        q1   : $q1(v),
-        med  : $med(v),
-        q3   : $q3(v),
-        max  : Math.max(...v),
-        mean : $m(v),
-        sem  : $sem(v),
-      };
+      const mean  = $m(v);
+      const sem   = $sem(v);
+      const med   = $med(v);
+      const q1    = $q1(v);
+      const q3    = $q3(v);
+      const vmin  = Math.min(...v);
+      const vmax  = Math.max(...v);
 
-      const yQ1   = y.getPixelForValue(stats.q1);
-      const yQ3   = y.getPixelForValue(stats.q3);
-      const yMed  = y.getPixelForValue(stats.med);
-      const yMinP = y.getPixelForValue(stats.min);
-      const yMaxP = y.getPixelForValue(stats.max);
-      const yMean = y.getPixelForValue(stats.mean);
-      const ySemT = y.getPixelForValue(stats.mean + stats.sem);
-      const ySemB = y.getPixelForValue(stats.mean - stats.sem);
+      const yMean  = y.getPixelForValue(mean);
+      const ySemT  = y.getPixelForValue(mean + sem);
+      const ySemB  = y.getPixelForValue(mean - sem);
+      const yMed   = y.getPixelForValue(med);
+      const yQ1    = y.getPixelForValue(q1);
+      const yQ3    = y.getPixelForValue(q3);
+      const yMinP  = y.getPixelForValue(vmin);
+      const yMaxP  = y.getPixelForValue(vmax);
+      const yBase  = y.getPixelForValue(Math.max(y.min, 0));
 
       ctx.save();
 
-      /* ── Bar fill (solid, like reference) ── */
+      // ── Solid bar from baseline to mean ──
       ctx.fillStyle   = clr;
       ctx.strokeStyle = clr;
       ctx.lineWidth   = 1;
+      ctx.fillRect(xp - bw/2, yMean, bw, yBase - yMean);
+      ctx.strokeRect(xp - bw/2, yMean, bw, yBase - yMean);
 
-      /* Draw bar from y=0 (or yMin) up to mean */
-      const yZero = y.getPixelForValue(Math.max(0, stats.min));
-      const yTop  = yMean;
-      ctx.fillRect(xp - bw/2, yTop, bw, yZero - yTop);
-
-      /* Bar border */
-      ctx.strokeRect(xp - bw/2, yTop, bw, yZero - yTop);
-
-      /* ── SEM error bar ── */
-      ctx.strokeStyle = '#333';
-      ctx.lineWidth   = axisLW * 0.75;
+      // ── SEM error bars ──
+      ctx.strokeStyle = '#222';
+      ctx.lineWidth   = axisLW * 0.65;
       ctx.beginPath(); ctx.moveTo(xp, ySemT); ctx.lineTo(xp, ySemB); ctx.stroke();
-      /* Caps */
-      const capW = bw * 0.25;
+      const cap = bw * 0.22;
       [ySemT, ySemB].forEach(yy=>{
-        ctx.beginPath(); ctx.moveTo(xp - capW, yy); ctx.lineTo(xp + capW, yy); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(xp-cap, yy); ctx.lineTo(xp+cap, yy); ctx.stroke();
       });
 
-      /* ── Individual data points (open circles, like reference) ── */
+      // ── Individual data points (open circles) ──
       if(showPts){
         v.forEach(val=>{
-          const jitter = (Math.random() - 0.5) * bw * 0.55;
-          const py     = y.getPixelForValue(val);
+          const jitter = (Math.random()-0.5) * bw * 0.5;
           ctx.beginPath();
-          ctx.arc(xp + jitter, py, ptSize, 0, Math.PI*2);
+          ctx.arc(xp+jitter, y.getPixelForValue(val), ptSize, 0, Math.PI*2);
+          ctx.fillStyle   = 'rgba(255,255,255,0.75)';
           ctx.strokeStyle = clr;
-          ctx.lineWidth   = 1.2;
-          ctx.fillStyle   = 'rgba(255,255,255,0.7)';
+          ctx.lineWidth   = 1.3;
           ctx.fill();
           ctx.stroke();
         });
@@ -931,301 +949,99 @@ function doBoxPlot(groups,colors,xlabel,ylabel,showLeg,showGrid,showPts,fs,showS
       ctx.restore();
     });
 
-    /* ── Significance brackets ── */
-    if(showSig && sr && sr.type==='pairs'){
-      const bracket_pairs = sr.pairs.filter(p=>p.p.stars && p.p.stars!=='ns');
-      bracket_pairs.forEach((pair,pi)=>{
+    // ── Significance brackets above bars ──
+    if(sigPairs.length){
+      const usedLevels = {};
+      sigPairs.forEach((pair)=>{
         const ai = grpLabels.indexOf(pair.a);
         const bi = grpLabels.indexOf(pair.b);
-        if(ai<0 || bi<0) return;
-        const xa   = x.getPixelForValue(ai);
-        const xb   = x.getPixelForValue(bi);
-        const topY = chartArea.top + 8 + pi * 22;
+        if(ai<0||bi<0) return;
+        const xa = x.getPixelForValue(ai);
+        const xb = x.getPixelForValue(bi);
+        // Stack brackets so they don't overlap
+        const key = `${Math.min(ai,bi)}-${Math.max(ai,bi)}`;
+        const level = usedLevels[key] = (usedLevels[key]||0);
+        usedLevels[key]++;
+        const topY = chartArea.top + 6 + level * 22;
         ctx.save();
         ctx.strokeStyle = '#333';
-        ctx.lineWidth   = 1.2;
-        ctx.font        = `bold ${fs}px Inter, sans-serif`;
+        ctx.lineWidth   = 1.3;
+        ctx.font        = `bold ${fs}px Inter,sans-serif`;
         ctx.fillStyle   = '#333';
         ctx.textAlign   = 'center';
-        /* L-shaped bracket */
+        ctx.textBaseline= 'bottom';
         ctx.beginPath();
-        ctx.moveTo(xa, topY + 8);
-        ctx.lineTo(xa, topY);
-        ctx.lineTo(xb, topY);
-        ctx.lineTo(xb, topY + 8);
+        ctx.moveTo(xa, topY+7); ctx.lineTo(xa, topY);
+        ctx.lineTo(xb, topY);   ctx.lineTo(xb, topY+7);
         ctx.stroke();
-        ctx.fillText(pair.p.stars, (xa+xb)/2, topY - 3);
+        ctx.fillText(pair.p.stars, (xa+xb)/2, topY-1);
         ctx.restore();
       });
     }
   }};
 
-  /* ── Y-axis range: start at 0 or slightly below min, add space above ── */
-  const yPadTop    = yRange * (showSig ? 0.30 : 0.15);
-  const yAxisMin   = Math.min(0, yMin - yRange * 0.05);
+  // Y padding: extra space at top for significance brackets
+  const bracketPad = sigPairs.length * 0.12;
+  const yPadTop    = yRange * (0.15 + bracketPad);
+  const yAxisMin   = Math.min(0, yMin - yRange*0.03);
   const yAxisMax   = yMax + yPadTop;
 
   const ctx = document.getElementById('the-chart').getContext('2d');
-
-  /* White canvas background */
-  Chart.register({
-    id: 'whiteBg',
-    beforeDraw(chart){
-      const {ctx:c2, chartArea:{left,top,width,height}} = chart;
-      c2.save(); c2.fillStyle='#ffffff'; c2.fillRect(left,top,width,height); c2.restore();
-    }
-  });
 
   chartInst = new Chart(ctx, {
     type : 'bar',
     data : {
       labels   : grpLabels,
-      datasets : [{
-        data            : groups.map(()=>0),
-        backgroundColor : 'transparent',
-        borderColor     : 'transparent',
-      }]
+      datasets : [{ data:groups.map(()=>0), backgroundColor:'transparent', borderColor:'transparent' }]
     },
     options : {
-      responsive  : true,
-      layout      : { padding: { top: showSig ? 40 : 20, right: 20, bottom: 10, left: 10 } },
-      plugins     : {
-        legend : { display: false },
-        tooltip: { enabled: false },
-      },
+      responsive : true,
+      layout     : { padding:{ top: sigPairs.length ? 50 : 20, right:20, bottom:10, left:10 } },
+      plugins    : { legend:{ display:false }, tooltip:{ enabled:false } },
       scales : {
         x : {
-          border : { display: true, color: '#333', width: axisLW },
-          grid   : { display: false, drawTicks: true, tickLength: 5, color: '#ccc' },
-          ticks  : {
-            font          : { size: fs-1, family: 'Inter, sans-serif' },
-            color         : '#333',
-            maxRotation   : 45,
-            minRotation   : 30,
-          },
-          title  : {
-            display : !!xlabel,
-            text    : xlabel,
-            font    : { size: fs, family: 'Inter, sans-serif' },
-            color   : '#333',
-          },
+          border : { display:true, color:'#333', width:axisLW },
+          grid   : { display:false, drawTicks:true, tickLength:5 },
+          ticks  : { font:{size:Math.max(fs-2,10),family:'Inter,sans-serif'}, color:'#333', maxRotation:45, minRotation:30 },
+          title  : { display:!!xlabel, text:xlabel, font:{size:fs,family:'Inter,sans-serif'}, color:'#333' },
         },
         y : {
-          border : { display: true, color: '#333', width: axisLW },
-          grid   : {
-            display     : showGrid,
-            color       : 'rgba(0,0,0,0.08)',
-            drawTicks   : true,
-            tickLength  : 5,
-          },
+          border : { display:true, color:'#333', width:axisLW },
+          grid   : { display:showGrid, color:'rgba(0,0,0,0.07)', drawBorder:false, tickLength:5 },
           min    : yAxisMin,
           max    : yAxisMax,
-          ticks  : {
-            font  : { size: fs-1, family: 'Inter, sans-serif' },
-            color : '#333',
-          },
-          title  : {
-            display : !!ylabel,
-            text    : ylabel,
-            font    : { size: fs, family: 'Inter, sans-serif' },
-            color   : '#333',
-          },
+          ticks  : { font:{size:fs-1,family:'Inter,sans-serif'}, color:'#333' },
+          title  : { display:!!ylabel, text:ylabel, font:{size:fs,family:'Inter,sans-serif'}, color:'#333' },
         },
       },
-      animation : { duration: 400 },
-      barPercentage     : barWidthPct,
-      categoryPercentage: 0.95,
+      animation          : { duration:400 },
+      barPercentage      : barWidthPct,
+      categoryPercentage : 0.95,
     },
-    plugins : [boxPlugin],
+    plugins:[wbPlugin, boxPlugin],
   });
 }
 
-function doColumnChart(groups,colors,xlabel,ylabel,showLeg,showGrid,fs){
-  // Bar: mean per column; Scatter: all raw values; Line: means connected
-  const type=plotType==='line'?'line':plotType==='scatter'?'scatter':'bar';
-  const datasets=groups.map((g,i)=>{
-    const m=$m(g.values),s=$sem(g.values);
-    return{
-      label:g.label,
-      data:type==='scatter'?g.values.map((v,j)=>({x:i+(Math.random()-.5)*0.3,y:v})):[m],
-      errors:[s],
-      backgroundColor:colors[i]+'99',
-      borderColor:colors[i],
-      borderWidth:1.5,
-      pointRadius:5,pointBackgroundColor:colors[i],
-      fill:false,tension:0.3,
-    };
-  });
-
-  const errPlugin={id:'err2',afterDatasetsDraw(chart){
-    const{ctx,scales:{x,y}}=chart;
-    chart.data.datasets.forEach((ds,di)=>{
-      if(!ds.errors)return;
-      const meta=chart.getDatasetMeta(di);
-      ds.errors.forEach((e,ji)=>{
-        if(!e||!meta.data[ji])return;
-        const xp=meta.data[ji].x,yv=+chart.data.datasets[di].data[ji];
-        const yt=y.getPixelForValue(yv+e),yb=y.getPixelForValue(yv-e);
-        ctx.save();ctx.strokeStyle=ds.borderColor;ctx.lineWidth=1.5;
-        ctx.beginPath();ctx.moveTo(xp,yt);ctx.lineTo(xp,yb);ctx.stroke();
-        [yt,yb].forEach(yy=>{ctx.beginPath();ctx.moveTo(xp-5,yy);ctx.lineTo(xp+5,yy);ctx.stroke();});
-        ctx.restore();
-      });
-    });
-  }};
-
-  const labels=groups.map(g=>g.label);
-  const ctx=document.getElementById('the-chart').getContext('2d');
-  chartInst=new Chart(ctx,{
-    type,
-    data:{labels:type==='scatter'?undefined:labels,datasets},
-    options:{
-      responsive:true,
-      plugins:{legend:{display:showLeg,labels:{font:{size:fs,family:'Inter'}}}},
-      scales:{
-        x:{title:{display:!!xlabel,text:xlabel,font:{size:fs,family:'Inter'}},grid:{display:showGrid,color:'rgba(0,0,0,.05)'},ticks:{font:{size:fs-1,family:'Inter'}}},
-        y:{title:{display:!!ylabel,text:ylabel,font:{size:fs,family:'Inter'}},grid:{display:showGrid,color:'rgba(0,0,0,.05)'},ticks:{font:{size:fs-1,family:'Inter'}}},
-      },animation:{duration:450}},
-    plugins:[errPlugin]});
-}
-
-/* ═══════════════════════ STATS HTML ════════════════════════ */
-function buildStatsHTML(sr){
-  if(sr.type==='desc') return`
-    <div class="stats-out-head"><span>Descriptive statistics</span><button class="btn-sm" onclick="dlStats()">⬇ Export CSV</button></div>
-    <div style="overflow-x:auto"><table class="st-table">
-      <thead><tr><th>Group</th><th>n</th><th>Mean</th><th>Median</th><th>SD</th><th>SEM</th><th>Min</th><th>Max</th></tr></thead>
-      <tbody>${sr.rows.map(r=>`<tr><td><strong>${r.label}</strong></td><td>${r.n}</td><td>${r.mean}</td><td>${r.median}</td><td>${r.sd}</td><td>${r.sem}</td><td>${r.min}</td><td>${r.max}</td></tr>`).join('')}</tbody>
-    </table></div>`;
-  return`
-    <div class="stats-out-head"><span>${sr.testName}</span><button class="btn-sm" onclick="dlStats()">⬇ Export CSV</button></div>
-    <div style="overflow-x:auto"><table class="st-table">
-      <thead><tr><th>Group A</th><th>Group B</th><th>Statistic</th><th>p-value</th><th>Significance</th></tr></thead>
-      <tbody>${sr.pairs.map(p=>`<tr>
-        <td><strong>${p.a}</strong></td><td><strong>${p.b}</strong></td>
-        <td style="font-family:monospace;font-size:11px">${p.stat}${p.extra?' ('+p.extra+')':''}</td>
-        <td><span class="sig ${p.p.cls}">${p.p.str}</span></td>
-        <td style="font-weight:700;color:${p.p.cls==='sig-ns'?'#999':'#c62828'}">${p.p.stars}</td>
-      </tr>`).join('')}</tbody>
-    </table></div>
-    <div style="padding:8px 12px;font-size:10px;color:var(--ink-3)">*** p&lt;0.001 &nbsp;** p&lt;0.01 &nbsp;* p&lt;0.05 &nbsp;ns = not significant. Always verify statistical assumptions before publication.</div>`;
-}
-
-/* ═══════════════════════ DOWNLOADS ════════════════════════ */
-function buildDlButtons(){
-  const row=document.getElementById('dl-row');if(!row)return;
-  row.innerHTML=`
-    <button class="btn-sm accent" onclick="dlPNG()">⬇ PNG</button>
-    <button class="btn-sm accent" onclick="dlPDF()">⬇ PDF</button>
-    <button class="btn-sm" onclick="dlSVG()">⬇ SVG</button>
-    <button class="btn-sm" onclick="dlTIFF()">⬇ TIFF</button>
-    <button class="btn-sm" onclick="dlCSVdata()">⬇ CSV</button>
-    <button class="btn-sm" onclick="clearAll()" style="margin-left:4px">✕ Clear</button>`;
-}
-window.dlPNG=function(){if(!chartInst)return;const a=document.createElement('a');a.download='plot.png';a.href=chartInst.toBase64Image('image/png',1);a.click();}
-window.dlPDF=function(){
-  if(!chartInst)return;
-  try{
-    const{jsPDF}=window.jspdf;
-    const pdf=new jsPDF({orientation:'landscape',unit:'mm',format:'a4'});
-    const img=chartInst.toBase64Image('image/png',1);
-    const pw=pdf.internal.pageSize.getWidth(),ph=pdf.internal.pageSize.getHeight();
-    const cw=chartInst.canvas.width,ch=chartInst.canvas.height;
-    const ar=cw/ch;
-    let iw=pw-20,ih=iw/ar;
-    if(ih>ph-20){ih=ph-20;iw=ih*ar;}
-    pdf.addImage(img,'PNG',(pw-iw)/2,(ph-ih)/2,iw,ih);
-    pdf.save('plot.pdf');
-  }catch(e){alert('PDF export requires the jsPDF library to load. Try PNG instead.');}
-}
-window.dlSVG=function(){
-  if(!chartInst)return;
-  const img=chartInst.toBase64Image('image/png',1);
-  const w=chartInst.canvas.width,h=chartInst.canvas.height;
-  const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}"><image href="${img}" width="${w}" height="${h}"/></svg>`;
-  const a=document.createElement('a');a.download='plot.svg';a.href=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml'}));a.click();
-}
-window.dlTIFF=function(){
-  // TIFF via high-res PNG (researchers can convert; true TIFF needs a C library)
-  if(!chartInst)return;
-  // Render at 3× resolution for print quality
-  const canvas=chartInst.canvas;
-  const hires=document.createElement('canvas');
-  hires.width=canvas.width*3;hires.height=canvas.height*3;
-  const ctx=hires.getContext('2d');
-  ctx.scale(3,3);ctx.drawImage(canvas,0,0);
-  const a=document.createElement('a');a.download='plot_hires.png';a.href=hires.toDataURL('image/png',1);a.click();
-}
-window.dlCSVdata=function(){
-  if(!data.length)return;
-  const c=Object.keys(data[0]);
-  let csv=c.join(',')+'\n';
-  data.forEach(r=>{csv+=c.map(col=>JSON.stringify(String(r[col]))).join(',')+'\n';});
-  const a=document.createElement('a');a.download='data.csv';a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.click();
-}
-window.dlStats=function(){
-  const tables=document.querySelectorAll('.st-table');
-  if(!tables.length){alert('Run a statistical test first.');return;}
-  let csv='';
-  tables.forEach(t=>{
-    [...t.querySelectorAll('tr')].forEach(row=>{
-      csv+=[...row.querySelectorAll('th,td')].map(c=>'"'+c.textContent.trim()+'"').join(',')+'\n';
-    });
-    csv+='\n';
-  });
-  const a=document.createElement('a');a.download='statistics.csv';a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.click();
-}
-window.clearAll=function(){
-  if(chartInst){try{chartInst.destroy();}catch(e){}}chartInst=null;
-  document.getElementById('pt-right').innerHTML=`<div class="pt-empty" id="pt-empty"><div class="pt-empty-icon">📊</div><h3>Upload or paste your data</h3><p>All columns are shown by default.<br>Box plot with SEM error bars is the default chart.<br>Nature journal colors applied automatically.</p></div>`;
-}
-
-/* ═════════════════════ EXAMPLES ═══════════════════════════ */
-window.loadEx=function(type){
-  const ex={
-    ift:[['Genotype','Anterograde_um_s','Retrograde_um_s'],
-      ['WT',0.72,0.58],['WT',0.68,0.61],['WT',0.75,0.55],['WT',0.81,0.63],['WT',0.70,0.59],['WT',0.77,0.57],
-      ['arl-13',0.44,0.38],['arl-13',0.41,0.35],['arl-13',0.47,0.40],['arl-13',0.43,0.36],
-      ['ift-88',0.21,0.18],['ift-88',0.25,0.20],['ift-88',0.19,0.17],
-    ],
-    length:[['Genotype','Cilia_length_um'],
-      ['WT',3.2],['WT',3.5],['WT',3.1],['WT',3.4],['WT',3.3],['WT',3.6],
-      ['arl-13',1.8],['arl-13',2.1],['arl-13',1.9],['arl-13',2.0],['arl-13',1.7],
-      ['ift-88',0.8],['ift-88',1.1],['ift-88',0.9],['ift-88',0.7],['ift-88',1.0],
-      ['bbs-1',2.8],['bbs-1',3.0],['bbs-1',2.7],['bbs-1',2.9],['bbs-1',3.1],
-    ],
-    cat:[['Cell_line','Primary_pct','Non_ciliated_pct','Motile_pct'],
-      ['HEK293',65,30,5],['IMCD3',80,12,8],['RPE1',72,25,3],['NIH3T3',55,43,2],['mIMCD3',88,6,6],
-    ],
-    wb:[['Condition','Band_AU'],
-      ['Control',1.00],['Control',0.98],['Control',1.03],['Control',0.95],['Control',1.05],
-      ['siRNA_1h',0.72],['siRNA_1h',0.68],['siRNA_1h',0.75],['siRNA_1h',0.70],
-      ['siRNA_4h',0.45],['siRNA_4h',0.41],['siRNA_4h',0.48],['siRNA_4h',0.43],
-      ['siRNA_24h',0.21],['siRNA_24h',0.19],['siRNA_24h',0.24],['siRNA_24h',0.20],
-    ],
-  };
-  const rows=ex[type];const headers=rows[0];
-  data=rows.slice(1).map(r=>{const o={};headers.forEach((h,i)=>o[h]=r[i]);return o;});
-  cols=headers;
-  // Set textarea too
-  document.getElementById('paste-ta').value=[headers.join('\t'),...rows.slice(1).map(r=>r.join('\t'))].join('\n');
-  switchTab('paste',document.querySelectorAll('.itab')[0]);
-  onDataReady(`Example: ${type}`);
-  // Auto-set good defaults per example
-  if(type==='cat'){document.querySelector('[data-t="pctbar"]').click();}
-  else if(type==='ift'){document.querySelector('[data-t="boxplot"]').click();}
-  // Set axis labels
-  if(type==='ift'||type==='length'){document.getElementById('opt-xlabel').value='Genotype';document.getElementById('opt-ylabel').value=type==='ift'?'Speed (µm/s)':'Cilia length (µm)';}
-  if(type==='wb'){document.getElementById('opt-xlabel').value='Condition';document.getElementById('opt-ylabel').value='Band intensity (AU)';}
-}
-
-/* Expose all window functions */
-window.parsePaste=parsePaste||window.parsePaste;
-window.handleFile=handleFile;window.handleDrop=handleDrop;
-window.loadEx=window.loadEx;window.generate=window.generate;
-window.dlPNG=window.dlPNG;window.dlPDF=window.dlPDF;window.dlSVG=window.dlSVG;window.dlTIFF=window.dlTIFF;
-window.dlCSVdata=window.dlCSVdata;window.dlStats=window.dlStats;window.clearAll=window.clearAll;
-window.liveTitle=window.liveTitle;window.buildSeriesClrs=buildSeriesClrs;
+/* ══ WINDOW EXPORTS ════════════════════════════════════════ */
+window.parsePaste    = parsePaste;
+window.handleFile    = handleFile;
+window.handleDrop    = handleDrop;
+window.loadEx        = loadEx;
+window.generate      = window.generate;
+window.buildSeriesClrs = buildSeriesClrs;
+window.liveTitle     = liveTitle;
+window.dlPNG         = dlPNG;
+window.dlPDF         = dlPDF;
+window.dlSVG         = dlSVG;
+window.dlTIFF        = dlTIFF;
+window.dlCSVdata     = dlCSVdata;
+window.dlStats       = dlStats;
+window.clearAll      = clearAll;
+window.toggleCard    = toggleCard;
+window.switchTab     = switchTab;
+window.setType       = setType;
+window.setStat       = setStat;
+window.usePal        = usePal;
 </script>
 </body>
 </html>
