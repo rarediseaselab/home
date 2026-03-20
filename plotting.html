@@ -4,46 +4,39 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Plotting Tool | Kaplan Lab</title>
-  <meta name="description" content="Scientific plotting and statistical analysis tool. Upload or paste data, generate publication-quality plots with Nature journal colors, and perform t-tests, ANOVA, and more.">
-  <link rel="canonical" href="https://rarediseaselab.github.io/home/plotting.html">
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" type="image/png" href="elegans2.png">
-
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 </head>
 <body>
-
-<!-- NAVBAR -->
 <nav class="navbar">
   <a class="nav-brand" href="index.html">Kaplan Lab</a>
   <button class="nav-toggle" onclick="toggleNav()" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
   <ul class="nav-links">
     <li><a href="index.html">Home</a></li>
     <li class="nav-drop">
-      <button class="nav-drop-btn" onclick="toggleDrop(this)" aria-haspopup="true" aria-expanded="false">Research ▾</button>
+      <button class="nav-drop-btn" onclick="toggleDrop(this)">Research</button>
       <ul class="nav-drop-menu">
         <li><a href="research.html">Research Overview</a></li>
         <li><a href="cilia-ciliopathies.html">Cilia &amp; Ciliopathies</a></li>
         <li><a href="disease-modeling.html">Disease Modeling</a></li>
-        <li><a href="cilia-cilia-joining.html">Cilia-Cilia Joining</a></li>
         <li><a href="bioinformatics.html">Bioinformatics</a></li>
       </ul>
     </li>
     <li class="nav-drop">
-      <button class="nav-drop-btn" onclick="toggleDrop(this)" aria-haspopup="true" aria-expanded="false">Team ▾</button>
+      <button class="nav-drop-btn" onclick="toggleDrop(this)">Team</button>
       <ul class="nav-drop-menu">
         <li><a href="team.html">Current Members</a></li>
         <li><a href="former-members.html">Former Members</a></li>
-        <li><a href="group-photos.html">Group Photos</a></li>
         <li><a href="join.html">Join the Lab</a></li>
       </ul>
     </li>
     <li><a href="publications.html">Publications</a></li>
     <li><a href="news.html">News</a></li>
     <li class="nav-drop">
-      <button class="nav-drop-btn" onclick="toggleDrop(this)" aria-haspopup="true" aria-expanded="false">Tools ▾</button>
+      <button class="nav-drop-btn" onclick="toggleDrop(this)">Tools</button>
       <ul class="nav-drop-menu">
         <li><a href="ciliahub.html">CiliaHub</a></li>
         <li><a href="ciliaatlas.html">CiliaAtlas</a></li>
@@ -56,147 +49,104 @@
   </ul>
 </nav>
 <div id="nav-overlay" class="nav-overlay"></div>
-<div id="breadcrumbs"><a href="index.html">Home</a> › <a href="resources.html">Tools</a> › Plotting</div>
-
-
-<!-- PLOTTING TOOL -->
+<div id="breadcrumbs"><a href="index.html">Home</a> &rsaquo; <a href="resources.html">Tools</a> &rsaquo; Plotting</div>
 <style>
-/* ── Layout ── */
 .pt-wrap{max-width:1260px;margin:0 auto;padding:24px 28px 60px}
-.pt-header{margin-bottom:24px}
 .pt-grid{display:grid;grid-template-columns:300px 1fr;gap:20px;align-items:start}
-
-/* ── Left sidebar ── */
 .pt-sidebar{display:flex;flex-direction:column;gap:14px}
 .pt-card{background:var(--white);border:1px solid var(--border);border-radius:8px;overflow:hidden}
 .pt-card-head{padding:11px 14px;border-bottom:1px solid var(--border);background:var(--off);display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none}
-.pt-card-head h3{font-size:12px;font-weight:700;color:var(--ink);text-transform:uppercase;letter-spacing:.06em;flex:1}
-.pt-card-head .step{width:20px;height:20px;border-radius:50%;background:var(--accent);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.pt-card-body{padding:14px}
-.pt-card.collapsed .pt-card-body{display:none}
+.pt-card-head h3{font-size:12px;font-weight:700;color:var(--ink);text-transform:uppercase;letter-spacing:.06em;flex:1;margin:0}
+.step{width:20px;height:20px;border-radius:50%;background:var(--accent);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .chevron{font-size:10px;color:var(--ink-3);transition:transform .2s}
 .pt-card.collapsed .chevron{transform:rotate(-90deg)}
-
-/* ── Input tabs ── */
+.pt-card.collapsed .pt-card-body{display:none}
+.pt-card-body{padding:14px}
 .itabs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;background:var(--border);border-radius:6px;padding:2px;margin-bottom:12px}
 .itab{border:none;border-radius:4px;padding:6px 4px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;background:transparent;color:var(--ink-3);transition:all .15s}
 .itab.on{background:var(--white);color:var(--accent)}
-
-/* ── Upload zone ── */
 .dropzone{border:2px dashed var(--border);border-radius:8px;padding:18px 10px;text-align:center;cursor:pointer;background:var(--white);transition:all .15s}
 .dropzone:hover,.dropzone.over{border-color:var(--accent);background:var(--pale)}
 .dropzone input{display:none}
 .dropzone p{font-size:12px;color:var(--ink-2);margin:6px 0 2px}
 .dropzone small{font-size:10px;color:var(--ink-3)}
-
-/* ── Textarea ── */
-.paste-ta{width:100%;min-height:130px;padding:9px 10px;border:1px solid var(--border);border-radius:6px;font-family:'Courier New',monospace;font-size:11px;color:var(--ink);resize:vertical;line-height:1.5;background:var(--white);outline:none}
+.paste-ta{width:100%;min-height:120px;padding:9px 10px;border:1px solid var(--border);border-radius:6px;font-family:'Courier New',monospace;font-size:11px;color:var(--ink);resize:vertical;background:var(--white);outline:none;line-height:1.5}
 .paste-ta:focus{border-color:var(--accent)}
-
-/* ── Form ── */
 .fc{margin-bottom:11px}
 .fc label{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-3);margin-bottom:4px}
-.fc select,.fc input[type=text],.fc input[type=number]{width:100%;padding:7px 9px;border:1px solid var(--border);border-radius:5px;font-size:12px;font-family:inherit;color:var(--ink);background:var(--white);outline:none}
+.fc select,.fc input[type=text]{width:100%;padding:7px 9px;border:1px solid var(--border);border-radius:5px;font-size:12px;font-family:inherit;color:var(--ink);background:var(--white);outline:none}
 .fc select:focus,.fc input:focus{border-color:var(--accent)}
 .fc-2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-
-/* ── Type grid ── */
 .type-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}
 .type-btn{border:1.5px solid var(--border);border-radius:6px;background:var(--white);color:var(--ink-3);cursor:pointer;font-family:inherit;font-size:10px;font-weight:600;padding:7px 3px;text-align:center;transition:all .15s;line-height:1.3}
-.type-btn .ti{font-size:16px;display:block;margin-bottom:2px}
-.type-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--pale)}
-.type-btn.on{border-color:var(--accent);color:var(--accent);background:var(--pale)}
-
-/* ── Stat chips ── */
+.type-btn span{font-size:16px;display:block;margin-bottom:2px}
+.type-btn:hover,.type-btn.on{border-color:var(--accent);color:var(--accent);background:var(--pale)}
 .stat-chips{display:flex;flex-wrap:wrap;gap:4px}
 .sc{padding:3px 9px;border:1px solid var(--border);border-radius:100px;font-size:10px;font-weight:700;cursor:pointer;background:var(--white);color:var(--ink-2);font-family:inherit;transition:all .12s}
 .sc:hover,.sc.on{background:var(--pale);border-color:var(--accent);color:var(--accent)}
-
-/* ── Toggles ── */
 .tog-row{display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--ink-2);margin-bottom:7px}
 .tog{width:30px;height:16px;background:var(--border);border-radius:8px;position:relative;cursor:pointer;transition:background .2s;flex-shrink:0}
 .tog.on{background:var(--accent)}
 .tog::after{content:'';position:absolute;width:12px;height:12px;background:#fff;border-radius:50%;top:2px;left:2px;transition:transform .2s}
 .tog.on::after{transform:translateX(14px)}
-
-/* ── Palette ── */
 .pal-grid{display:flex;flex-direction:column;gap:5px}
 .pal-row-btn{display:flex;align-items:center;gap:5px;padding:4px 7px;border:1px solid var(--border);border-radius:5px;background:var(--white);cursor:pointer;width:100%;font-family:inherit;transition:all .12s}
 .pal-row-btn:hover,.pal-row-btn.on{border-color:var(--accent);background:var(--pale)}
 .pal-name{font-size:10px;font-weight:700;color:var(--ink-2);width:55px;text-align:left;flex-shrink:0}
 .pal-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
 .series-row{display:flex;align-items:center;gap:6px;margin-bottom:5px}
-.series-row input[type=color]{width:24px;height:20px;border:1px solid var(--border);border-radius:3px;padding:1px;cursor:pointer;flex-shrink:0}
+.series-row input[type=color]{width:26px;height:22px;border:1px solid var(--border);border-radius:3px;padding:1px;cursor:pointer}
 .series-lbl{flex:1;font-size:11px;padding:3px 6px;border:1px solid var(--border);border-radius:4px;font-family:inherit;color:var(--ink)}
-
-/* ── Column checkboxes ── */
-.col-list{display:flex;flex-direction:column;gap:2px;max-height:150px;overflow-y:auto}
+.col-list{display:flex;flex-direction:column;gap:2px;max-height:160px;overflow-y:auto}
 .col-item{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--ink-2);padding:4px 5px;border-radius:4px;cursor:pointer}
 .col-item:hover{background:var(--pale)}
 .col-item input{accent-color:var(--accent);width:12px;height:12px}
-
-/* ── Buttons ── */
 .btn-gen{width:100%;padding:11px;background:var(--accent);color:#fff;border:none;border-radius:7px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .15s;display:flex;align-items:center;justify-content:center;gap:7px}
 .btn-gen:hover{background:var(--accent-h)}
-.btn-gen:disabled{opacity:.5;cursor:not-allowed}
 .btn-sm{padding:7px 13px;font-size:11px;font-weight:700;border-radius:5px;cursor:pointer;font-family:inherit;border:1px solid var(--border);background:var(--white);color:var(--ink-2);transition:all .12s;display:inline-flex;align-items:center;gap:5px}
 .btn-sm:hover{background:var(--pale);border-color:var(--accent);color:var(--accent)}
 .btn-sm.accent{background:var(--accent);color:#fff;border-color:var(--accent)}
 .btn-sm.accent:hover{background:var(--accent-h)}
-
-/* ── Right: chart area ── */
 .pt-right{display:flex;flex-direction:column;gap:16px}
-.chart-card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:24px 24px 16px}
-.chart-topbar{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
-.chart-title-inp{flex:1;border:none;border-bottom:1px dashed transparent;font-size:15px;font-weight:700;color:var(--ink);font-family:inherit;background:transparent;padding:2px 0;min-width:150px}
+.chart-card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:20px 20px 14px}
+.chart-topbar{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.chart-title-inp{flex:1;border:none;border-bottom:1px dashed transparent;font-size:15px;font-weight:700;color:var(--ink);font-family:inherit;background:transparent;padding:2px 0;min-width:100px}
 .chart-title-inp:focus{outline:none;border-bottom-color:var(--accent)}
-.dl-row{display:flex;gap:6px;flex-wrap:wrap;padding:4px 0 0}
-
-/* ── Stats output ── */
+.dl-row{display:flex;gap:6px;flex-wrap:wrap}
+.chart-canvas-wrap{position:relative;height:460px}
 .stats-out{background:var(--white);border:1px solid var(--border);border-radius:8px;overflow:hidden}
-.stats-out-head{padding:11px 16px;background:var(--off);border-bottom:1px solid var(--border);font-size:12px;font-weight:700;color:var(--ink);display:flex;align-items:center;justify-content:space-between}
+.stats-out-head{padding:10px 16px;background:var(--off);border-bottom:1px solid var(--border);font-size:12px;font-weight:700;color:var(--ink);display:flex;align-items:center;justify-content:space-between}
 .st-table{width:100%;border-collapse:collapse;font-size:12px}
 .st-table th{background:var(--off);padding:7px 12px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-3);border-bottom:1px solid var(--border)}
 .st-table td{padding:7px 12px;border-bottom:1px solid #f2f2f2;color:var(--ink-2);vertical-align:middle}
 .st-table tr:last-child td{border-bottom:none}
 .st-table tr:hover td{background:var(--off)}
-.sig{display:inline-block;padding:2px 7px;border-radius:100px;font-size:10px;font-weight:700}
-.sig-001{background:#fde8e8;color:#8a1515}.sig-01{background:#fff3e0;color:#a05000}.sig-05{background:#fef9c3;color:#713f12}.sig-ns{background:var(--off);color:var(--ink-3)}
-/* significance bar on plot */
-.sig-annot{font-size:12px;font-weight:700;color:#333}
-
-/* ── Preview ── */
-.prev-wrap{overflow:auto;max-height:150px;border:1px solid var(--border);border-radius:5px;margin-top:8px}
+.sig-badge{display:inline-block;padding:2px 8px;border-radius:100px;font-size:10px;font-weight:700}
+.sig-001{background:#fde8e8;color:#8a1515}
+.sig-01{background:#fff3e0;color:#a05000}
+.sig-05{background:#fef9c3;color:#713f12}
+.sig-ns{background:var(--off);color:var(--ink-3)}
+.prev-wrap{overflow:auto;max-height:140px;border:1px solid var(--border);border-radius:5px;margin-top:8px}
 .prev-table{width:100%;border-collapse:collapse;font-size:10px}
 .prev-table th{background:var(--off);padding:4px 7px;text-align:left;font-weight:700;color:var(--ink-2);border-bottom:1px solid var(--border);white-space:nowrap;position:sticky;top:0}
 .prev-table td{padding:3px 7px;border-bottom:1px solid #f4f4f4;color:var(--ink-2);white-space:nowrap}
-
-/* ── Empty ── */
-.pt-empty{text-align:center;padding:64px 24px;border:1px dashed var(--border);border-radius:8px;color:var(--ink-3)}
-.pt-empty-icon{font-size:52px;margin-bottom:14px}
+.pt-empty{text-align:center;padding:60px 24px;border:1px dashed var(--border);border-radius:8px;color:var(--ink-3)}
+.pt-empty-icon{font-size:48px;margin-bottom:12px}
 .pt-empty h3{font-size:15px;color:var(--ink-2);margin-bottom:6px}
 .pt-empty p{font-size:12px;line-height:1.7}
 .ex-btns{display:flex;flex-direction:column;gap:6px;margin-top:4px}
-
 @media(max-width:900px){.pt-grid{grid-template-columns:1fr}.pt-sidebar{order:1}}
 </style>
-
 <div class="pt-wrap">
-  <div class="pt-header">
-    <p class="eyebrow">Tools</p>
-    <h1 style="margin-bottom:4px">Plotting &amp; Statistics</h1>
-    <p style="color:var(--ink-2);font-size:14px;max-width:620px">Upload a file or paste data directly. Generates publication-quality plots with Nature journal colors. Statistical tests run automatically.</p>
-  </div>
-
+  <p class="eyebrow">Tools</p>
+  <h1 style="margin-bottom:4px">Plotting &amp; Statistics</h1>
+  <p style="color:var(--ink-2);font-size:14px;max-width:620px;margin-bottom:24px">Paste or upload data. Each column becomes one bar. Nature colors and SEM error bars by default.</p>
   <div class="pt-grid">
-
-    <!-- ═══ LEFT SIDEBAR ═══════════════════════════════════ -->
     <div class="pt-sidebar">
 
-      <!-- 1 Data -->
       <div class="pt-card" id="card-data">
         <div class="pt-card-head" onclick="toggleCard('card-data')">
-          <span class="step">1</span><h3>Data input</h3><span class="chevron">▾</span>
+          <span class="step">1</span><h3>Data input</h3><span class="chevron">&#9660;</span>
         </div>
         <div class="pt-card-body">
           <div class="itabs">
@@ -205,37 +155,25 @@
             <button class="itab" onclick="switchTab('example',this)">Examples</button>
           </div>
           <div id="tab-paste">
-            <textarea class="paste-ta" id="paste-ta" spellcheck="false"
-              placeholder="Paste data here (from Excel, tab- or comma-separated).
-First row = column headers.
-
-Example:
-Genotype&#9;Speed&#9;Length
-WT&#9;3.51&#9;4.20
-WT&#9;4.06&#9;3.72
-arl-13&#9;1.82&#9;2.10
-ift-88&#9;0.91&#9;1.30"></textarea>
-            <div style="font-size:10px;color:var(--ink-3);margin:4px 0 8px">Tab- or comma-separated. First row = headers.</div>
-            <button class="btn-gen" onclick="parsePaste()" style="font-size:12px;padding:8px">Load data →</button>
+            <textarea class="paste-ta" id="paste-ta" spellcheck="false" placeholder="Paste Excel data here. First row = column headers.&#10;&#10;Tab or comma separated."></textarea>
+            <div style="font-size:10px;color:var(--ink-3);margin:4px 0 8px">First row = column headers. Tab or comma separated.</div>
+            <button class="btn-gen" onclick="parsePaste()" style="font-size:12px;padding:8px">Load data &rarr;</button>
           </div>
           <div id="tab-upload" style="display:none">
-            <div class="dropzone" id="dropzone"
-              onclick="document.getElementById('file-inp').click()"
+            <div class="dropzone" id="dropzone" onclick="document.getElementById('file-inp').click()"
               ondragover="event.preventDefault();this.classList.add('over')"
               ondragleave="this.classList.remove('over')"
               ondrop="handleDrop(event)">
               <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M14 3v14M9 9l5-6 5 6" stroke="#1f3c88" stroke-width="1.8" stroke-linecap="round"/><path d="M5 20v1.5A1.5 1.5 0 006.5 23h15a1.5 1.5 0 001.5-1.5V20" stroke="#888" stroke-width="1.5" stroke-linecap="round"/></svg>
-              <p>Drop file here or click</p>
-              <small>.xlsx · .xls · .csv</small>
+              <p>Drop file here or click</p><small>.xlsx .xls .csv</small>
               <input type="file" id="file-inp" accept=".xlsx,.xls,.csv" onchange="handleFile(this.files[0])">
             </div>
           </div>
           <div id="tab-example" style="display:none">
             <div class="ex-btns">
-              <button class="btn-sm" onclick="loadEx('ift')">IFT speed — WT vs mutants</button>
-              <button class="btn-sm" onclick="loadEx('length')">Cilia length — 4 genotypes</button>
-              <button class="btn-sm" onclick="loadEx('cat')">Categorical % — cell lines</button>
-              <button class="btn-sm" onclick="loadEx('wb')">Western blot intensity</button>
+              <button class="btn-sm" onclick="loadEx('speed')">IFT speed &mdash; 3 genotypes</button>
+              <button class="btn-sm" onclick="loadEx('length')">Cilia length &mdash; 4 genotypes</button>
+              <button class="btn-sm" onclick="loadEx('cat')">Categorical (text data)</button>
             </div>
           </div>
           <div id="prev-sec" style="display:none">
@@ -245,970 +183,630 @@ ift-88&#9;0.91&#9;1.30"></textarea>
         </div>
       </div>
 
-      <!-- 2 Columns -->
       <div class="pt-card" id="card-cols" style="display:none">
         <div class="pt-card-head" onclick="toggleCard('card-cols')">
-          <span class="step">2</span><h3>Columns</h3><span class="chevron">▾</span>
+          <span class="step">2</span><h3>Columns</h3><span class="chevron">&#9660;</span>
         </div>
         <div class="pt-card-body">
-          <div style="font-size:11px;color:var(--ink-2);margin-bottom:10px;line-height:1.6;background:var(--pale);padding:8px 10px;border-radius:5px;border:1px solid #c8d3ee">
-            Each column = one box plot. All columns are selected by default.
-            Uncheck any you want to exclude.
-          </div>
-          <div class="fc">
-            <label>Select columns to plot</label>
-            <div class="col-list" id="y-list"></div>
-          </div>
+          <div style="font-size:10px;color:var(--ink-2);background:var(--pale);border:1px solid #c8d3ee;border-radius:5px;padding:7px 9px;margin-bottom:10px;line-height:1.6">Each checked column = one bar or box on the plot.</div>
+          <div class="fc"><label>Columns to plot</label><div class="col-list" id="y-list"></div></div>
           <div class="fc-2" style="margin-top:10px">
-            <div class="fc"><label>X-axis label</label><input type="text" id="inline-xlabel" placeholder="e.g. Genotype" oninput="document.getElementById('opt-xlabel').value=this.value"></div>
-            <div class="fc"><label>Y-axis label</label><input type="text" id="inline-ylabel" placeholder="e.g. Speed (µm/s)" oninput="document.getElementById('opt-ylabel').value=this.value"></div>
+            <div class="fc"><label>X-axis label</label><input type="text" id="opt-xlabel" placeholder="e.g. Genotype"></div>
+            <div class="fc"><label>Y-axis label</label><input type="text" id="opt-ylabel" placeholder="e.g. Speed"></div>
           </div>
         </div>
       </div>
 
-      <!-- 3 Chart type -->
       <div class="pt-card" id="card-type" style="display:none">
         <div class="pt-card-head" onclick="toggleCard('card-type')">
-          <span class="step">3</span><h3>Chart type</h3><span class="chevron">▾</span>
+          <span class="step">3</span><h3>Chart type</h3><span class="chevron">&#9660;</span>
         </div>
         <div class="pt-card-body">
           <div class="type-grid">
-            <button class="type-btn on" data-t="boxplot" onclick="setType('boxplot',this)"><span class="ti">📦</span>Box plot</button>
-            <button class="type-btn" data-t="bar" onclick="setType('bar',this)"><span class="ti">📊</span>Bar</button>
-            <button class="type-btn" data-t="scatter" onclick="setType('scatter',this)"><span class="ti">🔵</span>Scatter</button>
-            <button class="type-btn" data-t="line" onclick="setType('line',this)"><span class="ti">📈</span>Line</button>
-            <button class="type-btn" data-t="stackedbar" onclick="setType('stackedbar',this)"><span class="ti">🗂</span>Stacked</button>
-            <button class="type-btn" data-t="pctbar" onclick="setType('pctbar',this)"><span class="ti">🔲</span>% Bar</button>
+            <button class="type-btn on" data-t="bar" onclick="setType('bar',this)"><span>&#128202;</span>Bar+SEM</button>
+            <button class="type-btn" data-t="scatter" onclick="setType('scatter',this)"><span>&#128309;</span>Scatter</button>
+            <button class="type-btn" data-t="line" onclick="setType('line',this)"><span>&#128200;</span>Line</button>
+            <button class="type-btn" data-t="cat" onclick="setType('cat',this)"><span>&#128269;</span>Categorical</button>
           </div>
         </div>
       </div>
 
-      <!-- 4 Axes & labels -->
       <div class="pt-card" id="card-axes" style="display:none">
         <div class="pt-card-head" onclick="toggleCard('card-axes')">
-          <span class="step">4</span><h3>Axes &amp; labels</h3><span class="chevron">▾</span>
+          <span class="step">4</span><h3>Axes &amp; labels</h3><span class="chevron">&#9660;</span>
         </div>
         <div class="pt-card-body">
-          <div class="fc"><label>Chart title</label><input type="text" id="opt-title" placeholder="e.g. IFT speed comparison" oninput="liveTitle(this.value)"></div>
-          <div class="fc-2">
-            <div class="fc"><label>X-axis label</label><input type="text" id="opt-xlabel" placeholder="Genotype"></div>
-            <div class="fc"><label>Y-axis label</label><input type="text" id="opt-ylabel" placeholder="Speed (µm/s)"></div>
-          </div>
+          <div class="fc"><label>Chart title</label><input type="text" id="opt-title" placeholder="Title"></div>
           <div class="fc"><label>Font size</label>
-            <select id="opt-fs">
-              <option value="11">Small (11px)</option>
-              <option value="13" selected>Medium (13px)</option>
-              <option value="15">Large (15px)</option>
-              <option value="17">X-Large (17px)</option>
-            </select>
+            <select id="opt-fs"><option value="11">Small</option><option value="13" selected>Medium</option><option value="15">Large</option><option value="17">X-Large</option></select>
           </div>
         </div>
       </div>
 
-      <!-- 5 Appearance -->
       <div class="pt-card" id="card-appear" style="display:none">
         <div class="pt-card-head" onclick="toggleCard('card-appear')">
-          <span class="step">5</span><h3>Colors &amp; style</h3><span class="chevron">▾</span>
+          <span class="step">5</span><h3>Colors &amp; style</h3><span class="chevron">&#9660;</span>
         </div>
         <div class="pt-card-body">
           <div class="fc"><label>Palette</label><div class="pal-grid" id="pal-grid"></div></div>
-          <div class="fc"><label>Series colors</label><div id="series-clrs"></div></div>
-          <div class="tog-row"><span>SEM error bars</span><div class="tog on" id="tog-err" onclick="this.classList.toggle('on')"></div></div>
-          <div class="tog-row"><span>Show data points (open circles)</span><div class="tog on" id="tog-pts" onclick="this.classList.toggle('on')"></div></div>
-          <div class="tog-row"><span>Legend</span><div class="tog" id="tog-leg" onclick="this.classList.toggle('on')"></div></div>
-          <div class="tog-row"><span>Grid lines</span><div class="tog" id="tog-grid" onclick="this.classList.toggle('on')"></div></div>
-          <div class="fc" style="margin-top:10px">
+          <div class="fc"><label>Bar colors (updates live)</label><div id="series-clrs"></div></div>
+          <div class="tog-row"><span>SEM error bars</span><div class="tog on" id="tog-err" onclick="this.classList.toggle('on');if(chartInst)chartInst.draw()"></div></div>
+          <div class="tog-row"><span>Data points</span><div class="tog on" id="tog-pts" onclick="this.classList.toggle('on');if(chartInst)chartInst.draw()"></div></div>
+          <div class="tog-row"><span>Legend</span><div class="tog" id="tog-leg" onclick="this.classList.toggle('on');if(chartInst)window.generate()"></div></div>
+          <div class="tog-row"><span>Grid lines</span><div class="tog" id="tog-grid" onclick="this.classList.toggle('on');if(chartInst)window.generate()"></div></div>
+          <div class="fc" style="margin-top:8px">
             <label>Axis line width: <span id="axlw-val">2</span>px</label>
-            <input type="range" id="opt-axlw" min="0.5" max="5" step="0.5" value="2" style="width:100%;margin-top:4px" oninput="document.getElementById('axlw-val').textContent=this.value">
+            <input type="range" id="opt-axlw" min="0.5" max="5" step="0.5" value="2" style="width:100%" oninput="document.getElementById('axlw-val').textContent=this.value;if(chartInst)window.generate()">
           </div>
           <div class="fc">
-            <label>Bar width (% of slot): <span id="bw-val">70</span>%</label>
-            <input type="range" id="opt-barw" min="20" max="95" step="5" value="70" style="width:100%;margin-top:4px" oninput="document.getElementById('bw-val').textContent=this.value">
+            <label>Bar width: <span id="bw-val">70</span>%</label>
+            <input type="range" id="opt-barw" min="10" max="95" step="5" value="70" style="width:100%" oninput="document.getElementById('bw-val').textContent=this.value;if(chartInst)chartInst.draw()">
           </div>
           <div class="fc">
-            <label>Point size: <span id="ps-val">4</span>px</label>
-            <input type="range" id="opt-pts-size" min="2" max="10" step="1" value="4" style="width:100%;margin-top:4px" oninput="document.getElementById('ps-val').textContent=this.value">
+            <label>Point size: <span id="ps-val">3</span>px</label>
+            <input type="range" id="opt-pts-size" min="1" max="10" step="1" value="3" style="width:100%" oninput="document.getElementById('ps-val').textContent=this.value;if(chartInst)chartInst.draw()">
           </div>
         </div>
       </div>
 
-      <!-- 6 Statistics -->
       <div class="pt-card" id="card-stat" style="display:none">
         <div class="pt-card-head" onclick="toggleCard('card-stat')">
-          <span class="step">6</span><h3>Statistical tests</h3><span class="chevron">▾</span>
+          <span class="step">6</span><h3>Statistics</h3><span class="chevron">&#9660;</span>
         </div>
         <div class="pt-card-body">
           <div class="stat-chips">
-            <button class="sc on" data-s="none" onclick="setStat('none',this)">None</button>
-            <button class="sc" data-s="descriptive" onclick="setStat('descriptive',this)">Descriptive</button>
-            <button class="sc" data-s="ttest" onclick="setStat('ttest',this)">t-test</button>
-            <button class="sc" data-s="welch" onclick="setStat('welch',this)">Welch t-test</button>
-            <button class="sc" data-s="mwu" onclick="setStat('mwu',this)">Mann-Whitney</button>
-            <button class="sc" data-s="anova" onclick="setStat('anova',this)">ANOVA</button>
+            <button class="sc on" onclick="setStat('none',this)">None</button>
+            <button class="sc" onclick="setStat('ttest',this)">t-test</button>
+            <button class="sc" onclick="setStat('welch',this)">Welch</button>
+            <button class="sc" onclick="setStat('mwu',this)">Mann-Whitney</button>
+            <button class="sc" onclick="setStat('anova',this)">ANOVA</button>
+            <button class="sc" onclick="setStat('desc',this)">Descriptive</button>
           </div>
-          <div style="font-size:10px;color:var(--ink-3);margin-top:7px" id="stat-hint">Select a test to apply it.</div>
-          <div class="tog-row" style="margin-top:10px"><span>Show p-values on plot</span><div class="tog on" id="tog-sigplot" onclick="this.classList.toggle('on')"></div></div>
+          <div style="font-size:10px;color:var(--ink-3);margin-top:6px" id="stat-hint"></div>
+          <div class="tog-row" style="margin-top:8px">
+            <span>Show significance on plot</span>
+            <div class="tog on" id="tog-sig" onclick="this.classList.toggle('on');if(chartInst)chartInst.draw()"></div>
+          </div>
         </div>
       </div>
 
-      <!-- Generate -->
-      <div id="gen-wrap" style="display:none;flex-direction:column;gap:8px">
-        <button class="btn-gen" onclick="generate()">
+      <div id="gen-wrap" style="display:none">
+        <button class="btn-gen" onclick="window.generate()">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 12l4-5 3 3 3-4 2 6" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           Generate plot
         </button>
-        <button class="btn-gen" onclick="generate()" style="background:var(--off);color:var(--accent);border:1.5px solid var(--accent);font-size:13px;padding:8px">
-          ↺ Apply changes
-        </button>
       </div>
 
-    </div><!-- end sidebar -->
-
-    <!-- ═══ RIGHT CANVAS ══════════════════════════════════ -->
-    <div class="pt-right" id="pt-right">
-      <div class="pt-empty" id="pt-empty">
-        <div class="pt-empty-icon">📊</div>
-        <h3>Upload or paste your data</h3>
-        <p>All columns are shown by default.<br>Box plot with SEM error bars is the default chart.<br>Nature journal colors applied automatically.</p>
-      </div>
     </div>
 
+    <div class="pt-right" id="pt-right">
+      <div class="pt-empty">
+        <div class="pt-empty-icon">&#128202;</div>
+        <h3>Paste or upload data to begin</h3>
+        <p>Each column = one bar.<br>Nature journal colors and SEM error bars by default.</p>
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- FOOTER -->
 <footer class="site-footer">
   <div class="footer-inner">
     <div class="footer-cols">
       <div class="footer-col">
         <div class="footer-col-title">Kaplan Lab</div>
-        <p>We study ciliopathies and rare genetic diseases using <em>C. elegans</em>, CRISPR/Cas9, and bioinformatics.<br><br>Faculty of Life and Natural Sciences<br>Abdullah Gül University<br>Kayseri, Türkiye</p>
+        <p>Faculty of Life and Natural Sciences<br>Abdullah G&uuml;l University, Kayseri, T&uuml;rkiye</p>
       </div>
       <div class="footer-col">
-        <div class="footer-col-title">Tools &amp; Databases</div>
-        <a href="ciliahub.html">CiliaHub / CiliaAI</a>
+        <div class="footer-col-title">Tools</div>
+        <a href="ciliahub.html">CiliaHub</a>
         <a href="ciliaatlas.html">CiliaAtlas</a>
         <a href="plotting.html">Plotting</a>
         <a href="https://ciliogenics.com/" target="_blank">CilioGenics</a>
-        <a href="https://kaplanlab.shinyapps.io/ciliaminer/" target="_blank">CiliaMiner</a>
-        <a href="https://convart.org/" target="_blank">ConVarT</a>
       </div>
       <div class="footer-col">
         <div class="footer-col-title">Quick Links</div>
         <a href="research.html">Research</a>
         <a href="publications.html">Publications</a>
         <a href="team.html">Team</a>
-        <a href="join.html">Join the Lab</a>
         <a href="contact.html">Contact</a>
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2026 Kaplan Lab · Abdullah Gül University · Kayseri, Türkiye</span>
+      <span>&copy; 2026 Kaplan Lab &middot; Abdullah G&uuml;l University &middot; Kayseri, T&uuml;rkiye</span>
       <div class="footer-social">
         <a href="https://github.com/thekaplanlab" target="_blank"><img src="github-logo.png" alt="GitHub"></a>
         <a href="https://www.instagram.com/kaplanlab/?hl=en" target="_blank"><img src="instagram-logo.png" alt="Instagram"></a>
-        <a href="https://www.linkedin.com/in/oktay-i-kaplan-74b16856/" target="_blank"><img src="linkedin-logo.png" alt="LinkedIn"></a>
-        <a href="https://x.com/KaplanOLab" target="_blank">𝕏 @KaplanOLab</a>
+        <a href="https://x.com/KaplanOLab" target="_blank">&#120143; @KaplanOLab</a>
       </div>
     </div>
   </div>
 </footer>
-
 <script>
-/* ═══════════════════════════ NAV ═══════════════════════════ */
-window.toggleNav=function(){document.querySelector('.nav-links').classList.contains('open')?closeNav():openNav();}
-function openNav(){document.querySelector('.nav-links').classList.add('open');document.querySelector('.nav-toggle').classList.add('open');const ov=document.getElementById('nav-overlay');if(ov)ov.classList.add('open');document.body.style.overflow='hidden';}
-function closeNav(){document.querySelector('.nav-links').classList.remove('open');document.querySelector('.nav-toggle').classList.remove('open');const ov=document.getElementById('nav-overlay');if(ov)ov.classList.remove('open');document.body.style.overflow='';}
-window.toggleDrop=function(btn){const drop=btn.closest('.nav-drop');const isOpen=drop.classList.contains('open');document.querySelectorAll('.nav-drop.open').forEach(d=>d.classList.remove('open'));if(!isOpen)drop.classList.add('open');btn.setAttribute('aria-expanded',!isOpen);}
-document.addEventListener('DOMContentLoaded',()=>{const ov=document.getElementById('nav-overlay');if(ov)ov.addEventListener('click',closeNav);document.querySelectorAll('.nav-drop-btn').forEach(btn=>{btn.textContent=btn.textContent.replace(/\s*▾\s*$/,'').trim();btn.setAttribute('aria-expanded','false');});});
 
-/* ═══════════════════════ PALETTES ══════════════════════════ */
-const PALS={
-  'Nature'  :['#555555','#999999','#6baed6','#9e9ac8','#74c476','#fd8d3c','#e377c2','#bcbd22','#17becf','#393b79'],
-  'Science' :['#3B4992','#EE0000','#008B45','#631879','#008280','#BB0021','#5F559B','#A20056','#808180','#1B1919'],
-  'Cell'    :['#6AAFE6','#E87F6B','#74C476','#CE9ECA','#F0D96B','#97C8C8','#F7A35C','#8085E9','#A0A0A0','#434348'],
-  'CB-safe' :['#0072B2','#E69F00','#56B4E9','#009E73','#F0E442','#D55E00','#CC79A7','#999999','#000000'],
-  'Pastel'  :['#AEC6CF','#FFD1DC','#B5EAD7','#C7CEEA','#FFDAC1','#FF9AA2','#A8E6CF','#DCEDC1','#FFD3B6'],
+window.toggleNav = function() {
+  var nl = document.querySelector('.nav-links');
+  var nt = document.querySelector('.nav-toggle');
+  var ov = document.getElementById('nav-overlay');
+  var open = nl.classList.toggle('open');
+  nt.classList.toggle('open', open);
+  if (ov) ov.classList.toggle('open', open);
+  document.body.style.overflow = open ? 'hidden' : '';
 };
-let pal=PALS['Nature'];
+window.toggleDrop = function(btn) {
+  var drop = btn.closest('.nav-drop');
+  var was = drop.classList.contains('open');
+  document.querySelectorAll('.nav-drop.open').forEach(function(d) { d.classList.remove('open'); });
+  if (!was) drop.classList.add('open');
+};
+document.addEventListener('DOMContentLoaded', function() {
+  var ov = document.getElementById('nav-overlay');
+  if (ov) ov.addEventListener('click', function() {
+    if (document.querySelector('.nav-links.open')) window.toggleNav();
+  });
+});
 
-/* ════════════════════════ STATE ════════════════════════════ */
-let data=[],cols=[],plotType='boxplot',statTest='none',chartInst=null,seriesClrs=[];
+var PALS = {
+  'Nature' : ['#555555','#999999','#6baed6','#9e9ac8','#74c476','#fd8d3c','#e377c2','#bcbd22','#17becf','#393b79'],
+  'Science': ['#3B4992','#EE0000','#008B45','#631879','#008280','#BB0021','#5F559B','#A20056','#808180'],
+  'CB-safe': ['#0072B2','#E69F00','#56B4E9','#009E73','#F0E442','#D55E00','#CC79A7','#999999'],
+  'Pastel' : ['#AEC6CF','#FFD1DC','#B5EAD7','#C7CEEA','#FFDAC1','#FF9AA2','#A8E6CF','#DCEDC1']
+};
+var data = [], cols = [], plotType = 'bar', statTest = 'none';
+var chartInst = null, pal = PALS['Nature'];
+var lastGroups = [], lastSr = null;
 
-/* ═══════════════════════ UI HELPERS ════════════════════════ */
-window.toggleCard=function(id){document.getElementById(id).classList.toggle('collapsed');}
-window.switchTab=function(id,btn){
-  ['paste','upload','example'].forEach(t=>document.getElementById('tab-'+t).style.display=t===id?'':'none');
-  document.querySelectorAll('.itab').forEach(b=>b.classList.remove('on'));
+window.toggleCard = function(id) { document.getElementById(id).classList.toggle('collapsed'); };
+window.switchTab = function(id, btn) {
+  ['paste','upload','example'].forEach(function(t) {
+    document.getElementById('tab-'+t).style.display = (t===id) ? '' : 'none';
+  });
+  document.querySelectorAll('.itab').forEach(function(b) { b.classList.remove('on'); });
   btn.classList.add('on');
-}
-window.setType=function(t,btn){plotType=t;document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');}
-window.setStat=function(t,btn){
-  statTest=t;
-  document.querySelectorAll('.sc').forEach(b=>b.classList.remove('on'));btn.classList.add('on');
-  const h={none:'No test.',ttest:"Student's t-test — normal distribution, equal variance.",welch:"Welch's t-test — unequal variance. Recommended for most comparisons.",mwu:'Mann-Whitney U — non-parametric, no normality assumption.',anova:'One-way ANOVA + pairwise t-tests.',descriptive:'Mean, median, SD, SEM, min, max for each group.'};
-  document.getElementById('stat-hint').textContent=h[t]||'';
-  // Auto-regenerate if a chart is already displayed
-  if(chartInst && data.length) window.generate();
-}
-window.liveTitle=function(v){document.querySelectorAll('.chart-title-inp').forEach(el=>el.value=v);}
-window.usePal=function(name,btn){pal=PALS[name];document.querySelectorAll('.pal-row-btn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');buildSeriesClrs();}
-
-/* ═══════════════════════ PARSING ═══════════════════════════ */
-function splitLine(line,d){
-  const res=[];let cur='';let inQ=false;
-  for(let i=0;i<line.length;i++){
-    if(line[i]==='"'){inQ=!inQ;}
-    else if(line[i]===d&&!inQ){res.push(cur);cur='';}
-    else cur+=line[i];
-  }
-  res.push(cur);return res;
-}
-function parseDelimited(text,delim){
-  const lines=text.trim().split('\n').filter(l=>l.trim());
-  let rawH=splitLine(lines[0],delim).map(h=>h.trim().replace(/^"|"$/g,''));
-  const dataCols=lines.length>1?splitLine(lines[1],delim).length:rawH.length;
-  if(dataCols>rawH.length){
-    const deficit=dataCols-rawH.length;
-    const last=rawH[rawH.length-1];
-    const parts=last.trim().split(/\s+/);
-    if(parts.length>=deficit+1) rawH=[...rawH.slice(0,-1),...parts];
-    else for(let i=0;i<deficit;i++) rawH.push('Col'+(rawH.length+1));
-  }
-  return lines.slice(1).map(line=>{
-    const vals=splitLine(line,delim);
-    const obj={};
-    rawH.forEach((h,i)=>{const v=(vals[i]||'').trim().replace(/^"|"$/g,'');obj[h]=v===''?'':isNaN(v)?v:+v;});
-    return obj;
-  }).filter(r=>Object.values(r).some(v=>v!==''));
-}
-window.parsePaste=function(){
-  const raw=document.getElementById('paste-ta').value.trim();
-  if(!raw){alert('Paste some data first.');return;}
-  const d=raw.split('\n')[0].includes('\t')?'\t':',';
-  const parsed=parseDelimited(raw,d);
-  if(!parsed.length){alert('Could not parse data — check that the first row is column headers.');return;}
-  data=parsed; cols=Object.keys(parsed[0]); onDataReady('Pasted data');
-}
-window.handleFile=function(file){
-  if(!file)return;
-  const ext=file.name.split('.').pop().toLowerCase();
-  const rd=new FileReader();
-  rd.onload=e=>{
-    let d;
-    if(ext==='csv'){
-      const delim=e.target.result.split('\n')[0].includes('\t')?'\t':',';
-      d=parseDelimited(e.target.result,delim);
-    } else {
-      const wb=XLSX.read(e.target.result,{type:'binary'});
-      const ws=wb.Sheets[wb.SheetNames[0]];
-      d=XLSX.utils.sheet_to_json(ws,{defval:''});
-    }
-    if(d&&d.length){data=d;cols=Object.keys(d[0]);onDataReady(file.name);}
-    else alert('Could not read file. Check format.');
+};
+window.setType = function(t, btn) {
+  plotType = t;
+  document.querySelectorAll('.type-btn').forEach(function(b) { b.classList.remove('on'); });
+  btn.classList.add('on');
+  if (chartInst && data.length) window.generate();
+};
+window.setStat = function(t, btn) {
+  statTest = t;
+  document.querySelectorAll('.sc').forEach(function(b) { b.classList.remove('on'); });
+  btn.classList.add('on');
+  var hints = {
+    none: '',
+    ttest: "Student's t-test: assumes equal variance and normality.",
+    welch: "Welch's t-test: robust to unequal variances. Recommended.",
+    mwu:   'Mann-Whitney U: non-parametric, no normality assumption.',
+    anova: 'One-way ANOVA: pairwise comparisons between all groups.',
+    desc:  'Descriptive: mean, median, SD, SEM, n per group.'
   };
-  if(ext==='csv')rd.readAsText(file);else rd.readAsBinaryString(file);
-}
-window.handleDrop=function(e){
-  e.preventDefault();document.getElementById('dropzone').classList.remove('over');
-  const f=e.dataTransfer.files[0];if(f)handleFile(f);
-}
-
-/* ═══════════════════════ ON DATA READY ════════════════════ */
-function onDataReady(label){
-  showPreview();
-  buildColPickers();
-  buildPalUI();
+  document.getElementById('stat-hint').textContent = hints[t] || '';
+  if (chartInst && data.length) window.generate();
+};
+window.usePal = function(n, btn) {
+  pal = PALS[n];
+  document.querySelectorAll('.pal-row-btn').forEach(function(b) { b.classList.remove('on'); });
+  btn.classList.add('on');
   buildSeriesClrs();
-  ['card-cols','card-type','card-axes','card-appear','card-stat'].forEach(id=>{
-    const el=document.getElementById(id);if(el)el.style.display='';
+  if (chartInst && data.length) window.generate();
+};
+
+function parseDelimited(text) {
+  var lines = text.trim().split('\n').filter(function(l) { return l.trim(); });
+  var delim = (lines[0].indexOf('\t') >= 0) ? '\t' : ',';
+  var headers = lines[0].split(delim).map(function(h) { return h.trim().replace(/^"|"$/g, ''); });
+  var dataRows = lines.slice(1).map(function(l) {
+    return l.split(delim).map(function(v) { return v.trim().replace(/^"|"$/g, ''); });
   });
-  const gw=document.getElementById('gen-wrap');if(gw)gw.style.display='flex';
-  document.getElementById('prev-sec').style.display='';
-  document.getElementById('data-info').textContent=`${data.length} rows · ${cols.length} columns · ${label}`;
-}
-function showPreview(){
-  const mc=Math.min(cols.length,7),mr=Math.min(data.length,5);
-  let h=`<table class="prev-table"><thead><tr>${cols.slice(0,mc).map(c=>`<th>${c}</th>`).join('')}${cols.length>mc?'<th>…</th>':''}</tr></thead><tbody>`;
-  data.slice(0,mr).forEach(r=>{h+=`<tr>${cols.slice(0,mc).map(c=>`<td>${String(r[c]).substring(0,16)}</td>`).join('')}${cols.length>mc?'<td>…</td>':''}</tr>`;});
-  document.getElementById('prev-wrap').innerHTML=h+'</tbody></table>';
-}
-function buildColPickers(){
-  // All columns become individual box plots — no X/Y split
-  document.getElementById('y-list').innerHTML=cols.map((c)=>`<label class="col-item"><input type="checkbox" value="${c}" checked onchange="buildSeriesClrs()"><span>${c}</span></label>`).join('');
-}
-function getYCols(){return[...document.querySelectorAll('#y-list input:checked')].map(cb=>cb.value);}
-/* ═════════════════════ PALETTE UI ═════════════════════════ */
-function buildPalUI(){
-  const g=document.getElementById('pal-grid');
-  g.innerHTML=Object.entries(PALS).map(([name,clrs],idx)=>`
-    <button class="pal-row-btn${idx===0?' on':''}" onclick="usePal('${name}',this)">
-      <span class="pal-name">${name}</span>
-      ${clrs.slice(0,7).map(c=>`<span class="pal-dot" style="background:${c}"></span>`).join('')}
-    </button>`).join('');
-}
-function buildSeriesClrs(){
-  const yCols=getYCols();
-  seriesClrs=yCols.map((_,i)=>pal[i%pal.length]);
-  document.getElementById('series-clrs').innerHTML=yCols.map((c,i)=>`
-    <div class="series-row">
-      <input type="color" value="${seriesClrs[i]}" id="sc${i}"
-        oninput="seriesClrs[${i}]=this.value; if(chartInst){chartInst.draw();}"
-        onchange="seriesClrs[${i}]=this.value; if(chartInst){chartInst.draw();}">
-      <input class="series-lbl" type="text" value="${c}" id="sl${i}">
-    </div>`).join('');
-}
-window.buildSeriesClrs=buildSeriesClrs;
-window.usePal=function(name,btn){pal=PALS[name];document.querySelectorAll('.pal-row-btn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');buildSeriesClrs();}
-
-/* ═══════════════════ STATISTICS ENGINE ════════════════════ */
-const $m=a=>a.reduce((s,v)=>s+v,0)/a.length;
-const $var=a=>{if(a.length<2)return 0;const m=$m(a);return a.reduce((s,v)=>s+(v-m)**2,0)/(a.length-1);}
-const $sd=a=>Math.sqrt($var(a));
-const $sem=a=>a.length?$sd(a)/Math.sqrt(a.length):0;
-const $med=a=>{const s=[...a].sort((x,y)=>x-y);const m=Math.floor(s.length/2);return s.length%2?s[m]:(s[m-1]+s[m])/2;}
-const $q1=a=>{const s=[...a].sort((x,y)=>x-y);return s[Math.floor(s.length/4)]??s[0];}
-const $q3=a=>{const s=[...a].sort((x,y)=>x-y);return s[Math.floor(3*s.length/4)]??s[s.length-1];}
-
-function erf(x){const t=1/(1+0.3275911*Math.abs(x));const p=t*(0.254829592+t*(-0.284496736+t*(1.421413741+t*(-1.453152027+t*1.061405429))));const e=1-p*Math.exp(-x*x);return x>=0?e:-e;}
-function tCDF(t,df){const z=Math.abs(t)/Math.sqrt(df);const p2=1/(1+0.2316419*z);const poly=p2*(0.319381530+p2*(-0.356563782+p2*(1.781477937+p2*(-1.821255978+p2*1.330274429))));return 2*(Math.exp(-z*z/2)/Math.sqrt(2*Math.PI))*poly;}
-function stuT(a,b){const na=a.length,nb=b.length;if(na<2||nb<2)return{t:NaN,p:NaN};const ma=$m(a),mb=$m(b),va=$var(a),vb=$var(b);const sp=Math.sqrt(((na-1)*va+(nb-1)*vb)/(na+nb-2));const t=(ma-mb)/(sp*Math.sqrt(1/na+1/nb));return{t,p:tCDF(t,na+nb-2)};}
-function welchT(a,b){const na=a.length,nb=b.length;if(na<2||nb<2)return{t:NaN,p:NaN};const ma=$m(a),mb=$m(b),va=$var(a),vb=$var(b);const t=(ma-mb)/Math.sqrt(va/na+vb/nb);const df=(va/na+vb/nb)**2/((va/na)**2/(na-1)+(vb/nb)**2/(nb-1));return{t,p:tCDF(t,df)};}
-function mwu(a,b){let u=0;a.forEach(av=>b.forEach(bv=>{if(av>bv)u++;else if(av===bv)u+=0.5;}));const n1=a.length,n2=b.length,mu=n1*n2/2,sig=Math.sqrt(n1*n2*(n1+n2+1)/12);const z=sig?(u-mu)/sig:0,p=2*(1-0.5*(1+erf(Math.abs(z)/Math.sqrt(2))));return{u,z,p};}
-function pFmt(p){if(isNaN(p))return{str:'n/a',cls:'sig-ns',stars:''};if(p<0.001)return{str:'p < 0.001',cls:'sig-001',stars:'***'};if(p<0.01)return{str:`p = ${p.toFixed(3)}`,cls:'sig-01',stars:'**'};if(p<0.05)return{str:`p = ${p.toFixed(3)}`,cls:'sig-05',stars:'*'};return{str:`p = ${p.toFixed(3)}`,cls:'sig-ns',stars:'ns'};}
-
-function runStats(groups){
-  if(statTest==='none')return null;
-  if(statTest==='descriptive'){
-    return{type:'desc',rows:groups.map(g=>({
-      label:g.label,n:g.values.length,
-      mean:$m(g.values).toFixed(3),median:$med(g.values).toFixed(3),
-      sd:$sd(g.values).toFixed(3),sem:$sem(g.values).toFixed(3),
-      min:Math.min(...g.values).toFixed(3),max:Math.max(...g.values).toFixed(3),
-    }))};
+  var maxCols = Math.max.apply(null, dataRows.map(function(r) { return r.length; }));
+  if (maxCols > headers.length) {
+    var parts = headers[headers.length-1].trim().split(/\s+/);
+    headers = headers.slice(0,-1).concat(parts);
+    while (headers.length < maxCols) headers.push('Col' + headers.length);
   }
-  const pairs=[];
-  for(let i=0;i<groups.length;i++)for(let j=i+1;j<groups.length;j++){
-    const a=groups[i].values,b=groups[j].values;
-    let r;
-    if(statTest==='ttest') r=stuT(a,b);
-    else if(statTest==='welch') r=welchT(a,b);
-    else if(statTest==='mwu'){const m=mwu(a,b);r={t:m.z,p:m.p,extra:`U=${m.u.toFixed(1)}`};}
-    else r=stuT(a,b); // anova = pairwise t
-    const pf=pFmt(r.p);
-    pairs.push({a:groups[i].label,b:groups[j].label,stat:isNaN(r.t)?'—':r.t.toFixed(3),p:pf,extra:r.extra||''});
-  }
-  const tn={ttest:"Student's t-test",welch:"Welch's t-test",mwu:'Mann-Whitney U',anova:'One-way ANOVA (pairwise)'}[statTest];
-  return{type:'pairs',pairs,testName:tn};
+  return dataRows.map(function(vals) {
+    var o = {};
+    headers.forEach(function(h, i) {
+      var v = (vals[i] || '').trim();
+      o[h] = (v === '' || isNaN(+v)) ? v : +v;
+    });
+    return o;
+  }).filter(function(r) { return Object.values(r).some(function(v) { return v !== ''; }); });
 }
 
-/* ════════════════════════ GENERATE ════════════════════════ */
-window.generate=function(){
-  if(!data.length){alert('Load data first.');return;}
-  if(chartInst){try{chartInst.destroy();}catch(e){}}
-
-  const yCols=getYCols();
-  if(!yCols.length){alert('Select at least one column.');return;}
-
-  const title=document.getElementById('opt-title').value||'';
-  // X label from inline inputs (preferred) or axes card
-  const ilx=document.getElementById('inline-xlabel');
-  const ily=document.getElementById('inline-ylabel');
-  if(ilx&&ilx.value) document.getElementById('opt-xlabel').value=ilx.value;
-  if(ily&&ily.value) document.getElementById('opt-ylabel').value=ily.value;
-  const xlabel=document.getElementById('opt-xlabel').value||'';
-  const ylabel=document.getElementById('opt-ylabel').value||'Value';
-  const fs=+document.getElementById('opt-fs').value;
-  const showPts  = document.getElementById('tog-pts').classList.contains('on');
-  const showLeg  = document.getElementById('tog-leg').classList.contains('on');
-  const showGrid = document.getElementById('tog-grid').classList.contains('on');
-  const showSig  = document.getElementById('tog-sigplot').classList.contains('on');
-  const axisLW   = +( document.getElementById('opt-axlw')?.value||2 );
-  const barWidthPct = +( document.getElementById('opt-barw')?.value||70 )/100;
-  const ptSize   = +( document.getElementById('opt-pts-size')?.value||4 );
-  const colors   = yCols.map((_,i)=>document.getElementById('sc'+i)?.value||seriesClrs[i]||pal[i%pal.length]);
-  const labels   = yCols.map((_,i)=>document.getElementById('sl'+i)?.value||yCols[i]);
-
-  // ── Detect if data is categorical (text) or numeric ──
-  function colIsNumeric(col){
-    const vals=data.map(r=>r[col]).filter(v=>v!==''&&v!==null&&v!==undefined);
-    return vals.length>0 && vals.every(v=>!isNaN(+v));
-  }
-  const isCategorical = yCols.some(yc=>!colIsNumeric(yc));
-
-  // Rebuild right panel
-  const right=document.getElementById('pt-right');
-  right.innerHTML='';
-  const cc=document.createElement('div');cc.className='chart-card';
-  cc.innerHTML=`<div class="chart-topbar">
-    <input class="chart-title-inp" value="${title}" placeholder="Chart title (click to edit)" oninput="liveTitle(this.value)">
-    <div class="dl-row" id="dl-row"></div>
-  </div>
-  <div style="position:relative"><canvas id="the-chart" style="max-height:520px"></canvas></div>`;
-  right.appendChild(cc);
-
-  if(isCategorical){
-    // ── CATEGORICAL: count occurrences, draw 100% stacked bar ──
-    doCategoricalChart(yCols,labels,colors,xlabel,ylabel||'Percentage (%)',showLeg,showGrid,fs,axisLW,barWidthPct);
-    buildDlButtons();
-    return;
-  }
-
-  // ── NUMERIC: each column = one box plot ──
-  const groups = yCols.map((yc,i)=>({
-    label : labels[i],
-    values: data.map(r=>+r[yc]).filter(v=>!isNaN(v)),
-    si    : i,
-  })).filter(g=>g.values.length>0);
-
-  if(!groups.length){alert('No numeric data found in the selected columns.');return;}
-
-  const sr = runStats(groups);
-
-  if(plotType==='boxplot'){
-    doBoxPlot(groups,colors,xlabel,ylabel,showLeg,showGrid,showPts,fs,showSig,sr,axisLW,barWidthPct,ptSize);
-  } else {
-    doColumnChart(groups,colors,xlabel,ylabel,showLeg,showGrid,fs);
-  }
-
-  if(sr){
-    const sc=document.createElement('div');sc.className='stats-out';
-    sc.innerHTML=buildStatsHTML(sr);
-    right.appendChild(sc);
-  }
-
-  buildDlButtons();
-}
-/* ═══════════════════════ MAIN CHART ════════════════════════ */
-function doMainChart(yCols,labels,colors,xVals,xCol,isCatX,xlabel,ylabel,showErr,showPts,showLeg,showGrid,fs){
-  const stacked=plotType==='stackedbar'||plotType==='pctbar';
-  const type=plotType==='line'?'line':plotType==='scatter'?'scatter':'bar';
-  const ds=yCols.map((yc,i)=>{
-    let d=[];let errors=[];
-    if(isCatX){
-      xVals.forEach(xv=>{
-        const vals=data.filter(r=>r[xCol]===xv).map(r=>+r[yc]).filter(v=>!isNaN(v));
-        d.push($m(vals)||0);errors.push($sem(vals)||0);
-      });
-    } else {
-      d=data.map(r=>({x:+r[xCol],y:+r[yc]}));
+window.parsePaste = function() {
+  var raw = document.getElementById('paste-ta').value.trim();
+  if (!raw) { alert('Paste some data first.'); return; }
+  var parsed = parseDelimited(raw);
+  if (!parsed.length) { alert('Could not parse. Check that the first row contains column headers.'); return; }
+  data = parsed; cols = Object.keys(parsed[0]); onDataReady('Pasted data');
+};
+window.handleFile = function(file) {
+  if (!file) return;
+  var ext = file.name.split('.').pop().toLowerCase();
+  var rd = new FileReader();
+  rd.onload = function(e) {
+    var d;
+    if (ext === 'csv') { d = parseDelimited(e.target.result); }
+    else {
+      var wb = XLSX.read(e.target.result, {type:'binary'});
+      d = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], {defval:''});
     }
-    return{label:labels[i],data:d,errors,backgroundColor:colors[i]+'99',borderColor:colors[i],borderWidth:1.5,fill:false,tension:0.35,pointRadius:plotType==='scatter'?6:3,pointBackgroundColor:colors[i]};
+    if (d && d.length) { data = d; cols = Object.keys(d[0]); onDataReady(file.name); }
+    else alert('Could not read file.');
+  };
+  if (ext === 'csv') rd.readAsText(file); else rd.readAsBinaryString(file);
+};
+window.handleDrop = function(e) {
+  e.preventDefault();
+  document.getElementById('dropzone').classList.remove('over');
+  var f = e.dataTransfer.files[0]; if (f) window.handleFile(f);
+};
+
+function onDataReady(lbl) {
+  showPreview(); buildColPickers(); buildPalUI(); buildSeriesClrs();
+  ['card-cols','card-type','card-axes','card-appear','card-stat'].forEach(function(id) {
+    document.getElementById(id).style.display = '';
   });
+  document.getElementById('gen-wrap').style.display = '';
+  document.getElementById('prev-sec').style.display = '';
+  document.getElementById('data-info').textContent = data.length + ' rows | ' + cols.length + ' cols | ' + lbl;
+}
+function showPreview() {
+  var mc = Math.min(cols.length,6), mr = Math.min(data.length,5);
+  var h = '<table class="prev-table"><thead><tr>';
+  cols.slice(0,mc).forEach(function(c) { h += '<th>' + c + '</th>'; });
+  if (cols.length > mc) h += '<th>...</th>';
+  h += '</tr></thead><tbody>';
+  data.slice(0,mr).forEach(function(r) {
+    h += '<tr>';
+    cols.slice(0,mc).forEach(function(c) { h += '<td>' + String(r[c]).slice(0,16) + '</td>'; });
+    if (cols.length > mc) h += '<td>...</td>';
+    h += '</tr>';
+  });
+  document.getElementById('prev-wrap').innerHTML = h + '</tbody></table>';
+}
+function buildColPickers() {
+  document.getElementById('y-list').innerHTML = cols.map(function(c) {
+    return '<label class="col-item"><input type="checkbox" value="' + c + '" checked onchange="buildSeriesClrs()"><span>' + c + '</span></label>';
+  }).join('');
+}
+function getYCols() {
+  return Array.from(document.querySelectorAll('#y-list input:checked')).map(function(cb) { return cb.value; });
+}
+function buildPalUI() {
+  document.getElementById('pal-grid').innerHTML = Object.entries(PALS).map(function(entry, i) {
+    var n = entry[0], c = entry[1];
+    return '<button class="pal-row-btn' + (i===0?' on':'') + '" onclick="usePal(\'' + n + '\',this)">'
+      + '<span class="pal-name">' + n + '</span>'
+      + c.slice(0,6).map(function(x) { return '<span class="pal-dot" style="background:' + x + '"></span>'; }).join('')
+      + '</button>';
+  }).join('');
+}
+function buildSeriesClrs() {
+  var yc = getYCols();
+  document.getElementById('series-clrs').innerHTML = yc.map(function(c, i) {
+    var col = pal[i % pal.length];
+    return '<div class="series-row">'
+      + '<input type="color" value="' + col + '" id="sc' + i + '"'
+      + ' oninput="if(chartInst)chartInst.draw()"'
+      + ' onchange="if(chartInst)chartInst.draw()">'
+      + '<input class="series-lbl" type="text" value="' + c + '" id="sl' + i + '">'
+      + '</div>';
+  }).join('');
+}
+window.buildSeriesClrs = buildSeriesClrs;
 
-  const errPlugin={id:'err',afterDatasetsDraw(chart){
-    if(!showErr)return;
-    const{ctx,scales:{x,y}}=chart;
-    chart.data.datasets.forEach((ds,di)=>{
-      if(!ds.errors)return;
-      const meta=chart.getDatasetMeta(di);
-      ds.errors.forEach((e,ji)=>{
-        if(!e||!meta.data[ji])return;
-        const xp=meta.data[ji].x,yv=chart.data.datasets[di].data[ji];
-        const yt=y.getPixelForValue(+yv+e),yb=y.getPixelForValue(+yv-e);
-        ctx.save();ctx.strokeStyle=ds.borderColor;ctx.lineWidth=1.5;
-        ctx.beginPath();ctx.moveTo(xp,yt);ctx.lineTo(xp,yb);ctx.stroke();
-        [yt,yb].forEach(yy=>{ctx.beginPath();ctx.moveTo(xp-5,yy);ctx.lineTo(xp+5,yy);ctx.stroke();});
-        ctx.restore();
-      });
-    });
-  }};
-
-  const ptsPlugin={id:'pts',afterDatasetsDraw(chart){
-    if(!showPts||type!=='bar')return;
-    const{ctx,scales:{y}}=chart;
-    chart.data.datasets.forEach((ds,di)=>{
-      const meta=chart.getDatasetMeta(di);
-      const yc=getYCols()[di],xc='_none_';
-      const xVals2=[...new Set(data.map(r=>r[xc]))];
-      xVals2.forEach((xv,ji)=>{
-        const pts=data.filter(r=>r[xc]===xv).map(r=>+r[yc]).filter(v=>!isNaN(v));
-        const el=meta.data[ji];if(!el)return;
-        pts.forEach(v=>{ctx.beginPath();ctx.arc(el.x+(Math.random()-.5)*10,y.getPixelForValue(v),2.5,0,Math.PI*2);ctx.fillStyle=ds.borderColor+'cc';ctx.fill();});
-      });
-    });
-  }};
-
-  const ctx=document.getElementById('the-chart').getContext('2d');
-  chartInst=new Chart(ctx,{type,data:{labels:isCatX?xVals:undefined,datasets:ds},
-    options:{responsive:true,plugins:{legend:{display:showLeg,labels:{font:{size:fs,family:'Inter'}}}},
-      scales:{
-        x:{stacked,title:{display:!!xlabel,text:xlabel,font:{size:fs,family:'Inter'}},grid:{display:showGrid,color:'rgba(0,0,0,.05)'},ticks:{font:{size:fs-1,family:'Inter'}}},
-        y:{stacked,title:{display:!!ylabel,text:ylabel,font:{size:fs,family:'Inter'}},grid:{display:showGrid,color:'rgba(0,0,0,.05)'},ticks:{font:{size:fs-1,family:'Inter'}}},
-      },animation:{duration:450}},
-    plugins:[errPlugin,ptsPlugin]});
+function sMean(a) { return a.reduce(function(s,v){return s+v;},0)/a.length; }
+function sVar(a) {
+  if (a.length < 2) return 0;
+  var m = sMean(a);
+  return a.reduce(function(s,v){return s+(v-m)*(v-m);},0)/(a.length-1);
+}
+function sSd(a) { return Math.sqrt(sVar(a)); }
+function sSem(a) { return a.length ? sSd(a)/Math.sqrt(a.length) : 0; }
+function sMed(a) {
+  var s = a.slice().sort(function(x,y){return x-y;}), m = Math.floor(s.length/2);
+  return s.length%2 ? s[m] : (s[m-1]+s[m])/2;
+}
+function normCDF(z) {
+  var t = 1/(1+0.2316419*Math.abs(z));
+  var p = t*(0.319381530+t*(-0.356563782+t*(1.781477937+t*(-1.821255978+t*1.330274429))));
+  var d = Math.exp(-z*z/2)/Math.sqrt(2*Math.PI);
+  var area = 1 - d*p;
+  return z >= 0 ? area : 1-area;
+}
+function pFromT(t, df) {
+  if (!df || df <= 0 || isNaN(t)) return NaN;
+  if (df > 200) return 2*(1-normCDF(Math.abs(t)));
+  var w = Math.abs(t)/Math.sqrt(df);
+  var z = w*(1-1/(4*df));
+  return 2*(1-normCDF(z));
+}
+function stuT(a,b) {
+  if (a.length<2||b.length<2) return {stat:NaN,p:NaN};
+  var na=a.length,nb=b.length,ma=sMean(a),mb=sMean(b),va=sVar(a),vb=sVar(b);
+  var sp=Math.sqrt(((na-1)*va+(nb-1)*vb)/(na+nb-2));
+  var t=(ma-mb)/(sp*Math.sqrt(1/na+1/nb));
+  return {stat:t, p:pFromT(t,na+nb-2)};
+}
+function welchT(a,b) {
+  if (a.length<2||b.length<2) return {stat:NaN,p:NaN};
+  var na=a.length,nb=b.length,ma=sMean(a),mb=sMean(b),va=sVar(a),vb=sVar(b);
+  var t=(ma-mb)/Math.sqrt(va/na+vb/nb);
+  var df=Math.pow(va/na+vb/nb,2)/(Math.pow(va/na,2)/(na-1)+Math.pow(vb/nb,2)/(nb-1));
+  return {stat:t, p:pFromT(t,df)};
+}
+function mwuTest(a,b) {
+  var u=0;
+  a.forEach(function(av){ b.forEach(function(bv){ if(av>bv) u++; else if(av===bv) u+=0.5; }); });
+  var n1=a.length,n2=b.length,mu=n1*n2/2,sig=Math.sqrt(n1*n2*(n1+n2+1)/12);
+  var z=sig?(u-mu)/sig:0;
+  return {stat:z, p:2*(1-normCDF(Math.abs(z)))};
+}
+function pLabel(p) {
+  if (isNaN(p)||p===null||p===undefined) return {stars:'',cls:'sig-ns',str:'n/a'};
+  if (p<0.001) return {stars:'***',cls:'sig-001',str:'p<0.001'};
+  if (p<0.01)  return {stars:'**', cls:'sig-01', str:'p='+p.toFixed(3)};
+  if (p<0.05)  return {stars:'*',  cls:'sig-05', str:'p='+p.toFixed(3)};
+  return {stars:'ns',cls:'sig-ns',str:'p='+p.toFixed(3)};
+}
+function runStats(groups) {
+  if (statTest==='none') return null;
+  if (statTest==='desc') {
+    return {type:'desc', rows:groups.map(function(g) {
+      return {label:g.label,n:g.values.length,
+        mean:sMean(g.values).toFixed(3),median:sMed(g.values).toFixed(3),
+        sd:sSd(g.values).toFixed(3),sem:sSem(g.values).toFixed(3),
+        min:Math.min.apply(null,g.values).toFixed(3),max:Math.max.apply(null,g.values).toFixed(3)};
+    })};
+  }
+  var pairs=[];
+  for (var i=0;i<groups.length;i++) {
+    for (var j=i+1;j<groups.length;j++) {
+      var a=groups[i].values,b=groups[j].values,r;
+      if (statTest==='ttest') r=stuT(a,b);
+      else if (statTest==='welch') r=welchT(a,b);
+      else if (statTest==='mwu') r=mwuTest(a,b);
+      else r=stuT(a,b);
+      pairs.push({a:groups[i].label,b:groups[j].label,
+        stat:isNaN(r.stat)?'--':r.stat.toFixed(3),pl:pLabel(r.p)});
+    }
+  }
+  var tn={ttest:"Student's t-test",welch:"Welch's t-test",mwu:'Mann-Whitney U',anova:'ANOVA (pairwise)'}[statTest]||statTest;
+  return {type:'pairs',pairs:pairs,testName:tn};
 }
 
-/* ═══════════════════════ BOX PLOT ══════════════════════════ */
-/* ═══════════════ CATEGORICAL CHART ═══════════════════════ */
-function doCategoricalChart(yCols,labels,colors,xlabel,ylabel,showLeg,showGrid,fs,axisLW,barWidthPct){
-
-  // Gather unique category values, trim all whitespace
-  const allCats = [...new Set(
-    data.flatMap(r=> yCols.map(yc=> String(r[yc]||'').trim()))
-  )].filter(v=>v!=='');
-
-  // Count per column
-  const colCounts = yCols.map(yc=>{
-    const vals  = data.map(r=>String(r[yc]||'').trim()).filter(v=>v!=='');
-    const total = vals.length;
-    const counts={}, pct={};
-    allCats.forEach(cat=>{
-      counts[cat] = vals.filter(v=>v===cat).length;
-      pct[cat]    = total ? Math.round(counts[cat]/total*1000)/10 : 0;
+function buildCatChart(yCols,labels,xlabel,ylabel,fs,axisLW,barWP,showGrid) {
+  var allCats=[];
+  data.forEach(function(r){yCols.forEach(function(c){
+    var v=String(r[c]||'').trim();
+    if(v&&allCats.indexOf(v)<0) allCats.push(v);
+  });});
+  var catPal=['#555555','#6baed6','#9e9ac8','#74c476','#fd8d3c','#de77ae','#bcbd22','#17becf'];
+  var colData=yCols.map(function(c){
+    var vals=data.map(function(r){return String(r[c]||'').trim();}).filter(function(v){return v!=='';});
+    var counts={},pct={};
+    allCats.forEach(function(cat){
+      counts[cat]=vals.filter(function(v){return v===cat;}).length;
+      pct[cat]=vals.length?Math.round(counts[cat]/vals.length*1000)/10:0;
     });
-    return {pct, total, counts};
+    return {counts:counts,pct:pct,total:vals.length};
   });
-
-  // Nature-friendly palette for categories
-  const catPal = ['#555555','#6baed6','#9e9ac8','#74c476','#fd8d3c','#de77ae','#bcbd22','#17becf','#aec7e8','#ffbb78'];
-
-  // One dataset per category value
-  const datasets = allCats.map((cat,ci)=>({
-    label           : cat,
-    data            : colCounts.map(cc=>cc.pct[cat]||0),
-    backgroundColor : catPal[ci % catPal.length],
-    borderColor     : '#ffffff',
-    borderWidth     : 1.5,
-  }));
-
-  const ctx2 = document.getElementById('the-chart').getContext('2d');
-
-  // Safe white-bg plugin with unique id
-  // Inline white-bg plugin (no ID = no global registration conflict)
-  const wbPlugin = {beforeDraw(chart){
-    const {ctx:cc,chartArea:ca}=chart; if(!ca)return;
-    cc.save();cc.fillStyle='#fff';cc.fillRect(ca.left,ca.top,ca.width,ca.height);cc.restore();
-  }};
-
-  chartInst = new Chart(ctx2, {
-    type    : 'bar',
-    data    : { labels, datasets },
-    options : {
-      responsive : true,
-      layout     : { padding:{ top:16, right: showLeg ? 160 : 20, bottom:10, left:10 } },
-      plugins    : {
-        legend : {
-          display  : true,           // always ON for categorical
-          position : 'right',
-          labels   : {
-            font     : { size:fs-1, family:'Inter,sans-serif' },
-            boxWidth : 14,
-            padding  : 10,
-            color    : '#333',
-          },
-        },
-        tooltip : {
-          callbacks:{
-            label: ctx3=>`${ctx3.dataset.label}: ${ctx3.parsed.y.toFixed(1)}%`
-          }
-        },
-      },
-      scales : {
-        x : {
-          stacked : true,
-          border  : { display:true, color:'#333', width:axisLW },
-          grid    : { display:false },
-          ticks   : { font:{size:fs-1,family:'Inter,sans-serif'}, color:'#333', maxRotation:45, minRotation:30 },
-          title   : { display:!!xlabel, text:xlabel, font:{size:fs,family:'Inter,sans-serif'}, color:'#333' },
-        },
-        y : {
-          stacked  : true,
-          min      : 0,
-          max      : 100,
-          border   : { display:true, color:'#333', width:axisLW },
-          grid     : { display:showGrid, color:'rgba(0,0,0,0.08)', drawBorder:false },
-          ticks    : {
-            font:{size:fs-1,family:'Inter,sans-serif'}, color:'#333',
-            callback : v=>v+'%', stepSize:25,
-          },
-          title : {
-            display:true, text: ylabel||'Percentage (%)',
-            font:{size:fs,family:'Inter,sans-serif'}, color:'#333',
-          },
-        },
-      },
-      barPercentage      : barWidthPct,
-      categoryPercentage : 0.90,
-      animation          : { duration:400 },
-    },
-    plugins:[wbPlugin],
-  });
-
-  // Summary table
-  const right2 = document.getElementById('pt-right');
-  const tbl = document.createElement('div');
-  tbl.className='stats-out';
-  tbl.innerHTML=`
-    <div class="stats-out-head">
-      <span>Category counts &amp; percentages</span>
-      <button class="btn-sm" onclick="dlStats()">⬇ Export CSV</button>
-    </div>
-    <div style="overflow-x:auto">
-      <table class="st-table">
-        <thead><tr><th>Column</th><th>n</th>${allCats.map(cat=>`<th>${cat}</th>`).join('')}</tr></thead>
-        <tbody>${yCols.map((yc,i)=>{
-          const cc=colCounts[i];
-          return `<tr><td><strong>${labels[i]}</strong></td><td>${cc.total}</td>${allCats.map(cat=>`<td>${cc.counts[cat]||0} (${(cc.pct[cat]||0).toFixed(1)}%)</td>`).join('')}</tr>`;
-        }).join('')}</tbody>
-      </table>
-    </div>`;
-  right2.appendChild(tbl);
-}
-
-function doBoxPlot(groups,colors,xlabel,ylabel,showLeg,showGrid,showPts,fs,showSig,sr,axisLW,barWidthPct,ptSize){
-  axisLW=+axisLW||2; barWidthPct=+barWidthPct||0.70; ptSize=+ptSize||4;
-
-  const grpLabels = groups.map(g=>g.label);
-  const allVals   = groups.flatMap(g=>g.values);
-  const yDataMin  = Math.min(...allVals);
-  const yDataMax  = Math.max(...allVals);
-  const yRange    = yDataMax-yDataMin||1;
-  const sigPairs  = (showSig&&sr&&sr.type==='pairs')
-    ? sr.pairs.filter(p=>p.p.stars&&p.p.stars!=='ns') : [];
-
-  // Destroy previous chart first
-  if(chartInst){try{chartInst.destroy();}catch(e){} chartInst=null;}
-
-  const canvas = document.getElementById('the-chart');
-  const ctx    = canvas.getContext('2d');
-
-  // Capture all variables needed by draw functions NOW (no DOM reads in draw loop)
-  // Exception: color pickers are read live so changes apply without re-generating
-  const bracketPad = 20 + sigPairs.length*24;
-  const yAxisMin   = Math.min(0, yDataMin-yRange*0.03);
-  const yAxisMax   = yDataMax+yRange*(0.15+sigPairs.length*0.10);
-
-  chartInst = new Chart(ctx, {
+  var canvas=document.getElementById('the-chart');
+  chartInst=new Chart(canvas.getContext('2d'),{
     type:'bar',
-    data:{
-      labels  : grpLabels,
-      datasets: [{data:groups.map(()=>0), backgroundColor:'transparent', borderColor:'transparent'}]
-    },
-    options:{
-      responsive:true,
-      layout:{padding:{top:bracketPad,right:20,bottom:10,left:10}},
+    data:{labels:labels,datasets:allCats.map(function(cat,ci){
+      return {label:cat,data:colData.map(function(cc){return cc.pct[cat]||0;}),
+        backgroundColor:catPal[ci%catPal.length],borderColor:'#fff',borderWidth:1.5};
+    })},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:true,position:'right',labels:{font:{size:fs-1}}}},
+      layout:{padding:{top:16,right:160,bottom:10,left:10}},
+      scales:{
+        x:{stacked:true,border:{display:true,color:'#333',width:axisLW},grid:{display:false},
+          ticks:{font:{size:fs-1},color:'#333',maxRotation:45,minRotation:30},
+          title:{display:!!xlabel,text:xlabel,font:{size:fs},color:'#333'}},
+        y:{stacked:true,min:0,max:100,border:{display:true,color:'#333',width:axisLW},
+          grid:{display:showGrid,color:'rgba(0,0,0,0.07)'},
+          ticks:{font:{size:fs-1},color:'#333',callback:function(v){return v+'%';}},
+          title:{display:true,text:ylabel||'Percentage (%)',font:{size:fs},color:'#333'}}
+      },
+      barPercentage:barWP,categoryPercentage:0.9,animation:{duration:400}},
+    plugins:[{beforeDraw:function(chart){
+      var ctx=chart.ctx,ca=chart.chartArea;if(!ca)return;
+      ctx.save();ctx.fillStyle='#fff';ctx.fillRect(ca.left,ca.top,ca.width,ca.height);ctx.restore();
+    }}]
+  });
+  var tbl=document.createElement('div');tbl.className='stats-out';
+  var th='<tr><th>Column</th><th>n</th>';
+  allCats.forEach(function(c){th+='<th>'+c+'</th>';});
+  var tb=colData.map(function(cc,i){
+    var row='<tr><td><strong>'+labels[i]+'</strong></td><td>'+cc.total+'</td>';
+    allCats.forEach(function(cat){row+='<td>'+cc.counts[cat]+'('+cc.pct[cat].toFixed(1)+'%)</td>';});
+    return row+'</tr>';
+  }).join('');
+  tbl.innerHTML='<div class="stats-out-head"><span>Category counts &amp; percentages</span>'
+    +'<button class="btn-sm" onclick="dlStats()">&darr; Export</button></div>'
+    +'<div style="overflow-x:auto"><table class="st-table"><thead>'+th+'</thead><tbody>'+tb+'</tbody></table></div>';
+  document.getElementById('pt-right').appendChild(tbl);
+}
+
+window.generate = function() {
+  if (!data.length) return;
+  if (chartInst) { try{chartInst.destroy();}catch(e){} chartInst=null; }
+  var yCols=getYCols();
+  if (!yCols.length) { alert('Select at least one column.'); return; }
+  var labels=yCols.map(function(_,i){var el=document.getElementById('sl'+i);return (el&&el.value)?el.value:yCols[i];});
+  var xlabel=document.getElementById('opt-xlabel').value||'';
+  var ylabel=document.getElementById('opt-ylabel').value||'';
+  var title=document.getElementById('opt-title').value||'';
+  var fs=+document.getElementById('opt-fs').value;
+  var axisLW=+document.getElementById('opt-axlw').value||2;
+  var barWP=+document.getElementById('opt-barw').value/100||0.7;
+  var ptSize=+document.getElementById('opt-pts-size').value||3;
+  var showPts=document.getElementById('tog-pts').classList.contains('on');
+  var showErr=document.getElementById('tog-err').classList.contains('on');
+  var showGrid=document.getElementById('tog-grid').classList.contains('on');
+  var showSig=document.getElementById('tog-sig').classList.contains('on');
+
+  var right=document.getElementById('pt-right');
+  right.innerHTML='';
+  var card=document.createElement('div');card.className='chart-card';
+  card.innerHTML='<div class="chart-topbar">'
+    +'<input class="chart-title-inp" value="'+title+'" placeholder="Chart title">'
+    +'<div class="dl-row" id="dl-row"></div></div>'
+    +'<div class="chart-canvas-wrap"><canvas id="the-chart"></canvas></div>';
+  right.appendChild(card);
+
+  function isNumCol(c){
+    return data.map(function(r){return r[c];})
+      .filter(function(v){return v!==''&&v!==null&&v!==undefined;})
+      .every(function(v){return !isNaN(+v);});
+  }
+  if (yCols.some(function(c){return !isNumCol(c);})||plotType==='cat') {
+    buildCatChart(yCols,labels,xlabel,ylabel,fs,axisLW,barWP,showGrid);
+    buildDlRow(); return;
+  }
+
+  var groups=yCols.map(function(yc,i){
+    return {label:labels[i],values:data.map(function(r){return +r[yc];}).filter(function(v){return !isNaN(v);})};
+  }).filter(function(g){return g.values.length>0;});
+  if (!groups.length) { alert('No numeric data found.'); return; }
+
+  lastGroups=groups; lastSr=runStats(groups);
+  var sigPairs=[];
+  if (showSig&&lastSr&&lastSr.type==='pairs') {
+    sigPairs=lastSr.pairs.filter(function(p){return p.pl.stars&&p.pl.stars!=='ns';});
+  }
+
+  var allVals=[];
+  groups.forEach(function(g){g.values.forEach(function(v){allVals.push(v);});});
+  var yMax=Math.max.apply(null,allVals),yMin=Math.min.apply(null,allVals),yRange=yMax-yMin||1;
+  var yAxisMax=yMax+yRange*(0.15+sigPairs.length*0.10);
+  var yAxisMin=Math.min(0,yMin-yRange*0.02);
+  var padTop=20+sigPairs.length*24;
+
+  var canvas=document.getElementById('the-chart');
+  chartInst=new Chart(canvas.getContext('2d'),{
+    type:'bar',
+    data:{labels:groups.map(function(g){return g.label;}),
+      datasets:[{data:groups.map(function(){return 0;}),backgroundColor:'transparent',borderColor:'transparent'}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      layout:{padding:{top:padTop,right:20,bottom:10,left:10}},
       plugins:{legend:{display:false},tooltip:{enabled:false}},
       scales:{
-        x:{
-          border:{display:true,color:'#333',width:axisLW},
-          grid:{display:false,drawTicks:true,tickLength:5},
-          ticks:{font:{size:Math.max(fs-2,10),family:'Inter,sans-serif'},color:'#333',maxRotation:45,minRotation:30},
-          title:{display:!!xlabel,text:xlabel,font:{size:fs,family:'Inter,sans-serif'},color:'#333'},
-        },
-        y:{
-          border:{display:true,color:'#333',width:axisLW},
-          grid:{display:showGrid,color:'rgba(0,0,0,0.07)',drawBorder:false,tickLength:5},
-          min:yAxisMin, max:yAxisMax,
-          ticks:{font:{size:fs-1,family:'Inter,sans-serif'},color:'#333'},
-          title:{display:!!ylabel,text:ylabel,font:{size:fs,family:'Inter,sans-serif'},color:'#333'},
-        },
+        x:{border:{display:true,color:'#333',width:axisLW},grid:{display:false,drawTicks:true,tickLength:5},
+          ticks:{font:{size:Math.max(fs-2,10)},color:'#333',maxRotation:45,minRotation:30},
+          title:{display:!!xlabel,text:xlabel,font:{size:fs},color:'#333'}},
+        y:{border:{display:true,color:'#333',width:axisLW},grid:{display:showGrid,color:'rgba(0,0,0,0.07)'},
+          min:yAxisMin,max:yAxisMax,ticks:{font:{size:fs-1},color:'#333'},
+          title:{display:!!ylabel,text:ylabel,font:{size:fs},color:'#333'}}
       },
-      barPercentage:barWidthPct, categoryPercentage:0.95, animation:{duration:400},
-    },
+      barPercentage:barWP,categoryPercentage:0.95,animation:{duration:400}},
     plugins:[
-      // WHITE BACKGROUND (inline — not globally registered)
-      {beforeDraw(chart){
-        const {ctx:cc,chartArea:ca}=chart; if(!ca)return;
-        cc.save();cc.fillStyle='#fff';cc.fillRect(ca.left,ca.top,ca.width,ca.height);cc.restore();
+      {beforeDraw:function(chart){
+        var ctx=chart.ctx,ca=chart.chartArea;if(!ca)return;
+        ctx.save();ctx.fillStyle='#fff';ctx.fillRect(ca.left,ca.top,ca.width,ca.height);ctx.restore();
       }},
-      // BARS + ERROR BARS + DATA POINTS + SIG BRACKETS
-      {afterDatasetsDraw(chart){
-        const {ctx:cc,chartArea:ca,scales:{x,y}}=chart;
-        const slotW=ca.width/Math.max(groups.length,1);
-        const bw=slotW*barWidthPct;
-
-        groups.forEach((g,gi)=>{
-          // Read color LIVE from picker
-          const el=document.getElementById('sc'+gi);
-          const clr=(el&&el.value)||colors[gi]||pal[gi%pal.length];
-          const v=g.values; if(!v.length)return;
-          const xp=x.getPixelForValue(gi);
-          const mn=$m(v), sm=$sem(v);
-          const yBase=y.getPixelForValue(Math.max(y.min,0));
-          const yMean=y.getPixelForValue(mn);
-          const ySemT=y.getPixelForValue(mn+sm);
-          const ySemB=y.getPixelForValue(mn-sm);
-          const cap=Math.max(5,bw*0.22);
-
-          cc.save();
-          // Filled bar
-          cc.fillStyle=clr; cc.strokeStyle='rgba(0,0,0,0.15)'; cc.lineWidth=0.5;
-          cc.fillRect(xp-bw/2,yMean,bw,yBase-yMean);
-          cc.strokeRect(xp-bw/2,yMean,bw,yBase-yMean);
-          // SEM error bar
-          cc.strokeStyle='#111'; cc.lineWidth=Math.max(1,axisLW*0.7);
-          cc.beginPath();cc.moveTo(xp,ySemT);cc.lineTo(xp,ySemB);cc.stroke();
-          [ySemT,ySemB].forEach(yy=>{
-            cc.beginPath();cc.moveTo(xp-cap,yy);cc.lineTo(xp+cap,yy);cc.stroke();
-          });
-          // Open circle data points
+      {afterDatasetsDraw:function(chart){
+        var ctx=chart.ctx,ca=chart.chartArea,x=chart.scales.x,y=chart.scales.y;
+        var slotW=ca.width/Math.max(groups.length,1),bw=slotW*barWP;
+        groups.forEach(function(g,gi){
+          var el=document.getElementById('sc'+gi);
+          var clr=(el&&el.value)?el.value:pal[gi%pal.length];
+          if(!g.values.length) return;
+          var mn=sMean(g.values),sm=sSem(g.values);
+          var xp=x.getPixelForValue(gi);
+          var yBase=y.getPixelForValue(Math.max(y.min,0));
+          var yMn=y.getPixelForValue(mn),yST=y.getPixelForValue(mn+sm),ySB=y.getPixelForValue(mn-sm);
+          ctx.save();
+          ctx.fillStyle=clr;ctx.strokeStyle='rgba(0,0,0,0.15)';ctx.lineWidth=0.5;
+          ctx.fillRect(xp-bw/2,yMn,bw,yBase-yMn);
+          ctx.strokeRect(xp-bw/2,yMn,bw,yBase-yMn);
+          if(showErr){
+            var cap=Math.max(4,bw*0.2);
+            ctx.strokeStyle='#111';ctx.lineWidth=Math.max(1,axisLW*0.65);
+            ctx.beginPath();ctx.moveTo(xp,yST);ctx.lineTo(xp,ySB);ctx.stroke();
+            [yST,ySB].forEach(function(yy){ctx.beginPath();ctx.moveTo(xp-cap,yy);ctx.lineTo(xp+cap,yy);ctx.stroke();});
+          }
           if(showPts){
-            v.forEach(val=>{
-              cc.beginPath();
-              cc.arc(xp+(Math.random()-.5)*bw*.55,y.getPixelForValue(val),ptSize,0,Math.PI*2);
-              cc.fillStyle='rgba(255,255,255,0.85)'; cc.strokeStyle=clr; cc.lineWidth=1.3;
-              cc.fill(); cc.stroke();
+            g.values.forEach(function(v){
+              ctx.beginPath();
+              ctx.arc(xp+(Math.random()-0.5)*bw*0.55,y.getPixelForValue(v),ptSize,0,Math.PI*2);
+              ctx.fillStyle='rgba(255,255,255,0.85)';ctx.strokeStyle=clr;ctx.lineWidth=1.3;
+              ctx.fill();ctx.stroke();
             });
           }
-          cc.restore();
+          ctx.restore();
         });
-
-        // Significance brackets
         if(sigPairs.length){
-          const levels={};
-          sigPairs.forEach(pair=>{
-            const ai=grpLabels.indexOf(pair.a), bi=grpLabels.indexOf(pair.b);
-            if(ai<0||bi<0)return;
-            const xa=x.getPixelForValue(ai), xb=x.getPixelForValue(bi);
-            const key=Math.min(ai,bi)+'-'+Math.max(ai,bi);
-            const lv=levels[key]=(levels[key]||0); levels[key]++;
-            const topY=ca.top+8+lv*22;
-            cc.save();
-            cc.strokeStyle='#333'; cc.lineWidth=1.3;
-            cc.beginPath();
-            cc.moveTo(xa,topY+8);cc.lineTo(xa,topY);cc.lineTo(xb,topY);cc.lineTo(xb,topY+8);
-            cc.stroke();
-            cc.font=`bold ${fs}px Inter,sans-serif`;
-            cc.fillStyle='#333'; cc.textAlign='center'; cc.textBaseline='bottom';
-            cc.fillText(pair.p.stars,(xa+xb)/2,topY-2);
-            cc.restore();
+          var levels={};
+          sigPairs.forEach(function(pair){
+            var ai=-1,bi=-1;
+            groups.forEach(function(g,i){if(g.label===pair.a)ai=i;if(g.label===pair.b)bi=i;});
+            if(ai<0||bi<0) return;
+            var xa=x.getPixelForValue(ai),xb=x.getPixelForValue(bi);
+            var key=Math.min(ai,bi)+'-'+Math.max(ai,bi);
+            var lv=levels[key]=(levels[key]||0);levels[key]++;
+            var topY=ca.top+8+lv*22;
+            ctx.save();
+            ctx.strokeStyle='#333';ctx.lineWidth=1.2;
+            ctx.beginPath();ctx.moveTo(xa,topY+8);ctx.lineTo(xa,topY);ctx.lineTo(xb,topY);ctx.lineTo(xb,topY+8);ctx.stroke();
+            ctx.fillStyle='#333';ctx.font='bold '+fs+'px Inter,sans-serif';
+            ctx.textAlign='center';ctx.textBaseline='bottom';
+            ctx.fillText(pair.pl.stars,(xa+xb)/2,topY-2);
+            ctx.restore();
           });
         }
       }}
-    ],
+    ]
   });
+
+  if(lastSr){var sc=document.createElement('div');sc.className='stats-out';sc.innerHTML=buildStatsHTML(lastSr);right.appendChild(sc);}
+  buildDlRow();
+};
+
+function buildStatsHTML(sr) {
+  if(sr.type==='desc'){
+    var rows=sr.rows.map(function(r){return '<tr><td><strong>'+r.label+'</strong></td><td>'+r.n+'</td><td>'+r.mean+'</td><td>'+r.median+'</td><td>'+r.sd+'</td><td>'+r.sem+'</td><td>'+r.min+'</td><td>'+r.max+'</td></tr>';}).join('');
+    return '<div class="stats-out-head"><span>Descriptive statistics</span><button class="btn-sm" onclick="dlStats()">&darr; Export</button></div><div style="overflow-x:auto"><table class="st-table"><thead><tr><th>Group</th><th>n</th><th>Mean</th><th>Median</th><th>SD</th><th>SEM</th><th>Min</th><th>Max</th></tr></thead><tbody>'+rows+'</tbody></table></div>';
+  }
+  var rows2=sr.pairs.map(function(p){
+    var col=(p.pl.cls==='sig-ns')?'#999':'#c62828';
+    return '<tr><td><strong>'+p.a+'</strong></td><td><strong>'+p.b+'</strong></td><td style="font-family:monospace">'+p.stat+'</td><td><span class="sig-badge '+p.pl.cls+'">'+p.pl.str+'</span></td><td style="font-weight:700;color:'+col+'">'+p.pl.stars+'</td></tr>';
+  }).join('');
+  return '<div class="stats-out-head"><span>'+sr.testName+'</span><button class="btn-sm" onclick="dlStats()">&darr; Export</button></div><div style="overflow-x:auto"><table class="st-table"><thead><tr><th>Group A</th><th>Group B</th><th>Statistic</th><th>p-value</th><th>Sig.</th></tr></thead><tbody>'+rows2+'</tbody></table></div><div style="padding:6px 12px;font-size:10px;color:var(--ink-3)">*** p&lt;0.001 ** p&lt;0.01 * p&lt;0.05 ns=not significant</div>';
 }
 
-// Slightly darken a hex color for bar border
-function darken(hex, amt){
-  try{
-    const n=parseInt(hex.replace('#',''),16);
-    const r=Math.max(0,Math.min(255,(n>>16)-(255*amt)|0));
-    const g=Math.max(0,Math.min(255,((n>>8)&0xff)-(255*amt)|0));
-    const b=Math.max(0,Math.min(255,(n&0xff)-(255*amt)|0));
-    return `rgb(${r},${g},${b})`;
-  }catch(e){return hex;}
+function buildDlRow(){
+  var row=document.getElementById('dl-row');if(!row)return;
+  row.innerHTML='<button class="btn-sm accent" onclick="dlPNG()">&darr; PNG</button>'
+    +'<button class="btn-sm accent" onclick="dlPDF()">&darr; PDF</button>'
+    +'<button class="btn-sm" onclick="dlSVG()">&darr; SVG</button>'
+    +'<button class="btn-sm" onclick="dlTIFF()">&darr; TIFF</button>'
+    +'<button class="btn-sm" onclick="dlCSV()">&darr; CSV</button>'
+    +'<button class="btn-sm" onclick="dlStats()">&darr; Stats</button>';
 }
+window.dlPNG=function(){if(!chartInst)return;var a=document.createElement('a');a.download='plot.png';a.href=chartInst.toBase64Image('image/png',1);a.click();};
+window.dlTIFF=function(){if(!chartInst)return;var c=chartInst.canvas,h=document.createElement('canvas');h.width=c.width*3;h.height=c.height*3;var x=h.getContext('2d');x.scale(3,3);x.drawImage(c,0,0);var a=document.createElement('a');a.download='plot_hires.png';a.href=h.toDataURL('image/png',1);a.click();};
+window.dlSVG=function(){if(!chartInst)return;var img=chartInst.toBase64Image('image/png',1),w=chartInst.canvas.width,h=chartInst.canvas.height;var s='<svg xmlns="http://www.w3.org/2000/svg" width="'+w+'" height="'+h+'"><image href="'+img+'" width="'+w+'" height="'+h+'"/></svg>';var a=document.createElement('a');a.download='plot.svg';a.href=URL.createObjectURL(new Blob([s],{type:'image/svg+xml'}));a.click();};
+window.dlPDF=function(){if(!chartInst)return;try{var J=window.jspdf.jsPDF;var pdf=new J({orientation:'landscape',unit:'mm',format:'a4'});var img=chartInst.toBase64Image('image/png',1);var pw=pdf.internal.pageSize.getWidth(),ph=pdf.internal.pageSize.getHeight();var cw=chartInst.canvas.width,ch=chartInst.canvas.height,ar=cw/ch;var iw=pw-20,ih=iw/ar;if(ih>ph-20){ih=ph-20;iw=ih*ar;}pdf.addImage(img,'PNG',(pw-iw)/2,(ph-ih)/2,iw,ih);pdf.save('plot.pdf');}catch(e){alert('PDF error: '+e.message);}};
+window.dlCSV=function(){if(!data.length)return;var k=Object.keys(data[0]);var c=k.join(',')+String.fromCharCode(10);data.forEach(function(r){c+=k.map(function(col){return JSON.stringify(String(r[col]));}).join(',')+String.fromCharCode(10);});var a=document.createElement('a');a.download='data.csv';a.href=URL.createObjectURL(new Blob([c],{type:'text/csv'}));a.click();};
+window.dlStats=function(){var tables=document.querySelectorAll('.st-table');if(!tables.length){alert('Run a test first.');return;}var c='';tables.forEach(function(t){Array.from(t.querySelectorAll('tr')).forEach(function(row){c+=Array.from(row.querySelectorAll('th,td')).map(function(x){return '"'+x.textContent.trim()+'"';}).join(',')+String.fromCharCode(10);});c+=String.fromCharCode(10);});var a=document.createElement('a');a.download='stats.csv';a.href=URL.createObjectURL(new Blob([c],{type:'text/csv'}));a.click();};
 
-function doColumnChart(groups,colors,xlabel,ylabel,showLeg,showGrid,fs){
-  const type=plotType==='line'?'line':plotType==='scatter'?'scatter':'bar';
-  const axisLW=+(document.getElementById('opt-axlw')?.value||2);
-  const bwp=+(document.getElementById('opt-barw')?.value||70)/100;
-  const datasets=groups.map((g,i)=>{
-    const clr=document.getElementById('sc'+i)?.value||colors[i];
-    const m=$m(g.values), s=$sem(g.values);
-    return{
-      label:g.label,
-      data:type==='scatter'?g.values.map((v,j)=>({x:i+(Math.random()-.5)*0.3,y:v})):[m],
-      errors:[s],
-      backgroundColor:clr+'99', borderColor:clr, borderWidth:1.5,
-      pointRadius:5, pointBackgroundColor:clr, fill:false, tension:0.3,
-    };
-  });
-  const errPlugin={id:'err2',afterDatasetsDraw(chart){
-    const{ctx,scales:{x,y}}=chart;
-    chart.data.datasets.forEach((ds,di)=>{
-      if(!ds.errors)return;
-      const meta=chart.getDatasetMeta(di);
-      ds.errors.forEach((e,ji)=>{
-        if(!e||!meta.data[ji])return;
-        const xp=meta.data[ji].x, yv=+ds.data[ji];
-        const yt=y.getPixelForValue(yv+e), yb=y.getPixelForValue(yv-e);
-        ctx.save();ctx.strokeStyle=ds.borderColor;ctx.lineWidth=1.5;
-        ctx.beginPath();ctx.moveTo(xp,yt);ctx.lineTo(xp,yb);ctx.stroke();
-        [yt,yb].forEach(yy=>{ctx.beginPath();ctx.moveTo(xp-5,yy);ctx.lineTo(xp+5,yy);ctx.stroke();});
-        ctx.restore();
-      });
-    });
-  }};
-  const wbC={id:'wbCol',beforeDraw(chart){const{ctx:cc,chartArea:ca}=chart;if(!ca)return;cc.save();cc.fillStyle='#fff';cc.fillRect(ca.left,ca.top,ca.width,ca.height);cc.restore();}};
-  const ctx=document.getElementById('the-chart').getContext('2d');
-  chartInst=new Chart(ctx,{type,
-    data:{labels:type==='scatter'?undefined:groups.map(g=>g.label),datasets},
-    options:{responsive:true,
-      plugins:{legend:{display:showLeg,labels:{font:{size:fs,family:'Inter,sans-serif'}}}},
-      scales:{
-        x:{border:{display:true,color:'#333',width:axisLW},grid:{display:false},
-           ticks:{font:{size:fs-1,family:'Inter,sans-serif'},color:'#333',maxRotation:45,minRotation:30},
-           title:{display:!!xlabel,text:xlabel,font:{size:fs,family:'Inter,sans-serif'},color:'#333'}},
-        y:{border:{display:true,color:'#333',width:axisLW},grid:{display:showGrid,color:'rgba(0,0,0,0.07)'},
-           ticks:{font:{size:fs-1,family:'Inter,sans-serif'},color:'#333'},
-           title:{display:!!ylabel,text:ylabel,font:{size:fs,family:'Inter,sans-serif'},color:'#333'}},
-      },
-      barPercentage:bwp, categoryPercentage:0.95, animation:{duration:400}},
-    plugins:[wbC,errPlugin]});
-}
-
-/* ═══════════════════ STATS HTML ════════════════════════════ */
-function buildStatsHTML(sr){
-  if(sr.type==='desc') return`
-    <div class="stats-out-head"><span>Descriptive statistics</span><button class="btn-sm" onclick="dlStats()">⬇ Export CSV</button></div>
-    <div style="overflow-x:auto"><table class="st-table">
-      <thead><tr><th>Group</th><th>n</th><th>Mean</th><th>Median</th><th>SD</th><th>SEM</th><th>Min</th><th>Max</th></tr></thead>
-      <tbody>${sr.rows.map(r=>`<tr><td><strong>${r.label}</strong></td><td>${r.n}</td><td>${r.mean}</td><td>${r.median}</td><td>${r.sd}</td><td>${r.sem}</td><td>${r.min}</td><td>${r.max}</td></tr>`).join('')}</tbody>
-    </table></div>`;
-  return`
-    <div class="stats-out-head"><span>${sr.testName}</span><button class="btn-sm" onclick="dlStats()">⬇ Export CSV</button></div>
-    <div style="overflow-x:auto"><table class="st-table">
-      <thead><tr><th>Group A</th><th>Group B</th><th>Statistic</th><th>p-value</th><th>Sig.</th></tr></thead>
-      <tbody>${sr.pairs.map(p=>`<tr>
-        <td><strong>${p.a}</strong></td><td><strong>${p.b}</strong></td>
-        <td style="font-family:monospace;font-size:11px">${p.stat}${p.extra?' ('+p.extra+')':''}</td>
-        <td><span class="sig ${p.p.cls}">${p.p.str}</span></td>
-        <td style="font-weight:700;color:${p.p.cls==='sig-ns'?'#999':'#c62828'}">${p.p.stars}</td>
-      </tr>`).join('')}</tbody>
-    </table></div>
-    <div style="padding:8px 12px;font-size:10px;color:var(--ink-3)">*** p&lt;0.001 &nbsp;** p&lt;0.01 &nbsp;* p&lt;0.05 &nbsp;ns = not significant.</div>`;
-}
-
-/* ═══════════════════ DOWNLOAD BUTTONS ══════════════════════ */
-function buildDlButtons(){
-  const row=document.getElementById('dl-row');
-  if(!row)return;
-  row.innerHTML=`
-    <button class="btn-sm accent" onclick="dlPNG()">⬇ PNG</button>
-    <button class="btn-sm accent" onclick="dlPDF()">⬇ PDF</button>
-    <button class="btn-sm" onclick="dlSVG()">⬇ SVG</button>
-    <button class="btn-sm" onclick="dlTIFF()">⬇ TIFF</button>
-    <button class="btn-sm" onclick="dlCSVdata()">⬇ CSV</button>
-    <button class="btn-sm" onclick="dlStats()">⬇ Stats CSV</button>
-    <button class="btn-sm" onclick="clearAll()" style="margin-left:6px">✕ Clear</button>`;
-}
-
-function dlPNG(){
-  if(!chartInst)return;
-  const a=document.createElement('a');
-  a.download='plot.png';
-  a.href=chartInst.toBase64Image('image/png',1);
-  a.click();
-}
-function dlPDF(){
-  if(!chartInst)return;
-  try{
-    const {jsPDF}=window.jspdf;
-    const pdf=new jsPDF({orientation:'landscape',unit:'mm',format:'a4'});
-    const img=chartInst.toBase64Image('image/png',1);
-    const pw=pdf.internal.pageSize.getWidth(), ph=pdf.internal.pageSize.getHeight();
-    const cw=chartInst.canvas.width, ch=chartInst.canvas.height, ar=cw/ch;
-    let iw=pw-20, ih=iw/ar;
-    if(ih>ph-20){ih=ph-20;iw=ih*ar;}
-    pdf.addImage(img,'PNG',(pw-iw)/2,(ph-ih)/2,iw,ih);
-    pdf.save('plot.pdf');
-  }catch(e){alert('PDF failed — try PNG. Error: '+e.message);}
-}
-function dlSVG(){
-  if(!chartInst)return;
-  const img=chartInst.toBase64Image('image/png',1);
-  const w=chartInst.canvas.width, h=chartInst.canvas.height;
-  const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}"><image href="${img}" width="${w}" height="${h}"/></svg>`;
-  const a=document.createElement('a');
-  a.download='plot.svg';
-  a.href=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml'}));
-  a.click();
-}
-function dlTIFF(){
-  if(!chartInst)return;
-  const canvas=chartInst.canvas;
-  const hi=document.createElement('canvas');
-  hi.width=canvas.width*3; hi.height=canvas.height*3;
-  const ctx=hi.getContext('2d');
-  ctx.scale(3,3); ctx.drawImage(canvas,0,0);
-  const a=document.createElement('a');
-  a.download='plot_hires.png';
-  a.href=hi.toDataURL('image/png',1);
-  a.click();
-}
-function dlCSVdata(){
-  if(!data.length)return;
-  const keys=Object.keys(data[0]);
-  let csv=keys.join(',')+'\n';
-  data.forEach(r=>{csv+=keys.map(k=>JSON.stringify(String(r[k]))).join(',')+'\n';});
-  const a=document.createElement('a');
-  a.download='data.csv';
-  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
-  a.click();
-}
-function dlStats(){
-  const tables=document.querySelectorAll('.st-table');
-  if(!tables.length){alert('Generate a plot with statistics first.');return;}
-  let csv='';
-  tables.forEach(t=>{
-    [...t.querySelectorAll('tr')].forEach(row=>{
-      csv+=[...row.querySelectorAll('th,td')].map(c=>'"'+c.textContent.trim()+'"').join(',')+'\n';
-    });
-    csv+='\n';
-  });
-  const a=document.createElement('a');
-  a.download='statistics.csv';
-  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
-  a.click();
-}
-function clearAll(){
-  if(chartInst){try{chartInst.destroy();}catch(e){}}
-  chartInst=null;
-  document.getElementById('pt-right').innerHTML=`<div class="pt-empty" id="pt-empty">
-    <div class="pt-empty-icon">📊</div>
-    <h3>Upload or paste your data</h3>
-    <p>All columns shown by default.<br>Box plot with SEM error bars is the default.<br>Nature journal colors applied automatically.</p>
-  </div>`;
-}
-function liveTitle(v){
-  document.querySelectorAll('.chart-title-inp').forEach(el=>el.value=v);
-}
-
-/* ═══════════════════ EXAMPLES ══════════════════════════════ */
-function loadEx(type){
-  const ex={
-    ift:[['Genotype','Anterograde_um_s','Retrograde_um_s'],
-      ['WT',0.72,0.58],['WT',0.68,0.61],['WT',0.75,0.55],['WT',0.81,0.63],['WT',0.70,0.59],['WT',0.77,0.57],
-      ['arl-13',0.44,0.38],['arl-13',0.41,0.35],['arl-13',0.47,0.40],['arl-13',0.43,0.36],
-      ['ift-88',0.21,0.18],['ift-88',0.25,0.20],['ift-88',0.19,0.17],
-    ],
-    length:[['Genotype','Cilia_length_um'],
-      ['WT',3.2],['WT',3.5],['WT',3.1],['WT',3.4],['WT',3.3],['WT',3.6],
-      ['arl-13',1.8],['arl-13',2.1],['arl-13',1.9],['arl-13',2.0],['arl-13',1.7],
-      ['ift-88',0.8],['ift-88',1.1],['ift-88',0.9],['ift-88',0.7],['ift-88',1.0],
-      ['bbs-1',2.8],['bbs-1',3.0],['bbs-1',2.7],['bbs-1',2.9],['bbs-1',3.1],
-    ],
-    cat:[['Wild_type','unc-5'],
-      ['normal','misshape'],['normal','no axon'],['normal','misshape'],['normal','misshape'],
-      ['normal','no axon'],['normal','misshape'],['normal','no axon'],['normal','misshape'],
-      ['normal','misshape'],['normal','misshape'],['normal','no axon'],['normal','misshape'],
-      ['normal','misshape'],['normal','misshape'],['normal','misshape'],
-    ],
-    wb:[['Condition','Band_AU'],
-      ['Control',1.00],['Control',0.98],['Control',1.03],['Control',0.95],['Control',1.05],
-      ['siRNA_1h',0.72],['siRNA_1h',0.68],['siRNA_1h',0.75],['siRNA_1h',0.70],
-      ['siRNA_4h',0.45],['siRNA_4h',0.41],['siRNA_4h',0.48],['siRNA_4h',0.43],
-      ['siRNA_24h',0.21],['siRNA_24h',0.19],['siRNA_24h',0.24],['siRNA_24h',0.20],
-    ],
+window.loadEx=function(t){
+  var ex={
+    speed:'WT\tarl-13\tift-88\n0.72\t0.44\t0.21\n0.68\t0.41\t0.25\n0.75\t0.47\t0.19\n0.81\t0.43\t0.22\n0.70\t0.45\t0.20\n0.77\t0.42\t0.23',
+    length:'WT\tarl-13\tift-88\tbbs-1\n3.2\t1.8\t0.8\t2.8\n3.5\t2.1\t1.1\t3.0\n3.1\t1.9\t0.9\t2.7\n3.4\t2.0\t0.7\t2.9\n3.3\t1.7\t1.0\t3.1',
+    cat:'Wild type\tunc-5\nnormal\tmisshape\nnormal\tno axon\nnormal\tmisshape\nnormal\tmisshape\nnormal\tno axon\nnormal\tmisshape\nnormal\tno axon\nnormal\tmisshape'
   };
-  const rows=ex[type]; const headers=rows[0];
-  data=rows.slice(1).map(r=>{const o={};headers.forEach((h,i)=>o[h]=r[i]);return o;});
-  cols=headers;
-  document.getElementById('paste-ta').value=[headers.join('\t'),...rows.slice(1).map(r=>r.join('\t'))].join('\n');
-  switchTab('paste',document.querySelectorAll('.itab')[0]);
-  onDataReady('Example: '+type);
-  if(type==='cat'){document.querySelector('[data-t="pctbar"]').click();}
-  else{document.querySelector('[data-t="boxplot"]').click();}
-  if(type==='ift'||type==='length'){
-    document.getElementById('opt-xlabel').value='Genotype';
-    document.getElementById('opt-ylabel').value=type==='ift'?'Speed (µm/s)':'Cilia length (µm)';
-  }
-  if(type==='wb'){
-    document.getElementById('opt-xlabel').value='Condition';
-    document.getElementById('opt-ylabel').value='Band intensity (AU)';
-  }
-}
+  document.getElementById('paste-ta').value=ex[t]||ex.speed;
+  window.switchTab('paste',document.querySelector('.itab'));
+  window.parsePaste();
+};
 
-
-/* ══ WINDOW EXPORTS ════════════════════════════════════════ */
-['parsePaste','handleFile','handleDrop','loadEx','buildSeriesClrs','liveTitle',
- 'dlPNG','dlPDF','dlSVG','dlTIFF','dlCSVdata','dlStats','clearAll','buildDlButtons',
- 'toggleCard','switchTab','setType','setStat','usePal'
-].forEach(fn=>{ if(typeof eval(fn)==='function') window[fn]=eval(fn); });
-window.generate=window.generate;
 </script>
 </body>
 </html>
