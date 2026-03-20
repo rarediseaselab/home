@@ -621,7 +621,32 @@ window.generate=function(){
   const colors   = yCols.map((_,i)=>document.getElementById('sc'+i)?.value||seriesClrs[i]||pal[i%pal.length]);
   const labels   = yCols.map((_,i)=>document.getElementById('sl'+i)?.value||yCols[i]);
 
-  // Each column = one group. Values = all numeric rows for that column.
+  // ── Detect if data is categorical (text) or numeric ──
+  function colIsNumeric(col){
+    const vals=data.map(r=>r[col]).filter(v=>v!==''&&v!==null&&v!==undefined);
+    return vals.length>0 && vals.every(v=>!isNaN(+v));
+  }
+  const isCategorical = yCols.some(yc=>!colIsNumeric(yc));
+
+  // Rebuild right panel
+  const right=document.getElementById('pt-right');
+  right.innerHTML='';
+  const cc=document.createElement('div');cc.className='chart-card';
+  cc.innerHTML=`<div class="chart-topbar">
+    <input class="chart-title-inp" value="${title}" placeholder="Chart title (click to edit)" oninput="liveTitle(this.value)">
+    <div class="dl-row" id="dl-row"></div>
+  </div>
+  <div style="position:relative"><canvas id="the-chart" style="max-height:520px"></canvas></div>`;
+  right.appendChild(cc);
+
+  if(isCategorical){
+    // ── CATEGORICAL: count occurrences, draw 100% stacked bar ──
+    doCategoricalChart(yCols,labels,colors,xlabel,ylabel||'Percentage (%)',showLeg,showGrid,fs,axisLW,barWidthPct);
+    buildDlButtons();
+    return;
+  }
+
+  // ── NUMERIC: each column = one box plot ──
   const groups = yCols.map((yc,i)=>({
     label : labels[i],
     values: data.map(r=>+r[yc]).filter(v=>!isNaN(v)),
@@ -632,19 +657,6 @@ window.generate=function(){
 
   const sr = runStats(groups);
 
-  // Rebuild right panel
-  const right=document.getElementById('pt-right');
-  right.innerHTML='';
-
-  const cc=document.createElement('div');cc.className='chart-card';
-  cc.innerHTML=`<div class="chart-topbar">
-    <input class="chart-title-inp" value="${title}" placeholder="Chart title (click to edit)" oninput="liveTitle(this.value)">
-    <div class="dl-row" id="dl-row"></div>
-  </div>
-  <div style="position:relative"><canvas id="the-chart" style="max-height:520px"></canvas></div>`;
-  right.appendChild(cc);
-
-  // Always box plot by default; respect plotType for other types
   if(plotType==='boxplot'){
     doBoxPlot(groups,colors,xlabel,ylabel,showLeg,showGrid,showPts,fs,showSig,sr,axisLW,barWidthPct,ptSize);
   } else {
@@ -720,6 +732,122 @@ function doMainChart(yCols,labels,colors,xVals,xCol,isCatX,xlabel,ylabel,showErr
 }
 
 /* ═══════════════════════ BOX PLOT ══════════════════════════ */
+/* ═══════════════ CATEGORICAL CHART ═══════════════════════ */
+function doCategoricalChart(yCols,labels,colors,xlabel,ylabel,showLeg,showGrid,fs,axisLW,barWidthPct){
+  // Gather all unique category values across all columns (trim whitespace)
+  const allCats = [...new Set(
+    data.flatMap(r=> yCols.map(yc=> String(r[yc]||'').trim()) )
+  )].filter(v=>v!=='');
+
+  // For each column: count each category → convert to %
+  const colCounts = yCols.map(yc=>{
+    const vals = data.map(r=>String(r[yc]||'').trim()).filter(v=>v!=='');
+    const total = vals.length;
+    const counts = {};
+    allCats.forEach(cat=>{ counts[cat] = vals.filter(v=>v===cat).length; });
+    const pct = {};
+    allCats.forEach(cat=>{ pct[cat] = total ? Math.round(counts[cat]/total*1000)/10 : 0; });
+    return { pct, total, counts };
+  });
+
+  // Nature-style category colors (distinct from column colors)
+  const catPalette = ['#555555','#6baed6','#9e9ac8','#74c476','#fd8d3c','#e377c2','#bcbd22','#17becf','#999999','#393b79'];
+
+  // Build Chart.js stacked bar datasets — one dataset per category value
+  const datasets = allCats.map((cat,ci)=>({
+    label           : cat,
+    data            : colCounts.map(cc=>cc.pct[cat]||0),
+    backgroundColor : catPalette[ci % catPalette.length],
+    borderColor     : '#fff',
+    borderWidth     : 1,
+  }));
+
+  // Build a summary table to show below chart
+  const summaryRows = yCols.map((yc,i)=>{
+    const cc = colCounts[i];
+    return `<tr><td><strong>${labels[i]}</strong></td><td>${cc.total}</td>${
+      allCats.map(cat=>`<td>${cc.counts[cat]||0} (${cc.pct[cat]||0}%)</td>`).join('')
+    }</tr>`;
+  }).join('');
+
+  const ctx = document.getElementById('the-chart').getContext('2d');
+
+  Chart.register({
+    id:'whiteBg2',
+    beforeDraw(chart){
+      const {ctx:c2,chartArea:{left,top,width,height}}=chart;
+      c2.save();c2.fillStyle='#ffffff';c2.fillRect(left,top,width,height);c2.restore();
+    }
+  });
+
+  chartInst = new Chart(ctx, {
+    type : 'bar',
+    data : { labels: labels, datasets },
+    options : {
+      responsive : true,
+      plugins    : {
+        legend  : {
+          display  : showLeg,
+          position : 'right',
+          labels   : { font:{size:fs-1,family:'Inter,sans-serif'}, boxWidth:14, padding:10 },
+        },
+        tooltip : {
+          callbacks : {
+            label : ctx2=>`${ctx2.dataset.label}: ${ctx2.parsed.y.toFixed(1)}%`
+          }
+        },
+      },
+      layout : { padding:{ top:20, right:showLeg?10:20, bottom:10, left:10 } },
+      scales : {
+        x : {
+          stacked : true,
+          border  : { display:true, color:'#333', width:axisLW },
+          grid    : { display:false },
+          ticks   : { font:{size:fs-1,family:'Inter,sans-serif'}, color:'#333', maxRotation:45, minRotation:30 },
+          title   : { display:!!xlabel, text:xlabel, font:{size:fs,family:'Inter,sans-serif'}, color:'#333' },
+        },
+        y : {
+          stacked : true,
+          min     : 0,
+          max     : 100,
+          border  : { display:true, color:'#333', width:axisLW },
+          grid    : { display:showGrid, color:'rgba(0,0,0,0.08)' },
+          ticks   : {
+            font     : { size:fs-1, family:'Inter,sans-serif' },
+            color    : '#333',
+            callback : v=>v+'%',
+            stepSize : 25,
+          },
+          title : { display:true, text:ylabel||'Percentage (%)', font:{size:fs,family:'Inter,sans-serif'}, color:'#333' },
+        },
+      },
+      barPercentage      : barWidthPct,
+      categoryPercentage : 0.95,
+      animation          : { duration:400 },
+    },
+  });
+
+  // Append summary table
+  const right = document.getElementById('pt-right');
+  const tbl = document.createElement('div');
+  tbl.className = 'stats-out';
+  tbl.innerHTML = `
+    <div class="stats-out-head">
+      <span>Category counts &amp; percentages</span>
+      <button class="btn-sm" onclick="dlStats()">⬇ Export CSV</button>
+    </div>
+    <div style="overflow-x:auto">
+      <table class="st-table">
+        <thead><tr>
+          <th>Column</th><th>Total n</th>
+          ${allCats.map(cat=>`<th>${cat}</th>`).join('')}
+        </tr></thead>
+        <tbody>${summaryRows}</tbody>
+      </table>
+    </div>`;
+  right.appendChild(tbl);
+}
+
 function doBoxPlot(groups,colors,xlabel,ylabel,showLeg,showGrid,showPts,fs,showSig,sr,axisLW,barWidthPct,ptSize){
   axisLW      = axisLW      ?? 2;
   barWidthPct = barWidthPct ?? 0.70;
