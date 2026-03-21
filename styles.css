@@ -649,6 +649,7 @@ li { font-size: 16px; line-height: 1.6; color: var(--ink-2); margin-bottom: 4px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
+  align-items: start;
 }
 
 .pi-acc-card {
