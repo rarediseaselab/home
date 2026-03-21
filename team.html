@@ -124,101 +124,13 @@
 <div id="breadcrumbs"><a href="index.html">Home</a> › Current Members</div>
 
 <main>
-<style>
-/* ── SVG avatar placeholders ─────────────────── */
-.avatar-wrap {
-  width: 100%; aspect-ratio: 1/1;
-  display: flex; align-items: center; justify-content: center;
-  background: var(--off);
-  overflow: hidden;
-}
-.avatar-wrap svg { width: 75%; height: 75%; }
 
-/* ── PI row: two cards side by side ─────────── */
-.pi-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  margin-bottom: 8px;
-}
-.pi-acc-card {
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  overflow: hidden;
-  background: var(--white);
-  transition: box-shadow .15s, border-color .15s;
-}
-.pi-acc-card.open {
-  box-shadow: 0 4px 20px rgba(31,60,136,.10);
-  border-color: #b8c8f0;
-}
-.pi-acc-trigger {
-  width: 100%; display: flex; align-items: center;
-  gap: 0; padding: 0; background: var(--white);
-  border: none; cursor: pointer; text-align: left;
-  font-family: inherit; transition: background .12s;
-}
-.pi-acc-trigger:hover { background: var(--off); }
-.pi-acc-card.open .pi-acc-trigger { background: #f0f4fd; }
-
-.pi-acc-photo-wrap {
-  width: 100px; min-width: 100px; height: 100px;
-  overflow: hidden; flex-shrink: 0;
-}
-.pi-acc-photo-wrap img {
-  width: 100%; height: 100%;
-  object-fit: cover; object-position: top center;
-  display: block;
-}
-
-.pi-acc-summary { flex: 1; min-width: 0; padding: 14px 12px 12px; }
-.pi-acc-name  { font-size: 15px; font-weight: 700; color: var(--ink); margin-bottom: 2px; line-height: 1.2; }
-.pi-acc-title { font-size: 11px; font-weight: 600; color: var(--accent); margin-bottom: 3px; text-transform: uppercase; letter-spacing: .04em; }
-.pi-acc-dept  { font-size: 11px; color: var(--ink-3); margin-bottom: 8px; line-height: 1.4; }
-.pi-acc-links { display: flex; flex-wrap: wrap; gap: 3px 8px; }
-.pi-acc-links a { font-size: 11px; font-weight: 600; color: var(--accent); text-decoration: none; white-space: nowrap; }
-.pi-acc-links a:hover { text-decoration: underline; }
-
-.pi-acc-chevron { font-size: 13px; color: var(--ink-3); flex-shrink: 0; align-self: flex-start; margin: 14px 12px 0 0; transition: transform .25s ease; }
-
-.pi-acc-body { padding: 0 18px 18px; overflow: hidden; transition: max-height .3s ease, opacity .3s ease; }
-.pi-acc-body > p { font-size: 14px; color: var(--ink-2); line-height: 1.65; margin-bottom: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
-
-/* ── Member grid: max 4 columns ─────────────── */
-.member-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  margin-top: 4px;
-}
-.member-card {
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  overflow: hidden;
-  background: var(--white);
-  display: flex; flex-direction: column;
-  transition: box-shadow .15s, border-color .15s;
-}
-.member-card:hover { box-shadow: 0 3px 12px rgba(0,0,0,.07); border-color: #c8d3ee; }
-.member-card .avatar-wrap { border-bottom: 1px solid var(--border); }
-.member-body { padding: 10px 12px 12px; }
-.member-name { font-size: 14px; font-weight: 700; color: var(--ink); line-height: 1.3; margin-bottom: 2px; }
-.member-role { font-size: 11px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 4px; }
-.member-topic { font-size: 12px; color: var(--ink-2); line-height: 1.5; }
-.member-links { margin-top: 6px; font-size: 11px; }
-.member-links a { color: var(--accent); margin-right: 6px; }
-
-/* Responsive */
-@media (max-width: 900px) { .member-grid { grid-template-columns: repeat(3,1fr); } }
-@media (max-width: 640px) { .pi-row { grid-template-columns: 1fr; } .member-grid { grid-template-columns: repeat(2,1fr); } }
-@media (max-width: 400px) { .member-grid { grid-template-columns: 1fr; } }
-</style>
 
 <div class="section-body" style="padding-top:32px;">
   <p class="eyebrow">Team</p>
   <h1>Current Members</h1>
 
-  <!-- ══ PRINCIPAL INVESTIGATORS ══════════════════════════ -->
+  <!-- PRINCIPAL INVESTIGATORS -->
   <div class="team-section-title">Principal Investigators</div>
   <div class="pi-row">
 
@@ -228,27 +140,27 @@
         <div class="pi-acc-photo-wrap"><img src="Oktay.png" alt="Oktay I. Kaplan"></div>
         <div class="pi-acc-summary">
           <div class="pi-acc-name">Oktay I. Kaplan, Dr.</div>
-          <div class="pi-acc-title">Principal Investigator · Assoc. Prof.</div>
-          <div class="pi-acc-dept">Rare Disease Laboratory · Abdullah Gül University</div>
+          <div class="pi-acc-title">Principal Investigator &middot; Assoc. Prof.</div>
+          <div class="pi-acc-dept">Rare Disease Laboratory &middot; Abdullah G&uuml;l University</div>
           <div class="pi-acc-links" onclick="event.stopPropagation()">
-            <a href="/cdn-cgi/l/email-protection#2b44405f4a5205404a5b474a456b4a4c5e054e4f5e055f59">Email</a>
+            <a href="/cdn-cgi/l/email-protection#741b1f00150d5a1f150418151a341513015a1110015a0006">Email</a>
             <a href="https://orcid.org/0000-0002-8733-0920" target="_blank">ORCID</a>
             <a href="https://scholar.google.com/citations?user=gRUvVV4AAAAJ" target="_blank">Scholar</a>
             <a href="https://github.com/oktaykaplan" target="_blank">GitHub</a>
             <a href="https://x.com/KaplanOLab" target="_blank">@KaplanOLab</a>
           </div>
         </div>
-        <span class="pi-acc-chevron">▾</span>
+        <span class="pi-acc-chevron">&#9660;</span>
       </button>
       <div class="pi-acc-body" hidden>
-        <p>Associate Professor with 15+ years in molecular genetics, cilia biology, and rare disease. He leads the Rare Disease Laboratory, combining <em>C. elegans</em> genetics, CRISPR/Cas9, advanced imaging, and open bioinformatics to study ciliopathies and neurodevelopmental disorders — working closely with clinical geneticists for translational impact.</p>
+        <p>Associate Professor with 15+ years in molecular genetics, cilia biology, and rare disease. He leads the Rare Disease Laboratory, combining <em>C. elegans</em> genetics, CRISPR/Cas9, advanced imaging, and open bioinformatics to study ciliopathies and neurodevelopmental disorders.</p>
         <div class="pi-section-label">Education &amp; Career</div>
         <div class="pi-timeline">
-          <div class="pi-timeline-item"><span class="pi-year">2017–now</span><span class="pi-detail"><strong>Associate Professor &amp; PI</strong> · Abdullah Gül University</span></div>
-          <div class="pi-timeline-item"><span class="pi-year">Postdoc</span><span class="pi-detail"><strong>EMBO &amp; Helmholtz Fellow</strong> · Max Delbrück Center, Berlin</span></div>
-          <div class="pi-timeline-item"><span class="pi-year">2007–2011</span><span class="pi-detail"><strong>PhD, Genetics</strong> · University College Dublin</span></div>
+          <div class="pi-timeline-item"><span class="pi-year">2017&ndash;now</span><span class="pi-detail"><strong>Associate Professor &amp; PI</strong> &middot; Abdullah G&uuml;l University</span></div>
+          <div class="pi-timeline-item"><span class="pi-year">Postdoc</span><span class="pi-detail"><strong>EMBO &amp; Helmholtz Fellow</strong> &middot; Max Delbr&uuml;ck Center, Berlin</span></div>
+          <div class="pi-timeline-item"><span class="pi-year">2007&ndash;2011</span><span class="pi-detail"><strong>PhD, Genetics</strong> &middot; University College Dublin</span></div>
         </div>
-        <div class="method-pills" style="margin:10px 0 0;">
+        <div class="method-pills" style="margin:10px 0 0">
           <span class="method-pill">Ciliopathies</span>
           <span class="method-pill">CRISPR/Cas9</span>
           <span class="method-pill">Rare disease genomics</span>
@@ -263,738 +175,534 @@
         <div class="pi-acc-photo-wrap"><img src="sebihacevikaplan.png" alt="Sebiha Cevik"></div>
         <div class="pi-acc-summary">
           <div class="pi-acc-name">Sebiha Cevik, Dr.</div>
-          <div class="pi-acc-title">Principal Investigator · Asst. Prof.</div>
-          <div class="pi-acc-dept">Rare Disease Laboratory · Abdullah Gül University</div>
+          <div class="pi-acc-title">Principal Investigator &middot; Asst. Prof.</div>
+          <div class="pi-acc-dept">Rare Disease Laboratory &middot; Abdullah G&uuml;l University</div>
           <div class="pi-acc-links" onclick="event.stopPropagation()">
-            <a href="/cdn-cgi/l/email-protection#d9aabcbbb0b1b8f7babcafb0b299b8beacf7bcbdacf7adab">Email</a>
+            <a href="/cdn-cgi/l/email-protection#d0a3b5b2b9b8b1feb3b5a6b9bb90b1b7a5feb5b4a5fea4a2">Email</a>
             <a href="https://orcid.org/0000-0002-0935-1929" target="_blank">ORCID</a>
             <a href="https://scholar.google.com/citations?user=_o6sKOUAAAAJ" target="_blank">Scholar</a>
             <a href="https://www.scopus.com/authid/detail.uri?authorId=23471639400" target="_blank">Scopus</a>
-            <a href="https://avesis.agu.edu.tr/sebiha.cevik" target="_blank">AGU</a>
-          </div>
-        </div>
-        <span class="pi-acc-chevron">▾</span>
-      </button>
-      <div class="pi-acc-body" hidden>
-        <p>Ciliary biologist specialising in <em>C. elegans</em> cilia structure and membrane organisation. Pioneered work on Joubert syndrome protein ARL13B, IFT/BBSome regulation, cilia-cilia joining, and rare disease variant interpretation. Co-leads the Rare Disease Laboratory.</p>
-        <div class="pi-section-label">Education &amp; Career</div>
-        <div class="pi-timeline">
-          <div class="pi-timeline-item"><span class="pi-year">2018–now</span><span class="pi-detail"><strong>Assistant Professor</strong> · Abdullah Gül University</span></div>
-          <div class="pi-timeline-item"><span class="pi-year">2011–2018</span><span class="pi-detail"><strong>Postdoc → Asst. Prof.</strong> · Abdullah Gül University</span></div>
-          <div class="pi-timeline-item"><span class="pi-year">2006–2011</span><span class="pi-detail"><strong>PhD, Biomolecular Science</strong> · University College Dublin</span></div>
-          <div class="pi-timeline-item"><span class="pi-year">2000–2005</span><span class="pi-detail"><strong>BSc, Molecular Biology</strong> · Haliç University</span></div>
-        </div>
-        <div class="method-pills" style="margin:10px 0 0;">
-          <span class="method-pill">Ciliary membrane biology</span>
-          <span class="method-pill">ARL13B &amp; Joubert syndrome</span>
-          <span class="method-pill">IFT &amp; BBSome</span>
-          <span class="method-pill">Cilia-cilia joining</span>
-        </div>
-      </div>
-    </div>
-
-  </div><!-- /.pi-row -->
-
-
-  <!-- ══ GRADUATE STUDENTS ════════════════════════════════ -->
-  <div class="team-section-title" style="margin-top:44px;">Graduate Students</div>
-  <div class="member-grid">
-
-    <div class="member-card">
-      <div class="avatar-wrap"><svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <!-- body: sinuous worm shape, female pastel pink -->
-  <path d="M60 15 C48 22,38 35,42 50 C46 65,68 68,70 82 C72 96,62 108,58 112"
-        fill="none" stroke="#e8799a" stroke-width="11" stroke-linecap="round"/>
-  <!-- highlight on body -->
-  <path d="M60 18 C50 25,42 37,46 51 C49 64,68 67,70 80"
-        fill="none" stroke="#f4afc4" stroke-width="4" stroke-linecap="round" opacity=".6"/>
-  <!-- head circle -->
-  <circle cx="60" cy="13" r="8" fill="#e8799a"/>
-  <circle cx="60" cy="13" r="6" fill="#f4afc4"/>
-  <!-- cute eyes -->
-  <circle cx="57" cy="12" r="2.2" fill="#333"/>
-  <circle cx="63" cy="12" r="2.2" fill="#333"/>
-  <circle cx="57.8" cy="11.2" r=".7" fill="#fff"/>
-  <circle cx="63.8" cy="11.2" r=".7" fill="#fff"/>
-  <!-- eyelashes -->
-  <line x1="55.5" y1="9.5" x2="54.5" y2="8.2" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="57"   y1="9"   x2="56.8" y2="7.6" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="58.5" y1="9.2" x2="59"   y2="8"   stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="61.5" y1="9"   x2="61"   y2="7.6" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="63"   y1="9.2" x2="63.2" y2="8"   stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="64.5" y1="9.5" x2="65.5" y2="8.2" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <!-- tiny bow on head -->
-  <path d="M53 8 Q57 5,60 8 Q63 5,67 8 Q63 11,60 8 Q57 11,53 8Z" fill="#c9449d" opacity=".85"/>
-  <circle cx="60" cy="8" r="2" fill="#e8779b"/>
-  <!-- smile -->
-  <path d="M57.5 15.5 Q60 17.5 62.5 15.5" fill="none" stroke="#c9449d" stroke-width=".9" stroke-linecap="round"/>
-  <!-- tiny pharynx bulge -->
-  <ellipse cx="56" cy="35" rx="5" ry="3.5" fill="#f0a0bc" opacity=".7" transform="rotate(-20 56 35)"/>
-</svg></div>
-      <div class="member-body">
-        <div class="member-name">Ferhan Yenisert</div>
-        <div class="member-role">PhD Student</div>
-        <div class="member-topic">Ciliopathy &amp; neurodevelopmental disorders · <em>C. elegans</em>, CRISPR, super-resolution microscopy</div>
-        <div class="member-links"><a href="https://orcid.org/0000-0002-1028-8197" target="_blank">ORCID</a></div>
-      </div>
-    </div>
-
-    <div class="member-card">
-      <div class="avatar-wrap"><svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <!-- body: sinuous worm shape, female pastel pink -->
-  <path d="M60 15 C48 22,38 35,42 50 C46 65,68 68,70 82 C72 96,62 108,58 112"
-        fill="none" stroke="#e8799a" stroke-width="11" stroke-linecap="round"/>
-  <!-- highlight on body -->
-  <path d="M60 18 C50 25,42 37,46 51 C49 64,68 67,70 80"
-        fill="none" stroke="#f4afc4" stroke-width="4" stroke-linecap="round" opacity=".6"/>
-  <!-- head circle -->
-  <circle cx="60" cy="13" r="8" fill="#e8799a"/>
-  <circle cx="60" cy="13" r="6" fill="#f4afc4"/>
-  <!-- cute eyes -->
-  <circle cx="57" cy="12" r="2.2" fill="#333"/>
-  <circle cx="63" cy="12" r="2.2" fill="#333"/>
-  <circle cx="57.8" cy="11.2" r=".7" fill="#fff"/>
-  <circle cx="63.8" cy="11.2" r=".7" fill="#fff"/>
-  <!-- eyelashes -->
-  <line x1="55.5" y1="9.5" x2="54.5" y2="8.2" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="57"   y1="9"   x2="56.8" y2="7.6" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="58.5" y1="9.2" x2="59"   y2="8"   stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="61.5" y1="9"   x2="61"   y2="7.6" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="63"   y1="9.2" x2="63.2" y2="8"   stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="64.5" y1="9.5" x2="65.5" y2="8.2" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <!-- tiny bow on head -->
-  <path d="M53 8 Q57 5,60 8 Q63 5,67 8 Q63 11,60 8 Q57 11,53 8Z" fill="#c9449d" opacity=".85"/>
-  <circle cx="60" cy="8" r="2" fill="#e8779b"/>
-  <!-- smile -->
-  <path d="M57.5 15.5 Q60 17.5 62.5 15.5" fill="none" stroke="#c9449d" stroke-width=".9" stroke-linecap="round"/>
-  <!-- tiny pharynx bulge -->
-  <ellipse cx="56" cy="35" rx="5" ry="3.5" fill="#f0a0bc" opacity=".7" transform="rotate(-20 56 35)"/>
-</svg></div>
-      <div class="member-body">
-        <div class="member-name">Damla Puçak</div>
-        <div class="member-role">Graduate Student</div>
-        <div class="member-topic">Role of kinesins in cilia</div>
-      </div>
-    </div>
-
-    <div class="member-card">
-      <div class="avatar-wrap"><svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <!-- body: sinuous worm shape, female pastel pink -->
-  <path d="M60 15 C48 22,38 35,42 50 C46 65,68 68,70 82 C72 96,62 108,58 112"
-        fill="none" stroke="#e8799a" stroke-width="11" stroke-linecap="round"/>
-  <!-- highlight on body -->
-  <path d="M60 18 C50 25,42 37,46 51 C49 64,68 67,70 80"
-        fill="none" stroke="#f4afc4" stroke-width="4" stroke-linecap="round" opacity=".6"/>
-  <!-- head circle -->
-  <circle cx="60" cy="13" r="8" fill="#e8799a"/>
-  <circle cx="60" cy="13" r="6" fill="#f4afc4"/>
-  <!-- cute eyes -->
-  <circle cx="57" cy="12" r="2.2" fill="#333"/>
-  <circle cx="63" cy="12" r="2.2" fill="#333"/>
-  <circle cx="57.8" cy="11.2" r=".7" fill="#fff"/>
-  <circle cx="63.8" cy="11.2" r=".7" fill="#fff"/>
-  <!-- eyelashes -->
-  <line x1="55.5" y1="9.5" x2="54.5" y2="8.2" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="57"   y1="9"   x2="56.8" y2="7.6" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="58.5" y1="9.2" x2="59"   y2="8"   stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="61.5" y1="9"   x2="61"   y2="7.6" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="63"   y1="9.2" x2="63.2" y2="8"   stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="64.5" y1="9.5" x2="65.5" y2="8.2" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <!-- tiny bow on head -->
-  <path d="M53 8 Q57 5,60 8 Q63 5,67 8 Q63 11,60 8 Q57 11,53 8Z" fill="#c9449d" opacity=".85"/>
-  <circle cx="60" cy="8" r="2" fill="#e8779b"/>
-  <!-- smile -->
-  <path d="M57.5 15.5 Q60 17.5 62.5 15.5" fill="none" stroke="#c9449d" stroke-width=".9" stroke-linecap="round"/>
-  <!-- tiny pharynx bulge -->
-  <ellipse cx="56" cy="35" rx="5" ry="3.5" fill="#f0a0bc" opacity=".7" transform="rotate(-20 56 35)"/>
-</svg></div>
-      <div class="member-body">
-        <div class="member-name">Sinem Güzel</div>
-        <div class="member-role">Graduate Student</div>
-        <div class="member-topic">Role of ciliopathy genes in cilia</div>
-      </div>
-    </div>
-
-    <div class="pi-acc-card" id="pi-fatma" style="grid-column:1/-1;max-width:100%">
-      <button class="pi-acc-trigger" onclick="togglePi('pi-fatma')" aria-expanded="false">
-        <div class="pi-acc-photo-wrap">
-          <img src="https://raw.githubusercontent.com/rarediseaselab/home/main/Guzel_F.jpeg" alt="Fatma Güzel"
-               onerror="this.style.display='none';this.parentNode.innerHTML='<svg viewBox=&quot;0 0 120 120&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;100&quot; height=&quot;100&quot;><path d=&quot;M60 15 C48 22,38 35,42 50 C46 65,68 68,70 82 C72 96,62 108,58 112&quot; fill=&quot;none&quot; stroke=&quot;#e8799a&quot; stroke-width=&quot;11&quot; stroke-linecap=&quot;round&quot;/><circle cx=&quot;60&quot; cy=&quot;13&quot; r=&quot;8&quot; fill=&quot;#e8799a&quot;/></svg>'">
-        </div>
-        <div class="pi-acc-summary">
-          <div class="pi-acc-name">Fatma G&#xfc;zel</div>
-          <div class="pi-acc-title">Graduate Student (MSc)</div>
-          <div class="pi-acc-dept">Rare Disease Laboratory &middot; Abdullah G&#xfc;l University &middot; since Oct 2023</div>
-          <div class="pi-acc-links" onclick="event.stopPropagation()">
           </div>
         </div>
         <span class="pi-acc-chevron">&#9660;</span>
       </button>
       <div class="pi-acc-body" hidden>
-        <p>MSc student at Kaplan Lab since October 2023, investigating rare genetic diseases using <em>C. elegans</em> as a model organism. Her thesis research focuses on the <strong>DNAJC16</strong> gene, and she is additionally investigating the <strong>wdr-31</strong> gene to understand how its structural domains control dynamics at the ciliary base and preserve ciliary compartmentalization. A broader aim of her work is to understand the intricate relationship between <strong>cilia and mitochondria</strong>.</p>
+        <p>Ciliary biologist specialising in <em>C. elegans</em> cilia structure and membrane organisation. Pioneered work on Joubert syndrome protein ARL13B, IFT/BBSome regulation, cilia&ndash;cilia joining, and rare disease variant interpretation. Co-leads the Rare Disease Laboratory.</p>
+        <div class="pi-section-label">Education &amp; Career</div>
+        <div class="pi-timeline">
+          <div class="pi-timeline-item"><span class="pi-year">2018&ndash;now</span><span class="pi-detail"><strong>Assistant Professor</strong> &middot; Abdullah G&uuml;l University</span></div>
+          <div class="pi-timeline-item"><span class="pi-year">2011&ndash;2018</span><span class="pi-detail"><strong>Postdoc &rarr; Asst. Prof.</strong> &middot; Abdullah G&uuml;l University</span></div>
+          <div class="pi-timeline-item"><span class="pi-year">2006&ndash;2011</span><span class="pi-detail"><strong>PhD, Biomolecular Science</strong> &middot; University College Dublin</span></div>
+          <div class="pi-timeline-item"><span class="pi-year">2000&ndash;2005</span><span class="pi-detail"><strong>BSc, Molecular Biology</strong> &middot; Hali&ccedil; University</span></div>
+        </div>
+        <div class="method-pills" style="margin:10px 0 0">
+          <span class="method-pill">Ciliary membrane biology</span>
+          <span class="method-pill">ARL13B &amp; Joubert syndrome</span>
+          <span class="method-pill">IFT &amp; BBSome</span>
+          <span class="method-pill">Cilia&ndash;cilia joining</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /.pi-row PIs -->
+
+  <!-- GRADUATE STUDENTS -->
+  <div class="team-section-title">Graduate Students</div>
+  <div class="pi-row">
+    <div class="pi-acc-card" id="gs-ferhan">
+      <button class="pi-acc-trigger" onclick="togglePi('gs-ferhan')" aria-expanded="false">
+        <div class="pi-acc-photo-wrap"><svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" width="80" height="80">
+  <circle cx="40" cy="40" r="40" fill="#fce8f0"/>
+  <path d="M40 12 C30 18,23 30,26 42 C29 54,50 56,52 67 C54 76,45 80,42 80" fill="none" stroke="#e8799a" stroke-width="9" stroke-linecap="round"/>
+  <path d="M40 14 C32 20,26 31,29 42 C32 53,50 55,52 65" fill="none" stroke="#f4afc4" stroke-width="3" stroke-linecap="round" opacity=".6"/>
+  <circle cx="40" cy="10" r="7" fill="#e8799a"/>
+  <circle cx="40" cy="10" r="5" fill="#f4afc4"/>
+  <circle cx="37.5" cy="9" r="1.8" fill="#333"/><circle cx="42.5" cy="9" r="1.8" fill="#333"/>
+  <circle cx="38.1" cy="8.3" r=".6" fill="#fff"/><circle cx="43.1" cy="8.3" r=".6" fill="#fff"/>
+  <path d="M38 12 Q40 13.5 42 12" fill="none" stroke="#c9449d" stroke-width=".8" stroke-linecap="round"/>
+  <path d="M35 6 Q37.5 3.5,40 6 Q42.5 3.5,45 6 Q42.5 8.5,40 6 Q37.5 8.5,35 6Z" fill="#c9449d" opacity=".8"/>
+  <circle cx="40" cy="6" r="1.5" fill="#e8779b"/>
+</svg></div>
+        <div class="pi-acc-summary">
+          <div class="pi-acc-name">Ferhan Yenisert</div>
+          <div class="pi-acc-title">PhD Student</div>
+          <div class="pi-acc-dept">Rare Disease Laboratory &middot; Abdullah G&uuml;l University</div>
+          <div class="pi-acc-links" onclick="event.stopPropagation()"><a href="https://orcid.org/0000-0002-1028-8197" target="_blank">ORCID</a></div>
+        </div>
+        <span class="pi-acc-chevron">&#9660;</span>
+      </button>
+      <div class="pi-acc-body" hidden>
+        <p>Investigating the molecular basis of ciliopathy and neurodevelopmental disorders using <em>C. elegans</em>, CRISPR/Cas9, and super-resolution microscopy.</p>
+        <div class="method-pills">
+          <span class="method-pill">Ciliopathies</span>
+          <span class="method-pill"><em>C. elegans</em></span>
+          <span class="method-pill">CRISPR/Cas9</span>
+          <span class="method-pill">Super-resolution microscopy</span>
+        </div>
+      </div>
+    </div>
+    <div class="pi-acc-card" id="gs-damla">
+      <button class="pi-acc-trigger" onclick="togglePi('gs-damla')" aria-expanded="false">
+        <div class="pi-acc-photo-wrap"><svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" width="80" height="80">
+  <circle cx="40" cy="40" r="40" fill="#fce8f0"/>
+  <path d="M40 12 C30 18,23 30,26 42 C29 54,50 56,52 67 C54 76,45 80,42 80" fill="none" stroke="#e8799a" stroke-width="9" stroke-linecap="round"/>
+  <path d="M40 14 C32 20,26 31,29 42 C32 53,50 55,52 65" fill="none" stroke="#f4afc4" stroke-width="3" stroke-linecap="round" opacity=".6"/>
+  <circle cx="40" cy="10" r="7" fill="#e8799a"/>
+  <circle cx="40" cy="10" r="5" fill="#f4afc4"/>
+  <circle cx="37.5" cy="9" r="1.8" fill="#333"/><circle cx="42.5" cy="9" r="1.8" fill="#333"/>
+  <circle cx="38.1" cy="8.3" r=".6" fill="#fff"/><circle cx="43.1" cy="8.3" r=".6" fill="#fff"/>
+  <path d="M38 12 Q40 13.5 42 12" fill="none" stroke="#c9449d" stroke-width=".8" stroke-linecap="round"/>
+  <path d="M35 6 Q37.5 3.5,40 6 Q42.5 3.5,45 6 Q42.5 8.5,40 6 Q37.5 8.5,35 6Z" fill="#c9449d" opacity=".8"/>
+  <circle cx="40" cy="6" r="1.5" fill="#e8779b"/>
+</svg></div>
+        <div class="pi-acc-summary">
+          <div class="pi-acc-name">Damla Pu&ccedil;ak</div>
+          <div class="pi-acc-title">Graduate Student (MSc)</div>
+          <div class="pi-acc-dept">Rare Disease Laboratory &middot; Abdullah G&uuml;l University</div>
+          <div class="pi-acc-links" onclick="event.stopPropagation()"></div>
+        </div>
+        <span class="pi-acc-chevron">&#9660;</span>
+      </button>
+      <div class="pi-acc-body" hidden>
+        <p>Investigating the role of kinesins in cilia, focusing on how motor proteins drive intraflagellar transport and maintain ciliary structure and function.</p>
+        <div class="method-pills">
+          <span class="method-pill">Kinesins</span>
+          <span class="method-pill">Intraflagellar transport</span>
+          <span class="method-pill"><em>C. elegans</em></span>
+        </div>
+      </div>
+    </div>
+    <div class="pi-acc-card" id="gs-sinem">
+      <button class="pi-acc-trigger" onclick="togglePi('gs-sinem')" aria-expanded="false">
+        <div class="pi-acc-photo-wrap"><svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" width="80" height="80">
+  <circle cx="40" cy="40" r="40" fill="#fce8f0"/>
+  <path d="M40 12 C30 18,23 30,26 42 C29 54,50 56,52 67 C54 76,45 80,42 80" fill="none" stroke="#e8799a" stroke-width="9" stroke-linecap="round"/>
+  <path d="M40 14 C32 20,26 31,29 42 C32 53,50 55,52 65" fill="none" stroke="#f4afc4" stroke-width="3" stroke-linecap="round" opacity=".6"/>
+  <circle cx="40" cy="10" r="7" fill="#e8799a"/>
+  <circle cx="40" cy="10" r="5" fill="#f4afc4"/>
+  <circle cx="37.5" cy="9" r="1.8" fill="#333"/><circle cx="42.5" cy="9" r="1.8" fill="#333"/>
+  <circle cx="38.1" cy="8.3" r=".6" fill="#fff"/><circle cx="43.1" cy="8.3" r=".6" fill="#fff"/>
+  <path d="M38 12 Q40 13.5 42 12" fill="none" stroke="#c9449d" stroke-width=".8" stroke-linecap="round"/>
+  <path d="M35 6 Q37.5 3.5,40 6 Q42.5 3.5,45 6 Q42.5 8.5,40 6 Q37.5 8.5,35 6Z" fill="#c9449d" opacity=".8"/>
+  <circle cx="40" cy="6" r="1.5" fill="#e8779b"/>
+</svg></div>
+        <div class="pi-acc-summary">
+          <div class="pi-acc-name">Sinem G&uuml;zel</div>
+          <div class="pi-acc-title">Graduate Student (MSc)</div>
+          <div class="pi-acc-dept">Rare Disease Laboratory &middot; Abdullah G&uuml;l University</div>
+          <div class="pi-acc-links" onclick="event.stopPropagation()"></div>
+        </div>
+        <span class="pi-acc-chevron">&#9660;</span>
+      </button>
+      <div class="pi-acc-body" hidden>
+        <p>Studying the role of ciliopathy genes in cilia, with the aim of understanding how mutations in these genes disrupt ciliary function and contribute to rare genetic disease.</p>
+        <div class="method-pills">
+          <span class="method-pill">Ciliopathy genes</span>
+          <span class="method-pill"><em>C. elegans</em></span>
+          <span class="method-pill">Genetic analysis</span>
+        </div>
+      </div>
+    </div>
+    <div class="pi-acc-card" id="gs-fatma">
+      <button class="pi-acc-trigger" onclick="togglePi('gs-fatma')" aria-expanded="false">
+        <div class="pi-acc-photo-wrap"><img src="https://raw.githubusercontent.com/rarediseaselab/home/main/Guzel_F.jpeg" alt="Fatma G&uuml;zel"></div>
+        <div class="pi-acc-summary">
+          <div class="pi-acc-name">Fatma G&uuml;zel</div>
+          <div class="pi-acc-title">Graduate Student (MSc)</div>
+          <div class="pi-acc-dept">Rare Disease Laboratory &middot; Abdullah G&uuml;l University</div>
+          <div class="pi-acc-links" onclick="event.stopPropagation()"></div>
+        </div>
+        <span class="pi-acc-chevron">&#9660;</span>
+      </button>
+      <div class="pi-acc-body" hidden>
+        <p style="font-size:12px;color:var(--ink-3);margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--border);padding-top:10px">Kaplan Lab &middot; since October 2023</p>
+        <p>MSc student since October 2023, investigating rare genetic diseases using <em>C. elegans</em>. Her thesis focuses on the <strong>DNAJC16</strong> gene; she is also studying <strong>wdr-31</strong> to understand how its structural domains control dynamics at the ciliary base and preserve ciliary compartmentalization. A broader aim of her work is to uncover the intricate relationship between <strong>cilia and mitochondria</strong>.</p>
         <div class="pi-section-label">Education</div>
         <div class="pi-timeline">
-          <div class="pi-timeline-item"><span class="pi-year">2023&ndash;now</span><span class="pi-detail"><strong>MSc student</strong> &middot; Abdullah G&#xfc;l University (Kaplan Lab)</span></div>
+          <div class="pi-timeline-item"><span class="pi-year">2023&ndash;now</span><span class="pi-detail"><strong>MSc student</strong> &middot; Abdullah G&uuml;l University (Kaplan Lab)</span></div>
           <div class="pi-timeline-item"><span class="pi-year">2018&ndash;2023</span><span class="pi-detail"><strong>BSc, Molecular Biology and Genetics</strong> &middot; Konya Food and Agriculture University</span></div>
         </div>
-        <div class="pi-section-label" style="margin-top:10px">Research &amp; Skills</div>
-        <div class="method-pills" style="margin:6px 0 10px">
-          <span class="method-pill">DNAJC16 gene</span>
+        <div class="method-pills" style="margin-top:10px">
+          <span class="method-pill">DNAJC16</span>
           <span class="method-pill">wdr-31 / ciliary base</span>
           <span class="method-pill">Cilia&ndash;mitochondria</span>
-          <span class="method-pill">C. elegans genetics</span>
+          <span class="method-pill"><em>C. elegans</em></span>
           <span class="method-pill">PCR &amp; primer design</span>
           <span class="method-pill">AID system</span>
           <span class="method-pill">Inkscape &amp; Canva</span>
         </div>
-        <p style="font-size:13px;color:var(--ink-2);margin-top:0">Strong background in wet-lab molecular techniques, including PCR, primer design, and advanced genetic manipulation using the auxin-inducible degradation (AID) system in <em>C. elegans</em>. Outside the lab, she is learning professional illustration in Inkscape and creating scientific designs in Canva.</p>
+        <p style="font-size:13px;color:var(--ink-2);margin-top:8px">Strong background in wet-lab molecular techniques including the auxin-inducible degradation (AID) system. Outside the lab, she practises scientific illustration in Inkscape and design in Canva.</p>
       </div>
     </div>
-
-    <div class="member-card">
-      <div class="avatar-wrap"><svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <!-- body: sinuous worm shape, female pastel pink -->
-  <path d="M60 15 C48 22,38 35,42 50 C46 65,68 68,70 82 C72 96,62 108,58 112"
-        fill="none" stroke="#e8799a" stroke-width="11" stroke-linecap="round"/>
-  <!-- highlight on body -->
-  <path d="M60 18 C50 25,42 37,46 51 C49 64,68 67,70 80"
-        fill="none" stroke="#f4afc4" stroke-width="4" stroke-linecap="round" opacity=".6"/>
-  <!-- head circle -->
-  <circle cx="60" cy="13" r="8" fill="#e8799a"/>
-  <circle cx="60" cy="13" r="6" fill="#f4afc4"/>
-  <!-- cute eyes -->
-  <circle cx="57" cy="12" r="2.2" fill="#333"/>
-  <circle cx="63" cy="12" r="2.2" fill="#333"/>
-  <circle cx="57.8" cy="11.2" r=".7" fill="#fff"/>
-  <circle cx="63.8" cy="11.2" r=".7" fill="#fff"/>
-  <!-- eyelashes -->
-  <line x1="55.5" y1="9.5" x2="54.5" y2="8.2" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="57"   y1="9"   x2="56.8" y2="7.6" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="58.5" y1="9.2" x2="59"   y2="8"   stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="61.5" y1="9"   x2="61"   y2="7.6" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="63"   y1="9.2" x2="63.2" y2="8"   stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="64.5" y1="9.5" x2="65.5" y2="8.2" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <!-- tiny bow on head -->
-  <path d="M53 8 Q57 5,60 8 Q63 5,67 8 Q63 11,60 8 Q57 11,53 8Z" fill="#c9449d" opacity=".85"/>
-  <circle cx="60" cy="8" r="2" fill="#e8779b"/>
-  <!-- smile -->
-  <path d="M57.5 15.5 Q60 17.5 62.5 15.5" fill="none" stroke="#c9449d" stroke-width=".9" stroke-linecap="round"/>
-  <!-- tiny pharynx bulge -->
-  <ellipse cx="56" cy="35" rx="5" ry="3.5" fill="#f0a0bc" opacity=".7" transform="rotate(-20 56 35)"/>
+    <div class="pi-acc-card" id="gs-elif">
+      <button class="pi-acc-trigger" onclick="togglePi('gs-elif')" aria-expanded="false">
+        <div class="pi-acc-photo-wrap"><svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" width="80" height="80">
+  <circle cx="40" cy="40" r="40" fill="#fce8f0"/>
+  <path d="M40 12 C30 18,23 30,26 42 C29 54,50 56,52 67 C54 76,45 80,42 80" fill="none" stroke="#e8799a" stroke-width="9" stroke-linecap="round"/>
+  <path d="M40 14 C32 20,26 31,29 42 C32 53,50 55,52 65" fill="none" stroke="#f4afc4" stroke-width="3" stroke-linecap="round" opacity=".6"/>
+  <circle cx="40" cy="10" r="7" fill="#e8799a"/>
+  <circle cx="40" cy="10" r="5" fill="#f4afc4"/>
+  <circle cx="37.5" cy="9" r="1.8" fill="#333"/><circle cx="42.5" cy="9" r="1.8" fill="#333"/>
+  <circle cx="38.1" cy="8.3" r=".6" fill="#fff"/><circle cx="43.1" cy="8.3" r=".6" fill="#fff"/>
+  <path d="M38 12 Q40 13.5 42 12" fill="none" stroke="#c9449d" stroke-width=".8" stroke-linecap="round"/>
+  <path d="M35 6 Q37.5 3.5,40 6 Q42.5 3.5,45 6 Q42.5 8.5,40 6 Q37.5 8.5,35 6Z" fill="#c9449d" opacity=".8"/>
+  <circle cx="40" cy="6" r="1.5" fill="#e8779b"/>
 </svg></div>
-      <div class="member-body">
-        <div class="member-name">Elif Çakmak</div>
-        <div class="member-role">Graduate Student</div>
-        <div class="member-topic">How does CDKL depletion rescue neuronal defects?</div>
+        <div class="pi-acc-summary">
+          <div class="pi-acc-name">Elif &Ccedil;akmak</div>
+          <div class="pi-acc-title">Graduate Student (MSc)</div>
+          <div class="pi-acc-dept">Rare Disease Laboratory &middot; Abdullah G&uuml;l University</div>
+          <div class="pi-acc-links" onclick="event.stopPropagation()"></div>
+        </div>
+        <span class="pi-acc-chevron">&#9660;</span>
+      </button>
+      <div class="pi-acc-body" hidden>
+        <p>Investigating how CDKL depletion rescues neuronal defects, exploring the intersection of kinase biology and neuronal development using <em>C. elegans</em> models.</p>
+        <div class="method-pills">
+          <span class="method-pill">CDKL kinase</span>
+          <span class="method-pill">Neuronal defects</span>
+          <span class="method-pill"><em>C. elegans</em></span>
+        </div>
       </div>
     </div>
-
-    <div class="member-card">
-      <div class="avatar-wrap"><svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <!-- body: sinuous worm shape, female pastel pink -->
-  <path d="M60 15 C48 22,38 35,42 50 C46 65,68 68,70 82 C72 96,62 108,58 112"
-        fill="none" stroke="#e8799a" stroke-width="11" stroke-linecap="round"/>
-  <!-- highlight on body -->
-  <path d="M60 18 C50 25,42 37,46 51 C49 64,68 67,70 80"
-        fill="none" stroke="#f4afc4" stroke-width="4" stroke-linecap="round" opacity=".6"/>
-  <!-- head circle -->
-  <circle cx="60" cy="13" r="8" fill="#e8799a"/>
-  <circle cx="60" cy="13" r="6" fill="#f4afc4"/>
-  <!-- cute eyes -->
-  <circle cx="57" cy="12" r="2.2" fill="#333"/>
-  <circle cx="63" cy="12" r="2.2" fill="#333"/>
-  <circle cx="57.8" cy="11.2" r=".7" fill="#fff"/>
-  <circle cx="63.8" cy="11.2" r=".7" fill="#fff"/>
-  <!-- eyelashes -->
-  <line x1="55.5" y1="9.5" x2="54.5" y2="8.2" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="57"   y1="9"   x2="56.8" y2="7.6" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="58.5" y1="9.2" x2="59"   y2="8"   stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="61.5" y1="9"   x2="61"   y2="7.6" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="63"   y1="9.2" x2="63.2" y2="8"   stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="64.5" y1="9.5" x2="65.5" y2="8.2" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <!-- tiny bow on head -->
-  <path d="M53 8 Q57 5,60 8 Q63 5,67 8 Q63 11,60 8 Q57 11,53 8Z" fill="#c9449d" opacity=".85"/>
-  <circle cx="60" cy="8" r="2" fill="#e8779b"/>
-  <!-- smile -->
-  <path d="M57.5 15.5 Q60 17.5 62.5 15.5" fill="none" stroke="#c9449d" stroke-width=".9" stroke-linecap="round"/>
-  <!-- tiny pharynx bulge -->
-  <ellipse cx="56" cy="35" rx="5" ry="3.5" fill="#f0a0bc" opacity=".7" transform="rotate(-20 56 35)"/>
+    <div class="pi-acc-card" id="gs-rabia">
+      <button class="pi-acc-trigger" onclick="togglePi('gs-rabia')" aria-expanded="false">
+        <div class="pi-acc-photo-wrap"><svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" width="80" height="80">
+  <circle cx="40" cy="40" r="40" fill="#fce8f0"/>
+  <path d="M40 12 C30 18,23 30,26 42 C29 54,50 56,52 67 C54 76,45 80,42 80" fill="none" stroke="#e8799a" stroke-width="9" stroke-linecap="round"/>
+  <path d="M40 14 C32 20,26 31,29 42 C32 53,50 55,52 65" fill="none" stroke="#f4afc4" stroke-width="3" stroke-linecap="round" opacity=".6"/>
+  <circle cx="40" cy="10" r="7" fill="#e8799a"/>
+  <circle cx="40" cy="10" r="5" fill="#f4afc4"/>
+  <circle cx="37.5" cy="9" r="1.8" fill="#333"/><circle cx="42.5" cy="9" r="1.8" fill="#333"/>
+  <circle cx="38.1" cy="8.3" r=".6" fill="#fff"/><circle cx="43.1" cy="8.3" r=".6" fill="#fff"/>
+  <path d="M38 12 Q40 13.5 42 12" fill="none" stroke="#c9449d" stroke-width=".8" stroke-linecap="round"/>
+  <path d="M35 6 Q37.5 3.5,40 6 Q42.5 3.5,45 6 Q42.5 8.5,40 6 Q37.5 8.5,35 6Z" fill="#c9449d" opacity=".8"/>
+  <circle cx="40" cy="6" r="1.5" fill="#e8779b"/>
 </svg></div>
-      <div class="member-body">
-        <div class="member-name">Rabia Hasan</div>
-        <div class="member-role">Graduate Student</div>
-        <div class="member-topic">Precise roles of RAB18 in cilia biology</div>
+        <div class="pi-acc-summary">
+          <div class="pi-acc-name">Rabia Hasan</div>
+          <div class="pi-acc-title">Graduate Student (MSc)</div>
+          <div class="pi-acc-dept">Rare Disease Laboratory &middot; Abdullah G&uuml;l University</div>
+          <div class="pi-acc-links" onclick="event.stopPropagation()"></div>
+        </div>
+        <span class="pi-acc-chevron">&#9660;</span>
+      </button>
+      <div class="pi-acc-body" hidden>
+        <p>Investigating the precise roles of RAB18 in cilia biology, exploring how this small GTPase coordinates membrane trafficking and ciliary function.</p>
+        <div class="method-pills">
+          <span class="method-pill">RAB18</span>
+          <span class="method-pill">Membrane trafficking</span>
+          <span class="method-pill">Cilia biology</span>
+          <span class="method-pill"><em>C. elegans</em></span>
+        </div>
       </div>
     </div>
+  </div>
 
-  </div><!-- /.member-grid -->
+    <!-- UNDERGRADUATE STUDENTS -->
+  <div class="team-section-title">Undergraduate Students</div>
+  <div class="pi-row">
+    <div class="pi-acc-card" id="ug-irem">
+      <button class="pi-acc-trigger" onclick="togglePi('ug-irem')" aria-expanded="false">
+        <div class="pi-acc-photo-wrap"><svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" width="80" height="80">
+  <circle cx="40" cy="40" r="40" fill="#fce8f0"/>
+  <path d="M40 12 C30 18,23 30,26 42 C29 54,50 56,52 67 C54 76,45 80,42 80" fill="none" stroke="#e8799a" stroke-width="9" stroke-linecap="round"/>
+  <path d="M40 14 C32 20,26 31,29 42 C32 53,50 55,52 65" fill="none" stroke="#f4afc4" stroke-width="3" stroke-linecap="round" opacity=".6"/>
+  <circle cx="40" cy="10" r="7" fill="#e8799a"/><circle cx="40" cy="10" r="5" fill="#f4afc4"/>
+  <circle cx="37.5" cy="9" r="1.8" fill="#333"/><circle cx="42.5" cy="9" r="1.8" fill="#333"/>
+  <circle cx="38.1" cy="8.3" r=".6" fill="#fff"/><circle cx="43.1" cy="8.3" r=".6" fill="#fff"/>
+  <path d="M38 12 Q40 13.5 42 12" fill="none" stroke="#c9449d" stroke-width=".8" stroke-linecap="round"/>
+  <path d="M35 6 Q37.5 3.5,40 6 Q42.5 3.5,45 6 Q42.5 8.5,40 6 Q37.5 8.5,35 6Z" fill="#c9449d" opacity=".8"/>
+  <circle cx="40" cy="6" r="1.5" fill="#e8779b"/>
+</svg></div>
+        <div class="pi-acc-summary">
+          <div class="pi-acc-name">&Iacute;rem &Ouml;ks&uuml;ztepe</div>
+          <div class="pi-acc-title">Undergraduate Student</div>
+          <div class="pi-acc-dept">Rare Disease Laboratory &middot; Abdullah G&uuml;l University</div>
+          <div class="pi-acc-links" onclick="event.stopPropagation()"></div>
+        </div>
+        <span class="pi-acc-chevron">&#9660;</span>
+      </button>
+      <div class="pi-acc-body" hidden>
+        <p style="color:var(--ink-3);font-size:13px;font-style:italic">Bio coming soon.</p>
+      </div>
+    </div>
+    <div class="pi-acc-card" id="ug-gulhanim">
+      <button class="pi-acc-trigger" onclick="togglePi('ug-gulhanim')" aria-expanded="false">
+        <div class="pi-acc-photo-wrap"><svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" width="80" height="80">
+  <circle cx="40" cy="40" r="40" fill="#fce8f0"/>
+  <path d="M40 12 C30 18,23 30,26 42 C29 54,50 56,52 67 C54 76,45 80,42 80" fill="none" stroke="#e8799a" stroke-width="9" stroke-linecap="round"/>
+  <path d="M40 14 C32 20,26 31,29 42 C32 53,50 55,52 65" fill="none" stroke="#f4afc4" stroke-width="3" stroke-linecap="round" opacity=".6"/>
+  <circle cx="40" cy="10" r="7" fill="#e8799a"/><circle cx="40" cy="10" r="5" fill="#f4afc4"/>
+  <circle cx="37.5" cy="9" r="1.8" fill="#333"/><circle cx="42.5" cy="9" r="1.8" fill="#333"/>
+  <circle cx="38.1" cy="8.3" r=".6" fill="#fff"/><circle cx="43.1" cy="8.3" r=".6" fill="#fff"/>
+  <path d="M38 12 Q40 13.5 42 12" fill="none" stroke="#c9449d" stroke-width=".8" stroke-linecap="round"/>
+  <path d="M35 6 Q37.5 3.5,40 6 Q42.5 3.5,45 6 Q42.5 8.5,40 6 Q37.5 8.5,35 6Z" fill="#c9449d" opacity=".8"/>
+  <circle cx="40" cy="6" r="1.5" fill="#e8779b"/>
+</svg></div>
+        <div class="pi-acc-summary">
+          <div class="pi-acc-name">G&uuml;l Han&imacr;m Y&imacr;lmaz</div>
+          <div class="pi-acc-title">Undergraduate Student</div>
+          <div class="pi-acc-dept">Rare Disease Laboratory &middot; Abdullah G&uuml;l University</div>
+          <div class="pi-acc-links" onclick="event.stopPropagation()"></div>
+        </div>
+        <span class="pi-acc-chevron">&#9660;</span>
+      </button>
+      <div class="pi-acc-body" hidden>
+        <p style="color:var(--ink-3);font-size:13px;font-style:italic">Bio coming soon.</p>
+      </div>
+    </div>
+    <div class="pi-acc-card" id="ug-sena">
+      <button class="pi-acc-trigger" onclick="togglePi('ug-sena')" aria-expanded="false">
+        <div class="pi-acc-photo-wrap"><svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" width="80" height="80">
+  <circle cx="40" cy="40" r="40" fill="#fce8f0"/>
+  <path d="M40 12 C30 18,23 30,26 42 C29 54,50 56,52 67 C54 76,45 80,42 80" fill="none" stroke="#e8799a" stroke-width="9" stroke-linecap="round"/>
+  <path d="M40 14 C32 20,26 31,29 42 C32 53,50 55,52 65" fill="none" stroke="#f4afc4" stroke-width="3" stroke-linecap="round" opacity=".6"/>
+  <circle cx="40" cy="10" r="7" fill="#e8799a"/><circle cx="40" cy="10" r="5" fill="#f4afc4"/>
+  <circle cx="37.5" cy="9" r="1.8" fill="#333"/><circle cx="42.5" cy="9" r="1.8" fill="#333"/>
+  <circle cx="38.1" cy="8.3" r=".6" fill="#fff"/><circle cx="43.1" cy="8.3" r=".6" fill="#fff"/>
+  <path d="M38 12 Q40 13.5 42 12" fill="none" stroke="#c9449d" stroke-width=".8" stroke-linecap="round"/>
+  <path d="M35 6 Q37.5 3.5,40 6 Q42.5 3.5,45 6 Q42.5 8.5,40 6 Q37.5 8.5,35 6Z" fill="#c9449d" opacity=".8"/>
+  <circle cx="40" cy="6" r="1.5" fill="#e8779b"/>
+</svg></div>
+        <div class="pi-acc-summary">
+          <div class="pi-acc-name">Sena &Ouml;zay</div>
+          <div class="pi-acc-title">Undergraduate Student</div>
+          <div class="pi-acc-dept">Rare Disease Laboratory &middot; Abdullah G&uuml;l University</div>
+          <div class="pi-acc-links" onclick="event.stopPropagation()"></div>
+        </div>
+        <span class="pi-acc-chevron">&#9660;</span>
+      </button>
+      <div class="pi-acc-body" hidden>
+        <p style="color:var(--ink-3);font-size:13px;font-style:italic">Bio coming soon.</p>
+      </div>
+    </div>
+    <div class="pi-acc-card" id="ug-melisa">
+      <button class="pi-acc-trigger" onclick="togglePi('ug-melisa')" aria-expanded="false">
+        <div class="pi-acc-photo-wrap"><svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" width="80" height="80">
+  <circle cx="40" cy="40" r="40" fill="#fce8f0"/>
+  <path d="M40 12 C30 18,23 30,26 42 C29 54,50 56,52 67 C54 76,45 80,42 80" fill="none" stroke="#e8799a" stroke-width="9" stroke-linecap="round"/>
+  <path d="M40 14 C32 20,26 31,29 42 C32 53,50 55,52 65" fill="none" stroke="#f4afc4" stroke-width="3" stroke-linecap="round" opacity=".6"/>
+  <circle cx="40" cy="10" r="7" fill="#e8799a"/><circle cx="40" cy="10" r="5" fill="#f4afc4"/>
+  <circle cx="37.5" cy="9" r="1.8" fill="#333"/><circle cx="42.5" cy="9" r="1.8" fill="#333"/>
+  <circle cx="38.1" cy="8.3" r=".6" fill="#fff"/><circle cx="43.1" cy="8.3" r=".6" fill="#fff"/>
+  <path d="M38 12 Q40 13.5 42 12" fill="none" stroke="#c9449d" stroke-width=".8" stroke-linecap="round"/>
+  <path d="M35 6 Q37.5 3.5,40 6 Q42.5 3.5,45 6 Q42.5 8.5,40 6 Q37.5 8.5,35 6Z" fill="#c9449d" opacity=".8"/>
+  <circle cx="40" cy="6" r="1.5" fill="#e8779b"/>
+</svg></div>
+        <div class="pi-acc-summary">
+          <div class="pi-acc-name">Melisa Dikova</div>
+          <div class="pi-acc-title">Undergraduate Student</div>
+          <div class="pi-acc-dept">Rare Disease Laboratory &middot; Abdullah G&uuml;l University</div>
+          <div class="pi-acc-links" onclick="event.stopPropagation()"></div>
+        </div>
+        <span class="pi-acc-chevron">&#9660;</span>
+      </button>
+      <div class="pi-acc-body" hidden>
+        <p style="color:var(--ink-3);font-size:13px;font-style:italic">Bio coming soon.</p>
+      </div>
+    </div>
+    <div class="pi-acc-card" id="ug-ece">
+      <button class="pi-acc-trigger" onclick="togglePi('ug-ece')" aria-expanded="false">
+        <div class="pi-acc-photo-wrap"><svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" width="80" height="80">
+  <circle cx="40" cy="40" r="40" fill="#fce8f0"/>
+  <path d="M40 12 C30 18,23 30,26 42 C29 54,50 56,52 67 C54 76,45 80,42 80" fill="none" stroke="#e8799a" stroke-width="9" stroke-linecap="round"/>
+  <path d="M40 14 C32 20,26 31,29 42 C32 53,50 55,52 65" fill="none" stroke="#f4afc4" stroke-width="3" stroke-linecap="round" opacity=".6"/>
+  <circle cx="40" cy="10" r="7" fill="#e8799a"/><circle cx="40" cy="10" r="5" fill="#f4afc4"/>
+  <circle cx="37.5" cy="9" r="1.8" fill="#333"/><circle cx="42.5" cy="9" r="1.8" fill="#333"/>
+  <circle cx="38.1" cy="8.3" r=".6" fill="#fff"/><circle cx="43.1" cy="8.3" r=".6" fill="#fff"/>
+  <path d="M38 12 Q40 13.5 42 12" fill="none" stroke="#c9449d" stroke-width=".8" stroke-linecap="round"/>
+  <path d="M35 6 Q37.5 3.5,40 6 Q42.5 3.5,45 6 Q42.5 8.5,40 6 Q37.5 8.5,35 6Z" fill="#c9449d" opacity=".8"/>
+  <circle cx="40" cy="6" r="1.5" fill="#e8779b"/>
+</svg></div>
+        <div class="pi-acc-summary">
+          <div class="pi-acc-name">Ece Ery&imacr;lmaz</div>
+          <div class="pi-acc-title">Undergraduate Student</div>
+          <div class="pi-acc-dept">Rare Disease Laboratory &middot; Abdullah G&uuml;l University</div>
+          <div class="pi-acc-links" onclick="event.stopPropagation()"></div>
+        </div>
+        <span class="pi-acc-chevron">&#9660;</span>
+      </button>
+      <div class="pi-acc-body" hidden>
+        <p style="color:var(--ink-3);font-size:13px;font-style:italic">Bio coming soon.</p>
+      </div>
+    </div>
+    <div class="pi-acc-card" id="ug-tuana">
+      <button class="pi-acc-trigger" onclick="togglePi('ug-tuana')" aria-expanded="false">
+        <div class="pi-acc-photo-wrap"><svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" width="80" height="80">
+  <circle cx="40" cy="40" r="40" fill="#fce8f0"/>
+  <path d="M40 12 C30 18,23 30,26 42 C29 54,50 56,52 67 C54 76,45 80,42 80" fill="none" stroke="#e8799a" stroke-width="9" stroke-linecap="round"/>
+  <path d="M40 14 C32 20,26 31,29 42 C32 53,50 55,52 65" fill="none" stroke="#f4afc4" stroke-width="3" stroke-linecap="round" opacity=".6"/>
+  <circle cx="40" cy="10" r="7" fill="#e8799a"/><circle cx="40" cy="10" r="5" fill="#f4afc4"/>
+  <circle cx="37.5" cy="9" r="1.8" fill="#333"/><circle cx="42.5" cy="9" r="1.8" fill="#333"/>
+  <circle cx="38.1" cy="8.3" r=".6" fill="#fff"/><circle cx="43.1" cy="8.3" r=".6" fill="#fff"/>
+  <path d="M38 12 Q40 13.5 42 12" fill="none" stroke="#c9449d" stroke-width=".8" stroke-linecap="round"/>
+  <path d="M35 6 Q37.5 3.5,40 6 Q42.5 3.5,45 6 Q42.5 8.5,40 6 Q37.5 8.5,35 6Z" fill="#c9449d" opacity=".8"/>
+  <circle cx="40" cy="6" r="1.5" fill="#e8779b"/>
+</svg></div>
+        <div class="pi-acc-summary">
+          <div class="pi-acc-name">Tuana Demircan</div>
+          <div class="pi-acc-title">Undergraduate Student</div>
+          <div class="pi-acc-dept">Rare Disease Laboratory &middot; Abdullah G&uuml;l University</div>
+          <div class="pi-acc-links" onclick="event.stopPropagation()"></div>
+        </div>
+        <span class="pi-acc-chevron">&#9660;</span>
+      </button>
+      <div class="pi-acc-body" hidden>
+        <p style="color:var(--ink-3);font-size:13px;font-style:italic">Bio coming soon.</p>
+      </div>
+    </div>
+    <div class="pi-acc-card" id="ug-sabiha">
+      <button class="pi-acc-trigger" onclick="togglePi('ug-sabiha')" aria-expanded="false">
+        <div class="pi-acc-photo-wrap"><svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" width="80" height="80">
+  <circle cx="40" cy="40" r="40" fill="#fce8f0"/>
+  <path d="M40 12 C30 18,23 30,26 42 C29 54,50 56,52 67 C54 76,45 80,42 80" fill="none" stroke="#e8799a" stroke-width="9" stroke-linecap="round"/>
+  <path d="M40 14 C32 20,26 31,29 42 C32 53,50 55,52 65" fill="none" stroke="#f4afc4" stroke-width="3" stroke-linecap="round" opacity=".6"/>
+  <circle cx="40" cy="10" r="7" fill="#e8799a"/><circle cx="40" cy="10" r="5" fill="#f4afc4"/>
+  <circle cx="37.5" cy="9" r="1.8" fill="#333"/><circle cx="42.5" cy="9" r="1.8" fill="#333"/>
+  <circle cx="38.1" cy="8.3" r=".6" fill="#fff"/><circle cx="43.1" cy="8.3" r=".6" fill="#fff"/>
+  <path d="M38 12 Q40 13.5 42 12" fill="none" stroke="#c9449d" stroke-width=".8" stroke-linecap="round"/>
+  <path d="M35 6 Q37.5 3.5,40 6 Q42.5 3.5,45 6 Q42.5 8.5,40 6 Q37.5 8.5,35 6Z" fill="#c9449d" opacity=".8"/>
+  <circle cx="40" cy="6" r="1.5" fill="#e8779b"/>
+</svg></div>
+        <div class="pi-acc-summary">
+          <div class="pi-acc-name">Sabiha G&ouml;ng&uuml;r</div>
+          <div class="pi-acc-title">Undergraduate Student</div>
+          <div class="pi-acc-dept">Rare Disease Laboratory &middot; Abdullah G&uuml;l University</div>
+          <div class="pi-acc-links" onclick="event.stopPropagation()"></div>
+        </div>
+        <span class="pi-acc-chevron">&#9660;</span>
+      </button>
+      <div class="pi-acc-body" hidden>
+        <p style="color:var(--ink-3);font-size:13px;font-style:italic">Bio coming soon.</p>
+      </div>
+    </div>
+    <div class="pi-acc-card" id="ug-cemre">
+      <button class="pi-acc-trigger" onclick="togglePi('ug-cemre')" aria-expanded="false">
+        <div class="pi-acc-photo-wrap"><svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" width="80" height="80">
+  <circle cx="40" cy="40" r="40" fill="#fce8f0"/>
+  <path d="M40 12 C30 18,23 30,26 42 C29 54,50 56,52 67 C54 76,45 80,42 80" fill="none" stroke="#e8799a" stroke-width="9" stroke-linecap="round"/>
+  <path d="M40 14 C32 20,26 31,29 42 C32 53,50 55,52 65" fill="none" stroke="#f4afc4" stroke-width="3" stroke-linecap="round" opacity=".6"/>
+  <circle cx="40" cy="10" r="7" fill="#e8799a"/><circle cx="40" cy="10" r="5" fill="#f4afc4"/>
+  <circle cx="37.5" cy="9" r="1.8" fill="#333"/><circle cx="42.5" cy="9" r="1.8" fill="#333"/>
+  <circle cx="38.1" cy="8.3" r=".6" fill="#fff"/><circle cx="43.1" cy="8.3" r=".6" fill="#fff"/>
+  <path d="M38 12 Q40 13.5 42 12" fill="none" stroke="#c9449d" stroke-width=".8" stroke-linecap="round"/>
+  <path d="M35 6 Q37.5 3.5,40 6 Q42.5 3.5,45 6 Q42.5 8.5,40 6 Q37.5 8.5,35 6Z" fill="#c9449d" opacity=".8"/>
+  <circle cx="40" cy="6" r="1.5" fill="#e8779b"/>
+</svg></div>
+        <div class="pi-acc-summary">
+          <div class="pi-acc-name">Cemre G&uuml;ng&ouml;r</div>
+          <div class="pi-acc-title">Undergraduate Student</div>
+          <div class="pi-acc-dept">Rare Disease Laboratory &middot; Abdullah G&uuml;l University</div>
+          <div class="pi-acc-links" onclick="event.stopPropagation()"></div>
+        </div>
+        <span class="pi-acc-chevron">&#9660;</span>
+      </button>
+      <div class="pi-acc-body" hidden>
+        <p style="color:var(--ink-3);font-size:13px;font-style:italic">Bio coming soon.</p>
+      </div>
+    </div>
+    <div class="pi-acc-card" id="ug-furkan">
+      <button class="pi-acc-trigger" onclick="togglePi('ug-furkan')" aria-expanded="false">
+        <div class="pi-acc-photo-wrap"><svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" width="80" height="80">
+  <circle cx="40" cy="40" r="40" fill="#e8f2fa"/>
+  <path d="M40 12 C50 18,57 30,54 42 C51 54,30 56,28 67 C26 76,35 80,38 80" fill="none" stroke="#4a90b8" stroke-width="9" stroke-linecap="round"/>
+  <path d="M40 14 C48 20,54 31,51 42 C48 53,30 55,28 65" fill="none" stroke="#7ab8d8" stroke-width="3" stroke-linecap="round" opacity=".55"/>
+  <circle cx="40" cy="10" r="7" fill="#4a90b8"/><circle cx="40" cy="10" r="5" fill="#80b8d8"/>
+  <circle cx="37.5" cy="9" r="1.7" fill="#1a3a4a"/><circle cx="42.5" cy="9" r="1.7" fill="#1a3a4a"/>
+  <circle cx="38.1" cy="8.4" r=".55" fill="#fff"/><circle cx="43.1" cy="8.4" r=".55" fill="#fff"/>
+  <line x1="36" y1="7.2" x2="39" y2="6.8" stroke="#1a3a4a" stroke-width=".8" stroke-linecap="round"/>
+  <line x1="41" y1="6.8" x2="44" y2="7.2" stroke="#1a3a4a" stroke-width=".8" stroke-linecap="round"/>
+  <path d="M38 12 Q40 13.2 42 12" fill="none" stroke="#2a6080" stroke-width=".8" stroke-linecap="round"/>
+</svg></div>
+        <div class="pi-acc-summary">
+          <div class="pi-acc-name">Furkan &Ouml;zalp</div>
+          <div class="pi-acc-title">Undergraduate Student</div>
+          <div class="pi-acc-dept">Rare Disease Laboratory &middot; Abdullah G&uuml;l University</div>
+          <div class="pi-acc-links" onclick="event.stopPropagation()"></div>
+        </div>
+        <span class="pi-acc-chevron">&#9660;</span>
+      </button>
+      <div class="pi-acc-body" hidden>
+        <p style="color:var(--ink-3);font-size:13px;font-style:italic">Bio coming soon.</p>
+      </div>
+    </div>
+    <div class="pi-acc-card" id="ug-dilara">
+      <button class="pi-acc-trigger" onclick="togglePi('ug-dilara')" aria-expanded="false">
+        <div class="pi-acc-photo-wrap"><svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" width="80" height="80">
+  <circle cx="40" cy="40" r="40" fill="#fce8f0"/>
+  <path d="M40 12 C30 18,23 30,26 42 C29 54,50 56,52 67 C54 76,45 80,42 80" fill="none" stroke="#e8799a" stroke-width="9" stroke-linecap="round"/>
+  <path d="M40 14 C32 20,26 31,29 42 C32 53,50 55,52 65" fill="none" stroke="#f4afc4" stroke-width="3" stroke-linecap="round" opacity=".6"/>
+  <circle cx="40" cy="10" r="7" fill="#e8799a"/><circle cx="40" cy="10" r="5" fill="#f4afc4"/>
+  <circle cx="37.5" cy="9" r="1.8" fill="#333"/><circle cx="42.5" cy="9" r="1.8" fill="#333"/>
+  <circle cx="38.1" cy="8.3" r=".6" fill="#fff"/><circle cx="43.1" cy="8.3" r=".6" fill="#fff"/>
+  <path d="M38 12 Q40 13.5 42 12" fill="none" stroke="#c9449d" stroke-width=".8" stroke-linecap="round"/>
+  <path d="M35 6 Q37.5 3.5,40 6 Q42.5 3.5,45 6 Q42.5 8.5,40 6 Q37.5 8.5,35 6Z" fill="#c9449d" opacity=".8"/>
+  <circle cx="40" cy="6" r="1.5" fill="#e8779b"/>
+</svg></div>
+        <div class="pi-acc-summary">
+          <div class="pi-acc-name">Dilara Kocabal</div>
+          <div class="pi-acc-title">Undergraduate Student</div>
+          <div class="pi-acc-dept">Rare Disease Laboratory &middot; Abdullah G&uuml;l University</div>
+          <div class="pi-acc-links" onclick="event.stopPropagation()"></div>
+        </div>
+        <span class="pi-acc-chevron">&#9660;</span>
+      </button>
+      <div class="pi-acc-body" hidden>
+        <p style="color:var(--ink-3);font-size:13px;font-style:italic">Bio coming soon.</p>
+      </div>
+    </div>
+    <div class="pi-acc-card" id="ug-basak">
+      <button class="pi-acc-trigger" onclick="togglePi('ug-basak')" aria-expanded="false">
+        <div class="pi-acc-photo-wrap"><svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" width="80" height="80">
+  <circle cx="40" cy="40" r="40" fill="#fce8f0"/>
+  <path d="M40 12 C30 18,23 30,26 42 C29 54,50 56,52 67 C54 76,45 80,42 80" fill="none" stroke="#e8799a" stroke-width="9" stroke-linecap="round"/>
+  <path d="M40 14 C32 20,26 31,29 42 C32 53,50 55,52 65" fill="none" stroke="#f4afc4" stroke-width="3" stroke-linecap="round" opacity=".6"/>
+  <circle cx="40" cy="10" r="7" fill="#e8799a"/><circle cx="40" cy="10" r="5" fill="#f4afc4"/>
+  <circle cx="37.5" cy="9" r="1.8" fill="#333"/><circle cx="42.5" cy="9" r="1.8" fill="#333"/>
+  <circle cx="38.1" cy="8.3" r=".6" fill="#fff"/><circle cx="43.1" cy="8.3" r=".6" fill="#fff"/>
+  <path d="M38 12 Q40 13.5 42 12" fill="none" stroke="#c9449d" stroke-width=".8" stroke-linecap="round"/>
+  <path d="M35 6 Q37.5 3.5,40 6 Q42.5 3.5,45 6 Q42.5 8.5,40 6 Q37.5 8.5,35 6Z" fill="#c9449d" opacity=".8"/>
+  <circle cx="40" cy="6" r="1.5" fill="#e8779b"/>
+</svg></div>
+        <div class="pi-acc-summary">
+          <div class="pi-acc-name">Ba&scedil;ak Z&uuml;lal S&ouml;nmez</div>
+          <div class="pi-acc-title">Undergraduate Student</div>
+          <div class="pi-acc-dept">Rare Disease Laboratory &middot; Abdullah G&uuml;l University</div>
+          <div class="pi-acc-links" onclick="event.stopPropagation()"></div>
+        </div>
+        <span class="pi-acc-chevron">&#9660;</span>
+      </button>
+      <div class="pi-acc-body" hidden>
+        <p style="color:var(--ink-3);font-size:13px;font-style:italic">Bio coming soon.</p>
+      </div>
+    </div>
+  </div>
 
-
-  <!-- ══ UNDERGRADUATE STUDENTS ══════════════════════════ -->
-  <div class="team-section-title" style="margin-top:44px;">Undergraduate Students</div>
-  <div class="member-grid">
-
-    <div class="member-card">
-      <div class="avatar-wrap"><svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <!-- body: sinuous worm shape, female pastel pink -->
-  <path d="M60 15 C48 22,38 35,42 50 C46 65,68 68,70 82 C72 96,62 108,58 112"
-        fill="none" stroke="#e8799a" stroke-width="11" stroke-linecap="round"/>
-  <!-- highlight on body -->
-  <path d="M60 18 C50 25,42 37,46 51 C49 64,68 67,70 80"
-        fill="none" stroke="#f4afc4" stroke-width="4" stroke-linecap="round" opacity=".6"/>
-  <!-- head circle -->
-  <circle cx="60" cy="13" r="8" fill="#e8799a"/>
-  <circle cx="60" cy="13" r="6" fill="#f4afc4"/>
-  <!-- cute eyes -->
-  <circle cx="57" cy="12" r="2.2" fill="#333"/>
-  <circle cx="63" cy="12" r="2.2" fill="#333"/>
-  <circle cx="57.8" cy="11.2" r=".7" fill="#fff"/>
-  <circle cx="63.8" cy="11.2" r=".7" fill="#fff"/>
-  <!-- eyelashes -->
-  <line x1="55.5" y1="9.5" x2="54.5" y2="8.2" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="57"   y1="9"   x2="56.8" y2="7.6" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="58.5" y1="9.2" x2="59"   y2="8"   stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="61.5" y1="9"   x2="61"   y2="7.6" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="63"   y1="9.2" x2="63.2" y2="8"   stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="64.5" y1="9.5" x2="65.5" y2="8.2" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <!-- tiny bow on head -->
-  <path d="M53 8 Q57 5,60 8 Q63 5,67 8 Q63 11,60 8 Q57 11,53 8Z" fill="#c9449d" opacity=".85"/>
-  <circle cx="60" cy="8" r="2" fill="#e8779b"/>
-  <!-- smile -->
-  <path d="M57.5 15.5 Q60 17.5 62.5 15.5" fill="none" stroke="#c9449d" stroke-width=".9" stroke-linecap="round"/>
-  <!-- tiny pharynx bulge -->
-  <ellipse cx="56" cy="35" rx="5" ry="3.5" fill="#f0a0bc" opacity=".7" transform="rotate(-20 56 35)"/>
-</svg></div>
-      <div class="member-body"><div class="member-name">İrem Öksüztepe</div><div class="member-role">Undergraduate Student</div></div>
+    <!-- BIOINFORMATICS -->
+  <div class="team-section-title">Bioinformatics Team</div>
+  <div class="cm-grid">
+    <div class="cm-card">
+      <div class="cm-name">Ramiz Karadeniz</div>
+      <div class="cm-role">Bioinformatics</div>
+      
     </div>
-    <div class="member-card">
-      <div class="avatar-wrap"><svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <!-- body: sinuous worm shape, female pastel pink -->
-  <path d="M60 15 C48 22,38 35,42 50 C46 65,68 68,70 82 C72 96,62 108,58 112"
-        fill="none" stroke="#e8799a" stroke-width="11" stroke-linecap="round"/>
-  <!-- highlight on body -->
-  <path d="M60 18 C50 25,42 37,46 51 C49 64,68 67,70 80"
-        fill="none" stroke="#f4afc4" stroke-width="4" stroke-linecap="round" opacity=".6"/>
-  <!-- head circle -->
-  <circle cx="60" cy="13" r="8" fill="#e8799a"/>
-  <circle cx="60" cy="13" r="6" fill="#f4afc4"/>
-  <!-- cute eyes -->
-  <circle cx="57" cy="12" r="2.2" fill="#333"/>
-  <circle cx="63" cy="12" r="2.2" fill="#333"/>
-  <circle cx="57.8" cy="11.2" r=".7" fill="#fff"/>
-  <circle cx="63.8" cy="11.2" r=".7" fill="#fff"/>
-  <!-- eyelashes -->
-  <line x1="55.5" y1="9.5" x2="54.5" y2="8.2" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="57"   y1="9"   x2="56.8" y2="7.6" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="58.5" y1="9.2" x2="59"   y2="8"   stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="61.5" y1="9"   x2="61"   y2="7.6" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="63"   y1="9.2" x2="63.2" y2="8"   stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="64.5" y1="9.5" x2="65.5" y2="8.2" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <!-- tiny bow on head -->
-  <path d="M53 8 Q57 5,60 8 Q63 5,67 8 Q63 11,60 8 Q57 11,53 8Z" fill="#c9449d" opacity=".85"/>
-  <circle cx="60" cy="8" r="2" fill="#e8779b"/>
-  <!-- smile -->
-  <path d="M57.5 15.5 Q60 17.5 62.5 15.5" fill="none" stroke="#c9449d" stroke-width=".9" stroke-linecap="round"/>
-  <!-- tiny pharynx bulge -->
-  <ellipse cx="56" cy="35" rx="5" ry="3.5" fill="#f0a0bc" opacity=".7" transform="rotate(-20 56 35)"/>
-</svg></div>
-      <div class="member-body"><div class="member-name">Gül Hanım Yılmaz</div><div class="member-role">Undergraduate Student</div></div>
+    <div class="cm-card">
+      <div class="cm-name">Vahap K&uuml;&ccedil;&uuml;kk&ouml;m&uuml;rc&uuml;</div>
+      <div class="cm-role">Bioinformatics</div>
+      
     </div>
-    <div class="member-card">
-      <div class="avatar-wrap"><svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <!-- body: sinuous worm shape, female pastel pink -->
-  <path d="M60 15 C48 22,38 35,42 50 C46 65,68 68,70 82 C72 96,62 108,58 112"
-        fill="none" stroke="#e8799a" stroke-width="11" stroke-linecap="round"/>
-  <!-- highlight on body -->
-  <path d="M60 18 C50 25,42 37,46 51 C49 64,68 67,70 80"
-        fill="none" stroke="#f4afc4" stroke-width="4" stroke-linecap="round" opacity=".6"/>
-  <!-- head circle -->
-  <circle cx="60" cy="13" r="8" fill="#e8799a"/>
-  <circle cx="60" cy="13" r="6" fill="#f4afc4"/>
-  <!-- cute eyes -->
-  <circle cx="57" cy="12" r="2.2" fill="#333"/>
-  <circle cx="63" cy="12" r="2.2" fill="#333"/>
-  <circle cx="57.8" cy="11.2" r=".7" fill="#fff"/>
-  <circle cx="63.8" cy="11.2" r=".7" fill="#fff"/>
-  <!-- eyelashes -->
-  <line x1="55.5" y1="9.5" x2="54.5" y2="8.2" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="57"   y1="9"   x2="56.8" y2="7.6" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="58.5" y1="9.2" x2="59"   y2="8"   stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="61.5" y1="9"   x2="61"   y2="7.6" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="63"   y1="9.2" x2="63.2" y2="8"   stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="64.5" y1="9.5" x2="65.5" y2="8.2" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <!-- tiny bow on head -->
-  <path d="M53 8 Q57 5,60 8 Q63 5,67 8 Q63 11,60 8 Q57 11,53 8Z" fill="#c9449d" opacity=".85"/>
-  <circle cx="60" cy="8" r="2" fill="#e8779b"/>
-  <!-- smile -->
-  <path d="M57.5 15.5 Q60 17.5 62.5 15.5" fill="none" stroke="#c9449d" stroke-width=".9" stroke-linecap="round"/>
-  <!-- tiny pharynx bulge -->
-  <ellipse cx="56" cy="35" rx="5" ry="3.5" fill="#f0a0bc" opacity=".7" transform="rotate(-20 56 35)"/>
-</svg></div>
-      <div class="member-body"><div class="member-name">Sena Özay</div><div class="member-role">Undergraduate Student</div></div>
+    <div class="cm-card">
+      <div class="cm-name">Do&gbreve;ancan &Ouml;zbek</div>
+      <div class="cm-role">Bioinformatics</div>
+      
     </div>
-    <div class="member-card">
-      <div class="avatar-wrap"><svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <!-- body: sinuous worm shape, female pastel pink -->
-  <path d="M60 15 C48 22,38 35,42 50 C46 65,68 68,70 82 C72 96,62 108,58 112"
-        fill="none" stroke="#e8799a" stroke-width="11" stroke-linecap="round"/>
-  <!-- highlight on body -->
-  <path d="M60 18 C50 25,42 37,46 51 C49 64,68 67,70 80"
-        fill="none" stroke="#f4afc4" stroke-width="4" stroke-linecap="round" opacity=".6"/>
-  <!-- head circle -->
-  <circle cx="60" cy="13" r="8" fill="#e8799a"/>
-  <circle cx="60" cy="13" r="6" fill="#f4afc4"/>
-  <!-- cute eyes -->
-  <circle cx="57" cy="12" r="2.2" fill="#333"/>
-  <circle cx="63" cy="12" r="2.2" fill="#333"/>
-  <circle cx="57.8" cy="11.2" r=".7" fill="#fff"/>
-  <circle cx="63.8" cy="11.2" r=".7" fill="#fff"/>
-  <!-- eyelashes -->
-  <line x1="55.5" y1="9.5" x2="54.5" y2="8.2" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="57"   y1="9"   x2="56.8" y2="7.6" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="58.5" y1="9.2" x2="59"   y2="8"   stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="61.5" y1="9"   x2="61"   y2="7.6" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="63"   y1="9.2" x2="63.2" y2="8"   stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="64.5" y1="9.5" x2="65.5" y2="8.2" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <!-- tiny bow on head -->
-  <path d="M53 8 Q57 5,60 8 Q63 5,67 8 Q63 11,60 8 Q57 11,53 8Z" fill="#c9449d" opacity=".85"/>
-  <circle cx="60" cy="8" r="2" fill="#e8779b"/>
-  <!-- smile -->
-  <path d="M57.5 15.5 Q60 17.5 62.5 15.5" fill="none" stroke="#c9449d" stroke-width=".9" stroke-linecap="round"/>
-  <!-- tiny pharynx bulge -->
-  <ellipse cx="56" cy="35" rx="5" ry="3.5" fill="#f0a0bc" opacity=".7" transform="rotate(-20 56 35)"/>
-</svg></div>
-      <div class="member-body"><div class="member-name">Melisa Dikova</div><div class="member-role">Undergraduate Student</div></div>
-    </div>
-    <div class="member-card">
-      <div class="avatar-wrap"><svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <!-- body: sinuous worm shape, female pastel pink -->
-  <path d="M60 15 C48 22,38 35,42 50 C46 65,68 68,70 82 C72 96,62 108,58 112"
-        fill="none" stroke="#e8799a" stroke-width="11" stroke-linecap="round"/>
-  <!-- highlight on body -->
-  <path d="M60 18 C50 25,42 37,46 51 C49 64,68 67,70 80"
-        fill="none" stroke="#f4afc4" stroke-width="4" stroke-linecap="round" opacity=".6"/>
-  <!-- head circle -->
-  <circle cx="60" cy="13" r="8" fill="#e8799a"/>
-  <circle cx="60" cy="13" r="6" fill="#f4afc4"/>
-  <!-- cute eyes -->
-  <circle cx="57" cy="12" r="2.2" fill="#333"/>
-  <circle cx="63" cy="12" r="2.2" fill="#333"/>
-  <circle cx="57.8" cy="11.2" r=".7" fill="#fff"/>
-  <circle cx="63.8" cy="11.2" r=".7" fill="#fff"/>
-  <!-- eyelashes -->
-  <line x1="55.5" y1="9.5" x2="54.5" y2="8.2" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="57"   y1="9"   x2="56.8" y2="7.6" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="58.5" y1="9.2" x2="59"   y2="8"   stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="61.5" y1="9"   x2="61"   y2="7.6" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="63"   y1="9.2" x2="63.2" y2="8"   stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="64.5" y1="9.5" x2="65.5" y2="8.2" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <!-- tiny bow on head -->
-  <path d="M53 8 Q57 5,60 8 Q63 5,67 8 Q63 11,60 8 Q57 11,53 8Z" fill="#c9449d" opacity=".85"/>
-  <circle cx="60" cy="8" r="2" fill="#e8779b"/>
-  <!-- smile -->
-  <path d="M57.5 15.5 Q60 17.5 62.5 15.5" fill="none" stroke="#c9449d" stroke-width=".9" stroke-linecap="round"/>
-  <!-- tiny pharynx bulge -->
-  <ellipse cx="56" cy="35" rx="5" ry="3.5" fill="#f0a0bc" opacity=".7" transform="rotate(-20 56 35)"/>
-</svg></div>
-      <div class="member-body"><div class="member-name">Ece Eryılmaz</div><div class="member-role">Undergraduate Student</div></div>
-    </div>
-    <div class="member-card">
-      <div class="avatar-wrap"><svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <!-- body: sinuous worm shape, female pastel pink -->
-  <path d="M60 15 C48 22,38 35,42 50 C46 65,68 68,70 82 C72 96,62 108,58 112"
-        fill="none" stroke="#e8799a" stroke-width="11" stroke-linecap="round"/>
-  <!-- highlight on body -->
-  <path d="M60 18 C50 25,42 37,46 51 C49 64,68 67,70 80"
-        fill="none" stroke="#f4afc4" stroke-width="4" stroke-linecap="round" opacity=".6"/>
-  <!-- head circle -->
-  <circle cx="60" cy="13" r="8" fill="#e8799a"/>
-  <circle cx="60" cy="13" r="6" fill="#f4afc4"/>
-  <!-- cute eyes -->
-  <circle cx="57" cy="12" r="2.2" fill="#333"/>
-  <circle cx="63" cy="12" r="2.2" fill="#333"/>
-  <circle cx="57.8" cy="11.2" r=".7" fill="#fff"/>
-  <circle cx="63.8" cy="11.2" r=".7" fill="#fff"/>
-  <!-- eyelashes -->
-  <line x1="55.5" y1="9.5" x2="54.5" y2="8.2" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="57"   y1="9"   x2="56.8" y2="7.6" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="58.5" y1="9.2" x2="59"   y2="8"   stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="61.5" y1="9"   x2="61"   y2="7.6" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="63"   y1="9.2" x2="63.2" y2="8"   stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="64.5" y1="9.5" x2="65.5" y2="8.2" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <!-- tiny bow on head -->
-  <path d="M53 8 Q57 5,60 8 Q63 5,67 8 Q63 11,60 8 Q57 11,53 8Z" fill="#c9449d" opacity=".85"/>
-  <circle cx="60" cy="8" r="2" fill="#e8779b"/>
-  <!-- smile -->
-  <path d="M57.5 15.5 Q60 17.5 62.5 15.5" fill="none" stroke="#c9449d" stroke-width=".9" stroke-linecap="round"/>
-  <!-- tiny pharynx bulge -->
-  <ellipse cx="56" cy="35" rx="5" ry="3.5" fill="#f0a0bc" opacity=".7" transform="rotate(-20 56 35)"/>
-</svg></div>
-      <div class="member-body"><div class="member-name">Tuana Demircan</div><div class="member-role">Undergraduate Student</div></div>
-    </div>
-    <div class="member-card">
-      <div class="avatar-wrap"><svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <!-- body: sinuous worm shape, female pastel pink -->
-  <path d="M60 15 C48 22,38 35,42 50 C46 65,68 68,70 82 C72 96,62 108,58 112"
-        fill="none" stroke="#e8799a" stroke-width="11" stroke-linecap="round"/>
-  <!-- highlight on body -->
-  <path d="M60 18 C50 25,42 37,46 51 C49 64,68 67,70 80"
-        fill="none" stroke="#f4afc4" stroke-width="4" stroke-linecap="round" opacity=".6"/>
-  <!-- head circle -->
-  <circle cx="60" cy="13" r="8" fill="#e8799a"/>
-  <circle cx="60" cy="13" r="6" fill="#f4afc4"/>
-  <!-- cute eyes -->
-  <circle cx="57" cy="12" r="2.2" fill="#333"/>
-  <circle cx="63" cy="12" r="2.2" fill="#333"/>
-  <circle cx="57.8" cy="11.2" r=".7" fill="#fff"/>
-  <circle cx="63.8" cy="11.2" r=".7" fill="#fff"/>
-  <!-- eyelashes -->
-  <line x1="55.5" y1="9.5" x2="54.5" y2="8.2" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="57"   y1="9"   x2="56.8" y2="7.6" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="58.5" y1="9.2" x2="59"   y2="8"   stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="61.5" y1="9"   x2="61"   y2="7.6" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="63"   y1="9.2" x2="63.2" y2="8"   stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="64.5" y1="9.5" x2="65.5" y2="8.2" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <!-- tiny bow on head -->
-  <path d="M53 8 Q57 5,60 8 Q63 5,67 8 Q63 11,60 8 Q57 11,53 8Z" fill="#c9449d" opacity=".85"/>
-  <circle cx="60" cy="8" r="2" fill="#e8779b"/>
-  <!-- smile -->
-  <path d="M57.5 15.5 Q60 17.5 62.5 15.5" fill="none" stroke="#c9449d" stroke-width=".9" stroke-linecap="round"/>
-  <!-- tiny pharynx bulge -->
-  <ellipse cx="56" cy="35" rx="5" ry="3.5" fill="#f0a0bc" opacity=".7" transform="rotate(-20 56 35)"/>
-</svg></div>
-      <div class="member-body"><div class="member-name">Sabiha Gönül</div><div class="member-role">Undergraduate Student</div></div>
-    </div>
-    <div class="member-card">
-      <div class="avatar-wrap"><svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <!-- body: sinuous worm shape, female pastel pink -->
-  <path d="M60 15 C48 22,38 35,42 50 C46 65,68 68,70 82 C72 96,62 108,58 112"
-        fill="none" stroke="#e8799a" stroke-width="11" stroke-linecap="round"/>
-  <!-- highlight on body -->
-  <path d="M60 18 C50 25,42 37,46 51 C49 64,68 67,70 80"
-        fill="none" stroke="#f4afc4" stroke-width="4" stroke-linecap="round" opacity=".6"/>
-  <!-- head circle -->
-  <circle cx="60" cy="13" r="8" fill="#e8799a"/>
-  <circle cx="60" cy="13" r="6" fill="#f4afc4"/>
-  <!-- cute eyes -->
-  <circle cx="57" cy="12" r="2.2" fill="#333"/>
-  <circle cx="63" cy="12" r="2.2" fill="#333"/>
-  <circle cx="57.8" cy="11.2" r=".7" fill="#fff"/>
-  <circle cx="63.8" cy="11.2" r=".7" fill="#fff"/>
-  <!-- eyelashes -->
-  <line x1="55.5" y1="9.5" x2="54.5" y2="8.2" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="57"   y1="9"   x2="56.8" y2="7.6" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="58.5" y1="9.2" x2="59"   y2="8"   stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="61.5" y1="9"   x2="61"   y2="7.6" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="63"   y1="9.2" x2="63.2" y2="8"   stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="64.5" y1="9.5" x2="65.5" y2="8.2" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <!-- tiny bow on head -->
-  <path d="M53 8 Q57 5,60 8 Q63 5,67 8 Q63 11,60 8 Q57 11,53 8Z" fill="#c9449d" opacity=".85"/>
-  <circle cx="60" cy="8" r="2" fill="#e8779b"/>
-  <!-- smile -->
-  <path d="M57.5 15.5 Q60 17.5 62.5 15.5" fill="none" stroke="#c9449d" stroke-width=".9" stroke-linecap="round"/>
-  <!-- tiny pharynx bulge -->
-  <ellipse cx="56" cy="35" rx="5" ry="3.5" fill="#f0a0bc" opacity=".7" transform="rotate(-20 56 35)"/>
-</svg></div>
-      <div class="member-body"><div class="member-name">Cemre Güngör</div><div class="member-role">Undergraduate Student</div></div>
-    </div>
-    <div class="member-card">
-      <div class="avatar-wrap"><svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <!-- body: sinuous worm, male teal-blue -->
-  <path d="M60 15 C72 22,82 35,78 50 C74 65,52 68,50 82 C48 96,58 108,62 112"
-        fill="none" stroke="#4a90b8" stroke-width="12" stroke-linecap="round"/>
-  <!-- highlight -->
-  <path d="M60 18 C70 25,78 37,74 51 C71 64,52 67,50 80"
-        fill="none" stroke="#7ab8d8" stroke-width="4" stroke-linecap="round" opacity=".55"/>
-  <!-- head -->
-  <circle cx="60" cy="13" r="8" fill="#4a90b8"/>
-  <circle cx="60" cy="13" r="6" fill="#80b8d8"/>
-  <!-- eyes -->
-  <circle cx="57" cy="12" r="2" fill="#1a3a4a"/>
-  <circle cx="63" cy="12" r="2" fill="#1a3a4a"/>
-  <circle cx="57.7" cy="11.3" r=".65" fill="#fff"/>
-  <circle cx="63.7" cy="11.3" r=".65" fill="#fff"/>
-  <!-- neutral brow lines -->
-  <line x1="55.5" y1="9.8" x2="58.5" y2="9.2" stroke="#1a3a4a" stroke-width=".9" stroke-linecap="round"/>
-  <line x1="61.5" y1="9.2" x2="64.5" y2="9.8" stroke="#1a3a4a" stroke-width=".9" stroke-linecap="round"/>
-  <!-- slight smile -->
-  <path d="M57.5 15.2 Q60 17 62.5 15.2" fill="none" stroke="#2a6080" stroke-width=".9" stroke-linecap="round"/>
-  <!-- pharynx -->
-  <ellipse cx="64" cy="35" rx="5" ry="3.5" fill="#80b8d8" opacity=".65" transform="rotate(20 64 35)"/>
-  <!-- tiny tail fan (spicules nod) -->
-  <path d="M62 109 Q66 114,70 111" fill="none" stroke="#4a90b8" stroke-width="2" stroke-linecap="round"/>
-  <path d="M62 109 Q64 116,60 115" fill="none" stroke="#4a90b8" stroke-width="2" stroke-linecap="round"/>
-</svg></div>
-      <div class="member-body"><div class="member-name">Furkan Özalp</div><div class="member-role">Undergraduate Student</div></div>
-    </div>
-    <div class="member-card">
-      <div class="avatar-wrap"><svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <!-- body: sinuous worm shape, female pastel pink -->
-  <path d="M60 15 C48 22,38 35,42 50 C46 65,68 68,70 82 C72 96,62 108,58 112"
-        fill="none" stroke="#e8799a" stroke-width="11" stroke-linecap="round"/>
-  <!-- highlight on body -->
-  <path d="M60 18 C50 25,42 37,46 51 C49 64,68 67,70 80"
-        fill="none" stroke="#f4afc4" stroke-width="4" stroke-linecap="round" opacity=".6"/>
-  <!-- head circle -->
-  <circle cx="60" cy="13" r="8" fill="#e8799a"/>
-  <circle cx="60" cy="13" r="6" fill="#f4afc4"/>
-  <!-- cute eyes -->
-  <circle cx="57" cy="12" r="2.2" fill="#333"/>
-  <circle cx="63" cy="12" r="2.2" fill="#333"/>
-  <circle cx="57.8" cy="11.2" r=".7" fill="#fff"/>
-  <circle cx="63.8" cy="11.2" r=".7" fill="#fff"/>
-  <!-- eyelashes -->
-  <line x1="55.5" y1="9.5" x2="54.5" y2="8.2" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="57"   y1="9"   x2="56.8" y2="7.6" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="58.5" y1="9.2" x2="59"   y2="8"   stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="61.5" y1="9"   x2="61"   y2="7.6" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="63"   y1="9.2" x2="63.2" y2="8"   stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="64.5" y1="9.5" x2="65.5" y2="8.2" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <!-- tiny bow on head -->
-  <path d="M53 8 Q57 5,60 8 Q63 5,67 8 Q63 11,60 8 Q57 11,53 8Z" fill="#c9449d" opacity=".85"/>
-  <circle cx="60" cy="8" r="2" fill="#e8779b"/>
-  <!-- smile -->
-  <path d="M57.5 15.5 Q60 17.5 62.5 15.5" fill="none" stroke="#c9449d" stroke-width=".9" stroke-linecap="round"/>
-  <!-- tiny pharynx bulge -->
-  <ellipse cx="56" cy="35" rx="5" ry="3.5" fill="#f0a0bc" opacity=".7" transform="rotate(-20 56 35)"/>
-</svg></div>
-      <div class="member-body"><div class="member-name">Dilara Kocabal</div><div class="member-role">Undergraduate Student</div></div>
-    </div>
-    <div class="member-card">
-      <div class="avatar-wrap"><svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <!-- body: sinuous worm shape, female pastel pink -->
-  <path d="M60 15 C48 22,38 35,42 50 C46 65,68 68,70 82 C72 96,62 108,58 112"
-        fill="none" stroke="#e8799a" stroke-width="11" stroke-linecap="round"/>
-  <!-- highlight on body -->
-  <path d="M60 18 C50 25,42 37,46 51 C49 64,68 67,70 80"
-        fill="none" stroke="#f4afc4" stroke-width="4" stroke-linecap="round" opacity=".6"/>
-  <!-- head circle -->
-  <circle cx="60" cy="13" r="8" fill="#e8799a"/>
-  <circle cx="60" cy="13" r="6" fill="#f4afc4"/>
-  <!-- cute eyes -->
-  <circle cx="57" cy="12" r="2.2" fill="#333"/>
-  <circle cx="63" cy="12" r="2.2" fill="#333"/>
-  <circle cx="57.8" cy="11.2" r=".7" fill="#fff"/>
-  <circle cx="63.8" cy="11.2" r=".7" fill="#fff"/>
-  <!-- eyelashes -->
-  <line x1="55.5" y1="9.5" x2="54.5" y2="8.2" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="57"   y1="9"   x2="56.8" y2="7.6" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="58.5" y1="9.2" x2="59"   y2="8"   stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="61.5" y1="9"   x2="61"   y2="7.6" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="63"   y1="9.2" x2="63.2" y2="8"   stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <line x1="64.5" y1="9.5" x2="65.5" y2="8.2" stroke="#333" stroke-width=".8" stroke-linecap="round"/>
-  <!-- tiny bow on head -->
-  <path d="M53 8 Q57 5,60 8 Q63 5,67 8 Q63 11,60 8 Q57 11,53 8Z" fill="#c9449d" opacity=".85"/>
-  <circle cx="60" cy="8" r="2" fill="#e8779b"/>
-  <!-- smile -->
-  <path d="M57.5 15.5 Q60 17.5 62.5 15.5" fill="none" stroke="#c9449d" stroke-width=".9" stroke-linecap="round"/>
-  <!-- tiny pharynx bulge -->
-  <ellipse cx="56" cy="35" rx="5" ry="3.5" fill="#f0a0bc" opacity=".7" transform="rotate(-20 56 35)"/>
-</svg></div>
-      <div class="member-body"><div class="member-name">Başak Zülal Sönmez</div><div class="member-role">Undergraduate Student</div></div>
-    </div>
-
-  </div><!-- /.member-grid -->
-
-
-  <!-- ══ BIOINFORMATICS TEAM ══════════════════════════════ -->
-  <div class="team-section-title" style="margin-top:44px;">Bioinformatics Team</div>
-  <div class="member-grid">
-
-    <div class="member-card">
-      <div class="avatar-wrap"><svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <!-- body: sinuous worm, male teal-blue -->
-  <path d="M60 15 C72 22,82 35,78 50 C74 65,52 68,50 82 C48 96,58 108,62 112"
-        fill="none" stroke="#4a90b8" stroke-width="12" stroke-linecap="round"/>
-  <!-- highlight -->
-  <path d="M60 18 C70 25,78 37,74 51 C71 64,52 67,50 80"
-        fill="none" stroke="#7ab8d8" stroke-width="4" stroke-linecap="round" opacity=".55"/>
-  <!-- head -->
-  <circle cx="60" cy="13" r="8" fill="#4a90b8"/>
-  <circle cx="60" cy="13" r="6" fill="#80b8d8"/>
-  <!-- eyes -->
-  <circle cx="57" cy="12" r="2" fill="#1a3a4a"/>
-  <circle cx="63" cy="12" r="2" fill="#1a3a4a"/>
-  <circle cx="57.7" cy="11.3" r=".65" fill="#fff"/>
-  <circle cx="63.7" cy="11.3" r=".65" fill="#fff"/>
-  <!-- neutral brow lines -->
-  <line x1="55.5" y1="9.8" x2="58.5" y2="9.2" stroke="#1a3a4a" stroke-width=".9" stroke-linecap="round"/>
-  <line x1="61.5" y1="9.2" x2="64.5" y2="9.8" stroke="#1a3a4a" stroke-width=".9" stroke-linecap="round"/>
-  <!-- slight smile -->
-  <path d="M57.5 15.2 Q60 17 62.5 15.2" fill="none" stroke="#2a6080" stroke-width=".9" stroke-linecap="round"/>
-  <!-- pharynx -->
-  <ellipse cx="64" cy="35" rx="5" ry="3.5" fill="#80b8d8" opacity=".65" transform="rotate(20 64 35)"/>
-  <!-- tiny tail fan (spicules nod) -->
-  <path d="M62 109 Q66 114,70 111" fill="none" stroke="#4a90b8" stroke-width="2" stroke-linecap="round"/>
-  <path d="M62 109 Q64 116,60 115" fill="none" stroke="#4a90b8" stroke-width="2" stroke-linecap="round"/>
-</svg></div>
-      <div class="member-body"><div class="member-name">Ramiz Karadeniz</div><div class="member-role">Bioinformatics</div></div>
-    </div>
-    <div class="member-card">
-      <div class="avatar-wrap"><svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <!-- body: sinuous worm, male teal-blue -->
-  <path d="M60 15 C72 22,82 35,78 50 C74 65,52 68,50 82 C48 96,58 108,62 112"
-        fill="none" stroke="#4a90b8" stroke-width="12" stroke-linecap="round"/>
-  <!-- highlight -->
-  <path d="M60 18 C70 25,78 37,74 51 C71 64,52 67,50 80"
-        fill="none" stroke="#7ab8d8" stroke-width="4" stroke-linecap="round" opacity=".55"/>
-  <!-- head -->
-  <circle cx="60" cy="13" r="8" fill="#4a90b8"/>
-  <circle cx="60" cy="13" r="6" fill="#80b8d8"/>
-  <!-- eyes -->
-  <circle cx="57" cy="12" r="2" fill="#1a3a4a"/>
-  <circle cx="63" cy="12" r="2" fill="#1a3a4a"/>
-  <circle cx="57.7" cy="11.3" r=".65" fill="#fff"/>
-  <circle cx="63.7" cy="11.3" r=".65" fill="#fff"/>
-  <!-- neutral brow lines -->
-  <line x1="55.5" y1="9.8" x2="58.5" y2="9.2" stroke="#1a3a4a" stroke-width=".9" stroke-linecap="round"/>
-  <line x1="61.5" y1="9.2" x2="64.5" y2="9.8" stroke="#1a3a4a" stroke-width=".9" stroke-linecap="round"/>
-  <!-- slight smile -->
-  <path d="M57.5 15.2 Q60 17 62.5 15.2" fill="none" stroke="#2a6080" stroke-width=".9" stroke-linecap="round"/>
-  <!-- pharynx -->
-  <ellipse cx="64" cy="35" rx="5" ry="3.5" fill="#80b8d8" opacity=".65" transform="rotate(20 64 35)"/>
-  <!-- tiny tail fan (spicules nod) -->
-  <path d="M62 109 Q66 114,70 111" fill="none" stroke="#4a90b8" stroke-width="2" stroke-linecap="round"/>
-  <path d="M62 109 Q64 116,60 115" fill="none" stroke="#4a90b8" stroke-width="2" stroke-linecap="round"/>
-</svg></div>
-      <div class="member-body"><div class="member-name">Vahap Küçükkömürcü</div><div class="member-role">Bioinformatics</div></div>
-    </div>
-    <div class="member-card">
-      <div class="avatar-wrap"><svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <!-- body: sinuous worm, male teal-blue -->
-  <path d="M60 15 C72 22,82 35,78 50 C74 65,52 68,50 82 C48 96,58 108,62 112"
-        fill="none" stroke="#4a90b8" stroke-width="12" stroke-linecap="round"/>
-  <!-- highlight -->
-  <path d="M60 18 C70 25,78 37,74 51 C71 64,52 67,50 80"
-        fill="none" stroke="#7ab8d8" stroke-width="4" stroke-linecap="round" opacity=".55"/>
-  <!-- head -->
-  <circle cx="60" cy="13" r="8" fill="#4a90b8"/>
-  <circle cx="60" cy="13" r="6" fill="#80b8d8"/>
-  <!-- eyes -->
-  <circle cx="57" cy="12" r="2" fill="#1a3a4a"/>
-  <circle cx="63" cy="12" r="2" fill="#1a3a4a"/>
-  <circle cx="57.7" cy="11.3" r=".65" fill="#fff"/>
-  <circle cx="63.7" cy="11.3" r=".65" fill="#fff"/>
-  <!-- neutral brow lines -->
-  <line x1="55.5" y1="9.8" x2="58.5" y2="9.2" stroke="#1a3a4a" stroke-width=".9" stroke-linecap="round"/>
-  <line x1="61.5" y1="9.2" x2="64.5" y2="9.8" stroke="#1a3a4a" stroke-width=".9" stroke-linecap="round"/>
-  <!-- slight smile -->
-  <path d="M57.5 15.2 Q60 17 62.5 15.2" fill="none" stroke="#2a6080" stroke-width=".9" stroke-linecap="round"/>
-  <!-- pharynx -->
-  <ellipse cx="64" cy="35" rx="5" ry="3.5" fill="#80b8d8" opacity=".65" transform="rotate(20 64 35)"/>
-  <!-- tiny tail fan (spicules nod) -->
-  <path d="M62 109 Q66 114,70 111" fill="none" stroke="#4a90b8" stroke-width="2" stroke-linecap="round"/>
-  <path d="M62 109 Q64 116,60 115" fill="none" stroke="#4a90b8" stroke-width="2" stroke-linecap="round"/>
-</svg></div>
-      <div class="member-body"><div class="member-name">Doğancan Özbek</div><div class="member-role">Bioinformatics</div></div>
-    </div>
-
-  </div><!-- /.member-grid -->
+  </div>
 
 </div><!-- /.section-body -->
 </main>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 function togglePi(id) {
   const card   = document.getElementById(id);
   const body   = card.querySelector('.pi-acc-body');
@@ -1046,8 +754,8 @@ function togglePi(id) {
       <div class="footer-social">
         <a href="https://github.com/thekaplanlab" target="_blank"><img src="github-logo.png" alt="GitHub"></a>
         <a href="https://www.instagram.com/kaplanlab/?hl=en" target="_blank"><img src="instagram-logo.png" alt="Instagram"></a>
-        <a href="https://www.linkedin.com/in/oktay-i-kaplan-74b16856/" target="_blank"><img src="linkedin-logo.png" alt="LinkedIn"></a>
-        <a href="https://x.com/KaplanOLab" target="_blank">𝕏 @KaplanOLab</a>
+        <a href="https://www.linkedin.com/in/oktay-i-kaplan-74b16856/" get="_blank"><img src="linkedin-logo.png" alt="LinkedIn"></a>
+        <a href="https://x.com/KaplanOLab" target="_blank">&#120143; @KaplanOLab</a>
       </div>
     </div>
   </div>
