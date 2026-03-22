@@ -133,186 +133,221 @@
 <div id="breadcrumbs"></div>
 
 <main>
-<div class="home-title-bar"><h1>Welcome to the Kaplan Lab!</h1></div>
-  <img src="figure3.png" alt="Cilia types in C. elegans" class="home-hero-img">
-  <!-- Caption sits directly below the image -->
-  <div class="home-hero-caption">Cover image depicts cilia types in <em>C. elegans</em>.</div>
-  <div class="home-hero-below">
-    <div class="home-intro-box">
-      <div class="home-intro-left">
-        <p>The Kaplan Lab studies the molecular basis of ciliopathies and rare genetic diseases.</p>
-      </div>
-      <div class="home-intro-divider"></div>
-      <div class="home-intro-right">
-        <p>We combine <em>C. elegans</em> genetics, patient-derived cell models, CRISPR/Cas9 genome editing, and integrative bioinformatics approaches to enhance the precision of rare disease diagnosis and to advance our understanding of ciliary biology and ciliopathies.</p>
-      </div>
-    </div>
-    <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:28px;">
+
+<!-- ── HERO ─────────────────────────────────────────────────── -->
+<div class="home-hero-wrap">
+  <div class="home-hero-text">
+    <p class="home-eyebrow">Faculty of Life and Natural Sciences &middot; Abdullah G&uuml;l University</p>
+    <h1 class="home-headline">Welcome to the Kaplan Lab</h1>
+    <p class="home-tagline">We decode how cilia dysfunction drives human disease &mdash; using genetics, systems biology, and functional models.</p>
+    <p class="home-sub">The Kaplan Lab, led by <strong>Dr. Oktay I. Kaplan</strong> and <strong>Dr. Sebiha Cevik</strong>, studies the molecular basis of ciliopathies and rare genetic diseases. We combine <em>C. elegans</em> genetics, CRISPR/Cas9, patient variant analysis, and open bioinformatics to connect gene mutations to cellular dysfunction and ultimately to patient phenotypes.</p>
+    <div class="home-hero-btns">
       <a href="research.html" class="btn btn-primary">Our Research</a>
-      <a href="ciliahub.html"          class="btn btn-outline">CiliaHub</a>
-      <a href="ciliaatlas.html"                                    class="btn btn-ghost">CiliaAtlas</a>
+      <a href="join.html"     class="btn btn-outline">Join the Lab</a>
+      <a href="ciliahub.html" class="btn btn-ghost">CiliaHub</a>
     </div>
   </div>
-  <div class="home-tiles">
-    <div class="home-tile" onclick="location.href='research.html'" style="cursor:pointer;">
-      <img src="cilia_res1.jpg" alt="Research"><span class="tile-label">Current Research</span>
-    </div>
-    <div class="home-tile" onclick="location.href='publications.html'" style="cursor:pointer;">
-      <img src="research3.jpeg" alt="Publications"><span class="tile-label">Publications</span>
-    </div>
-    <div class="home-tile" onclick="location.href='contact.html'" style="cursor:pointer;">
-      <img src="research2.jpg" alt="Contact"><span class="tile-label">Contact Us</span>
+  <div class="home-hero-visual">
+    <img src="figure3.png" alt="Cilia types in C. elegans" class="home-hero-img-card">
+    <p class="home-hero-caption-inline">Cilia types in <em>C. elegans</em></p>
+  </div>
+</div>
+
+<!-- ── WHY IT MATTERS ────────────────────────────────────────── -->
+<div class="home-why-wrap">
+  <div class="home-why-inner">
+    <p class="home-why-eyebrow">Why it matters</p>
+    <h2 class="home-why-title">Rare diseases. Real impact.</h2>
+    <div class="home-why-grid">
+      <div class="home-why-card">
+        <div class="home-why-icon">&#x1f9ec;</div>
+        <h3>From gene to patient</h3>
+        <p>Ciliopathies affect an estimated 1 in 1,000 individuals, causing kidney disease, blindness, neurological disorders, and skeletal abnormalities. We identify causative mutations and model their effects from the molecular level up.</p>
+      </div>
+      <div class="home-why-card">
+        <div class="home-why-icon">&#x1f52c;</div>
+        <h3>Functional validation</h3>
+        <p>Variants of uncertain significance are a major clinical bottleneck. Our <em>C. elegans</em> platform and bioinformatics tools allow rapid, scalable functional testing to distinguish disease-causing from benign variants.</p>
+      </div>
+      <div class="home-why-card">
+        <div class="home-why-icon">&#x1f4ca;</div>
+        <h3>Open science tools</h3>
+        <p>We build and freely share CiliaHub, CiliaAtlas, CilioGenics, and CiliaMiner &mdash; databases and predictive tools used by researchers worldwide to accelerate ciliopathy and rare disease research.</p>
+      </div>
     </div>
   </div>
+</div>
 
-  <!-- ══ FEATURED TOOLS ════════════════════════════════════ -->
-  <style>
-  .feat-section { max-width: var(--wrap); margin: 0 auto; padding: 48px 32px 0; }
-  .feat-title { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-3); margin-bottom: 20px; }
-
-  /* Tool spotlight cards */
-  .tool-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 48px; }
-
-  .tool-card {
-    border: 1px solid var(--border); border-radius: 8px; overflow: hidden;
-    background: var(--white); position: relative;
-    transition: box-shadow .2s, border-color .2s;
-    text-decoration: none; color: inherit; display: block;
-  }
-  .tool-card:hover { box-shadow: 0 6px 24px rgba(31,60,136,.12); border-color: #b8c8f0; text-decoration: none; }
-
-  /* Animated canvas area */
-  .tool-canvas {
-    height: 160px; position: relative; overflow: hidden;
-    background: #ffffff;
-    border-bottom: 1px solid var(--border);
-  }
-  .tool-canvas canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
-
-  .tool-card-body { padding: 18px 20px 20px; }
-  .tool-card-name { font-size: 20px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
-  .tool-card-sub  { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--accent); margin-bottom: 10px; }
-  .tool-card-desc { font-size: 14px; color: var(--ink-2); line-height: 1.6; margin-bottom: 14px; }
-  .tool-card-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-  .tool-journal-badge {
-    font-size: 11px; font-weight: 700; padding: 2px 9px;
-    border-radius: 100px; background: #e6f4ea; color: #137333;
-  }
-  .tool-updating-badge {
-    font-size: 11px; font-weight: 700; padding: 2px 9px;
-    border-radius: 100px; background: #fff3e0; color: #a05000;
-    animation: pulse-badge 2s ease-in-out infinite;
-  }
-  @keyframes pulse-badge { 0%,100%{opacity:1} 50%{opacity:.6} }
-  .tool-card-link { font-size: 13px; font-weight: 600; color: var(--accent); margin-left: auto; }
-
-  /* Featured publications */
-  .feat-pubs { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 48px; }
-  .feat-pub-card {
-    border: 1px solid var(--border); border-radius: 8px; padding: 18px;
-    background: var(--white); display: flex; flex-direction: column;
-    transition: box-shadow .15s, border-color .15s;
-    text-decoration: none; color: inherit;
-  }
-  .feat-pub-card:hover { box-shadow: 0 4px 16px rgba(31,60,136,.09); border-color: #b8c8f0; text-decoration: none; }
-  .feat-pub-year { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); margin-bottom: 6px; }
-  .feat-pub-title { font-size: 14px; font-weight: 600; color: var(--ink); line-height: 1.45; margin-bottom: 8px; flex: 1; }
-  .feat-pub-authors { font-size: 12px; color: var(--ink-3); margin-bottom: 10px; }
-  .feat-pub-bottom { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: auto; }
-  .feat-pub-badge {
-    font-size: 11px; font-weight: 700; padding: 2px 9px; border-radius: 100px;
-  }
-  .feat-pub-badge.nar  { background: #e6f4ea; color: #137333; }
-  .feat-pub-badge.iscience { background: #e8f5e9; color: #2e7d32; }
-  .feat-pub-badge.ejhg { background: #fde8e8; color: #8a1515; }
-  .feat-pub-doi { font-size: 12px; color: var(--accent); margin-left: auto; font-weight: 600; }
-
-  @media (max-width: 768px) {
-    .tool-cards { grid-template-columns: 1fr; }
-    .feat-pubs  { grid-template-columns: 1fr; }
-    .feat-section { padding: 32px 18px 0; }
-  }
-  </style>
-
-  <div class="feat-section">
-
-    <!-- Tool spotlights -->
-    <div class="feat-title">Featured Tools</div>
-    <div class="tool-cards">
-
-      <!-- ConVarT card -->
-      <a href="https://convart.org/" target="_blank" class="tool-card">
-        <div class="tool-canvas">
-          <canvas id="convart-canvas"></canvas>
-        </div>
-        <div class="tool-card-body">
-          <div class="tool-card-name">ConVarT</div>
-          <div class="tool-card-sub">Orthologous Variant Search Engine</div>
-          <div class="tool-card-desc">Match any human missense variant to equivalent positions in <em>C. elegans</em>, zebrafish, mouse and other model organisms — instantly finding existing functional evidence for variants of uncertain significance.</div>
-          <div class="tool-card-meta">
-            <span class="tool-journal-badge">NAR 2022</span>
-            <span class="tool-updating-badge">⟳ Updating now</span>
-            <span class="tool-card-link">convart.org →</span>
-          </div>
-        </div>
-      </a>
-
-      <!-- CilioGenics card -->
-      <a href="https://ciliogenics.com/" target="_blank" class="tool-card">
-        <div class="tool-canvas">
-          <canvas id="ciliogenics-canvas"></canvas>
-        </div>
-        <div class="tool-card-body">
-          <div class="tool-card-name">CilioGenics</div>
-          <div class="tool-card-sub">Ciliary Gene Prediction Database</div>
-          <div class="tool-card-desc">Predicts novel ciliary genes by integrating five independent approaches: co-expression networks, protein–protein interactions, evolutionary signatures, genomic proximity, and single-cell RNA-seq — achieving higher precision than any single method alone.</div>
-          <div class="tool-card-meta">
-            <span class="tool-journal-badge">NAR 2024</span>
-            <span class="tool-card-link">ciliogenics.com →</span>
-          </div>
-        </div>
-      </a>
-
-    </div>
-
-    <!-- Featured publications -->
-    <div class="feat-title">Featured Publications</div>
-    <div class="feat-pubs">
-
-      <a href="https://doi.org/10.1038/s41431-025-01902-0" target="_blank" class="feat-pub-card">
-        <div class="feat-pub-year">2025</div>
-        <div class="feat-pub-title">A homozygous frameshift variant in the CILK1 gene causes cranioectodermal dysplasia in a consanguineous family</div>
-        <div class="feat-pub-authors">Sezer A, Oner SS, … Cevik S, Kaplan OI</div>
-        <div class="feat-pub-bottom">
-          <span class="feat-pub-badge ejhg">Eur J Hum Genet</span>
-          <span class="feat-pub-doi">doi →</span>
-        </div>
-      </a>
-
-      <a href="https://doi.org/10.1093/nar/gkae554" target="_blank" class="feat-pub-card">
-        <div class="feat-pub-year">2024</div>
-        <div class="feat-pub-title">CilioGenics: an integrated method and database for predicting novel ciliary genes</div>
-        <div class="feat-pub-authors">Pir MS, Begar E, Yenisert F, … Cevik S, Kaplan OI</div>
-        <div class="feat-pub-bottom">
-          <span class="feat-pub-badge nar">Nucleic Acids Res</span>
-          <span class="feat-pub-doi">doi →</span>
-        </div>
-      </a>
-
-      <a href="https://doi.org/10.1016/j.isci.2025.111791" target="_blank" class="feat-pub-card">
-        <div class="feat-pub-year">2025</div>
-        <div class="feat-pub-title">ARL13B regulates juxtaposed cilia-cilia elongation in BBSome dependent manner in <em>C. elegans</em></div>
-        <div class="feat-pub-authors">Turan MG, Kantarci H, Cevik S, Kaplan OI</div>
-        <div class="feat-pub-bottom">
-          <span class="feat-pub-badge iscience">iScience</span>
-          <span class="feat-pub-doi">doi →</span>
-        </div>
-      </a>
-
+<!-- ── RESEARCH PIPELINE SVG ─────────────────────────────────── -->
+<div class="home-pipeline-wrap">
+  <div class="home-pipeline-inner">
+    <p class="home-why-eyebrow">Research pipeline</p>
+    <h2 class="home-why-title">From mutation to mechanism</h2>
+    <div class="home-pipeline">
+      <div class="home-pipe-step">
+        <div class="home-pipe-icon">&#x1f9ec;</div>
+        <div class="home-pipe-label">Variant / Gene</div>
+        <div class="home-pipe-sub">Patient WES &middot; CilioGenics prediction</div>
+      </div>
+      <div class="home-pipe-arrow">&#x2192;</div>
+      <div class="home-pipe-step">
+        <div class="home-pipe-icon">&#x270f;&#xfe0f;</div>
+        <div class="home-pipe-label">CRISPR Model</div>
+        <div class="home-pipe-sub"><em>C. elegans</em> knock-in &middot; AID depletion</div>
+      </div>
+      <div class="home-pipe-arrow">&#x2192;</div>
+      <div class="home-pipe-step">
+        <div class="home-pipe-icon">&#x1f52c;</div>
+        <div class="home-pipe-label">Cellular Phenotype</div>
+        <div class="home-pipe-sub">IFT &middot; cilia structure &middot; signalling</div>
+      </div>
+      <div class="home-pipe-arrow">&#x2192;</div>
+      <div class="home-pipe-step">
+        <div class="home-pipe-icon">&#x1f9e0;</div>
+        <div class="home-pipe-label">Organism</div>
+        <div class="home-pipe-sub">Developmental defects &middot; behaviour</div>
+      </div>
+      <div class="home-pipe-arrow">&#x2192;</div>
+      <div class="home-pipe-step">
+        <div class="home-pipe-icon">&#x1f3e5;</div>
+        <div class="home-pipe-label">Disease Insight</div>
+        <div class="home-pipe-sub">Diagnosis &middot; translational targets</div>
+      </div>
     </div>
   </div>
+</div>
 
-  <script>
+<!-- ── THREE TILES ───────────────────────────────────────────── -->
+<div class="home-tiles">
+  <div class="home-tile" onclick="location.href='research.html'" style="cursor:pointer;">
+    <img src="cilia_res1.jpg" alt="Research"><span class="tile-label">Current Research</span>
+  </div>
+  <div class="home-tile" onclick="location.href='publications.html'" style="cursor:pointer;">
+    <img src="research3.jpeg" alt="Publications"><span class="tile-label">Publications</span>
+  </div>
+  <div class="home-tile" onclick="location.href='contact.html'" style="cursor:pointer;">
+    <img src="research2.jpg" alt="Contact"><span class="tile-label">Contact Us</span>
+  </div>
+</div>
+
+<!-- ── JOIN THE LAB ──────────────────────────────────────────── -->
+<div class="home-join-wrap">
+  <div class="home-join-inner">
+    <div class="home-join-text">
+      <p class="home-why-eyebrow">We are hiring</p>
+      <h2 class="home-join-title">Join the Lab</h2>
+      <p>We are always looking for motivated scientists passionate about rare disease, cilia biology, and open science. We actively support fellowship applications at all career stages.</p>
+      <div class="home-join-positions">
+        <div class="home-join-pos">
+          <strong>Postdoctoral Researchers</strong>
+          <span>EMBO &middot; Marie Curie &middot; T&Uuml;B&#x130;TAK fellowships supported</span>
+        </div>
+        <div class="home-join-pos">
+          <strong>PhD &amp; MSc Students</strong>
+          <span>Projects in ciliopathies, <em>C. elegans</em> genetics, CRISPR, and bioinformatics</span>
+        </div>
+        <div class="home-join-pos">
+          <strong>Undergraduate Students</strong>
+          <span>Hands-on wet-lab and computational projects available year-round</span>
+        </div>
+      </div>
+      <a href="join.html" class="btn btn-primary" style="margin-top:20px">See open positions &rarr;</a>
+    </div>
+    <div class="home-join-quote">
+      <blockquote>
+        &ldquo;We are driven by curiosity, committed to open science, and focused on research that has the potential to change lives.&rdquo;
+      </blockquote>
+      <cite>&mdash; Oktay I. Kaplan, PI</cite>
+    </div>
+  </div>
+</div>
+
+<!-- ── FEATURED TOOLS ────────────────────────────────────────── -->
+<style>
+.feat-section { max-width: var(--wrap); margin: 0 auto; padding: 48px 32px 0; }
+.feat-title { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-3); margin-bottom: 20px; }
+.tool-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 48px; }
+.tool-card { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; background: var(--white); transition: box-shadow .2s, border-color .2s; text-decoration: none; color: inherit; display: block; }
+.tool-card:hover { box-shadow: 0 6px 24px rgba(31,60,136,.12); border-color: #b8c8f0; text-decoration: none; }
+.tool-canvas { height: 160px; position: relative; overflow: hidden; background: #ffffff; border-bottom: 1px solid var(--border); }
+.tool-canvas canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.tool-card-body { padding: 18px 20px 20px; }
+.tool-card-name { font-size: 20px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+.tool-card-sub  { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--accent); margin-bottom: 10px; }
+.tool-card-desc { font-size: 14px; color: var(--ink-2); line-height: 1.6; margin-bottom: 14px; }
+.tool-card-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.tool-journal-badge { font-size: 11px; font-weight: 700; padding: 2px 9px; border-radius: 100px; background: #e6f4ea; color: #137333; }
+.tool-updating-badge { font-size: 11px; font-weight: 700; padding: 2px 9px; border-radius: 100px; background: #fff3e0; color: #a05000; animation: pulse-badge 2s ease-in-out infinite; }
+@keyframes pulse-badge { 0%,100%{opacity:1} 50%{opacity:.6} }
+.tool-card-link { font-size: 13px; font-weight: 600; color: var(--accent); margin-left: auto; }
+.feat-pubs { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 48px; }
+.feat-pub-card { border: 1px solid var(--border); border-radius: 8px; padding: 18px; background: var(--white); display: flex; flex-direction: column; transition: box-shadow .15s, border-color .15s; text-decoration: none; color: inherit; }
+.feat-pub-card:hover { box-shadow: 0 4px 16px rgba(31,60,136,.09); border-color: #b8c8f0; text-decoration: none; }
+.feat-pub-year { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); margin-bottom: 6px; }
+.feat-pub-title { font-size: 14px; font-weight: 600; color: var(--ink); line-height: 1.45; margin-bottom: 8px; flex: 1; }
+.feat-pub-authors { font-size: 12px; color: var(--ink-3); margin-bottom: 10px; }
+.feat-pub-bottom { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: auto; }
+.feat-pub-badge { font-size: 11px; font-weight: 700; padding: 2px 9px; border-radius: 100px; }
+.feat-pub-badge.nar { background: #e6f4ea; color: #137333; }
+.feat-pub-badge.iscience { background: #e8f5e9; color: #2e7d32; }
+.feat-pub-badge.ejhg { background: #fde8e8; color: #8a1515; }
+.feat-pub-doi { font-size: 12px; color: var(--accent); margin-left: auto; font-weight: 600; }
+@media(max-width:768px){ .tool-cards{grid-template-columns:1fr} .feat-pubs{grid-template-columns:1fr} .feat-section{padding:32px 18px 0} }
+</style>
+
+<div class="feat-section">
+  <div class="feat-title">Featured Tools</div>
+  <div class="tool-cards">
+    <a href="https://convart.org/" target="_blank" class="tool-card">
+      <div class="tool-canvas"><canvas id="convart-canvas"></canvas></div>
+      <div class="tool-card-body">
+        <div class="tool-card-name">ConVarT</div>
+        <div class="tool-card-sub">Orthologous Variant Search Engine</div>
+        <div class="tool-card-desc">Match any human missense variant to equivalent positions in <em>C. elegans</em>, zebrafish, mouse and other model organisms &mdash; instantly finding existing functional evidence for variants of uncertain significance.</div>
+        <div class="tool-card-meta">
+          <span class="tool-journal-badge">NAR 2022</span>
+          <span class="tool-updating-badge">&#x21bb; Updating now</span>
+          <span class="tool-card-link">convart.org &rarr;</span>
+        </div>
+      </div>
+    </a>
+    <a href="https://ciliogenics.com/" target="_blank" class="tool-card">
+      <div class="tool-canvas"><canvas id="ciliogenics-canvas"></canvas></div>
+      <div class="tool-card-body">
+        <div class="tool-card-name">CilioGenics</div>
+        <div class="tool-card-sub">Ciliary Gene Prediction Database</div>
+        <div class="tool-card-desc">Predicts novel ciliary genes by integrating five independent approaches: co-expression networks, protein&ndash;protein interactions, evolutionary signatures, genomic proximity, and single-cell RNA-seq.</div>
+        <div class="tool-card-meta">
+          <span class="tool-journal-badge">NAR 2024</span>
+          <span class="tool-card-link">ciliogenics.com &rarr;</span>
+        </div>
+      </div>
+    </a>
+  </div>
+  <div class="feat-title">Featured Publications</div>
+  <div class="feat-pubs">
+    <a href="https://doi.org/10.1038/s41431-025-01902-0" target="_blank" class="feat-pub-card">
+      <div class="feat-pub-year">2025</div>
+      <div class="feat-pub-title">A homozygous frameshift variant in the CILK1 gene causes cranioectodermal dysplasia in a consanguineous family</div>
+      <div class="feat-pub-authors">Sezer A, Oner SS, &hellip; Cevik S, Kaplan OI</div>
+      <div class="feat-pub-bottom"><span class="feat-pub-badge ejhg">Eur J Hum Genet</span><span class="feat-pub-doi">doi &rarr;</span></div>
+    </a>
+    <a href="https://doi.org/10.1093/nar/gkae554" target="_blank" class="feat-pub-card">
+      <div class="feat-pub-year">2024</div>
+      <div class="feat-pub-title">CilioGenics: an integrated method and database for predicting novel ciliary genes</div>
+      <div class="feat-pub-authors">Pir MS, Begar E, Yenisert F, &hellip; Cevik S, Kaplan OI</div>
+      <div class="feat-pub-bottom"><span class="feat-pub-badge nar">Nucleic Acids Res</span><span class="feat-pub-doi">doi &rarr;</span></div>
+    </a>
+    <a href="https://doi.org/10.1016/j.isci.2025.111791" target="_blank" class="feat-pub-card">
+      <div class="feat-pub-year">2025</div>
+      <div class="feat-pub-title">ARL13B regulates juxtaposed cilia-cilia elongation in BBSome dependent manner in <em>C. elegans</em></div>
+      <div class="feat-pub-authors">Turan MG, Kantarci H, Cevik S, Kaplan OI</div>
+      <div class="feat-pub-bottom"><span class="feat-pub-badge iscience">iScience</span><span class="feat-pub-doi">doi &rarr;</span></div>
+    </a>
+  </div>
+</div>
+
+<script>
   /* ── ConVarT animation: human → worm variant matching ─── */
   (function(){
     const c = document.getElementById('convart-canvas');
@@ -528,8 +563,8 @@
     draw();
   })();
   </script>
-</main>
 
+</main>
 
 <!-- FOOTER -->
 <footer class="site-footer">
