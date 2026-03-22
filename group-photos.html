@@ -112,10 +112,12 @@
       <ul class="nav-drop-menu">
         <li><a href="ciliahub.html">CiliaHub</a></li>
         <li><a href="ciliaatlas.html">CiliaAtlas</a></li>
+        <li><a href="plotting.html">Plotting</a></li>
         <li><a href="resources.html">All Resources</a></li>
       </ul>
     </li>
     <li><a href="gallery.html">Gallery</a></li>
+    <li><a href="join.html">Join</a></li>
     <li><a href="contact.html">Contact</a></li>
   </ul>
 </nav>
@@ -126,7 +128,27 @@
 <div class="section-body">
     <p class="eyebrow">Team</p>
     <h1>Group Photos</h1>
-    <div class="gallery-grid"><div class="gallery-item"><img src="figure3.png" alt="Lab Meeting 2025" onclick="openLb(this.src)"><p>Lab Meeting 2025</p></div></div>
+    <div class="gallery-grid">
+      <div class="gallery-item">
+        <img src="https://raw.githubusercontent.com/rarediseaselab/home/main/Kaplan_lab1.JPG"
+             alt="Kaplan Lab dinner 2025" onclick="openLb(this.src)" style="border-radius:6px">
+        <p>Kaplan Lab team dinner, 2025</p>
+      </div>
+      <div class="gallery-item">
+        <img src="figure3.png" alt="Lab Meeting 2025" onclick="openLb(this.src)">
+        <p>Lab Meeting 2025</p>
+      </div>
+    </div>
+
+    <div class="lightbox" id="lightbox" onclick="closeLb()">
+      <button class="lightbox-close">&times;</button>
+      <img id="lb-img" src="" alt="">
+    </div>
+    <script>
+    function openLb(src){document.getElementById('lb-img').src=src;document.getElementById('lightbox').classList.add('open');}
+    function closeLb(){document.getElementById('lightbox').classList.remove('open');document.getElementById('lb-img').src='';}
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeLb();});
+    </script>
   </div>
 </main>
 
