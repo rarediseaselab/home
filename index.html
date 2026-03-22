@@ -126,6 +126,7 @@
       </ul>
     </li>
     <li><a href="gallery.html">Gallery</a></li>
+    <li><a href="join.html">Join</a></li>
     <li><a href="contact.html">Contact</a></li>
   </ul>
 </nav>
@@ -134,26 +135,35 @@
 
 <main>
 
-<!-- ── HERO ─────────────────────────────────────────────────── -->
-<div class="home-hero-wrap">
-  <div class="home-hero-text">
-    <p class="home-eyebrow">Faculty of Life and Natural Sciences &middot; Abdullah G&uuml;l University</p>
-    <h1 class="home-headline">Welcome to the Kaplan Lab</h1>
-    <p class="home-tagline">We decode how cilia dysfunction drives human disease &mdash; using genetics, systems biology, and functional models.</p>
-    <p class="home-sub">The Kaplan Lab, led by <strong>Dr. Oktay I. Kaplan</strong> and <strong>Dr. Sebiha Cevik</strong>, studies the molecular basis of ciliopathies and rare genetic diseases. We combine <em>C. elegans</em> genetics, CRISPR/Cas9, patient variant analysis, and open bioinformatics to connect gene mutations to cellular dysfunction and ultimately to patient phenotypes.</p>
-    <div class="home-hero-btns">
-      <a href="research.html" class="btn btn-primary">Our Research</a>
-      <a href="join.html"     class="btn btn-outline">Join the Lab</a>
-      <a href="ciliahub.html" class="btn btn-ghost">CiliaHub</a>
+<!-- ── TITLE BAR ──────────────────────────────────────────────── -->
+<div class="home-title-bar">
+  <h1>Welcome to the Kaplan Lab!</h1>
+  <p class="home-tagline-under">We decode how cilia dysfunction drives human disease &mdash; using genetics, systems biology, and functional models.</p>
+</div>
+
+<!-- ── HERO IMAGE ──────────────────────────────────────────────── -->
+<img src="figure3.png" alt="Cilia types in C. elegans" class="home-hero-img">
+<div class="home-hero-caption">Cover image depicts cilia types in <em>C. elegans</em>.</div>
+
+<!-- ── INTRO BOX ───────────────────────────────────────────────── -->
+<div class="home-hero-below">
+  <div class="home-intro-box">
+    <div class="home-intro-left">
+      <p>The Kaplan Lab, led by <strong>Dr. Oktay I. Kaplan</strong> and <strong>Dr. Sebiha Cevik</strong>, studies the molecular basis of ciliopathies and rare genetic diseases.</p>
+    </div>
+    <div class="home-intro-divider"></div>
+    <div class="home-intro-right">
+      <p>We combine <em>C. elegans</em> genetics, CRISPR/Cas9, patient variant analysis, and open bioinformatics to connect gene mutations to cellular dysfunction and ultimately to patient phenotypes.</p>
     </div>
   </div>
-  <div class="home-hero-visual">
-    <img src="figure3.png" alt="Cilia types in C. elegans" class="home-hero-img-card">
-    <p class="home-hero-caption-inline">Cilia types in <em>C. elegans</em></p>
+  <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:28px;">
+    <a href="research.html" class="btn btn-primary">Our Research</a>
+    <a href="ciliahub.html" class="btn btn-outline">CiliaHub</a>
+    <a href="ciliaatlas.html" class="btn btn-ghost">CiliaAtlas</a>
   </div>
 </div>
 
-<!-- ── WHY IT MATTERS ────────────────────────────────────────── -->
+<!-- ── WHY IT MATTERS ──────────────────────────────────────────── -->
 <div class="home-why-wrap">
   <div class="home-why-inner">
     <p class="home-why-eyebrow">Why it matters</p>
@@ -178,7 +188,7 @@
   </div>
 </div>
 
-<!-- ── RESEARCH PIPELINE SVG ─────────────────────────────────── -->
+<!-- ── RESEARCH PIPELINE ────────────────────────────────────────── -->
 <div class="home-pipeline-wrap">
   <div class="home-pipeline-inner">
     <p class="home-why-eyebrow">Research pipeline</p>
@@ -217,7 +227,7 @@
   </div>
 </div>
 
-<!-- ── THREE TILES ───────────────────────────────────────────── -->
+<!-- ── THREE TILES ──────────────────────────────────────────────── -->
 <div class="home-tiles">
   <div class="home-tile" onclick="location.href='research.html'" style="cursor:pointer;">
     <img src="cilia_res1.jpg" alt="Research"><span class="tile-label">Current Research</span>
@@ -230,39 +240,7 @@
   </div>
 </div>
 
-<!-- ── JOIN THE LAB ──────────────────────────────────────────── -->
-<div class="home-join-wrap">
-  <div class="home-join-inner">
-    <div class="home-join-text">
-      <p class="home-why-eyebrow">We are hiring</p>
-      <h2 class="home-join-title">Join the Lab</h2>
-      <p>We are always looking for motivated scientists passionate about rare disease, cilia biology, and open science. We actively support fellowship applications at all career stages.</p>
-      <div class="home-join-positions">
-        <div class="home-join-pos">
-          <strong>Postdoctoral Researchers</strong>
-          <span>EMBO &middot; Marie Curie &middot; T&Uuml;B&#x130;TAK fellowships supported</span>
-        </div>
-        <div class="home-join-pos">
-          <strong>PhD &amp; MSc Students</strong>
-          <span>Projects in ciliopathies, <em>C. elegans</em> genetics, CRISPR, and bioinformatics</span>
-        </div>
-        <div class="home-join-pos">
-          <strong>Undergraduate Students</strong>
-          <span>Hands-on wet-lab and computational projects available year-round</span>
-        </div>
-      </div>
-      <a href="join.html" class="btn btn-primary" style="margin-top:20px">See open positions &rarr;</a>
-    </div>
-    <div class="home-join-quote">
-      <blockquote>
-        &ldquo;We are driven by curiosity, committed to open science, and focused on research that has the potential to change lives.&rdquo;
-      </blockquote>
-      <cite>&mdash; Oktay I. Kaplan, PI</cite>
-    </div>
-  </div>
-</div>
-
-<!-- ── FEATURED TOOLS ────────────────────────────────────────── -->
+<!-- ── FEATURED TOOLS ────────────────────────────────────────────── -->
 <style>
 .feat-section { max-width: var(--wrap); margin: 0 auto; padding: 48px 32px 0; }
 .feat-title { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-3); margin-bottom: 20px; }
@@ -324,6 +302,7 @@
       </div>
     </a>
   </div>
+
   <div class="feat-title">Featured Publications</div>
   <div class="feat-pubs">
     <a href="https://doi.org/10.1038/s41431-025-01902-0" target="_blank" class="feat-pub-card">
