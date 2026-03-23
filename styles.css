@@ -680,11 +680,11 @@ li { font-size: 16px; line-height: 1.6; color: var(--ink-2); margin-bottom: 4px;
 .pi-acc-trigger:hover { background: var(--off); }
 .pi-acc-card.open .pi-acc-trigger { background: #f0f4fd; }
 
-/* Photo container — fixed 120×120 square */
+/* Photo container — fixed 100×100 square */
 .pi-acc-photo-wrap {
-  width: 120px;
-  min-width: 120px;
-  height: 120px;
+  width: 100px;
+  min-width: 100px;
+  height: 100px;
   overflow: hidden;
   flex-shrink: 0;
   display: flex;
@@ -696,7 +696,7 @@ li { font-size: 16px; line-height: 1.6; color: var(--ink-2); margin-bottom: 4px;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: top 10% center;
+  object-position: top center;
   display: block;
 }
 
